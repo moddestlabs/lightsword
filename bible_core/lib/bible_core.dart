@@ -12,3 +12,6 @@ export 'models/passage_reference.dart';
 export 'data/repository.dart';
 export 'data/sources/json_parser.dart';
 export 'data/sources/json_repository.dart';
+export 'data/sources/sword/osis_parser.dart';
+export 'data/sources/sword/module_config.dart';
+export 'data/sources/sword/sword_repository.dart';

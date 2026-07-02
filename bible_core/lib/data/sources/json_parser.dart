@@ -1,8 +1,6 @@
 import 'dart:convert';
 import 'package:bible_core/models/book.dart';
 import 'package:bible_core/models/verse.dart';
-import 'package:bible_core/models/passage_reference.dart';
-import 'package:bible_core/data/repository.dart';
 
 /// Parses Bible data from JSON format
 class JsonBibleParser {
@@ -46,7 +44,7 @@ class JsonBibleParser {
             chapter: chapterNum,
             number: verseNum,
             text: verseText,
-          ));
+          ),);
         }
       }
     }

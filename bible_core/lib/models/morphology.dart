@@ -1,4 +1,4 @@
-export 'word.dart' show MorphologyTag;
+import 'word.dart' show MorphologyTag;
 
 /// Parse morphology codes into human-readable MorphologyTag
 class MorphologyParser {

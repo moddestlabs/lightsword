@@ -15,7 +15,7 @@ class JsonBibleRepository implements BibleRepository {
   Future<BibleData> _loadData() async {
     if (_cachedData != null) return _cachedData!;
     
-    final jsonString = await _dataSource.loadAsset('assets/data/web_sample.json');
+    final jsonString = await _dataSource.loadAsset('data/web_sample.json');
     _cachedData = JsonBibleParser.parse(jsonString);
     return _cachedData!;
   }
