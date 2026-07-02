@@ -1,3 +1,4 @@
+import 'dart:typed_data';
 import 'package:bible_core/models/verse.dart';
 import 'package:bible_core/models/book.dart';
 import 'package:bible_core/models/passage_reference.dart';
@@ -7,6 +8,9 @@ import 'package:bible_core/models/passage_reference.dart';
 abstract class DataSource {
   /// Load a text asset by path
   Future<String> loadAsset(String path);
+  
+  /// Load a binary asset by path
+  Future<Uint8List> loadBytes(String path);
   
   /// Check if an asset exists
   Future<bool> assetExists(String path);

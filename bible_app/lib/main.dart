@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'ui/screens/home_screen.dart';
+import 'test_assets.dart';
 
 void main() {
   runApp(const DabarApp());

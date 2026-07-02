@@ -14,11 +14,13 @@ class _ReaderScreenState extends State<ReaderScreen> {
   List<Verse> _verses = [];
   bool _isLoading = true;
   String? _error;
-  final PassageReference _currentRef = const PassageReference(
-    bookId: 'john',
-    chapter: 1,
-    startVerse: 1,
-    endVerse: 10,
+  
+  String _bookId = 'John';
+  int _chapter = 1;
+  
+  PassageReference get _currentRef => PassageReference(
+    bookId: _bookId,
+    chapter: _chapter,
   );
 
   @override
@@ -47,95 +49,84 @@ class _ReaderScreenState extends State<ReaderScreen> {
     }
   }
 
+  void _previousChapter() {
+    if (_chapter > 1) {
+      setState(() {
+        _chapter--;
+      });
+      _loadVerses();
+    }
+  }
+
+  void _nextChapter() {
+    setState(() {
+      _chapter++;
+    });
+    _loadVerses();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(_currentRef.toString()),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.search),
-            onPressed: () {
-              // TODO: Implement passage picker
-            },
-          ),
-          IconButton(
-            icon: const Icon(Icons.volume_up_outlined),
-            onPressed: () {
-              // TODO: Implement TTS
-            },
-          ),
-        ],
+        title: Text('$_bookId $_chapter'),
       ),
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())
           : _error != null
-              ? Center(
-                  child: Padding(
-                    padding: const EdgeInsets.all(16),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Icon(
-                          Icons.error_outline,
-                          size: 48,
-                          color: Colors.red,
-                        ),
-                        const SizedBox(height: 16),
-                        Text('Error: $_error'),
-                        const SizedBox(height: 16),
-                        ElevatedButton(
-                          onPressed: _loadVerses,
-                          child: const Text('Retry'),
-                        ),
-                      ],
-                    ),
-                  ),
-                )
-              : ListView(
+              ? Center(child: Text('ERROR: $_error'))
+              : SingleChildScrollView(
                   padding: const EdgeInsets.all(16),
-                  children: [
-                    _buildTranslationChip('WEB'),
-                    const SizedBox(height: 16),
-                    ..._verses.map((verse) => _buildVerse(verse)),
-                  ],
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Verses loaded: ${_verses.length}',
+                        style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                      ),
+                      const Divider(height: 32),
+                      for (final verse in _verses)
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 16),
+                          child: Text(
+                            '${verse.number}. ${verse.text}',
+                            style: const TextStyle(fontSize: 16),
+                          ),
+                        ),
+                    ],
+                  ),
                 ),
-    );
-  }
-
-  Widget _buildTranslationChip(String translation) {
-    return Chip(
-      label: Text(translation),
-      avatar: const Icon(Icons.translate, size: 18),
-    );
-  }
-
-  Widget _buildVerse(Verse verse) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 12),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          SizedBox(
-            width: 32,
-            child: Text(
-              '${verse.number}',
-              style: const TextStyle(
-                fontWeight: FontWeight.bold,
-                color: Colors.brown,
-              ),
+      bottomNavigationBar: Container(
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: Theme.of(context).colorScheme.surface,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.1),
+              blurRadius: 4,
+              offset: const Offset(0, -2),
             ),
-          ),
-          Expanded(
-            child: Text(
-              verse.text,
-              style: const TextStyle(
-                fontSize: 17,
-                height: 1.6,
-              ),
+          ],
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            ElevatedButton.icon(
+              onPressed: _chapter > 1 ? _previousChapter : null,
+              icon: const Icon(Icons.arrow_back),
+              label: const Text('Previous'),
             ),
-          ),
-        ],
+            Text(
+              '$_bookId $_chapter',
+              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+            ElevatedButton.icon(
+              onPressed: _nextChapter,
+              icon: const Icon(Icons.arrow_forward),
+              label: const Text('Next'),
+            ),
+          ],
+        ),
       ),
     );
   }

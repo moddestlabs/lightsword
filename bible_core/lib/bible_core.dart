@@ -15,3 +15,5 @@ export 'data/sources/json_repository.dart';
 export 'data/sources/sword/osis_parser.dart';
 export 'data/sources/sword/module_config.dart';
 export 'data/sources/sword/sword_repository.dart';
+export 'data/sources/usfm_parser.dart';
+export 'data/sources/usfm_repository.dart';

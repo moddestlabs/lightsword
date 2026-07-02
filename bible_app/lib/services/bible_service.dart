@@ -1,5 +1,5 @@
 import 'package:bible_core/data/repository.dart';
-import 'package:bible_core/data/sources/sword/sword_repository.dart';
+import 'package:bible_core/data/sources/usfm_repository.dart';
 import 'package:bible_app/platform/storage/flutter_asset_data_source.dart';
 
 /// Global Bible repository instance
@@ -8,9 +8,9 @@ class BibleService {
   static BibleRepository? _instance;
   
   static BibleRepository get instance {
-    _instance ??= SwordRepository(
+    _instance ??= UsfmRepository(
       FlutterAssetDataSource(),
-      'sword/web_sample',  // Module path without .conf extension
+      'data/usfm/bsb',  // BSB in USFM format - complete Bible with Strong's numbers
     );
     return _instance!;
   }
