@@ -20,7 +20,7 @@ class SwordRepository implements BibleRepository {
     if (_config != null) return _config!;
 
     try {
-      final confContent = await _dataSource.loadAsset('$_modulePath.conf');
+      final confContent = await _dataSource.loadAsset('data/$_modulePath.conf');
       _config = SwordModuleConfig.parse(confContent);
       return _config!;
     } catch (e) {
@@ -49,7 +49,7 @@ class SwordRepository implements BibleRepository {
     }
 
     try {
-      // Load the OSIS XML file
+      // Load the OSIS XML file - dataPath is relative to asset root
       final osisXml = await _dataSource.loadAsset(config.dataPath);
       
       // Parse verses and books

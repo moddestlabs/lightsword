@@ -1,5 +1,5 @@
 import 'package:bible_core/data/repository.dart';
-import 'package:bible_core/data/sources/json_repository.dart';
+import 'package:bible_core/data/sources/sword/sword_repository.dart';
 import 'package:bible_app/platform/storage/flutter_asset_data_source.dart';
 
 /// Global Bible repository instance
@@ -8,7 +8,10 @@ class BibleService {
   static BibleRepository? _instance;
   
   static BibleRepository get instance {
-    _instance ??= JsonBibleRepository(FlutterAssetDataSource());
+    _instance ??= SwordRepository(
+      FlutterAssetDataSource(),
+      'sword/web_sample',  // Module path without .conf extension
+    );
     return _instance!;
   }
 }
