@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../services/pwa_service.dart';
+import '../../services/pwa_service.dart';
 
 /// Banner widget that shows online/offline status and install prompt
 class PwaBanner extends StatefulWidget {

@@ -56,12 +56,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
             },
           ),
           const Divider(),
-          const ListTile(
           if (kIsWeb)
             const Padding(
               padding: EdgeInsets.symmetric(horizontal: 16),
               child: TtsCapabilityIndicator(),
             ),
+          const ListTile(
             title: Text('Text-to-Speech'),
             leading: Icon(Icons.volume_up_outlined),
           ),
@@ -123,11 +123,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
             subtitle: const Text('Hear a sample in each language'),
             trailing: const Icon(Icons.play_arrow),
             onTap: () {
-          if (kIsWeb)
-            _buildPwaInfo(),
               _testTts();
             },
           ),
+          if (kIsWeb) ..._buildPwaWidgets(),
           const Divider(),
           const ListTile(
             title: Text('About'),
@@ -195,46 +194,52 @@ class _SettingsScreenState extends State<SettingsScreen> {
     const samples = {
       'en-US': 'In the beginning, God created the heavens and the earth.',
       'he-IL': 'בְּרֵאשִׁית בָּרָא אֱלֹהִים אֵת הַשָּׁמַיִם וְאֵת הָאָרֶץ',
-   
+      'el-GR': 'Ἐν ἀρχῇ ἦν ὁ λόγος, καὶ ὁ λόγος ἦν πρὸς τὸν θεόν',
+    };
 
-  Widget _buildPwaInfo() {
+    for (final entry in samples.entries) {
+      await _ttsService.speak(entry.value);
+      await Future.delayed(const Duration(milliseconds: 500));
+    }
+  }
+
+  List<Widget> _buildPwaWidgets() {
     final pwa = PwaService.instance;
     
     if (!pwa.isAvailable) {
-      return const SizedBox.shrink();
+      return [];
     }
 
     final platform = pwa.platformInfo;
     final storage = pwa.storageInfo;
 
-    return Column(
-      children: [
+    return [
+      const Divider(),
+      ListTile(
+        title: const Text('Platform'),
+        subtitle: Text(_getPlatformDescription(platform)),
+        leading: Icon(
+          platform?.isStandalone ?? false
+              ? Icons.install_mobile
+              : Icons.web,
+        ),
+      ),
+      if (storage != null)
         ListTile(
-          title: const Text('Platform'),
-          subtitle: Text(_getPlatformDescription(platform)),
+          title: const Text('Storage'),
+          subtitle: Text(
+            '${storage.usageMB} MB used of ${storage.quotaMB} MB\n'
+            '${storage.persisted ? "Persisted" : "May be cleared by browser"}',
+          ),
           leading: Icon(
-            platform?.isStandalone ?? false
-                ? Icons.install_mobile
-                : Icons.web,
+            storage.persisted ? Icons.storage : Icons.storage_outlined,
+          ),
+          trailing: TextButton(
+            onPressed: _refreshStorageInfo,
+            child: const Text('Refresh'),
           ),
         ),
-        if (storage != null)
-          ListTile(
-            title: const Text('Storage'),
-            subtitle: Text(
-              '${storage.usageMB} MB used of ${storage.quotaMB} MB\n'
-              '${storage.persisted ? "Persisted" : "May be cleared by browser"}',
-            ),
-            leading: Icon(
-              storage.persisted ? Icons.storage : Icons.storage_outlined,
-            ),
-            trailing: TextButton(
-              onPressed: _refreshStorageInfo,
-              child: const Text('Refresh'),
-            ),
-          ),
-      ],
-    );
+    ];
   }
 
   String _getPlatformDescription(PlatformInfo? platform) {
@@ -270,13 +275,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
           duration: const Duration(seconds: 2),
         ),
       );
-    }
-  }   'el-GR': 'Ἐν ἀρχῇ ἦν ὁ λόγος, καὶ ὁ λόγος ἦν πρὸς τὸν θεόν',
-    };
-
-    for (final entry in samples.entries) {
-      await _ttsService.speak(entry.value);
-      await Future.delayed(const Duration(milliseconds: 500));
     }
   }
 }
