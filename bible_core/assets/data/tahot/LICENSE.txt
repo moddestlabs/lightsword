@@ -1,0 +1,27 @@
+TAHOT - Translators Amalgamated Hebrew Old Testament
+===================================================
+
+Source: STEPBible.org
+License: CC BY 4.0 (Creative Commons Attribution 4.0 International)
+URL: https://github.com/STEPBible/STEPBible-Data
+
+Description:
+The Leningrad Codex based on Westminster via OpenScriptures, corrected from 
+color scans, with full morphological and semantic tags for all words, prefixes 
+and suffixes. Semantic tags using the disambiguated Strongs is backwardly 
+compatible with simple Strongs tags and includes all affixes. Morphology is 
+based on ETCBC converted to the format similar to Westminster.
+
+Attribution:
+Data created by www.STEPBible.org based on work at Tyndale House Cambridge (CC BY 4.0)
+
+You may:
+- Include any part of this data in software or publications without requesting permission
+- Make changes to the data and record the differences
+- Refer others to github.com/STEPBible as the source of the data
+
+You should:
+- Credit it to "STEP Bible" linked to www.STEPBible.org
+- Note any changes made to the original data
+
+For questions or corrections: STEPBible@gmail.com

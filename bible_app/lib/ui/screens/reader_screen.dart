@@ -5,6 +5,7 @@ import 'package:bible_core/models/passage_reference.dart';
 import 'package:bible_app/services/bible_service.dart';
 import 'package:bible_app/ui/widgets/chapter_picker_modal.dart';
 import 'package:bible_app/ui/widgets/book_selection_page.dart';
+import 'package:bible_app/ui/widgets/interlinear_view.dart';
 
 class ReaderScreen extends StatefulWidget {
   const ReaderScreen({super.key});
@@ -157,6 +158,24 @@ class _ReaderScreenState extends State<ReaderScreen> {
     );
   }
 
+  void _showInterlinear(Verse verse) {
+    if (_currentBook == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Loading book information...')),
+      );
+      return;
+    }
+
+    InterlinearReaderPage.show(
+      context: context,
+      bookName: _currentBook!.name,
+      bookId: _currentBook!.id,
+      chapter: _chapter,
+      verseNumber: verse.number,
+      verse: verse,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -260,6 +279,15 @@ class _ReaderScreenState extends State<ReaderScreen> {
                     size: 24,
                   ),
                 ),
+                const SizedBox(width: 12),
+                GestureDetector(
+                  onTap: _verses.isNotEmpty ? () => _showInterlinear(_verses.first) : null,
+                  child: Icon(
+                    Icons.text_fields,
+                    color: _verses.isNotEmpty ? const Color(0xFF007AFF) : Colors.grey.shade400,
+                    size: 24,
+                  ),
+                ),
               ],
             ),
           ],
@@ -280,38 +308,41 @@ class _ReaderScreenState extends State<ReaderScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       for (final verse in _verses)
-                        Padding(
-                          padding: const EdgeInsets.only(bottom: 14),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              // Verse number in left margin
-                              SizedBox(
-                                width: 40,
-                                child: Text(
-                                  '${verse.number}',
-                                  style: const TextStyle(
-                                    color: Color(0xFF007AFF),
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w600,
-                                    height: 1.6,
+                        GestureDetector(
+                          onTap: () => _showInterlinear(verse),
+                          child: Padding(
+                            padding: const EdgeInsets.only(bottom: 14),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                // Verse number in left margin
+                                SizedBox(
+                                  width: 40,
+                                  child: Text(
+                                    '${verse.number}',
+                                    style: const TextStyle(
+                                      color: Color(0xFF007AFF),
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w600,
+                                      height: 1.6,
+                                    ),
                                   ),
                                 ),
-                              ),
-                              // Verse text
-                              Expanded(
-                                child: Text(
-                                  verse.text,
-                                  style: const TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 19,
-                                    fontWeight: FontWeight.w400,
-                                    height: 1.6,
-                                    letterSpacing: 0.2,
+                                // Verse text
+                                Expanded(
+                                  child: Text(
+                                    verse.text,
+                                    style: const TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 19,
+                                      fontWeight: FontWeight.w400,
+                                      height: 1.6,
+                                      letterSpacing: 0.2,
+                                    ),
                                   ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                         ),
                     ],

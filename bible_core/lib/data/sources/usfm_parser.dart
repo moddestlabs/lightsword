@@ -68,12 +68,16 @@ class UsfmParser {
           // Extract plain text (remove USFM markers)
           final text = _extractPlainText(verseContent);
           
+          // Extract word-level data with Strong's numbers
+          final words = parseWords(verseContent);
+          
           if (text.isNotEmpty) {
             verses.add(Verse(
               bookId: bookId,
               chapter: currentChapter,
               number: verseNumber,
               text: text,
+              words: words.isNotEmpty ? words : null,
             ));
           }
         }

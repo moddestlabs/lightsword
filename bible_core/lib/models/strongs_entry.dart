@@ -7,18 +7,18 @@ class StrongsEntry {
   final Language language;
   final String lemma;
   final String? transliteration;
+  final String? morphology;
   final String shortDefinition;
   final String? longDefinition;
-  final List<String> kjvOccurrences;
 
   const StrongsEntry({
     required this.number,
     required this.language,
     required this.lemma,
     this.transliteration,
+    this.morphology,
     required this.shortDefinition,
     this.longDefinition,
-    this.kjvOccurrences = const [],
   });
 
   @override

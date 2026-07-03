@@ -10,7 +10,17 @@ dependencies:
   meta: ^1.9.1
   xml: ^7.0.1
   archive: ^3.4.0
+  flutter:
+    sdk: flutter
 
 dev_dependencies:
   lints: ^3.0.0
   test: ^1.24.0
+
+flutter:
+  assets:
+    - assets/data/lexicon/strongs_hebrew.json
+    - assets/data/lexicon/strongs_greek.json
+    - assets/data/lexicon/LICENSE.txt
+    - assets/data/hebrew/
+    - assets/data/tahot/
