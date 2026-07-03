@@ -2,7 +2,8 @@
 /// Platform-specific implementations in bible_app
 abstract class TtsEngine {
   /// Speak the given text
-  Future<void> speak(String text, {String? languageCode});
+  /// Returns true if speech started successfully, false otherwise
+  Future<bool> speak(String text, {String? languageCode});
   
   /// Stop current speech
   Future<void> stop();

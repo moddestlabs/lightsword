@@ -1,23 +1,63 @@
 {
-    "name": "Dabar",
+    "name": "Dabar - Bible Study",
     "short_name": "Dabar",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#FFFEF8",
     "theme_color": "#8B4513",
-    "description": "Free, open-source Bible study app with Hebrew and Greek interlinear support",
-    "orientation": "portrait-primary",
+    "description": "Free, open-source Bible study app with Hebrew and Greek interlinear support. Study Scripture offline with TTS, Strong's numbers, and morphology.",
+    "orientation": "any",
     "prefer_related_applications": false,
+    "categories": ["education", "books", "reference"],
+    "lang": "en-US",
+    "dir": "auto",
+    "scope": "/",
     "icons": [
         {
             "src": "icons/Icon-192.png",
             "sizes": "192x192",
-            "type": "image/png"
+            "type": "image/png",
+            "purpose": "any maskable"
         },
         {
             "src": "icons/Icon-512.png",
             "sizes": "512x512",
-            "type": "image/png"
+            "type": "image/png",
+            "purpose": "any maskable"
         }
-    ]
+    ],
+    "shortcuts": [
+        {
+            "name": "Read Bible",
+            "short_name": "Read",
+            "description": "Open Bible reader",
+            "url": "/#/read",
+            "icons": [
+                {
+                    "src": "icons/Icon-192.png",
+                    "sizes": "192x192"
+                }
+            ]
+        },
+        {
+            "name": "Study Mode",
+            "short_name": "Study",
+            "description": "Open study tools",
+            "url": "/#/study",
+            "icons": [
+                {
+                    "src": "icons/Icon-192.png",
+                    "sizes": "192x192"
+                }
+            ]
+        }
+    ],
+    "screenshots": [],
+    "share_target": {
+        "action": "/share",
+        "method": "GET",
+        "params": {
+            "text": "reference"
+        }
+    }
 }

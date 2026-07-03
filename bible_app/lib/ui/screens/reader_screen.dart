@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/gestures.dart';
 import 'package:bible_core/models/verse.dart';
 import 'package:bible_core/models/book.dart';
 import 'package:bible_core/models/passage_reference.dart';
 import 'package:bible_app/services/bible_service.dart';
+import 'package:bible_app/services/tts_service.dart';
 import 'package:bible_app/ui/widgets/chapter_picker_modal.dart';
 import 'package:bible_app/ui/widgets/book_selection_page.dart';
 import 'package:bible_app/ui/widgets/interlinear_view.dart';
+import 'package:bible_app/ui/widgets/tts_control_widget.dart';
 
 class ReaderScreen extends StatefulWidget {
   const ReaderScreen({super.key});
@@ -176,6 +179,11 @@ class _ReaderScreenState extends State<ReaderScreen> {
     );
   }
 
+  void _startTtsReading() {
+    if (_verses.isEmpty) return;
+    TtsService.instance.readVerses(_verses);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -193,14 +201,22 @@ class _ReaderScreenState extends State<ReaderScreen> {
             Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                GestureDetector(
-                  onTap: _previousChapter,
-                  child: Icon(
-                    Icons.chevron_left,
-                    color: _chapter > 1 
-                        ? const Color(0xFF007AFF)
-                        : Colors.grey.shade400,
-                    size: 24,
+                Listener(
+                  onPointerDown: (event) {
+                    if (event.buttons == kMiddleMouseButton) {
+                      _showChapterPicker();
+                    }
+                  },
+                  child: GestureDetector(
+                    onTap: _previousChapter,
+                    onLongPress: _showChapterPicker,
+                    child: Icon(
+                      Icons.chevron_left,
+                      color: _chapter > 1 
+                          ? const Color(0xFF007AFF)
+                          : Colors.grey.shade400,
+                      size: 24,
+                    ),
                   ),
                 ),
                 GestureDetector(
@@ -210,14 +226,22 @@ class _ReaderScreenState extends State<ReaderScreen> {
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        GestureDetector(
-                          onTap: _showBookSelection,
-                          child: Text(
-                            _currentBook?.name ?? _bookId,
-                            style: const TextStyle(
-                              color: Color(0xFF007AFF),
-                              fontSize: 17,
-                              fontWeight: FontWeight.w400,
+                        Listener(
+                          onPointerDown: (event) {
+                            if (event.buttons == kMiddleMouseButton) {
+                              _showChapterPicker();
+                            }
+                          },
+                          child: GestureDetector(
+                            onTap: _showBookSelection,
+                            onLongPress: _showChapterPicker,
+                            child: Text(
+                              _currentBook?.name ?? _bookId,
+                              style: const TextStyle(
+                                color: Color(0xFF007AFF),
+                                fontSize: 17,
+                                fontWeight: FontWeight.w400,
+                              ),
                             ),
                           ),
                         ),
@@ -234,14 +258,22 @@ class _ReaderScreenState extends State<ReaderScreen> {
                     ),
                   ),
                 ),
-                GestureDetector(
-                  onTap: _nextChapter,
-                  child: Icon(
-                    Icons.chevron_right,
-                    color: _currentBook != null && _chapter < _currentBook!.chapterCount
-                        ? const Color(0xFF007AFF)
-                        : Colors.grey.shade400,
-                    size: 24,
+                Listener(
+                  onPointerDown: (event) {
+                    if (event.buttons == kMiddleMouseButton) {
+                      _showChapterPicker();
+                    }
+                  },
+                  child: GestureDetector(
+                    onTap: _nextChapter,
+                    onLongPress: _showChapterPicker,
+                    child: Icon(
+                      Icons.chevron_right,
+                      color: _currentBook != null && _chapter < _currentBook!.chapterCount
+                          ? const Color(0xFF007AFF)
+                          : Colors.grey.shade400,
+                      size: 24,
+                    ),
                   ),
                 ),
               ],
@@ -255,7 +287,7 @@ class _ReaderScreenState extends State<ReaderScreen> {
                 fontWeight: FontWeight.w600,
               ),
             ),
-            // Right: Translation + Bookmark
+            // Right: Translation + Bookmark + Interlinear + TTS
             Row(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -288,66 +320,90 @@ class _ReaderScreenState extends State<ReaderScreen> {
                     size: 24,
                   ),
                 ),
+                const SizedBox(width: 12),
+                GestureDetector(
+                  onTap: _verses.isNotEmpty ? _startTtsReading : null,
+                  child: Icon(
+                    Icons.volume_up,
+                    color: _verses.isNotEmpty ? const Color(0xFF007AFF) : Colors.grey.shade400,
+                    size: 24,
+                  ),
+                ),
               ],
             ),
           ],
         ),
       ),
-      body: _isLoading
-          ? const Center(child: CircularProgressIndicator())
-          : _error != null
-              ? Center(
-                  child: Text(
-                    'ERROR: $_error',
-                    style: const TextStyle(color: Colors.red),
-                  ),
-                )
-              : SingleChildScrollView(
-                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      for (final verse in _verses)
-                        GestureDetector(
-                          onTap: () => _showInterlinear(verse),
-                          child: Padding(
-                            padding: const EdgeInsets.only(bottom: 14),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                // Verse number in left margin
-                                SizedBox(
-                                  width: 40,
-                                  child: Text(
-                                    '${verse.number}',
-                                    style: const TextStyle(
-                                      color: Color(0xFF007AFF),
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w600,
-                                      height: 1.6,
+      body: Stack(
+        children: [
+          _isLoading
+              ? const Center(child: CircularProgressIndicator())
+              : _error != null
+                  ? Center(
+                      child: Text(
+                        'ERROR: $_error',
+                        style: const TextStyle(color: Colors.red),
+                      ),
+                    )
+                  : SingleChildScrollView(
+                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          for (final verse in _verses)
+                            GestureDetector(
+                              onTap: () => _showInterlinear(verse),
+                              child: Padding(
+                                padding: const EdgeInsets.only(bottom: 14),
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    // Verse number in left margin
+                                    SizedBox(
+                                      width: 40,
+                                      child: Text(
+                                        '${verse.number}',
+                                        style: const TextStyle(
+                                          color: Color(0xFF007AFF),
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w600,
+                                          height: 1.6,
+                                        ),
+                                      ),
                                     ),
-                                  ),
-                                ),
-                                // Verse text
-                                Expanded(
-                                  child: Text(
-                                    verse.text,
-                                    style: const TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 19,
-                                      fontWeight: FontWeight.w400,
-                                      height: 1.6,
-                                      letterSpacing: 0.2,
+                                    // Verse text
+                                    Expanded(
+                                      child: Text(
+                                        verse.text,
+                                        style: const TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 19,
+                                          fontWeight: FontWeight.w400,
+                                          height: 1.6,
+                                          letterSpacing: 0.2,
+                                        ),
+                                      ),
                                     ),
-                                  ),
+                                  ],
                                 ),
-                              ],
+                              ),
                             ),
-                          ),
-                        ),
-                    ],
-                  ),
-                ),
+                          // Add padding at bottom for TTS controls
+                          const SizedBox(height: 80),
+                        ],
+                      ),
+                    ),
+          // Floating TTS controls
+          Positioned(
+            left: 0,
+            right: 0,
+            bottom: 0,
+            child: Center(
+              child: TtsControlWidget(),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

@@ -18,7 +18,7 @@ dependencies:
   # provider: ^6.1.0
   
   # TTS
-  # flutter_tts: ^4.0.0
+  flutter_tts: ^4.0.0
   
   # Storage
   # shared_preferences: ^2.2.0

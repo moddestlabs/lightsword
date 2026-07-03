@@ -4,6 +4,7 @@ import 'package:bible_core/models/word.dart';
 import 'package:bible_core/lexicon/strongs.dart';
 import 'package:bible_core/models/strongs_entry.dart';
 import 'package:bible_core/data/sources/tahot_repository.dart';
+import 'package:bible_app/services/tts_service.dart';
 
 /// Widget to display a single word in interlinear format
 class InterlinearWordCard extends StatefulWidget {
@@ -388,6 +389,29 @@ class _InterlinearReaderPageState extends State<InterlinearReaderPage> {
   void initState() {
     super.initState();
     _loadTAHOTData();
+    
+    // Set up notification callback for TTS fallback messages
+    TtsService.instance.onShowNotification = (message) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(message),
+            duration: const Duration(seconds: 5),
+            action: SnackBarAction(
+              label: 'OK',
+              onPressed: () {},
+            ),
+          ),
+        );
+      }
+    };
+  }
+  
+  @override
+  void dispose() {
+    // Clean up notification callback
+    TtsService.instance.onShowNotification = null;
+    super.dispose();
   }
 
   Future<void> _loadTAHOTData() async {
@@ -520,6 +544,16 @@ class _InterlinearReaderPageState extends State<InterlinearReaderPage> {
         .map((w) => w.hebrew.replaceAll('/', '')) // Remove prefix markers
         .join(' ');
     
+    // Construct transliteration for fallback
+    // Remove syllable markers (.), prefix markers (/), and apostrophes (')
+    // Apostrophes represent glottal stops but TTS pronounces them awkwardly
+    final translitText = words
+        .map((w) => w.translit
+            .replaceAll('.', '')    // Remove syllable markers
+            .replaceAll('/', '')    // Remove prefix markers  
+            .replaceAll("'", ''))   // Remove apostrophes (glottal stops)
+        .join(' ');
+    
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
@@ -534,6 +568,41 @@ class _InterlinearReaderPageState extends State<InterlinearReaderPage> {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          // Play icon with transliteration indicator
+          Stack(
+            clipBehavior: Clip.none,
+            children: [
+              GestureDetector(
+                onTap: () {
+                  print('🔊 TAHOT Play tapped!');
+                  print('🔊 Hebrew text length: ${hebrewText.length}');
+                  print('🔊 Hebrew text: $hebrewText');
+                  print('🔊 Transliteration: $translitText');
+                  TtsService.instance.speak(hebrewText, transliteration: translitText);
+                },
+                child: const Icon(
+                  Icons.play_circle_outline,
+                  color: Color(0xFF007AFF),
+                  size: 24,
+                ),
+              ),
+              // Small indicator that transliteration is available as fallback
+              Positioned(
+                right: -2,
+                top: -2,
+                child: Container(
+                  width: 8,
+                  height: 8,
+                  decoration: BoxDecoration(
+                    color: Colors.orange,
+                    shape: BoxShape.circle,
+                    border: Border.all(color: Colors.white, width: 1),
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(width: 12),
           const Text(
             'TAHOT',
             style: TextStyle(
@@ -574,6 +643,20 @@ class _InterlinearReaderPageState extends State<InterlinearReaderPage> {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          // Play icon
+          GestureDetector(
+            onTap: () {
+              print('🔊 $version Play tapped!');
+              print('🔊 Text length: ${text.length}');
+              TtsService.instance.speak(text);
+            },
+            child: const Icon(
+              Icons.play_circle_outline,
+              color: Color(0xFF007AFF),
+              size: 24,
+            ),
+          ),
+          const SizedBox(width: 12),
           Text(
             version,
             style: const TextStyle(

@@ -1,8 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'ui/screens/home_screen.dart';
-import 'test_assets.dart';
+import 'services/tts_service.dart';
+import 'services/pwa_service.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  
+  // Initialize TTS service
+  await TtsService.instance.initialize();
+  
+  // Initialize PWA service (web only)
+  if (kIsWeb) {
+    await PwaService.instance.initialize();
+  }
+  
   runApp(const DabarApp());
 }
 

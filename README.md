@@ -45,6 +45,8 @@ See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) for details.
 Flutter UI consuming `bible_core` via local path dependency.  
 Supports iOS, Android, macOS, Windows, Linux, and **Web** (GitHub Pages).
 
+**PWA Support:** Full Progressive Web App implementation with offline support, installability, and platform-specific optimizations. See [docs/PWA_QUICK_START.md](docs/PWA_QUICK_START.md) for details.
+
 ## Quick Start
 
 ### Prerequisites
@@ -85,6 +87,7 @@ GitHub Actions automatically builds and deploys to Pages on push to `main`.
 ✅ Monorepo structure with `bible_core` + `bible_app`  
 ✅ Core domain models (Book, Verse, Word, MorphologyTag, etc.)  
 ✅ Abstract interfaces (BibleRepository, TtsEngine, DataSource)  
+✅ **Full PWA implementation** with offline support, installability, and TTS detection
 ✅ Basic Flutter UI scaffold with Reader, Study, Library, Settings screens  
 ✅ GitHub Actions workflow for web deployment  
 
