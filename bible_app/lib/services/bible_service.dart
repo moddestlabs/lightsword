@@ -10,7 +10,7 @@ class BibleService {
   static BibleRepository get instance {
     _instance ??= UsfmLazyRepository(
       FlutterAssetDataSource(),
-      'data/usfm/bsb',  // BSB in USFM format - loads on demand
+      'assets/data/usfm/bsb',  // BSB in USFM format - loads on demand
     );
     return _instance!;
   }
