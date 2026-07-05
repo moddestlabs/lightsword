@@ -37,6 +37,33 @@ class UsfmParser {
     String? bookCode;
     String? bookId;
     int currentChapter = 0;
+    int? currentVerseNumber;
+    final verseContentBuffer = StringBuffer();
+    
+    void finalizeVerse() {
+      if (currentVerseNumber != null && bookId != null && currentChapter > 0) {
+        final verseContent = verseContentBuffer.toString().trim();
+        
+        // Extract plain text (remove USFM markers)
+        final text = _extractPlainText(verseContent);
+        
+        // Extract word-level data with Strong's numbers
+        final words = parseWords(verseContent);
+        
+        if (text.isNotEmpty) {
+          verses.add(Verse(
+            bookId: bookId,
+            chapter: currentChapter,
+            number: currentVerseNumber!,
+            text: text,
+            words: words.isNotEmpty ? words : null,
+          ));
+        }
+        
+        currentVerseNumber = null;
+        verseContentBuffer.clear();
+      }
+    }
     
     for (final line in lines) {
       final trimmed = line.trim();
@@ -44,6 +71,7 @@ class UsfmParser {
       
       // Extract book ID from \id marker
       if (trimmed.startsWith(r'\id ')) {
+        finalizeVerse();
         bookCode = trimmed.substring(4, 7).toUpperCase();
         bookId = _bookCodeMap[bookCode];
         continue;
@@ -51,6 +79,7 @@ class UsfmParser {
       
       // Extract chapter number from \c marker
       if (trimmed.startsWith(r'\c ')) {
+        finalizeVerse();
         final match = RegExp(r'\\c\s+(\d+)').firstMatch(trimmed);
         if (match != null) {
           currentChapter = int.parse(match.group(1)!);
@@ -59,30 +88,53 @@ class UsfmParser {
       }
       
       // Extract verse from \v marker
-      if (trimmed.startsWith(r'\v ') && bookId != null && currentChapter > 0) {
+      if (trimmed.startsWith(r'\v ')) {
+        // Finalize previous verse before starting new one
+        finalizeVerse();
+        
         final match = RegExp(r'\\v\s+(\d+)(.*)').firstMatch(trimmed);
-        if (match != null) {
-          final verseNumber = int.parse(match.group(1)!);
-          final verseContent = match.group(2)!.trim();
-          
-          // Extract plain text (remove USFM markers)
-          final text = _extractPlainText(verseContent);
-          
-          // Extract word-level data with Strong's numbers
-          final words = parseWords(verseContent);
-          
-          if (text.isNotEmpty) {
-            verses.add(Verse(
-              bookId: bookId,
-              chapter: currentChapter,
-              number: verseNumber,
-              text: text,
-              words: words.isNotEmpty ? words : null,
-            ));
+        if (match != null && bookId != null && currentChapter > 0) {
+          currentVerseNumber = int.parse(match.group(1)!);
+          final contentOnSameLine = match.group(2)!.trim();
+          if (contentOnSameLine.isNotEmpty) {
+            verseContentBuffer.write(contentOnSameLine);
+            verseContentBuffer.write(' ');
           }
+        }
+        continue;
+      }
+      
+      // If we're currently in a verse, append continuation lines
+      // (poetry lines like \q1, \q2, or any other content)
+      if (currentVerseNumber != null) {
+        // Skip structural markers that shouldn't be part of verse content
+        if (trimmed.startsWith(r'\s') || // section headings
+            trimmed.startsWith(r'\ms') || // major section headings
+            trimmed.startsWith(r'\mr') || // major section references
+            trimmed.startsWith(r'\r') || // parallel references
+            trimmed.startsWith(r'\b') || // blank line markers
+            trimmed.startsWith(r'\m') || // margin paragraphs
+            trimmed.startsWith(r'\h') || // running header
+            trimmed.startsWith(r'\toc') || // table of contents
+            trimmed.startsWith(r'\mt')) { // main title
+          continue;
+        }
+        
+        // For poetry lines and other content, remove the marker and keep the text
+        var content = trimmed;
+        // Remove poetry markers (\q1, \q2, etc.) and paragraph markers (\p)
+        content = content.replaceAll(RegExp(r'^\\q\d*\s*'), '');
+        content = content.replaceAll(RegExp(r'^\\p\s*'), '');
+        
+        if (content.isNotEmpty) {
+          verseContentBuffer.write(content);
+          verseContentBuffer.write(' ');
         }
       }
     }
+    
+    // Finalize the last verse
+    finalizeVerse();
     
     return verses;
   }
