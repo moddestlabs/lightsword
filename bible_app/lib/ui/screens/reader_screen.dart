@@ -5,19 +5,22 @@ import 'package:bible_core/models/book.dart';
 import 'package:bible_core/models/passage_reference.dart';
 import 'package:bible_app/services/bible_service.dart';
 import 'package:bible_app/services/tts_service.dart';
+import 'package:bible_app/services/deep_linking_service.dart';
 import 'package:bible_app/ui/widgets/chapter_picker_modal.dart';
 import 'package:bible_app/ui/widgets/book_selection_page.dart';
 import 'package:bible_app/ui/widgets/interlinear_view.dart';
+import 'package:bible_app/ui/widgets/interlinear_chapter_view.dart';
 import 'package:bible_app/ui/widgets/tts_control_widget.dart';
+import 'package:bible_app/ui/models/view_mode.dart';
 
 class ReaderScreen extends StatefulWidget {
   const ReaderScreen({super.key});
 
   @override
-  State<ReaderScreen> createState() => _ReaderScreenState();
+  State<ReaderScreen> createState() => ReaderScreenState();
 }
 
-class _ReaderScreenState extends State<ReaderScreen> {
+class ReaderScreenState extends State<ReaderScreen> {
   List<Verse> _verses = [];
   Book? _currentBook;
   List<Book> _allBooks = [];
@@ -26,11 +29,16 @@ class _ReaderScreenState extends State<ReaderScreen> {
   
   String _bookId = 'John';
   int _chapter = 1;
+  int? _startVerse; // For verse ranges
+  int? _endVerse;   // For verse ranges
   String _translation = 'BSB'; // Bible version abbreviation
+  ViewMode _viewMode = ViewMode.standard; // Current display mode
   
   PassageReference get _currentRef => PassageReference(
     bookId: _bookId,
     chapter: _chapter,
+    startVerse: _startVerse,
+    endVerse: _endVerse,
   );
 
   @override
@@ -72,10 +80,22 @@ class _ReaderScreenState extends State<ReaderScreen> {
 
     try {
       final verses = await BibleService.instance.getVerses(_currentRef);
+      
+      // Filter verses if we have a verse range
+      List<Verse> filteredVerses = verses;
+      if (_startVerse != null && _endVerse != null) {
+        filteredVerses = verses
+            .where((v) => v.number >= _startVerse! && v.number <= _endVerse!)
+            .toList();
+      }
+      
       setState(() {
-        _verses = verses;
+        _verses = filteredVerses;
         _isLoading = false;
       });
+      
+      // Update URL to reflect current location
+      _updateUrl();
     } catch (e) {
       setState(() {
         _error = e.toString();
@@ -84,10 +104,32 @@ class _ReaderScreenState extends State<ReaderScreen> {
     }
   }
 
+  /// Update browser URL to match current passage (web only)
+  void _updateUrl() {
+    DeepLinkingService.instance.updateWebUrl(_currentRef, _viewMode);
+  }
+
+  /// Navigate to a specific reference (called from deep links)
+  void navigateToReference(PassageReference reference, {ViewMode? viewMode}) {
+    setState(() {
+      _bookId = reference.bookId;
+      _chapter = reference.chapter;
+      _startVerse = reference.startVerse;
+      _endVerse = reference.endVerse;
+      if (viewMode != null) {
+        _viewMode = viewMode;
+      }
+    });
+    _loadBook();
+    _loadVerses();
+  }
+
   void _previousChapter() {
     if (_chapter > 1) {
       setState(() {
         _chapter--;
+        _startVerse = null; // Clear verse range when changing chapters
+        _endVerse = null;
       });
       _loadVerses();
     }
@@ -97,6 +139,8 @@ class _ReaderScreenState extends State<ReaderScreen> {
     if (_currentBook != null && _chapter < _currentBook!.chapterCount) {
       setState(() {
         _chapter++;
+        _startVerse = null; // Clear verse range when changing chapters
+        _endVerse = null;
       });
       _loadVerses();
     }
@@ -118,6 +162,8 @@ class _ReaderScreenState extends State<ReaderScreen> {
         setState(() {
           _bookId = book.id;
           _chapter = 1; // Reset to chapter 1 when changing books
+          _startVerse = null; // Clear verse range
+          _endVerse = null;
           _currentBook = book;
         });
         _loadVerses();
@@ -141,6 +187,8 @@ class _ReaderScreenState extends State<ReaderScreen> {
       onChapterSelected: (chapter) {
         setState(() {
           _chapter = chapter;
+          _startVerse = null; // Clear verse range
+          _endVerse = null;
         });
         _loadVerses();
       },
@@ -159,6 +207,17 @@ class _ReaderScreenState extends State<ReaderScreen> {
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(content: Text('Bookmark feature coming soon')),
     );
+  }
+
+  void _toggleViewMode() {
+    setState(() {
+      // Toggle between standard and interlinear
+      _viewMode = _viewMode == ViewMode.standard 
+          ? ViewMode.interlinear 
+          : ViewMode.standard;
+    });
+    // Update URL to reflect new view mode
+    _updateUrl();
   }
 
   void _showInterlinear(Verse verse) {
@@ -186,10 +245,12 @@ class _ReaderScreenState extends State<ReaderScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: colorScheme.surface,
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: colorScheme.surface,
         elevation: 0,
         toolbarHeight: 44,
         leading: null,
@@ -213,8 +274,8 @@ class _ReaderScreenState extends State<ReaderScreen> {
                     child: Icon(
                       Icons.chevron_left,
                       color: _chapter > 1 
-                          ? const Color(0xFF007AFF)
-                          : Colors.grey.shade400,
+                          ? colorScheme.primary
+                          : colorScheme.onSurface.withOpacity(0.38),
                       size: 24,
                     ),
                   ),
@@ -237,8 +298,8 @@ class _ReaderScreenState extends State<ReaderScreen> {
                             onLongPress: _showChapterPicker,
                             child: Text(
                               _currentBook?.name ?? _bookId,
-                              style: const TextStyle(
-                                color: Color(0xFF007AFF),
+                              style: TextStyle(
+                                color: colorScheme.primary,
                                 fontSize: 17,
                                 fontWeight: FontWeight.w400,
                               ),
@@ -248,8 +309,8 @@ class _ReaderScreenState extends State<ReaderScreen> {
                         const SizedBox(width: 4),
                         Text(
                           '$_chapter',
-                          style: const TextStyle(
-                            color: Color(0xFF007AFF),
+                          style: TextStyle(
+                            color: colorScheme.primary,
                             fontSize: 17,
                             fontWeight: FontWeight.w400,
                           ),
@@ -270,8 +331,8 @@ class _ReaderScreenState extends State<ReaderScreen> {
                     child: Icon(
                       Icons.chevron_right,
                       color: _currentBook != null && _chapter < _currentBook!.chapterCount
-                          ? const Color(0xFF007AFF)
-                          : Colors.grey.shade400,
+                          ? colorScheme.primary
+                          : colorScheme.onSurface.withOpacity(0.38),
                       size: 24,
                     ),
                   ),
@@ -279,10 +340,10 @@ class _ReaderScreenState extends State<ReaderScreen> {
               ],
             ),
             // Center: App name
-            const Text(
-              'Dabar',
+            Text(
+              'LIGHTSWORD',
               style: TextStyle(
-                color: Colors.black,
+                color: colorScheme.onSurface,
                 fontSize: 17,
                 fontWeight: FontWeight.w600,
               ),
@@ -295,8 +356,8 @@ class _ReaderScreenState extends State<ReaderScreen> {
                   onTap: _showTranslationPicker,
                   child: Text(
                     _translation,
-                    style: const TextStyle(
-                      color: Color(0xFF007AFF),
+                    style: TextStyle(
+                      color: colorScheme.primary,
                       fontSize: 17,
                       fontWeight: FontWeight.w400,
                     ),
@@ -305,18 +366,20 @@ class _ReaderScreenState extends State<ReaderScreen> {
                 const SizedBox(width: 12),
                 GestureDetector(
                   onTap: _toggleBookmark,
-                  child: const Icon(
+                  child: Icon(
                     Icons.bookmark_border,
-                    color: Color(0xFF007AFF),
+                    color: colorScheme.primary,
                     size: 24,
                   ),
                 ),
                 const SizedBox(width: 12),
                 GestureDetector(
-                  onTap: _verses.isNotEmpty ? () => _showInterlinear(_verses.first) : null,
+                  onTap: _verses.isNotEmpty ? _toggleViewMode : null,
                   child: Icon(
-                    Icons.text_fields,
-                    color: _verses.isNotEmpty ? const Color(0xFF007AFF) : Colors.grey.shade400,
+                    _viewMode == ViewMode.interlinear 
+                        ? Icons.text_fields 
+                        : Icons.text_fields_outlined,
+                    color: _verses.isNotEmpty ? colorScheme.primary : colorScheme.onSurface.withOpacity(0.38),
                     size: 24,
                   ),
                 ),
@@ -325,7 +388,7 @@ class _ReaderScreenState extends State<ReaderScreen> {
                   onTap: _verses.isNotEmpty ? _startTtsReading : null,
                   child: Icon(
                     Icons.volume_up,
-                    color: _verses.isNotEmpty ? const Color(0xFF007AFF) : Colors.grey.shade400,
+                    color: _verses.isNotEmpty ? colorScheme.primary : colorScheme.onSurface.withOpacity(0.38),
                     size: 24,
                   ),
                 ),
@@ -345,54 +408,7 @@ class _ReaderScreenState extends State<ReaderScreen> {
                         style: const TextStyle(color: Colors.red),
                       ),
                     )
-                  : SingleChildScrollView(
-                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          for (final verse in _verses)
-                            GestureDetector(
-                              onTap: () => _showInterlinear(verse),
-                              child: Padding(
-                                padding: const EdgeInsets.only(bottom: 14),
-                                child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    // Verse number in left margin
-                                    SizedBox(
-                                      width: 40,
-                                      child: Text(
-                                        '${verse.number}',
-                                        style: const TextStyle(
-                                          color: Color(0xFF007AFF),
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w600,
-                                          height: 1.6,
-                                        ),
-                                      ),
-                                    ),
-                                    // Verse text
-                                    Expanded(
-                                      child: Text(
-                                        verse.text,
-                                        style: const TextStyle(
-                                          color: Colors.black,
-                                          fontSize: 19,
-                                          fontWeight: FontWeight.w400,
-                                          height: 1.6,
-                                          letterSpacing: 0.2,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          // Add padding at bottom for TTS controls
-                          const SizedBox(height: 80),
-                        ],
-                      ),
-                    ),
+                  : _buildContentView(),
           // Floating TTS controls
           Positioned(
             left: 0,
@@ -404,6 +420,79 @@ class _ReaderScreenState extends State<ReaderScreen> {
           ),
         ],
       ),
+    );
+  }
+
+  Widget _buildContentView() {
+    switch (_viewMode) {
+      case ViewMode.standard:
+        return _buildStandardView();
+      case ViewMode.interlinear:
+        return _buildInterlinearView();
+      case ViewMode.paragraph:
+        // Not yet implemented
+        return _buildStandardView();
+    }
+  }
+
+  Widget _buildStandardView() {
+    final colorScheme = Theme.of(context).colorScheme;
+    
+    return SingleChildScrollView(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          for (final verse in _verses)
+            GestureDetector(
+              onTap: () => _showInterlinear(verse),
+              child: Padding(
+                padding: const EdgeInsets.only(bottom: 14),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Verse number in left margin
+                    SizedBox(
+                      width: 40,
+                      child: Text(
+                        '${verse.number}',
+                        style: TextStyle(
+                          color: colorScheme.primary,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                          height: 1.6,
+                        ),
+                      ),
+                    ),
+                    // Verse text
+                    Expanded(
+                      child: Text(
+                        verse.text,
+                        style: TextStyle(
+                          color: colorScheme.onSurface,
+                          fontSize: 19,
+                          fontWeight: FontWeight.w400,
+                          height: 1.6,
+                          letterSpacing: 0.2,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          // Add padding at bottom for TTS controls
+          const SizedBox(height: 80),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildInterlinearView() {
+    return InterlinearChapterView(
+      verses: _verses,
+      bookId: _bookId,
+      chapter: _chapter,
     );
   }
 }

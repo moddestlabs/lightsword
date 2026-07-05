@@ -1,6 +1,6 @@
-# Dabar Bible App
+# LIGHTSWORD Bible App
 
-Flutter UI for the Dabar Bible study application.
+Flutter UI for the LIGHTSWORD Bible study application.
 
 ## Dependencies
 
@@ -23,7 +23,7 @@ flutter run
 ### For web (GitHub Pages deployment):
 
 ```bash
-flutter build web --base-href /dabar/
+flutter build web --base-href /lightsword/
 ```
 
 Output will be in `build/web/` ready for deployment.

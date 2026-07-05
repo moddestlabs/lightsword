@@ -2,7 +2,7 @@
 
 ## Overview
 
-Dabar is implemented as a Progressive Web App (PWA) with full offline support and installability on mobile devices. This document describes the PWA features and how they work.
+LIGHTSWORD is implemented as a Progressive Web App (PWA) with full offline support and installability on mobile devices. This document describes the PWA features and how they work.
 
 ## Features Implemented
 
@@ -66,7 +66,7 @@ Handles browser-specific APIs that aren't available in Dart:
 - TTS capability checking
 - Network status monitoring
 
-Exposes `window.dabarPwa` object with:
+Exposes `window.lightswordPwa` object with:
 - `platform` - Platform information
 - `storage` - Storage status and estimate
 - `tts` - TTS support information
@@ -126,7 +126,7 @@ void main() async {
     await PwaService.instance.initialize();
   }
   
-  runApp(const DabarApp());
+  runApp(const LightswordApp());
 }
 ```
 
@@ -235,7 +235,7 @@ Shows:
 
 ```bash
 cd bible_app
-flutter build web --release --base-href /dabar/
+flutter build web --release --base-href /lightsword/
 ```
 
 The build includes:

@@ -58,10 +58,12 @@ class _BookSelectionPageState extends State<BookSelectionPage> {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: colorScheme.surface,
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: colorScheme.surface,
         elevation: 0,
         leading: const SizedBox.shrink(),
         title: Row(
@@ -80,7 +82,7 @@ class _BookSelectionPageState extends State<BookSelectionPage> {
                     padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
                     decoration: BoxDecoration(
                       color: _selectedTestament == Testament.old
-                          ? const Color(0xFFF2F2F7)
+                          ? colorScheme.surfaceContainerHighest
                           : Colors.transparent,
                       borderRadius: BorderRadius.circular(6),
                     ),
@@ -90,8 +92,8 @@ class _BookSelectionPageState extends State<BookSelectionPage> {
                         fontSize: 15,
                         fontWeight: FontWeight.w600,
                         color: _selectedTestament == Testament.old
-                            ? Colors.black
-                            : Colors.grey.shade600,
+                            ? colorScheme.onSurface
+                            : colorScheme.onSurfaceVariant,
                       ),
                     ),
                   ),
@@ -107,7 +109,7 @@ class _BookSelectionPageState extends State<BookSelectionPage> {
                     padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
                     decoration: BoxDecoration(
                       color: _selectedTestament == Testament.new_
-                          ? const Color(0xFFF2F2F7)
+                          ? colorScheme.surfaceContainerHighest
                           : Colors.transparent,
                       borderRadius: BorderRadius.circular(6),
                     ),
@@ -117,8 +119,8 @@ class _BookSelectionPageState extends State<BookSelectionPage> {
                         fontSize: 15,
                         fontWeight: FontWeight.w600,
                         color: _selectedTestament == Testament.new_
-                            ? Colors.black
-                            : Colors.grey.shade600,
+                            ? colorScheme.onSurface
+                            : colorScheme.onSurfaceVariant,
                       ),
                     ),
                   ),
@@ -128,11 +130,11 @@ class _BookSelectionPageState extends State<BookSelectionPage> {
             // Done button
             TextButton(
               onPressed: () => Navigator.of(context).pop(),
-              child: const Text(
+              child: Text(
                 'Done',
                 style: TextStyle(
                   fontSize: 17,
-                  color: Color(0xFF007AFF),
+                  color: colorScheme.primary,
                 ),
               ),
             ),
@@ -153,10 +155,10 @@ class _BookSelectionPageState extends State<BookSelectionPage> {
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
               decoration: BoxDecoration(
-                color: isCurrentBook ? const Color(0xFFF2F2F7) : Colors.white,
+                color: isCurrentBook ? colorScheme.surfaceContainerHighest : colorScheme.surface,
                 border: Border(
                   bottom: BorderSide(
-                    color: Colors.grey.shade300,
+                    color: colorScheme.outlineVariant,
                     width: 0.5,
                   ),
                 ),
@@ -166,10 +168,10 @@ class _BookSelectionPageState extends State<BookSelectionPage> {
                 children: [
                   Text(
                     book.name,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 17,
                       fontWeight: FontWeight.w400,
-                      color: Colors.black,
+                      color: colorScheme.onSurface,
                     ),
                   ),
                   Row(
@@ -179,14 +181,14 @@ class _BookSelectionPageState extends State<BookSelectionPage> {
                         style: TextStyle(
                           fontSize: 17,
                           fontWeight: FontWeight.w400,
-                          color: Colors.grey.shade600,
+                          color: colorScheme.onSurfaceVariant,
                         ),
                       ),
                       const SizedBox(width: 8),
                       Icon(
                         Icons.info_outline,
                         size: 20,
-                        color: Colors.grey.shade500,
+                        color: colorScheme.onSurfaceVariant.withOpacity(0.75),
                       ),
                     ],
                   ),

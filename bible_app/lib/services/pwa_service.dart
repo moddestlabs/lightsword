@@ -1,6 +1,46 @@
 import 'dart:async';
-import 'dart:js' as js;
+import 'dart:js_interop';
+import 'package:web/web.dart' as web;
 import 'package:flutter/foundation.dart' show kIsWeb;
+
+/// JS interop extensions
+extension JSAnyExtension on JSAny {
+  external JSAny? operator [](String property);
+  external bool hasOwnProperty(String property);
+}
+
+@JS('window.lightswordPwa')
+external JSAny? get _lightswordPwa;
+
+@JS('window.addEventListener')
+external void _addEventListener(String event, JSFunction handler);
+
+@JS()
+@staticInterop
+class _PwaApi {}
+
+extension _PwaApiExtension on _PwaApi {
+  external JSPromise showInstallPrompt();
+  external JSPromise getStorageEstimate();
+}
+
+_PwaApi? get _pwaApi => _lightswordPwa as _PwaApi?;
+
+bool _hasProperty(JSAny obj, String prop) {
+  try {
+    return obj.hasOwnProperty(prop);
+  } catch (e) {
+    return false;
+  }
+}
+
+JSAny? _getProperty(JSAny obj, String prop) {
+  try {
+    return obj[prop];
+  } catch (e) {
+    return null;
+  }
+}
 
 /// PWA service for handling Progressive Web App features
 /// Only functional on web platform
@@ -66,19 +106,19 @@ class PwaService {
       // Wait for PWA initialization
       final completer = Completer<void>();
       
-      js.context['addEventListener']?.apply([
-        'dabar-pwa-ready',
-        js.allowInterop((event) {
+      _addEventListener(
+        'lightsword-pwa-ready',
+        ((web.Event event) {
           _handlePwaReady();
           completer.complete();
-        })
-      ]);
+        }).toJS,
+      );
 
       // Set up event listeners
       _setupEventListeners();
 
       // Check if already initialized
-      if (js.context['dabarPwa'] != null) {
+      if (_lightswordPwa != null) {
         _handlePwaReady();
         completer.complete();
       }
@@ -100,48 +140,48 @@ class PwaService {
 
   void _handlePwaReady() {
     try {
-      final pwa = js.context['dabarPwa'];
+      final pwa = _lightswordPwa;
       if (pwa == null) return;
 
       // Parse platform info
-      final platform = pwa['platform'];
-      if (platform != null) {
+      final platformObj = _getProperty(pwa, 'platform');
+      if (platformObj != null) {
         _platformInfo = PlatformInfo(
-          isIOS: platform['ios'] ?? false,
-          isAndroid: platform['android'] ?? false,
-          isMobile: platform['mobile'] ?? false,
-          isStandalone: platform['standalone'] ?? false,
+          isIOS: (_getProperty(platformObj, 'ios') as JSBoolean?)?.toDart ?? false,
+          isAndroid: (_getProperty(platformObj, 'android') as JSBoolean?)?.toDart ?? false,
+          isMobile: (_getProperty(platformObj, 'mobile') as JSBoolean?)?.toDart ?? false,
+          isStandalone: (_getProperty(platformObj, 'standalone') as JSBoolean?)?.toDart ?? false,
         );
         _isInstalled = _platformInfo!.isStandalone;
-        _isInstallable = platform['installable'] ?? false;
+        _isInstallable = (_getProperty(platformObj, 'installable') as JSBoolean?)?.toDart ?? false;
       }
 
       // Parse TTS info
-      final tts = pwa['tts'];
-      if (tts != null) {
+      final ttsObj = _getProperty(pwa, 'tts');
+      if (ttsObj != null) {
         _ttsInfo = TtsInfo(
-          supported: tts['supported'] ?? false,
-          hasHebrew: tts['hasHebrew'] ?? false,
-          hasGreek: tts['hasGreek'] ?? false,
-          voiceCount: tts['voiceCount'] ?? 0,
+          supported: (_getProperty(ttsObj, 'supported') as JSBoolean?)?.toDart ?? false,
+          hasHebrew: (_getProperty(ttsObj, 'hasHebrew') as JSBoolean?)?.toDart ?? false,
+          hasGreek: (_getProperty(ttsObj, 'hasGreek') as JSBoolean?)?.toDart ?? false,
+          voiceCount: (_getProperty(ttsObj, 'voiceCount') as JSNumber?)?.toDartInt ?? 0,
         );
       }
 
       // Parse storage info
-      final storage = pwa['storage'];
-      if (storage != null) {
-        final estimate = storage['estimate'];
+      final storageObj = _getProperty(pwa, 'storage');
+      if (storageObj != null) {
+        final estimateObj = _getProperty(storageObj, 'estimate');
         _storageInfo = StorageInfo(
-          persisted: storage['persisted'] ?? false,
-          usage: estimate?['usage'] ?? 0,
-          quota: estimate?['quota'] ?? 0,
-          percentUsed: estimate?['percentUsed'] ?? 0.0,
+          persisted: (_getProperty(storageObj, 'persisted') as JSBoolean?)?.toDart ?? false,
+          usage: estimateObj != null ? ((_getProperty(estimateObj, 'usage') as JSNumber?)?.toDartInt ?? 0) : 0,
+          quota: estimateObj != null ? ((_getProperty(estimateObj, 'quota') as JSNumber?)?.toDartInt ?? 0) : 0,
+          percentUsed: estimateObj != null ? ((_getProperty(estimateObj, 'percentUsed') as JSNumber?)?.toDartDouble ?? 0.0) : 0.0,
         );
       }
 
-      print('📱 Platform: ${_platformInfo}');
-      print('🔊 TTS: ${_ttsInfo}');
-      print('🗄️ Storage: ${_storageInfo}');
+      print('📱 Platform: $_platformInfo');
+      print('🔊 TTS: $_ttsInfo');
+      print('🗄️ Storage: $_storageInfo');
     } catch (e) {
       print('❌ Error parsing PWA info: $e');
     }
@@ -149,45 +189,45 @@ class PwaService {
 
   void _setupEventListeners() {
     // Install available
-    js.context['addEventListener']?.apply([
-      'dabar-install-available',
-      js.allowInterop((event) {
+    _addEventListener(
+      'lightsword-install-available',
+      ((web.Event event) {
         _isInstallable = true;
         _installAvailableController.add(null);
         print('📱 Install prompt available');
-      })
-    ]);
+      }).toJS,
+    );
 
     // App installed
-    js.context['addEventListener']?.apply([
-      'dabar-app-installed',
-      js.allowInterop((event) {
+    _addEventListener(
+      'lightsword-app-installed',
+      ((web.Event event) {
         _isInstalled = true;
         _isInstallable = false;
         _appInstalledController.add(null);
         print('✅ App installed');
-      })
-    ]);
+      }).toJS,
+    );
 
     // Online
-    js.context['addEventListener']?.apply([
-      'dabar-online',
-      js.allowInterop((event) {
+    _addEventListener(
+      'lightsword-online',
+      ((web.Event event) {
         _isOnline = true;
         _onlineStatusController.add(true);
         print('🌐 Online');
-      })
-    ]);
+      }).toJS,
+    );
 
     // Offline
-    js.context['addEventListener']?.apply([
-      'dabar-offline',
-      js.allowInterop((event) {
+    _addEventListener(
+      'lightsword-offline',
+      ((web.Event event) {
         _isOnline = false;
         _onlineStatusController.add(false);
         print('📡 Offline');
-      })
-    ]);
+      }).toJS,
+    );
   }
 
   /// Show install prompt to user
@@ -198,17 +238,14 @@ class PwaService {
     }
 
     try {
-      final pwa = js.context['dabarPwa'];
-      if (pwa == null) return false;
-
-      final showPrompt = pwa['showInstallPrompt'];
-      if (showPrompt == null) return false;
+      final api = _pwaApi;
+      if (api == null) return false;
 
       // Call the JS function and await result
-      final resultPromise = showPrompt.apply([]);
-      final result = await _promiseToFuture(resultPromise);
+      final result = await api.showInstallPrompt().toDart;
+      final resultObj = result as JSAny?;
       
-      return result['accepted'] ?? false;
+      return (_getProperty(resultObj!, 'accepted') as JSBoolean?)?.toDart ?? false;
     } catch (e) {
       print('❌ Error showing install prompt: $e');
       return false;
@@ -220,21 +257,18 @@ class PwaService {
     if (!isWeb) return null;
 
     try {
-      final pwa = js.context['dabarPwa'];
-      if (pwa == null) return null;
+      final api = _pwaApi;
+      if (api == null) return null;
 
-      final getEstimate = pwa['getStorageEstimate'];
-      if (getEstimate == null) return null;
-
-      final resultPromise = getEstimate.apply([]);
-      final estimate = await _promiseToFuture(resultPromise);
+      final result = await api.getStorageEstimate().toDart;
+      final estimate = result as JSAny?;
 
       if (estimate != null) {
         _storageInfo = StorageInfo(
           persisted: _storageInfo?.persisted ?? false,
-          usage: estimate['usage'] ?? 0,
-          quota: estimate['quota'] ?? 0,
-          percentUsed: estimate['percentUsed'] ?? 0.0,
+          usage: (_getProperty(estimate, 'usage') as JSNumber?)?.toDartInt ?? 0,
+          quota: (_getProperty(estimate, 'quota') as JSNumber?)?.toDartInt ?? 0,
+          percentUsed: (_getProperty(estimate, 'percentUsed') as JSNumber?)?.toDartDouble ?? 0.0,
         );
       }
 
@@ -243,23 +277,6 @@ class PwaService {
       print('❌ Error refreshing storage estimate: $e');
       return null;
     }
-  }
-
-  /// Convert JS Promise to Dart Future
-  Future<dynamic> _promiseToFuture(dynamic promise) {
-    final completer = Completer<dynamic>();
-    
-    promise.callMethod('then', [
-      js.allowInterop((result) {
-        completer.complete(result);
-      })
-    ]).callMethod('catch', [
-      js.allowInterop((error) {
-        completer.completeError(error);
-      })
-    ]);
-    
-    return completer.future;
   }
 
   /// Dispose resources

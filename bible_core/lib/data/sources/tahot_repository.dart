@@ -93,27 +93,44 @@ class TAHOTRepository {
 
   /// Check if a book has TAHOT data (OT only)
   bool _hasTAHOTData(String bookId) {
-    // TAHOT only covers the 39 OT books
-    const otBooks = [
-      'GEN', 'EXO', 'LEV', 'NUM', 'DEU',
-      'JOS', 'JDG', 'RUT', '1SA', '2SA',
-      '1KI', '2KI', '1CH', '2CH', 'EZR',
-      'NEH', 'EST', 'JOB', 'PSA', 'PRO',
-      'ECC', 'SNG', 'ISA', 'JER', 'LAM',
-      'EZE', 'DAN', 'HOS', 'JOE', 'AMO',
-      'OBA', 'JON', 'MIC', 'NAH', 'HAB',
-      'ZEP', 'HAG', 'ZEC', 'MAL'
-    ];
-    return otBooks.contains(bookId.toUpperCase());
+    // Map book IDs to their TAHOT file prefixes
+    const bookToTahot = {
+      'Gen': 'GEN', 'Exod': 'EXO', 'Lev': 'LEV', 'Num': 'NUM', 'Deut': 'DEU',
+      'Josh': 'JOS', 'Judg': 'JDG', 'Ruth': 'RUT', '1Sam': '1SA', '2Sam': '2SA',
+      '1Kgs': '1KI', '2Kgs': '2KI', '1Chr': '1CH', '2Chr': '2CH', 'Ezra': 'EZR',
+      'Neh': 'NEH', 'Esth': 'EST', 'Job': 'JOB', 'Ps': 'PSA', 'Prov': 'PRO',
+      'Eccl': 'ECC', 'Song': 'SNG', 'Isa': 'ISA', 'Jer': 'JER', 'Lam': 'LAM',
+      'Ezek': 'EZE', 'Dan': 'DAN', 'Hos': 'HOS', 'Joel': 'JOE', 'Amos': 'AMO',
+      'Obad': 'OBA', 'Jonah': 'JON', 'Mic': 'MIC', 'Nah': 'NAH', 'Hab': 'HAB',
+      'Zeph': 'ZEP', 'Hag': 'HAG', 'Zech': 'ZEC', 'Mal': 'MAL'
+    };
+    return bookToTahot.containsKey(bookId);
   }
 
   /// Load a book's TAHOT data from assets
   Future<void> _loadBook(String bookId) async {
     print('📖 TAHOT: Loading book $bookId...');
     try {
-      // Convert to uppercase to match asset filenames (GEN_tahot.json, etc.)
-      final upperBookId = bookId.toUpperCase();
-      final assetPath = 'packages/bible_core/assets/data/tahot/${upperBookId}_tahot.json';
+      // Map book ID to TAHOT filename prefix
+      const bookToTahot = {
+        'Gen': 'GEN', 'Exod': 'EXO', 'Lev': 'LEV', 'Num': 'NUM', 'Deut': 'DEU',
+        'Josh': 'JOS', 'Judg': 'JDG', 'Ruth': 'RUT', '1Sam': '1SA', '2Sam': '2SA',
+        '1Kgs': '1KI', '2Kgs': '2KI', '1Chr': '1CH', '2Chr': '2CH', 'Ezra': 'EZR',
+        'Neh': 'NEH', 'Esth': 'EST', 'Job': 'JOB', 'Ps': 'PSA', 'Prov': 'PRO',
+        'Eccl': 'ECC', 'Song': 'SNG', 'Isa': 'ISA', 'Jer': 'JER', 'Lam': 'LAM',
+        'Ezek': 'EZE', 'Dan': 'DAN', 'Hos': 'HOS', 'Joel': 'JOE', 'Amos': 'AMO',
+        'Obad': 'OBA', 'Jonah': 'JON', 'Mic': 'MIC', 'Nah': 'NAH', 'Hab': 'HAB',
+        'Zeph': 'ZEP', 'Hag': 'HAG', 'Zech': 'ZEC', 'Mal': 'MAL'
+      };
+      
+      final tahotBookId = bookToTahot[bookId];
+      if (tahotBookId == null) {
+        print('❌ TAHOT: Unknown book ID: $bookId');
+        _cache[bookId] = {};
+        return;
+      }
+      
+      final assetPath = 'packages/bible_core/assets/data/tahot/${tahotBookId}_tahot.json';
       print('📖 TAHOT: Asset path: $assetPath');
       final jsonString = await rootBundle.loadString(assetPath);
       print('📖 TAHOT: Loaded ${jsonString.length} bytes');

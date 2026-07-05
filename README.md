@@ -1,4 +1,4 @@
-# Dabar
+# LIGHTSWORD
 
 A free, open-source, fully offline-capable Bible study application with advanced Hebrew and Greek functionality.
 
@@ -8,7 +8,7 @@ A free, open-source, fully offline-capable Bible study application with advanced
 
 ## Vision
 
-Dabar is inspired by Bible Bento, eSword, and the SWORD Project, but built with modern cross-platform technology and focused on:
+LIGHTSWORD is inspired by Bible Bento, eSword, and the SWORD Project, but built with modern cross-platform technology and focused on:
 
 1. **Advanced Hebrew and Greek** — Interlinear display, morphological parsing, Strong's numbers, lexicon lookups
 2. **Text-to-speech** — Read any displayed text aloud, including Hebrew and Greek
@@ -75,7 +75,7 @@ flutter run -d macos     # macOS
 
 ```bash
 cd bible_app
-flutter build web --release --base-href /dabar/
+flutter build web --release --base-href /lightsword/
 ```
 
 Output: `bible_app/build/web/`

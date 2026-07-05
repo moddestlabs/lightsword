@@ -17,29 +17,31 @@ class ChapterPickerModal extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: colorScheme.surface,
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: colorScheme.surface,
         elevation: 0,
         leading: const SizedBox.shrink(), // No back button on left
         title: Text(
           bookName,
-          style: const TextStyle(
+          style: TextStyle(
             fontSize: 17,
             fontWeight: FontWeight.w600,
-            color: Colors.black,
+            color: colorScheme.onSurface,
           ),
         ),
         centerTitle: true,
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
-            child: const Text(
+            child: Text(
               'Done',
               style: TextStyle(
                 fontSize: 17,
-                color: Color(0xFF007AFF),
+                color: colorScheme.primary,
               ),
             ),
           ),
@@ -66,8 +68,8 @@ class ChapterPickerModal extends StatelessWidget {
             child: Container(
               decoration: BoxDecoration(
                 color: isCurrentChapter 
-                    ? const Color(0xFF007AFF)
-                    : const Color(0xFFF2F2F7),
+                    ? colorScheme.primary
+                    : colorScheme.surfaceContainerHighest,
                 borderRadius: BorderRadius.circular(8),
               ),
               child: Center(
@@ -77,8 +79,8 @@ class ChapterPickerModal extends StatelessWidget {
                     fontSize: 18,
                     fontWeight: FontWeight.w600,
                     color: isCurrentChapter 
-                        ? Colors.white
-                        : Colors.black,
+                        ? colorScheme.onPrimary
+                        : colorScheme.onSurface,
                   ),
                 ),
               ),

@@ -66,27 +66,49 @@ class TtsService extends ChangeNotifier {
     
     await _engine.stop();
     
-    // Try speaking in the detected language
-    final success = await _engine.speak(text, languageCode: languageCode);
+    // For Hebrew/Greek, check if voice is actually available before trying
+    bool shouldTryNativeVoice = true;
+    if (languageCode == 'he-IL' || languageCode == 'el-GR') {
+      final languages = await _engine.availableLanguages();
+      final hasVoice = languages.any((lang) => lang.code.startsWith(languageCode.substring(0, 2)));
+      
+      debugPrint('🔊 Native voice available for $languageCode: $hasVoice');
+      
+      if (!hasVoice && transliteration != null) {
+        // No native voice available, use transliteration directly
+        shouldTryNativeVoice = false;
+        debugPrint('🔊 No native voice found, using transliteration directly');
+        _detectedLanguage = 'en-US (transliterated from $languageCode)';
+        
+        final langName = languageCode == 'he-IL' ? 'Hebrew' : 'Greek';
+        onShowNotification?.call(
+          'No $langName voice found. Reading transliteration instead.\n'
+          'Install $langName language pack in your system settings for native pronunciation.'
+        );
+        
+        await _engine.speak(transliteration, languageCode: 'en-US');
+      } else if (!hasVoice) {
+        // No native voice and no transliteration
+        final langName = LanguageDetector.getLanguageName(languageCode);
+        onShowNotification?.call(
+          'No $langName voice available. Please install language packs in your system settings.'
+        );
+        return;
+      }
+    }
     
-    // If Hebrew/Greek failed and we have transliteration, try that instead
-    if (!success && transliteration != null && (languageCode == 'he-IL' || languageCode == 'el-GR')) {
-      debugPrint('⚠️ Original language failed, using transliteration');
-      _detectedLanguage = 'en-US (transliterated from $languageCode)';
+    // Try speaking in the detected language if we should
+    if (shouldTryNativeVoice) {
+      final success = await _engine.speak(text, languageCode: languageCode);
       
-      final langName = languageCode == 'he-IL' ? 'Hebrew' : 'Greek';
-      onShowNotification?.call(
-        'No $langName voice found. Reading transliteration instead.\n'
-        'Install $langName language pack in your system settings for native pronunciation.'
-      );
-      
-      await _engine.speak(transliteration, languageCode: 'en-US');
-    } else if (!success) {
-      // Failed without transliteration available
-      final langName = LanguageDetector.getLanguageName(languageCode);
-      onShowNotification?.call(
-        'No $langName voice available. Please install language packs in your system settings.'
-      );
+      if (!success) {
+        // This should rarely happen now, but handle it just in case
+        debugPrint('⚠️ speak() returned false unexpectedly');
+        if (transliteration != null && (languageCode == 'he-IL' || languageCode == 'el-GR')) {
+          _detectedLanguage = 'en-US (transliterated from $languageCode)';
+          await _engine.speak(transliteration, languageCode: 'en-US');
+        }
+      }
     }
     
     _isPlaying = true;

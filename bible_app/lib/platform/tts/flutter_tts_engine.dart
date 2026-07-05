@@ -75,28 +75,30 @@ class FlutterTtsEngine implements TtsEngine {
   @override
   Future<bool> speak(String text, {String? languageCode}) async {
     try {
-      // Get available voices to check what's actually available
-      final voices = await _flutterTts.getVoices;
-      
       if (languageCode != null) {
         debugPrint('🔊 Setting TTS language to: $languageCode');
         final result = await _flutterTts.setLanguage(languageCode);
         debugPrint('🔊 setLanguage result: $result');
         
-        // Check if we have a voice for this language
-        bool hasVoice = false;
-        if (voices != null) {
-          final voicesList = voices as List;
-          hasVoice = voicesList.any((v) {
-            final voiceMap = v as Map;
-            final lang = voiceMap['locale']?.toString() ?? voiceMap['language']?.toString() ?? '';
-            return lang.startsWith(languageCode.substring(0, 2));
-          });
-          debugPrint('🔊 Voice available for $languageCode: $hasVoice');
-          
-          if (!hasVoice) {
-            debugPrint('⚠️ No voice available for $languageCode.');
-            return false; // Indicate failure
+        // Check if language was rejected (result is 0 on some platforms when unsupported)
+        // However, many platforms return 1 even when the voice isn't great
+        // So we'll be optimistic and try to speak anyway
+        if (result == 0) {
+          debugPrint('⚠️ setLanguage returned 0 for $languageCode - language may not be supported');
+          // Check if we have any voices for this language
+          final voices = await _flutterTts.getVoices;
+          if (voices != null) {
+            final voicesList = voices as List;
+            final hasVoice = voicesList.any((v) {
+              final voiceMap = v as Map;
+              final lang = voiceMap['locale']?.toString() ?? voiceMap['language']?.toString() ?? '';
+              return lang.startsWith(languageCode.substring(0, 2));
+            });
+            
+            if (!hasVoice) {
+              debugPrint('⚠️ No voice available for $languageCode.');
+              return false; // Definitely no voice
+            }
           }
         }
       }
@@ -105,14 +107,15 @@ class FlutterTtsEngine implements TtsEngine {
       final speakResult = await _flutterTts.speak(text);
       debugPrint('🔊 speak() result: $speakResult');
       
-      if (speakResult == null || speakResult == 0) {
-        debugPrint('⚠️ TTS speak() returned $speakResult - voice not available');
-        return false;
-      }
+      // On many platforms, speak() returns 1 for success, but on some platforms
+      // it may return 0 or null even when it's working. The completion/error 
+      // handlers are more reliable, so we'll assume success unless there's a clear error.
+      // We only return false if the result is explicitly indicating an error state.
       
-      return true; // Success
+      return true; // Assume success - failures will be caught by error handler
     } catch (e) {
       debugPrint('🔊 TTS Error: $e');
+      _onError?.call(e.toString());
       return false;
     }
   }

@@ -1,5 +1,5 @@
 name: bible_app
-description: Dabar Bible Study App - Flutter UI
+description: LIGHTSWORD Bible Study App - Flutter UI
 version: 0.1.0
 publish_to: none
 
@@ -15,14 +15,17 @@ dependencies:
     path: ../bible_core
   
   # State management (choose one: provider, riverpod, or bloc)
-  # provider: ^6.1.0
+  provider: ^6.1.0
   
   # TTS
   flutter_tts: ^4.0.0
   
   # Storage
-  # shared_preferences: ^2.2.0
+  shared_preferences: ^2.2.0
   # path_provider: ^2.1.0
+  
+  # Web APIs
+  web: ^1.0.0
 
 dev_dependencies:
   flutter_test:

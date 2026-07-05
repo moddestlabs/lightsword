@@ -1,4 +1,4 @@
-// PWA functionality helpers for Dabar Bible Study App
+// PWA functionality helpers for LIGHTSWORD Bible Study App
 
 (function() {
   'use strict';
@@ -158,7 +158,7 @@
     const tts = await checkTtsSupport();
 
     // Expose to Dart via window
-    window.dabarPwa = {
+    window.lightswordPwa = {
       platform: platform,
       storage: {
         persisted: persisted,
@@ -172,11 +172,11 @@
       checkTtsSupport: checkTtsSupport
     };
 
-    console.log('✅ PWA initialized:', window.dabarPwa);
+    console.log('✅ PWA initialized:', window.lightswordPwa);
     
     // Dispatch custom event for Dart to listen to
-    window.dispatchEvent(new CustomEvent('dabar-pwa-ready', { 
-      detail: window.dabarPwa 
+    window.dispatchEvent(new CustomEvent('lightsword-pwa-ready', { 
+      detail: window.lightswordPwa 
     }));
   }
 
@@ -187,7 +187,7 @@
     console.log('📱 Install prompt available');
     
     // Notify Dart
-    window.dispatchEvent(new CustomEvent('dabar-install-available'));
+    window.dispatchEvent(new CustomEvent('lightsword-install-available'));
   });
 
   // Listen for app installed
@@ -196,18 +196,18 @@
     deferredInstallPrompt = null;
     
     // Notify Dart
-    window.dispatchEvent(new CustomEvent('dabar-app-installed'));
+    window.dispatchEvent(new CustomEvent('lightsword-app-installed'));
   });
 
   // Listen for online/offline changes
   window.addEventListener('online', () => {
     console.log('🌐 Online');
-    window.dispatchEvent(new CustomEvent('dabar-online'));
+    window.dispatchEvent(new CustomEvent('lightsword-online'));
   });
 
   window.addEventListener('offline', () => {
     console.log('📡 Offline');
-    window.dispatchEvent(new CustomEvent('dabar-offline'));
+    window.dispatchEvent(new CustomEvent('lightsword-offline'));
   });
 
   // Initialize when DOM is ready

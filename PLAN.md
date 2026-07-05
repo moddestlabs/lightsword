@@ -1,4 +1,4 @@
-# Bible Study App — Project Plan
+# LIGHTSWORD — Project Plan
 
 ## Vision
 

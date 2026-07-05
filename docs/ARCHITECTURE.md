@@ -1,8 +1,8 @@
-# Dabar Architecture
+# LIGHTSWORD Architecture
 
 ## Overview
 
-Dabar is structured as a **Dart monorepo** with two packages:
+LIGHTSWORD is structured as a **Dart monorepo** with two packages:
 
 1. **bible_core** — Pure Dart package with no Flutter dependency
 2. **bible_app** — Flutter UI consuming bible_core
@@ -171,7 +171,7 @@ Both implement the same `DataSource` interface, so `bible_core` parsing logic ne
 ### Phase 1: Web (GitHub Pages)
 ```bash
 cd bible_app
-flutter build web --release --base-href /dabar/
+flutter build web --release --base-href /lightsword/
 ```
 Output: `bible_app/build/web/`  
 Deploy: Push to `gh-pages` branch via GitHub Actions (see `.github/workflows/deploy-web.yml`)

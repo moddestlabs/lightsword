@@ -2,7 +2,7 @@
 
 ## What Was Implemented
 
-Your Dabar Bible app now has full Text-to-Speech (TTS) support with automatic language detection for Hebrew, Greek, and English!
+Your LIGHTSWORD Bible app now has full Text-to-Speech (TTS) support with automatic language detection for Hebrew, Greek, and English!
 
 ## Key Features
 

@@ -1,6 +1,6 @@
 # Data Licenses
 
-This document tracks all open-source Bible texts, lexicons, and morphological data used in Dabar, along with their licenses and attribution requirements.
+This document tracks all open-source Bible texts, lexicons, and morphological data used in LIGHTSWORD, along with their licenses and attribution requirements.
 
 ## Currently Integrated Data Sources
 
@@ -162,6 +162,6 @@ yndale House Cambridge."
 
 All data must:
 - Be freely redistributable
-- Allow commercial use (even though Dabar is free, app stores may classify it commercially)
+- Allow commercial use (even though LIGHTSWORD is free, app stores may classify it commercially)
 - Be compatible with static hosting (GitHub Pages)
 - Not require proprietary APIs or paywalled access

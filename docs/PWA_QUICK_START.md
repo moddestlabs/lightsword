@@ -2,7 +2,7 @@
 
 ## What Was Implemented
 
-Your Dabar Bible app now has full Progressive Web App (PWA) functionality:
+Your LIGHTSWORD Bible app now has full Progressive Web App (PWA) functionality:
 
 ### ✅ Core Features
 
@@ -72,7 +72,7 @@ Look for:
 ### Build for Production
 ```bash
 cd bible_app
-flutter build web --release --base-href /dabar/
+flutter build web --release --base-href /lightsword/
 ```
 
 ### Deploy to GitHub Pages
@@ -80,7 +80,7 @@ Push to main branch - GitHub Actions handles deployment automatically.
 
 ### Access Deployed App
 After deployment:
-1. Visit: `https://moddestlabs.github.io/dabar/`
+1. Visit: `https://moddestlabs.github.io/lightsword/`
 2. Install prompt appears (Android/Chrome)
 3. iOS: Share > Add to Home Screen
 
@@ -88,7 +88,7 @@ After deployment:
 
 ### Android/Chrome
 1. User visits site
-2. Banner appears: "Install Dabar"
+2. Banner appears: "Install LIGHTSWORD"
 3. Tap "Install" → App installs
 4. Opens as standalone app
 5. Works offline immediately

@@ -5,6 +5,7 @@ import 'package:bible_core/lexicon/strongs.dart';
 import 'package:bible_core/models/strongs_entry.dart';
 import 'package:bible_core/data/sources/tahot_repository.dart';
 import 'package:bible_app/services/tts_service.dart';
+import 'package:bible_app/ui/widgets/tts_control_widget.dart';
 
 /// Widget to display a single word in interlinear format
 class InterlinearWordCard extends StatefulWidget {
@@ -74,10 +75,10 @@ class _InterlinearWordCardState extends State<InterlinearWordCard> {
       margin: const EdgeInsets.only(bottom: 16),
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).colorScheme.surface,
         border: Border(
           bottom: BorderSide(
-            color: Colors.grey.shade300,
+            color: Theme.of(context).colorScheme.outlineVariant,
             width: 0.5,
           ),
         ),
@@ -94,7 +95,7 @@ class _InterlinearWordCardState extends State<InterlinearWordCard> {
                   _entry!.lemma,
                   style: TextStyle(
                     fontSize: 32,
-                    color: const Color(0xFF8B4513), // Maroon
+                    color: Theme.of(context).colorScheme.primary,
                     fontWeight: FontWeight.w400,
                   ),
                   textDirection: isHebrew ? TextDirection.rtl : TextDirection.ltr,
@@ -104,7 +105,7 @@ class _InterlinearWordCardState extends State<InterlinearWordCard> {
                   isHebrew ? 'Hebrew root' : 'Greek root',
                   style: TextStyle(
                     fontSize: 12,
-                    color: Colors.grey.shade500,
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
                     fontStyle: FontStyle.italic,
                   ),
                 ),
@@ -118,7 +119,7 @@ class _InterlinearWordCardState extends State<InterlinearWordCard> {
               _entry!.transliteration!,
               style: TextStyle(
                 fontSize: 16,
-                color: Colors.grey.shade600,
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
                 fontWeight: FontWeight.w400,
               ),
             ),
@@ -127,9 +128,9 @@ class _InterlinearWordCardState extends State<InterlinearWordCard> {
           // English translation (as it appears in this verse)
           Text(
             widget.word.text,
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 18,
-              color: Colors.red,
+              color: Theme.of(context).colorScheme.error,
               fontWeight: FontWeight.w500,
             ),
           ),
@@ -144,14 +145,14 @@ class _InterlinearWordCardState extends State<InterlinearWordCard> {
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                   decoration: BoxDecoration(
-                    color: const Color(0xFFFF9500),
+                    color: Theme.of(context).colorScheme.tertiary,
                     borderRadius: BorderRadius.circular(4),
                   ),
                   child: Text(
                     widget.word.strongsNumber!,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 12,
-                      color: Colors.white,
+                      color: Theme.of(context).colorScheme.onTertiary,
                       fontWeight: FontWeight.w600,
                     ),
                   ),
@@ -162,9 +163,9 @@ class _InterlinearWordCardState extends State<InterlinearWordCard> {
                 child: Text(
                   _entry?.shortDefinition ?? 
                   (_entry?.longDefinition?.substring(0, 100) ?? widget.word.text),
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 14,
-                    color: Color(0xFF7D4CDB), // Purple
+                    color: Theme.of(context).colorScheme.secondary,
                     fontWeight: FontWeight.w400,
                   ),
                   maxLines: 3,
@@ -223,10 +224,10 @@ class __TAHOTWordCardState extends State<_TAHOTWordCard> {
       margin: const EdgeInsets.only(bottom: 1),
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).colorScheme.surface,
         border: Border(
           bottom: BorderSide(
-            color: Colors.grey.shade200,
+            color: Theme.of(context).colorScheme.outlineVariant,
             width: 0.5,
           ),
         ),
@@ -237,9 +238,9 @@ class __TAHOTWordCardState extends State<_TAHOTWordCard> {
           // Hebrew text (vocalized)
           Text(
             widget.word.hebrew.replaceAll('/', ''), // Remove prefix markers
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 28,
-              color: Color(0xFF8B4513), // Maroon
+              color: Theme.of(context).colorScheme.primary,
               fontWeight: FontWeight.w400,
               height: 1.4,
             ),
@@ -251,9 +252,9 @@ class __TAHOTWordCardState extends State<_TAHOTWordCard> {
           // Transliteration
           Text(
             widget.word.translit.replaceAll('.', ''),
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 16,
-              color: Colors.black87,
+              color: Theme.of(context).colorScheme.onSurface.withOpacity(0.87),
               fontStyle: FontStyle.italic,
               letterSpacing: 0.5,
             ),
@@ -264,9 +265,9 @@ class __TAHOTWordCardState extends State<_TAHOTWordCard> {
           // English gloss
           Text(
             widget.word.gloss,
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 15,
-              color: Colors.black,
+              color: Theme.of(context).colorScheme.onSurface,
               fontWeight: FontWeight.w500,
             ),
           ),
@@ -282,14 +283,14 @@ class __TAHOTWordCardState extends State<_TAHOTWordCard> {
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                   decoration: BoxDecoration(
-                    color: isHebrew ? const Color(0xFFFF9500) : const Color(0xFF007AFF),
+                    color: isHebrew ? Theme.of(context).colorScheme.tertiary : Theme.of(context).colorScheme.primary,
                     borderRadius: BorderRadius.circular(4),
                   ),
                   child: Text(
                     widget.word.strongs!,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 11,
-                      color: Colors.white,
+                      color: isHebrew ? Theme.of(context).colorScheme.onTertiary : Theme.of(context).colorScheme.onPrimary,
                       fontWeight: FontWeight.w600,
                     ),
                   ),
@@ -301,9 +302,9 @@ class __TAHOTWordCardState extends State<_TAHOTWordCard> {
                     _entry!.shortDefinition.isNotEmpty 
                         ? _entry!.shortDefinition 
                         : (_entry!.longDefinition?.substring(0, 100) ?? ''),
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 13,
-                      color: Color(0xFF7D4CDB), // Purple
+                      color: Theme.of(context).colorScheme.secondary,
                       fontWeight: FontWeight.w400,
                     ),
                     maxLines: 2,
@@ -327,7 +328,7 @@ class __TAHOTWordCardState extends State<_TAHOTWordCard> {
               widget.word.morphology,
               style: TextStyle(
                 fontSize: 11,
-                color: Colors.grey.shade600,
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
                 fontFamily: 'monospace',
               ),
             ),
@@ -439,65 +440,69 @@ class _InterlinearReaderPageState extends State<InterlinearReaderPage> {
   Widget build(BuildContext context) {
     final hasWords = widget.verse.words != null && widget.verse.words!.isNotEmpty;
     final hasTahot = _tahotWords != null && _tahotWords!.isNotEmpty;
+    final colorScheme = Theme.of(context).colorScheme;
     
     print('🎨 Build: hasTahot=$hasTahot, hasWords=$hasWords, loading=$_loadingTahot');
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF5F5F5),
+      backgroundColor: colorScheme.surfaceContainerLow,
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: colorScheme.surface,
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Color(0xFF007AFF)),
+          icon: Icon(Icons.arrow_back, color: colorScheme.primary),
           onPressed: () => Navigator.of(context).pop(),
         ),
         title: Text(
           '${widget.bookName} ${widget.chapter}:${widget.verseNumber}',
-          style: const TextStyle(
-            color: Colors.black,
+          style: TextStyle(
+            color: colorScheme.onSurface,
             fontSize: 17,
             fontWeight: FontWeight.w600,
           ),
         ),
         centerTitle: true,
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Translation tile
-            _buildTranslationTile('BSB', widget.verse.text, isPrimary: true),
-            
-            // Full Hebrew text (if available)
-            if (hasTahot) ...[
-              _buildHebrewVerseTile(_tahotWords!),
-            ] else if (_loadingTahot) ...[
-              Container(
-                padding: const EdgeInsets.all(16),
-                color: Colors.white,
-                child: const Center(
-                  child: SizedBox(
-                    width: 20,
-                    height: 20,
-                    child: CircularProgressIndicator(strokeWidth: 2),
+      body: Stack(
+        children: [
+          SingleChildScrollView(
+            padding: const EdgeInsets.only(bottom: 80), // Extra padding for TTS controls
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Translation tile
+                _buildTranslationTile('BSB', widget.verse.text, isPrimary: true),
+                
+                // Full Hebrew text (if available)
+                if (hasTahot) ...[
+                  _buildHebrewVerseTile(_tahotWords!),
+                ] else if (_loadingTahot) ...[
+                  Container(
+                    padding: const EdgeInsets.all(16),
+                    color: colorScheme.surface,
+                    child: const Center(
+                      child: SizedBox(
+                        width: 20,
+                        height: 20,
+                        child: CircularProgressIndicator(strokeWidth: 2),
+                      ),
+                    ),
                   ),
-                ),
-              ),
-            ],
-            
-            const SizedBox(height: 16),
-            
-            // TAHOT Interlinear section header
-            if (hasTahot) ...[
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                color: const Color(0xFFF5F5F5),
-                child: const Text(
-                  'Word-by-Word Breakdown',
-                  style: TextStyle(
-                    fontSize: 15,
-                    fontWeight: FontWeight.w600,
-                    color: Colors.black87,
+                ],
+                
+                const SizedBox(height: 16),
+                
+                // TAHOT Interlinear section header
+                if (hasTahot) ...[
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                    color: colorScheme.surfaceContainerLow,
+                    child: Text(
+                      'Word-by-Word Breakdown',
+                      style: TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.w600,
+                        color: colorScheme.onSurface.withOpacity(0.87),
                   ),
                 ),
               ),
@@ -515,12 +520,12 @@ class _InterlinearReaderPageState extends State<InterlinearReaderPage> {
               // Fallback to BSB words if no TAHOT data
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                child: const Text(
+                child: Text(
                   'Word Breakdown',
                   style: TextStyle(
                     fontSize: 15,
                     fontWeight: FontWeight.w600,
-                    color: Colors.black87,
+                    color: colorScheme.onSurface.withOpacity(0.87),
                   ),
                 ),
               ),
@@ -530,6 +535,17 @@ class _InterlinearReaderPageState extends State<InterlinearReaderPage> {
             const SizedBox(height: 32),
           ],
         ),
+          ),
+          // Floating TTS controls
+          Positioned(
+            left: 0,
+            right: 0,
+            bottom: 0,
+            child: Center(
+              child: TtsControlWidget(),
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -557,10 +573,10 @@ class _InterlinearReaderPageState extends State<InterlinearReaderPage> {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).colorScheme.surface,
         border: Border(
           bottom: BorderSide(
-            color: Colors.grey.shade300,
+            color: Theme.of(context).colorScheme.outlineVariant,
             width: 0.5,
           ),
         ),
@@ -580,9 +596,9 @@ class _InterlinearReaderPageState extends State<InterlinearReaderPage> {
                   print('🔊 Transliteration: $translitText');
                   TtsService.instance.speak(hebrewText, transliteration: translitText);
                 },
-                child: const Icon(
+                child: Icon(
                   Icons.play_circle_outline,
-                  color: Color(0xFF007AFF),
+                  color: Theme.of(context).colorScheme.primary,
                   size: 24,
                 ),
               ),
@@ -594,19 +610,19 @@ class _InterlinearReaderPageState extends State<InterlinearReaderPage> {
                   width: 8,
                   height: 8,
                   decoration: BoxDecoration(
-                    color: Colors.orange,
+                    color: Theme.of(context).colorScheme.tertiary,
                     shape: BoxShape.circle,
-                    border: Border.all(color: Colors.white, width: 1),
+                    border: Border.all(color: Theme.of(context).colorScheme.surface, width: 1),
                   ),
                 ),
               ),
             ],
           ),
           const SizedBox(width: 12),
-          const Text(
+          Text(
             'TAHOT',
             style: TextStyle(
-              color: Color(0xFF007AFF),
+              color: Theme.of(context).colorScheme.primary,
               fontSize: 16,
               fontWeight: FontWeight.w600,
             ),
@@ -615,8 +631,8 @@ class _InterlinearReaderPageState extends State<InterlinearReaderPage> {
           Expanded(
             child: Text(
               hebrewText,
-              style: const TextStyle(
-                color: Color(0xFF8B4513), // Maroon
+              style: TextStyle(
+                color: Theme.of(context).colorScheme.primary,
                 fontSize: 24,
                 fontWeight: FontWeight.w400,
                 height: 1.8,
@@ -635,7 +651,7 @@ class _InterlinearReaderPageState extends State<InterlinearReaderPage> {
       decoration: BoxDecoration(
         border: Border(
           bottom: BorderSide(
-            color: Colors.grey.shade300,
+            color: Theme.of(context).colorScheme.outlineVariant,
             width: 0.5,
           ),
         ),
@@ -650,17 +666,17 @@ class _InterlinearReaderPageState extends State<InterlinearReaderPage> {
               print('🔊 Text length: ${text.length}');
               TtsService.instance.speak(text);
             },
-            child: const Icon(
+            child: Icon(
               Icons.play_circle_outline,
-              color: Color(0xFF007AFF),
+              color: Theme.of(context).colorScheme.primary,
               size: 24,
             ),
           ),
           const SizedBox(width: 12),
           Text(
             version,
-            style: const TextStyle(
-              color: Color(0xFF007AFF),
+            style: TextStyle(
+              color: Theme.of(context).colorScheme.primary,
               fontSize: 16,
               fontWeight: FontWeight.w600,
             ),
@@ -670,7 +686,7 @@ class _InterlinearReaderPageState extends State<InterlinearReaderPage> {
             child: Text(
               text,
               style: TextStyle(
-                color: Colors.black,
+                color: Theme.of(context).colorScheme.onSurface,
                 fontSize: isPrimary ? 18 : 17,
                 fontWeight: FontWeight.w400,
                 height: 1.5,
@@ -688,7 +704,7 @@ class _InterlinearReaderPageState extends State<InterlinearReaderPage> {
       decoration: BoxDecoration(
         border: Border(
           bottom: BorderSide(
-            color: Colors.grey.shade300,
+            color: Theme.of(context).colorScheme.outlineVariant,
             width: 0.5,
           ),
         ),
@@ -696,10 +712,10 @@ class _InterlinearReaderPageState extends State<InterlinearReaderPage> {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
+          Text(
             'OSHB',
             style: TextStyle(
-              color: Color(0xFF007AFF),
+              color: Theme.of(context).colorScheme.primary,
               fontSize: 16,
               fontWeight: FontWeight.w600,
             ),
@@ -708,8 +724,8 @@ class _InterlinearReaderPageState extends State<InterlinearReaderPage> {
           Expanded(
             child: Text(
               hebrewText,
-              style: const TextStyle(
-                color: Colors.black,
+              style: TextStyle(
+                color: Theme.of(context).colorScheme.onSurface,
                 fontSize: 24,
                 fontWeight: FontWeight.w400,
                 height: 1.8,
