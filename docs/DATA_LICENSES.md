@@ -102,9 +102,7 @@ This document tracks all open-source Bible texts, lexicons, and morphological da
 - Morphology code (HR/Ncfsa)
 
 **Attribution Requirement**:
-"Contains TAHOT (Translators Amalgamated Hebrew OT) data from STEPBible.org, us
-ed under CC BY 4.0 license. Data created by www.STEPBible.org based on work at T
-yndale House Cambridge."
+"Contains TAHOT (Translators Amalgamated Hebrew OT) data from STEPBible.org, used under CC BY 4.0 license. Data created by www.STEPBible.org based on work at Tyndale House Cambridge."
 
 **Compliance**:
 - ✅ Free redistribution permitted
@@ -112,6 +110,49 @@ yndale House Cambridge."
 - ✅ Modification allowed
 - ✅ Attribution provided in LICENSE.txt
 - ✅ More comprehensive than basic BHS (includes transliteration & glosses)
+
+---
+
+### TAGNT - Translators Amalgamated Greek New Testament ✅
+
+**Status**: Integrated and Active
+
+**Content**:
+- Complete Greek New Testament (27 books)
+- Greek text with accents and breathing marks from multiple editions (NA27/28, TR, SBL, TH, Byz, WH, Treg)
+- Word-by-word transliteration
+- English glosses for every word
+- Disambiguated Strong's numbers (extended format)
+- Full morphological analysis for all words
+- Based on scholarly comparison of all major Greek editions
+
+**License**: Creative Commons Attribution 4.0 International (CC BY 4.0)
+
+**Source**: https://github.com/STEPBible/STEPBible-Data
+- Translators Amalgamated Greek NT (TAGNT)
+- Created by Tyndale House Cambridge, curated by STEPBible.org
+
+**Files in Repository**:
+- `bible_core/assets/data/greek/*_tagnt.json` (23 MB total, 27 files)
+- `bible_core/assets/data/greek/LICENSE.txt`
+
+**Data Structure**: Each word includes:
+- Greek text with accents (Βίβλος)
+- Transliteration (Biblos)
+- English gloss ([The] book)
+- Strong's number (G0976 - disambiguated)
+- Morphology code (N-NSF)
+
+**Attribution Requirement**:
+"Contains TAGNT (Translators Amalgamated Greek NT) data from STEPBible.org, used under CC BY 4.0 license. Data created by www.STEPBible.org based on work at Tyndale House Cambridge."
+
+**Compliance**:
+- ✅ Free redistribution permitted
+- ✅ Commercial use allowed
+- ✅ Modification allowed
+- ✅ Attribution provided in LICENSE.txt
+- ✅ Comprehensive coverage of all major Greek text editions
+- ✅ Parallel structure to TAHOT for consistency
 
 ---
 

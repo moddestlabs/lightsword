@@ -19,4 +19,5 @@ export 'data/sources/usfm_parser.dart';
 export 'data/sources/usfm_repository.dart';
 export 'data/sources/hebrew_text_repository.dart';
 export 'data/sources/tahot_repository.dart';
+export 'data/sources/tagnt_repository.dart';
 export 'lexicon/strongs.dart';

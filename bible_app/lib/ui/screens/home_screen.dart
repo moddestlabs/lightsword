@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'reader_screen.dart';
-import 'study_screen.dart';
 import 'library_screen.dart';
 import 'settings_screen.dart';
 import '../widgets/pwa_widgets.dart';
@@ -66,10 +65,19 @@ class _HomeScreenState extends State<HomeScreen> {
   List<Widget> _buildScreens() {
     return [
       ReaderScreen(key: _readerKey),
-      const StudyScreen(),
       const LibraryScreen(),
       const SettingsScreen(),
     ];
+  }
+
+  void _setInterlinearMode() {
+    // Always set to interlinear mode (not toggle)
+    _readerKey.currentState?.setInterlinearMode();
+  }
+
+  void _setStandardMode() {
+    // Always set to standard reading mode
+    _readerKey.currentState?.setStandardMode();
   }
 
   @override
@@ -87,10 +95,27 @@ class _HomeScreenState extends State<HomeScreen> {
         ],
       ),
       bottomNavigationBar: NavigationBar(
-        selectedIndex: _currentIndex,
+        selectedIndex: _currentIndex == 0 ? 0 : _currentIndex + 1,
         onDestinationSelected: (index) {
+          if (index == 0) {
+            // Read button - switch to standard mode and ensure we're on reader screen
+            setState(() {
+              _currentIndex = 0;
+            });
+            _setStandardMode();
+            return;
+          }
+          if (index == 1) {
+            // Study button - switch to interlinear mode and ensure we're on reader screen
+            setState(() {
+              _currentIndex = 0;
+            });
+            _setInterlinearMode();
+            return;
+          }
+          // Adjust index for other screens (Library is now index 1, Settings is 2)
           setState(() {
-            _currentIndex = index;
+            _currentIndex = index > 1 ? index - 1 : index;
           });
         },
         destinations: const [
@@ -100,8 +125,8 @@ class _HomeScreenState extends State<HomeScreen> {
             label: 'Read',
           ),
           NavigationDestination(
-            icon: Icon(Icons.edit_note_outlined),
-            selectedIcon: Icon(Icons.edit_note),
+            icon: Icon(Icons.text_fields_outlined),
+            selectedIcon: Icon(Icons.text_fields),
             label: 'Study',
           ),
           NavigationDestination(

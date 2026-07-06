@@ -4,8 +4,10 @@ import 'package:bible_core/models/word.dart';
 import 'package:bible_core/lexicon/strongs.dart';
 import 'package:bible_core/models/strongs_entry.dart';
 import 'package:bible_core/data/sources/tahot_repository.dart';
+import 'package:bible_core/data/sources/tagnt_repository.dart';
 import 'package:bible_app/services/tts_service.dart';
 import 'package:bible_app/ui/widgets/tts_control_widget.dart';
+import 'package:bible_app/ui/models/interlinear_word.dart';
 
 /// Widget to display a single word in interlinear format
 class InterlinearWordCard extends StatefulWidget {
@@ -180,17 +182,17 @@ class _InterlinearWordCardState extends State<InterlinearWordCard> {
   }
 }
 
-/// Widget to display a TAHOT word with Hebrew, transliteration, gloss, and Strong's
-class _TAHOTWordCard extends StatefulWidget {
-  final TAHOTWord word;
+/// Widget to display an interlinear word (Hebrew or Greek) with transliteration, gloss, and Strong's
+class _InterlinearWordCard extends StatefulWidget {
+  final InterlinearWord word;
 
-  const _TAHOTWordCard({required this.word});
+  const _InterlinearWordCard({required this.word});
 
   @override
-  State<_TAHOTWordCard> createState() => __TAHOTWordCardState();
+  State<_InterlinearWordCard> createState() => __InterlinearWordCardState();
 }
 
-class __TAHOTWordCardState extends State<_TAHOTWordCard> {
+class __InterlinearWordCardState extends State<_InterlinearWordCard> {
   StrongsEntry? _entry;
   bool _loading = true;
 
@@ -218,7 +220,7 @@ class __TAHOTWordCardState extends State<_TAHOTWordCard> {
   @override
   Widget build(BuildContext context) {
     final hasStrongs = widget.word.strongs != null;
-    final isHebrew = hasStrongs && widget.word.strongs!.startsWith('H');
+    final isHebrew = widget.word.isHebrew;
     
     return Container(
       margin: const EdgeInsets.only(bottom: 1),
@@ -235,9 +237,9 @@ class __TAHOTWordCardState extends State<_TAHOTWordCard> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Hebrew text (vocalized)
+          // Original language text (Hebrew or Greek)
           Text(
-            widget.word.hebrew.replaceAll('/', ''), // Remove prefix markers
+            widget.word.originalText.replaceAll('/', ''), // Remove prefix markers
             style: TextStyle(
               fontSize: 28,
               color: Theme.of(context).colorScheme.primary,
@@ -383,13 +385,13 @@ class InterlinearReaderPage extends StatefulWidget {
 }
 
 class _InterlinearReaderPageState extends State<InterlinearReaderPage> {
-  List<TAHOTWord>? _tahotWords;
-  bool _loadingTahot = true;
+  List<InterlinearWord>? _interlinearWords;
+  bool _loadingInterlinear = true;
 
   @override
   void initState() {
     super.initState();
-    _loadTAHOTData();
+    _loadInterlinearData();
     
     // Set up notification callback for TTS fallback messages
     TtsService.instance.onShowNotification = (message) {
@@ -415,23 +417,43 @@ class _InterlinearReaderPageState extends State<InterlinearReaderPage> {
     super.dispose();
   }
 
-  Future<void> _loadTAHOTData() async {
-    print('🔍 Loading TAHOT for ${widget.bookId} ${widget.chapter}:${widget.verseNumber}');
+  Future<void> _loadInterlinearData() async {
+    print('🔍 Loading interlinear for ${widget.bookId} ${widget.chapter}:${widget.verseNumber}');
+    
+    List<InterlinearWord>? words;
+    
+    // Try loading from TAHOT (Hebrew OT) first
     final tahot = await TAHOTRepository.instance.getVerse(
       widget.bookId,
       widget.chapter,
       widget.verseNumber,
     );
     
-    print('🔍 TAHOT result: ${tahot?.length ?? 0} words');
-    if (tahot != null && tahot.isNotEmpty) {
-      print('🔍 First TAHOT word: ${tahot[0].hebrew} = ${tahot[0].gloss}');
+    if (tahot != null) {
+      words = tahot.map((w) => InterlinearWord.fromTAHOT(w)).toList();
+      print('🔍 TAHOT result: ${words.length} Hebrew words');
+    } else {
+      // If not in TAHOT, try TAGNT (Greek NT)
+      final tagnt = await TAGNTRepository.instance.getVerse(
+        widget.bookId,
+        widget.chapter,
+        widget.verseNumber,
+      );
+      
+      if (tagnt != null) {
+        words = tagnt.map((w) => InterlinearWord.fromTAGNT(w)).toList();
+        print('🔍 TAGNT result: ${words.length} Greek words');
+      }
+    }
+    
+    if (words != null && words.isNotEmpty) {
+      print('🔍 First word: ${words[0].originalText} = ${words[0].gloss}');
     }
     
     if (mounted) {
       setState(() {
-        _tahotWords = tahot;
-        _loadingTahot = false;
+        _interlinearWords = words;
+        _loadingInterlinear = false;
       });
     }
   }
@@ -439,10 +461,10 @@ class _InterlinearReaderPageState extends State<InterlinearReaderPage> {
   @override
   Widget build(BuildContext context) {
     final hasWords = widget.verse.words != null && widget.verse.words!.isNotEmpty;
-    final hasTahot = _tahotWords != null && _tahotWords!.isNotEmpty;
+    final hasInterlinear = _interlinearWords != null && _interlinearWords!.isNotEmpty;
     final colorScheme = Theme.of(context).colorScheme;
     
-    print('🎨 Build: hasTahot=$hasTahot, hasWords=$hasWords, loading=$_loadingTahot');
+    print('🎨 Build: hasInterlinear=$hasInterlinear, hasWords=$hasWords, loading=$_loadingInterlinear');
 
     return Scaffold(
       backgroundColor: colorScheme.surfaceContainerLow,
@@ -473,10 +495,10 @@ class _InterlinearReaderPageState extends State<InterlinearReaderPage> {
                 // Translation tile
                 _buildTranslationTile('BSB', widget.verse.text, isPrimary: true),
                 
-                // Full Hebrew text (if available)
-                if (hasTahot) ...[
-                  _buildHebrewVerseTile(_tahotWords!),
-                ] else if (_loadingTahot) ...[
+                // Full original language text (if available)
+                if (hasInterlinear) ...[
+                  _buildOriginalLanguageVerseTile(_interlinearWords!),
+                ] else if (_loadingInterlinear) ...[
                   Container(
                     padding: const EdgeInsets.all(16),
                     color: colorScheme.surface,
@@ -492,8 +514,8 @@ class _InterlinearReaderPageState extends State<InterlinearReaderPage> {
                 
                 const SizedBox(height: 16),
                 
-                // TAHOT Interlinear section header
-                if (hasTahot) ...[
+                // Interlinear section header
+                if (hasInterlinear) ...[
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                     color: colorScheme.surfaceContainerLow,
@@ -507,9 +529,9 @@ class _InterlinearReaderPageState extends State<InterlinearReaderPage> {
                 ),
               ),
               
-              // TAHOT word cards
-              ..._tahotWords!.map((word) => _buildTAHOTWordCard(word)),
-            ] else if (_loadingTahot) ...[
+              // Interlinear word cards
+              ..._interlinearWords!.map((word) => _buildInterlinearWordCard(word)),
+            ] else if (_loadingInterlinear) ...[
               const Center(
                 child: Padding(
                   padding: EdgeInsets.all(32.0),
@@ -517,7 +539,7 @@ class _InterlinearReaderPageState extends State<InterlinearReaderPage> {
                 ),
               ),
             ] else if (hasWords) ...[
-              // Fallback to BSB words if no TAHOT data
+              // Fallback to BSB words if no interlinear data
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                 child: Text(
@@ -550,14 +572,16 @@ class _InterlinearReaderPageState extends State<InterlinearReaderPage> {
     );
   }
   
-  Widget _buildTAHOTWordCard(TAHOTWord word) {
-    return _TAHOTWordCard(word: word);
+  Widget _buildInterlinearWordCard(InterlinearWord word) {
+    return _InterlinearWordCard(word: word);
   }
   
-  Widget _buildHebrewVerseTile(List<TAHOTWord> words) {
-    // Construct full Hebrew text from all words
-    final hebrewText = words
-        .map((w) => w.hebrew.replaceAll('/', '')) // Remove prefix markers
+  Widget _buildOriginalLanguageVerseTile(List<InterlinearWord> words) {
+    final isHebrew = words.isNotEmpty && words.first.isHebrew;
+    
+    // Construct full original text from all words
+    final originalText = words
+        .map((w) => w.originalText.replaceAll('/', '')) // Remove prefix markers
         .join(' ');
     
     // Construct transliteration for fallback
@@ -590,11 +614,11 @@ class _InterlinearReaderPageState extends State<InterlinearReaderPage> {
             children: [
               GestureDetector(
                 onTap: () {
-                  print('🔊 TAHOT Play tapped!');
-                  print('🔊 Hebrew text length: ${hebrewText.length}');
-                  print('🔊 Hebrew text: $hebrewText');
+                  print('🔊 Interlinear Play tapped!');
+                  print('🔊 Original text length: ${originalText.length}');
+                  print('🔊 Original text: $originalText');
                   print('🔊 Transliteration: $translitText');
-                  TtsService.instance.speak(hebrewText, transliteration: translitText);
+                  TtsService.instance.speak(originalText, transliteration: translitText);
                 },
                 child: Icon(
                   Icons.play_circle_outline,
@@ -620,7 +644,7 @@ class _InterlinearReaderPageState extends State<InterlinearReaderPage> {
           ),
           const SizedBox(width: 12),
           Text(
-            'TAHOT',
+            isHebrew ? 'TAHOT' : 'TAGNT',
             style: TextStyle(
               color: Theme.of(context).colorScheme.primary,
               fontSize: 16,
@@ -630,14 +654,14 @@ class _InterlinearReaderPageState extends State<InterlinearReaderPage> {
           const SizedBox(width: 16),
           Expanded(
             child: Text(
-              hebrewText,
+              originalText,
               style: TextStyle(
                 color: Theme.of(context).colorScheme.primary,
                 fontSize: 24,
                 fontWeight: FontWeight.w400,
                 height: 1.8,
               ),
-              textDirection: TextDirection.rtl,
+              textDirection: isHebrew ? TextDirection.rtl : TextDirection.ltr,
             ),
           ),
         ],

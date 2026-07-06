@@ -1,0 +1,4860 @@
+{
+  "1": {
+    "1": [
+      {
+        "greek": "Παῦλος",
+        "translit": "Paulos",
+        "gloss": "Paul",
+        "strongs": "G3972G",
+        "morphology": "N-NSM-P"
+      },
+      {
+        "greek": "δοῦλος",
+        "translit": "doulos",
+        "gloss": "a servant",
+        "strongs": "G1401",
+        "morphology": "N-NSM"
+      },
+      {
+        "greek": "θεοῦ",
+        "translit": "theou",
+        "gloss": "of God",
+        "strongs": "G2316",
+        "morphology": "N-GSM-T"
+      },
+      {
+        "greek": "ἀπόστολος",
+        "translit": "apostolos",
+        "gloss": "an apostle",
+        "strongs": "G0652",
+        "morphology": "N-NSM"
+      },
+      {
+        "greek": "δὲ",
+        "translit": "de",
+        "gloss": "now",
+        "strongs": "G1161",
+        "morphology": "CONJ"
+      },
+      {
+        "greek": "Ἰησοῦ",
+        "translit": "Iēsou",
+        "gloss": "of Jesus",
+        "strongs": "G2424G",
+        "morphology": "N-GSM-P"
+      },
+      {
+        "greek": "Χριστοῦ",
+        "translit": "Christou",
+        "gloss": "Christ",
+        "strongs": "G5547",
+        "morphology": "N-GSM-T"
+      },
+      {
+        "greek": "κατὰ",
+        "translit": "kata",
+        "gloss": "according to",
+        "strongs": "G2596",
+        "morphology": "PREP"
+      },
+      {
+        "greek": "πίστιν",
+        "translit": "pistin",
+        "gloss": "[the] faith",
+        "strongs": "G4102G",
+        "morphology": "N-ASF"
+      },
+      {
+        "greek": "ἐκλεκτῶν",
+        "translit": "eklektōn",
+        "gloss": "of [the] elect",
+        "strongs": "G1588",
+        "morphology": "A-GPM"
+      },
+      {
+        "greek": "θεοῦ",
+        "translit": "theou",
+        "gloss": "of God",
+        "strongs": "G2316",
+        "morphology": "N-GSM-T"
+      },
+      {
+        "greek": "καὶ",
+        "translit": "kai",
+        "gloss": "and",
+        "strongs": "G2532",
+        "morphology": "CONJ"
+      },
+      {
+        "greek": "ἐπίγνωσιν",
+        "translit": "epignōsin",
+        "gloss": "knowledge",
+        "strongs": "G1922",
+        "morphology": "N-ASF"
+      },
+      {
+        "greek": "ἀληθείας",
+        "translit": "alētheias",
+        "gloss": "of [the] truth",
+        "strongs": "G0225",
+        "morphology": "N-GSF"
+      },
+      {
+        "greek": "τῆς",
+        "translit": "tēs",
+        "gloss": "which [is]",
+        "strongs": "G3588",
+        "morphology": "T-GSF"
+      },
+      {
+        "greek": "κατ᾽",
+        "translit": "kat᾽",
+        "gloss": "according to",
+        "strongs": "G2596",
+        "morphology": "PREP"
+      },
+      {
+        "greek": "εὐσέβειαν",
+        "translit": "eusebeian",
+        "gloss": "godliness",
+        "strongs": "G2150",
+        "morphology": "N-ASF"
+      }
+    ],
+    "2": [
+      {
+        "greek": "ἐπ᾽",
+        "translit": "ep᾽",
+        "gloss": "in",
+        "strongs": "G1909",
+        "morphology": "PREP"
+      },
+      {
+        "greek": "ἐλπίδι",
+        "translit": "elpidi",
+        "gloss": "[the] hope",
+        "strongs": "G1680",
+        "morphology": "N-DSF"
+      },
+      {
+        "greek": "ζωῆς",
+        "translit": "zōēs",
+        "gloss": "of life",
+        "strongs": "G2222",
+        "morphology": "N-GSF"
+      },
+      {
+        "greek": "αἰωνίου,",
+        "translit": "aiōniou",
+        "gloss": "eternal,",
+        "strongs": "G0166",
+        "morphology": "A-GSF"
+      },
+      {
+        "greek": "ἣν",
+        "translit": "hēn",
+        "gloss": "which",
+        "strongs": "G3739",
+        "morphology": "R-ASF"
+      },
+      {
+        "greek": "ἐπηγγείλατο",
+        "translit": "epēngeilato",
+        "gloss": "promised",
+        "strongs": "G1861",
+        "morphology": "V-ADI-3S"
+      },
+      {
+        "greek": "ὁ",
+        "translit": "ho",
+        "gloss": "the",
+        "strongs": "G3588",
+        "morphology": "T-NSM"
+      },
+      {
+        "greek": "ἀψευδὴς",
+        "translit": "apseudēs",
+        "gloss": "who cannot lie",
+        "strongs": "G0893",
+        "morphology": "A-NSM"
+      },
+      {
+        "greek": "θεὸς",
+        "translit": "theos",
+        "gloss": "God",
+        "strongs": "G2316",
+        "morphology": "N-NSM-T"
+      },
+      {
+        "greek": "πρὸ",
+        "translit": "pro",
+        "gloss": "before",
+        "strongs": "G4253",
+        "morphology": "PREP"
+      },
+      {
+        "greek": "χρόνων",
+        "translit": "chronōn",
+        "gloss": "time",
+        "strongs": "G5550",
+        "morphology": "N-GPM"
+      },
+      {
+        "greek": "αἰωνίων.",
+        "translit": "aiōniōn",
+        "gloss": "eternal.",
+        "strongs": "G0166",
+        "morphology": "A-GPM"
+      }
+    ],
+    "3": [
+      {
+        "greek": "ἐφανέρωσεν",
+        "translit": "ephanerōsen",
+        "gloss": "He revealed",
+        "strongs": "G5319",
+        "morphology": "V-AAI-3S"
+      },
+      {
+        "greek": "δὲ",
+        "translit": "de",
+        "gloss": "now",
+        "strongs": "G1161",
+        "morphology": "CONJ"
+      },
+      {
+        "greek": "καιροῖς",
+        "translit": "kairois",
+        "gloss": "[in] seasons",
+        "strongs": "G2540",
+        "morphology": "N-DPM"
+      },
+      {
+        "greek": "ἰδίοις",
+        "translit": "idiois",
+        "gloss": "[His] own",
+        "strongs": "G2398",
+        "morphology": "A-DPM"
+      },
+      {
+        "greek": "τὸν",
+        "translit": "ton",
+        "gloss": "in the",
+        "strongs": "G3588",
+        "morphology": "T-ASM"
+      },
+      {
+        "greek": "λόγον",
+        "translit": "logon",
+        "gloss": "word",
+        "strongs": "G3056",
+        "morphology": "N-ASM"
+      },
+      {
+        "greek": "αὐτοῦ",
+        "translit": "autou",
+        "gloss": "of Him",
+        "strongs": "G0846",
+        "morphology": "P-GSM"
+      },
+      {
+        "greek": "ἐν",
+        "translit": "en",
+        "gloss": "in",
+        "strongs": "G1722",
+        "morphology": "PREP"
+      },
+      {
+        "greek": "κηρύγματι,",
+        "translit": "kērugmati",
+        "gloss": "[the] proclamation",
+        "strongs": "G2782",
+        "morphology": "N-DSN"
+      },
+      {
+        "greek": "ὃ",
+        "translit": "ho",
+        "gloss": "with which",
+        "strongs": "G3739",
+        "morphology": "R-ASN"
+      },
+      {
+        "greek": "ἐπιστεύθην",
+        "translit": "episteuthēn",
+        "gloss": "was entrusted",
+        "strongs": "G4100",
+        "morphology": "V-API-1S"
+      },
+      {
+        "greek": "ἐγὼ",
+        "translit": "egō",
+        "gloss": "I myself",
+        "strongs": "G1473",
+        "morphology": "P-1NS"
+      },
+      {
+        "greek": "κατ᾽",
+        "translit": "kat᾽",
+        "gloss": "according to",
+        "strongs": "G2596",
+        "morphology": "PREP"
+      },
+      {
+        "greek": "ἐπιταγὴν",
+        "translit": "epitagēn",
+        "gloss": "[the] commandment",
+        "strongs": "G2003",
+        "morphology": "N-ASF"
+      },
+      {
+        "greek": "τοῦ",
+        "translit": "tou",
+        "gloss": "of the",
+        "strongs": "G3588",
+        "morphology": "T-GSM"
+      },
+      {
+        "greek": "σωτῆρος",
+        "translit": "sōtēros",
+        "gloss": "Savior",
+        "strongs": "G4990",
+        "morphology": "N-GSM"
+      },
+      {
+        "greek": "ἡμῶν",
+        "translit": "hēmōn",
+        "gloss": "of us",
+        "strongs": "G3165",
+        "morphology": "P-1GP"
+      },
+      {
+        "greek": "θεοῦ·",
+        "translit": "theou",
+        "gloss": "God;",
+        "strongs": "G2316",
+        "morphology": "N-GSM-T"
+      }
+    ],
+    "4": [
+      {
+        "greek": "Τίτῳ",
+        "translit": "Titō",
+        "gloss": "To Titus",
+        "strongs": "G5103",
+        "morphology": "N-DSM-P"
+      },
+      {
+        "greek": "γνησίῳ",
+        "translit": "gnēsiō",
+        "gloss": "[my] true",
+        "strongs": "G1103",
+        "morphology": "A-DSN"
+      },
+      {
+        "greek": "τέκνῳ",
+        "translit": "teknō",
+        "gloss": "child",
+        "strongs": "G5043",
+        "morphology": "N-DSN"
+      },
+      {
+        "greek": "κατὰ",
+        "translit": "kata",
+        "gloss": "according to",
+        "strongs": "G2596",
+        "morphology": "PREP"
+      },
+      {
+        "greek": "κοινὴν",
+        "translit": "koinēn",
+        "gloss": "[our] common",
+        "strongs": "G2839H",
+        "morphology": "A-ASF"
+      },
+      {
+        "greek": "πίστιν·",
+        "translit": "pistin",
+        "gloss": "faith:",
+        "strongs": "G4102G",
+        "morphology": "N-ASF"
+      },
+      {
+        "greek": "χάρις",
+        "translit": "charis",
+        "gloss": "Grace",
+        "strongs": "G5485",
+        "morphology": "N-NSF"
+      },
+      {
+        "greek": "καὶ",
+        "translit": "kai",
+        "gloss": "and",
+        "strongs": "G2532",
+        "morphology": "CONJ"
+      },
+      {
+        "greek": "εἰρήνη",
+        "translit": "eirēnē",
+        "gloss": "peace",
+        "strongs": "G1515",
+        "morphology": "N-NSF"
+      },
+      {
+        "greek": "ἀπὸ",
+        "translit": "apo",
+        "gloss": "from",
+        "strongs": "G0575",
+        "morphology": "PREP"
+      },
+      {
+        "greek": "θεοῦ",
+        "translit": "theou",
+        "gloss": "God",
+        "strongs": "G2316",
+        "morphology": "N-GSM-T"
+      },
+      {
+        "greek": "πατρὸς",
+        "translit": "patros",
+        "gloss": "[the] Father",
+        "strongs": "G3962",
+        "morphology": "N-GSM-T"
+      },
+      {
+        "greek": "καὶ",
+        "translit": "kai",
+        "gloss": "and",
+        "strongs": "G2532",
+        "morphology": "CONJ"
+      },
+      {
+        "greek": "κυρίου",
+        "translit": "kuriou",
+        "gloss": "Lord",
+        "strongs": "G2962G",
+        "morphology": "N-GSM-T"
+      },
+      {
+        "greek": "Χριστοῦ",
+        "translit": "Christou",
+        "gloss": "Christ",
+        "strongs": "G5547",
+        "morphology": "N-GSM-T"
+      },
+      {
+        "greek": "Ἰησοῦ",
+        "translit": "Iēsou",
+        "gloss": "Jesus",
+        "strongs": "G2424G",
+        "morphology": "N-GSM-P"
+      },
+      {
+        "greek": "τοῦ",
+        "translit": "tou",
+        "gloss": "the",
+        "strongs": "G3588",
+        "morphology": "T-GSM"
+      },
+      {
+        "greek": "σωτῆρος",
+        "translit": "sōtēros",
+        "gloss": "Savior",
+        "strongs": "G4990",
+        "morphology": "N-GSM"
+      },
+      {
+        "greek": "ἡμῶν.¶",
+        "translit": "hēmōn",
+        "gloss": "of us.",
+        "strongs": "G3165",
+        "morphology": "P-1GP"
+      }
+    ],
+    "5": [
+      {
+        "greek": "Τούτου",
+        "translit": "Toutou",
+        "gloss": "of this",
+        "strongs": "G3778",
+        "morphology": "D-GSN"
+      },
+      {
+        "greek": "χάριν",
+        "translit": "charin",
+        "gloss": "Because",
+        "strongs": "G5484",
+        "morphology": "PREP"
+      },
+      {
+        "greek": "ἀπέλιπόν",
+        "translit": "apelipon",
+        "gloss": "I left",
+        "strongs": "G0620",
+        "morphology": "V-2AAI-1S"
+      },
+      {
+        "greek": "σε",
+        "translit": "se",
+        "gloss": "you",
+        "strongs": "G4771",
+        "morphology": "P-2AS"
+      },
+      {
+        "greek": "ἐν",
+        "translit": "en",
+        "gloss": "in",
+        "strongs": "G1722",
+        "morphology": "PREP"
+      },
+      {
+        "greek": "Κρήτῃ,",
+        "translit": "Krētē",
+        "gloss": "Crete,",
+        "strongs": "G2914",
+        "morphology": "N-DSF-L"
+      },
+      {
+        "greek": "ἵνα",
+        "translit": "ina",
+        "gloss": "so that",
+        "strongs": "G2443",
+        "morphology": "CONJ"
+      },
+      {
+        "greek": "τὰ",
+        "translit": "ta",
+        "gloss": "the [things]",
+        "strongs": "G3588",
+        "morphology": "T-APN"
+      },
+      {
+        "greek": "λείποντα",
+        "translit": "leiponta",
+        "gloss": "lacking",
+        "strongs": "G3007",
+        "morphology": "V-PAP-APN"
+      },
+      {
+        "greek": "ἐπιδιορθώσῃ",
+        "translit": "epidiorthōsē",
+        "gloss": "you may set in order",
+        "strongs": "G1930",
+        "morphology": "V-AMS-2S"
+      },
+      {
+        "greek": "καὶ",
+        "translit": "kai",
+        "gloss": "and",
+        "strongs": "G2532",
+        "morphology": "CONJ"
+      },
+      {
+        "greek": "καταστήσῃς",
+        "translit": "katastēsēs",
+        "gloss": "may appoint",
+        "strongs": "G2525",
+        "morphology": "V-AAS-2S"
+      },
+      {
+        "greek": "κατὰ",
+        "translit": "kata",
+        "gloss": "in every",
+        "strongs": "G2596",
+        "morphology": "PREP"
+      },
+      {
+        "greek": "πόλιν",
+        "translit": "polin",
+        "gloss": "town",
+        "strongs": "G4172",
+        "morphology": "N-ASF"
+      },
+      {
+        "greek": "πρεσβυτέρους",
+        "translit": "presbuterous",
+        "gloss": "elders",
+        "strongs": "G4245G",
+        "morphology": "N-APM"
+      },
+      {
+        "greek": "ὡς",
+        "translit": "hōs",
+        "gloss": "as",
+        "strongs": "G5613",
+        "morphology": "PRT"
+      },
+      {
+        "greek": "ἐγώ",
+        "translit": "egō",
+        "gloss": "I myself",
+        "strongs": "G1473",
+        "morphology": "P-1NS"
+      },
+      {
+        "greek": "σοι",
+        "translit": "soi",
+        "gloss": "you",
+        "strongs": "G4771",
+        "morphology": "P-2DS"
+      },
+      {
+        "greek": "διεταξάμην·",
+        "translit": "dietaxamēn",
+        "gloss": "directed;",
+        "strongs": "G1299",
+        "morphology": "V-AMI-1S"
+      }
+    ],
+    "6": [
+      {
+        "greek": "εἴ",
+        "translit": "ei",
+        "gloss": "if",
+        "strongs": "G1487G",
+        "morphology": "COND"
+      },
+      {
+        "greek": "τίς",
+        "translit": "tis",
+        "gloss": "anyone",
+        "strongs": "G5101",
+        "morphology": "I-NSM"
+      },
+      {
+        "greek": "ἐστιν",
+        "translit": "estin",
+        "gloss": "is",
+        "strongs": "G1510",
+        "morphology": "V-PAI-3S"
+      },
+      {
+        "greek": "ἀνέγκλητος,",
+        "translit": "anegklētos",
+        "gloss": "blameless,",
+        "strongs": "G0410",
+        "morphology": "A-NSM"
+      },
+      {
+        "greek": "μιᾶς",
+        "translit": "mias",
+        "gloss": "of one",
+        "strongs": "G1520",
+        "morphology": "A-GSF"
+      },
+      {
+        "greek": "γυναικὸς",
+        "translit": "gunaikos",
+        "gloss": "wife",
+        "strongs": "G1135H",
+        "morphology": "N-GSF"
+      },
+      {
+        "greek": "ἀνήρ,",
+        "translit": "anēr",
+        "gloss": "[the] husband,",
+        "strongs": "G0435H",
+        "morphology": "N-NSM"
+      },
+      {
+        "greek": "τέκνα",
+        "translit": "tekna",
+        "gloss": "children",
+        "strongs": "G5043",
+        "morphology": "N-APN"
+      },
+      {
+        "greek": "ἔχων",
+        "translit": "echōn",
+        "gloss": "having",
+        "strongs": "G2192",
+        "morphology": "V-PAP-NSM"
+      },
+      {
+        "greek": "πιστά,",
+        "translit": "pista",
+        "gloss": "believing,",
+        "strongs": "G4103",
+        "morphology": "A-APN"
+      },
+      {
+        "greek": "μὴ",
+        "translit": "mē",
+        "gloss": "not",
+        "strongs": "G3361",
+        "morphology": "PRT-N"
+      },
+      {
+        "greek": "ἐν",
+        "translit": "en",
+        "gloss": "under",
+        "strongs": "G1722",
+        "morphology": "PREP"
+      },
+      {
+        "greek": "κατηγορίᾳ",
+        "translit": "katēgoria",
+        "gloss": "accusation",
+        "strongs": "G2724",
+        "morphology": "N-DSF"
+      },
+      {
+        "greek": "ἀσωτίας",
+        "translit": "asōtias",
+        "gloss": "of debauchery",
+        "strongs": "G0810",
+        "morphology": "N-GSF"
+      },
+      {
+        "greek": "ἢ",
+        "translit": "ē",
+        "gloss": "or",
+        "strongs": "G2228",
+        "morphology": "CONJ"
+      },
+      {
+        "greek": "ἀνυπότακτα.",
+        "translit": "anupotakta",
+        "gloss": "insubordinate.",
+        "strongs": "G0506",
+        "morphology": "A-APN"
+      }
+    ],
+    "7": [
+      {
+        "greek": "δεῖ",
+        "translit": "dei",
+        "gloss": "It behooves",
+        "strongs": "G1163",
+        "morphology": "V-PAI-3S"
+      },
+      {
+        "greek": "γὰρ",
+        "translit": "gar",
+        "gloss": "for",
+        "strongs": "G1063",
+        "morphology": "CONJ"
+      },
+      {
+        "greek": "τὸν",
+        "translit": "ton",
+        "gloss": "the",
+        "strongs": "G3588",
+        "morphology": "T-ASM"
+      },
+      {
+        "greek": "ἐπίσκοπον",
+        "translit": "episkopon",
+        "gloss": "overseer",
+        "strongs": "G1985",
+        "morphology": "N-ASM"
+      },
+      {
+        "greek": "ἀνέγκλητον",
+        "translit": "anegklēton",
+        "gloss": "blameless",
+        "strongs": "G0410",
+        "morphology": "A-ASM"
+      },
+      {
+        "greek": "εἶναι",
+        "translit": "einai",
+        "gloss": "to be",
+        "strongs": "G1511",
+        "morphology": "V-PAN"
+      },
+      {
+        "greek": "ὡς",
+        "translit": "hōs",
+        "gloss": "as",
+        "strongs": "G5613",
+        "morphology": "PRT"
+      },
+      {
+        "greek": "θεοῦ",
+        "translit": "theou",
+        "gloss": "God’s",
+        "strongs": "G2316",
+        "morphology": "N-GSM-T"
+      },
+      {
+        "greek": "οἰκονόμον,",
+        "translit": "oikonomon",
+        "gloss": "steward,",
+        "strongs": "G3623",
+        "morphology": "N-ASM"
+      },
+      {
+        "greek": "μὴ",
+        "translit": "mē",
+        "gloss": "not",
+        "strongs": "G3361",
+        "morphology": "PRT-N"
+      },
+      {
+        "greek": "αὐθάδη,",
+        "translit": "authadē",
+        "gloss": "self-willed,",
+        "strongs": "G0829",
+        "morphology": "A-ASM"
+      },
+      {
+        "greek": "μὴ",
+        "translit": "mē",
+        "gloss": "not",
+        "strongs": "G3361",
+        "morphology": "PRT-N"
+      },
+      {
+        "greek": "ὀργίλον,",
+        "translit": "orgilon",
+        "gloss": "quick tempered,",
+        "strongs": "G3711",
+        "morphology": "A-ASM"
+      },
+      {
+        "greek": "μὴ",
+        "translit": "mē",
+        "gloss": "not",
+        "strongs": "G3361",
+        "morphology": "PRT-N"
+      },
+      {
+        "greek": "πάροινον,",
+        "translit": "paroinon",
+        "gloss": "given to wine,",
+        "strongs": "G3943",
+        "morphology": "A-ASM"
+      },
+      {
+        "greek": "μὴ",
+        "translit": "mē",
+        "gloss": "not",
+        "strongs": "G3361",
+        "morphology": "PRT-N"
+      },
+      {
+        "greek": "πλήκτην,",
+        "translit": "plēktēn",
+        "gloss": "a striker,",
+        "strongs": "G4131",
+        "morphology": "N-ASM"
+      },
+      {
+        "greek": "μὴ",
+        "translit": "mē",
+        "gloss": "not",
+        "strongs": "G3361",
+        "morphology": "PRT-N"
+      },
+      {
+        "greek": "αἰσχροκερδῆ,",
+        "translit": "aischrokerdē",
+        "gloss": "greedy of base gain,",
+        "strongs": "G0146",
+        "morphology": "A-ASM"
+      }
+    ],
+    "8": [
+      {
+        "greek": "ἀλλὰ",
+        "translit": "alla",
+        "gloss": "but",
+        "strongs": "G0235",
+        "morphology": "CONJ"
+      },
+      {
+        "greek": "φιλόξενον,",
+        "translit": "philoxenon",
+        "gloss": "hospitable,",
+        "strongs": "G5382",
+        "morphology": "A-ASM"
+      },
+      {
+        "greek": "φιλάγαθον,",
+        "translit": "philagathon",
+        "gloss": "a lover of good,",
+        "strongs": "G5358",
+        "morphology": "A-ASM"
+      },
+      {
+        "greek": "σώφρονα,",
+        "translit": "sōphrona",
+        "gloss": "self-controlled,",
+        "strongs": "G4998",
+        "morphology": "A-ASM"
+      },
+      {
+        "greek": "δίκαιον,",
+        "translit": "dikaion",
+        "gloss": "upright,",
+        "strongs": "G1342",
+        "morphology": "A-ASM"
+      },
+      {
+        "greek": "ὅσιον,",
+        "translit": "hosion",
+        "gloss": "holy,",
+        "strongs": "G3741",
+        "morphology": "A-ASM"
+      },
+      {
+        "greek": "ἐγκρατῆ,",
+        "translit": "egkratē",
+        "gloss": "[and] disciplined,",
+        "strongs": "G1468",
+        "morphology": "A-ASM"
+      }
+    ],
+    "9": [
+      {
+        "greek": "ἀντεχόμενον",
+        "translit": "antechomenon",
+        "gloss": "holding",
+        "strongs": "G0472",
+        "morphology": "V-PNP-ASM"
+      },
+      {
+        "greek": "τοῦ",
+        "translit": "tou",
+        "gloss": "the",
+        "strongs": "G3588",
+        "morphology": "T-GSM"
+      },
+      {
+        "greek": "κατὰ",
+        "translit": "kata",
+        "gloss": "according to",
+        "strongs": "G2596",
+        "morphology": "PREP"
+      },
+      {
+        "greek": "τὴν",
+        "translit": "tēn",
+        "gloss": "the",
+        "strongs": "G3588",
+        "morphology": "T-ASF"
+      },
+      {
+        "greek": "διδαχὴν",
+        "translit": "didachēn",
+        "gloss": "teaching",
+        "strongs": "G1322",
+        "morphology": "N-ASF"
+      },
+      {
+        "greek": "πιστοῦ",
+        "translit": "pistou",
+        "gloss": "of [the] faithful",
+        "strongs": "G4103",
+        "morphology": "A-GSM"
+      },
+      {
+        "greek": "λόγου,",
+        "translit": "logou",
+        "gloss": "word,",
+        "strongs": "G3056",
+        "morphology": "N-GSM"
+      },
+      {
+        "greek": "ἵνα",
+        "translit": "ina",
+        "gloss": "that",
+        "strongs": "G2443",
+        "morphology": "CONJ"
+      },
+      {
+        "greek": "δυνατὸς",
+        "translit": "dunatos",
+        "gloss": "able",
+        "strongs": "G1415",
+        "morphology": "A-NSM"
+      },
+      {
+        "greek": "ᾖ",
+        "translit": "ē",
+        "gloss": "he may be",
+        "strongs": "G1510",
+        "morphology": "V-PAS-3S"
+      },
+      {
+        "greek": "καὶ",
+        "translit": "kai",
+        "gloss": "both",
+        "strongs": "G2532",
+        "morphology": "CONJ"
+      },
+      {
+        "greek": "παρακαλεῖν",
+        "translit": "parakalein",
+        "gloss": "to encourage",
+        "strongs": "G3870",
+        "morphology": "V-PAN"
+      },
+      {
+        "greek": "ἐν",
+        "translit": "en",
+        "gloss": "with",
+        "strongs": "G1722",
+        "morphology": "PREP"
+      },
+      {
+        "greek": "τῇ",
+        "translit": "tēa",
+        "gloss": "the",
+        "strongs": "G3588",
+        "morphology": "T-DSF"
+      },
+      {
+        "greek": "διδασκαλίᾳ",
+        "translit": "didaskalia",
+        "gloss": "teaching",
+        "strongs": "G1319",
+        "morphology": "N-DSF"
+      },
+      {
+        "greek": "τῇ",
+        "translit": "tēa",
+        "gloss": "the",
+        "strongs": "G3588",
+        "morphology": "T-DSF"
+      },
+      {
+        "greek": "ὑγιαινούσῃ",
+        "translit": "hugiainousē",
+        "gloss": "sound",
+        "strongs": "G5198",
+        "morphology": "V-PAP-DSF"
+      },
+      {
+        "greek": "καὶ",
+        "translit": "kai",
+        "gloss": "and",
+        "strongs": "G2532",
+        "morphology": "CONJ"
+      },
+      {
+        "greek": "τοὺς",
+        "translit": "tous",
+        "gloss": "those",
+        "strongs": "G3588",
+        "morphology": "T-APM"
+      },
+      {
+        "greek": "ἀντιλέγοντας",
+        "translit": "antilegontas",
+        "gloss": "contradicting [it]",
+        "strongs": "G0483",
+        "morphology": "V-PAP-APM"
+      },
+      {
+        "greek": "ἐλέγχειν.¶",
+        "translit": "elegchein",
+        "gloss": "to convict.",
+        "strongs": "G1651",
+        "morphology": "V-PAN"
+      }
+    ],
+    "10": [
+      {
+        "greek": "Εἰσὶν",
+        "translit": "Eisin",
+        "gloss": "There are",
+        "strongs": "G1510",
+        "morphology": "V-PAI-3P"
+      },
+      {
+        "greek": "γὰρ",
+        "translit": "gar",
+        "gloss": "for",
+        "strongs": "G1063",
+        "morphology": "CONJ"
+      },
+      {
+        "greek": "πολλοὶ",
+        "translit": "polloi",
+        "gloss": "many",
+        "strongs": "G4183",
+        "morphology": "A-NPM"
+      },
+      {
+        "greek": "καὶ",
+        "translit": "kai",
+        "gloss": "also",
+        "strongs": "G2532",
+        "morphology": "CONJ"
+      },
+      {
+        "greek": "ἀνυπότακτοι,",
+        "translit": "anupotaktoi",
+        "gloss": "insubordinate,",
+        "strongs": "G0506",
+        "morphology": "A-NPM"
+      },
+      {
+        "greek": "ματαιολόγοι",
+        "translit": "mataiologoi",
+        "gloss": "empty talkers",
+        "strongs": "G3151",
+        "morphology": "A-NPM"
+      },
+      {
+        "greek": "καὶ",
+        "translit": "kai",
+        "gloss": "and",
+        "strongs": "G2532",
+        "morphology": "CONJ"
+      },
+      {
+        "greek": "φρεναπάται",
+        "translit": "phrenapatai",
+        "gloss": "deceivers",
+        "strongs": "G5423",
+        "morphology": "N-NPM"
+      },
+      {
+        "greek": "μάλιστα",
+        "translit": "malista",
+        "gloss": "especially",
+        "strongs": "G3122",
+        "morphology": "ADV"
+      },
+      {
+        "greek": "οἱ",
+        "translit": "hoi",
+        "gloss": "those",
+        "strongs": "G3588",
+        "morphology": "T-NPM"
+      },
+      {
+        "greek": "ἐκ",
+        "translit": "ek",
+        "gloss": "of",
+        "strongs": "G1537",
+        "morphology": "PREP"
+      },
+      {
+        "greek": "τῆς",
+        "translit": "tēs",
+        "gloss": "the",
+        "strongs": "G3588",
+        "morphology": "T-GSF"
+      },
+      {
+        "greek": "περιτομῆς",
+        "translit": "peritomēs",
+        "gloss": "circumcision",
+        "strongs": "G4061",
+        "morphology": "N-GSF"
+      }
+    ],
+    "11": [
+      {
+        "greek": "οὓς",
+        "translit": "hous",
+        "gloss": "whom",
+        "strongs": "G3739",
+        "morphology": "R-APM"
+      },
+      {
+        "greek": "δεῖ",
+        "translit": "dei",
+        "gloss": "it is necessary",
+        "strongs": "G1163",
+        "morphology": "V-PAI-3S"
+      },
+      {
+        "greek": "ἐπιστομίζειν·",
+        "translit": "epistomizein",
+        "gloss": "to silence;",
+        "strongs": "G1993",
+        "morphology": "V-PAN"
+      },
+      {
+        "greek": "οἵτινες",
+        "translit": "oitines",
+        "gloss": "who",
+        "strongs": "G3748",
+        "morphology": "R-NPM"
+      },
+      {
+        "greek": "ὅλους",
+        "translit": "holous",
+        "gloss": "whole",
+        "strongs": "G3650",
+        "morphology": "A-APM"
+      },
+      {
+        "greek": "οἴκους",
+        "translit": "oikous",
+        "gloss": "households",
+        "strongs": "G3624H",
+        "morphology": "N-APM"
+      },
+      {
+        "greek": "ἀνατρέπουσιν",
+        "translit": "anatrepousin",
+        "gloss": "overthrow",
+        "strongs": "G0396",
+        "morphology": "V-PAI-3P"
+      },
+      {
+        "greek": "διδάσκοντες",
+        "translit": "didaskontes",
+        "gloss": "teaching",
+        "strongs": "G1321",
+        "morphology": "V-PAP-NPM"
+      },
+      {
+        "greek": "ἃ",
+        "translit": "ha",
+        "gloss": "things that [they]",
+        "strongs": "G3739",
+        "morphology": "R-APN"
+      },
+      {
+        "greek": "μὴ",
+        "translit": "mē",
+        "gloss": "not",
+        "strongs": "G3361",
+        "morphology": "PRT-N"
+      },
+      {
+        "greek": "δεῖ",
+        "translit": "dei",
+        "gloss": "ought",
+        "strongs": "G1163",
+        "morphology": "V-PAI-3S"
+      },
+      {
+        "greek": "αἰσχροῦ",
+        "translit": "aischrou",
+        "gloss": "of shameful",
+        "strongs": "G0150",
+        "morphology": "A-GSN"
+      },
+      {
+        "greek": "κέρδους",
+        "translit": "kerdous",
+        "gloss": "gain",
+        "strongs": "G2771",
+        "morphology": "N-GSN"
+      },
+      {
+        "greek": "χάριν.",
+        "translit": "charin",
+        "gloss": "because.",
+        "strongs": "G5484",
+        "morphology": "PREP"
+      }
+    ],
+    "12": [
+      {
+        "greek": "εἶπέν",
+        "translit": "eipen",
+        "gloss": "Said",
+        "strongs": "G2036",
+        "morphology": "V-2AAI-3S"
+      },
+      {
+        "greek": "τις",
+        "translit": "tis",
+        "gloss": "one",
+        "strongs": "G5100",
+        "morphology": "X-NSM"
+      },
+      {
+        "greek": "ἐξ",
+        "translit": "ex",
+        "gloss": "of",
+        "strongs": "G1537",
+        "morphology": "PREP"
+      },
+      {
+        "greek": "αὐτῶν",
+        "translit": "autōn",
+        "gloss": "them",
+        "strongs": "G0846",
+        "morphology": "P-GPM"
+      },
+      {
+        "greek": "ἴδιος",
+        "translit": "idios",
+        "gloss": "own",
+        "strongs": "G2398",
+        "morphology": "A-NSM"
+      },
+      {
+        "greek": "αὐτῶν",
+        "translit": "autōn",
+        "gloss": "of them",
+        "strongs": "G0846",
+        "morphology": "P-GPM"
+      },
+      {
+        "greek": "προφήτης·",
+        "translit": "prophētēs",
+        "gloss": "a prophet;",
+        "strongs": "G4396",
+        "morphology": "N-NSM"
+      },
+      {
+        "greek": "Κρῆτες",
+        "translit": "Krētes",
+        "gloss": "Cretans",
+        "strongs": "G2912",
+        "morphology": "N-NPM-LG"
+      },
+      {
+        "greek": "ἀεὶ",
+        "translit": "aei",
+        "gloss": "[are] always",
+        "strongs": "G0104",
+        "morphology": "ADV"
+      },
+      {
+        "greek": "ψεῦσται,",
+        "translit": "pseustai",
+        "gloss": "liars,",
+        "strongs": "G5583",
+        "morphology": "N-NPM"
+      },
+      {
+        "greek": "κακὰ",
+        "translit": "kaka",
+        "gloss": "evil",
+        "strongs": "G2556G",
+        "morphology": "A-NPN"
+      },
+      {
+        "greek": "θηρία,",
+        "translit": "thēria",
+        "gloss": "beasts,",
+        "strongs": "G2342",
+        "morphology": "N-NPN"
+      },
+      {
+        "greek": "γαστέρες",
+        "translit": "gasteres",
+        "gloss": "gluttons",
+        "strongs": "G1064",
+        "morphology": "N-NPF"
+      },
+      {
+        "greek": "ἀργαί.",
+        "translit": "argai",
+        "gloss": "lazy.",
+        "strongs": "G0692",
+        "morphology": "A-NPF"
+      }
+    ],
+    "13": [
+      {
+        "greek": "ἡ",
+        "translit": "hē",
+        "gloss": "the",
+        "strongs": "G3588",
+        "morphology": "T-NSF"
+      },
+      {
+        "greek": "μαρτυρία",
+        "translit": "marturia",
+        "gloss": "testimony",
+        "strongs": "G3141",
+        "morphology": "N-NSF"
+      },
+      {
+        "greek": "αὕτη",
+        "translit": "hautē",
+        "gloss": "this",
+        "strongs": "G3778",
+        "morphology": "D-NSF"
+      },
+      {
+        "greek": "ἐστὶν",
+        "translit": "estin",
+        "gloss": "is",
+        "strongs": "G1510",
+        "morphology": "V-PAI-3S"
+      },
+      {
+        "greek": "ἀληθής·",
+        "translit": "alēthēs",
+        "gloss": "true;",
+        "strongs": "G0227",
+        "morphology": "A-NSF"
+      },
+      {
+        "greek": "δι᾽",
+        "translit": "di᾽",
+        "gloss": "for",
+        "strongs": "G1223",
+        "morphology": "PREP"
+      },
+      {
+        "greek": "ἣν",
+        "translit": "hēn",
+        "gloss": "which",
+        "strongs": "G3739",
+        "morphology": "R-ASF"
+      },
+      {
+        "greek": "αἰτίαν",
+        "translit": "aitian",
+        "gloss": "cause",
+        "strongs": "G0156",
+        "morphology": "N-ASF"
+      },
+      {
+        "greek": "ἔλεγχε",
+        "translit": "elegche",
+        "gloss": "do rebuke",
+        "strongs": "G1651",
+        "morphology": "V-PAM-2S"
+      },
+      {
+        "greek": "αὐτοὺς",
+        "translit": "autous",
+        "gloss": "them",
+        "strongs": "G0846",
+        "morphology": "P-APM"
+      },
+      {
+        "greek": "ἀποτόμως,",
+        "translit": "apotomōs",
+        "gloss": "severely,",
+        "strongs": "G0664",
+        "morphology": "ADV"
+      },
+      {
+        "greek": "ἵνα",
+        "translit": "ina",
+        "gloss": "so that",
+        "strongs": "G2443",
+        "morphology": "CONJ"
+      },
+      {
+        "greek": "ὑγιαίνωσιν",
+        "translit": "hugiainōsin",
+        "gloss": "they may be sound",
+        "strongs": "G5198",
+        "morphology": "V-PAS-3P"
+      },
+      {
+        "greek": "ἐν",
+        "translit": "en",
+        "gloss": "in",
+        "strongs": "G1722",
+        "morphology": "PREP"
+      },
+      {
+        "greek": "τῇ",
+        "translit": "tēa",
+        "gloss": "the",
+        "strongs": "G3588",
+        "morphology": "T-DSF"
+      },
+      {
+        "greek": "πίστει,",
+        "translit": "pistei",
+        "gloss": "faith,",
+        "strongs": "G4102G",
+        "morphology": "N-DSF"
+      }
+    ],
+    "14": [
+      {
+        "greek": "μὴ",
+        "translit": "mē",
+        "gloss": "not",
+        "strongs": "G3361",
+        "morphology": "PRT-N"
+      },
+      {
+        "greek": "προσέχοντες",
+        "translit": "prosechontes",
+        "gloss": "giving heed",
+        "strongs": "G4337",
+        "morphology": "V-PAP-NPM"
+      },
+      {
+        "greek": "Ἰουδαϊκοῖς",
+        "translit": "Ioudaikois",
+        "gloss": "to Jewish",
+        "strongs": "G2451",
+        "morphology": "A-DPM-PG"
+      },
+      {
+        "greek": "μύθοις",
+        "translit": "muthois",
+        "gloss": "myths",
+        "strongs": "G3454",
+        "morphology": "N-DPM"
+      },
+      {
+        "greek": "καὶ",
+        "translit": "kai",
+        "gloss": "and",
+        "strongs": "G2532",
+        "morphology": "CONJ"
+      },
+      {
+        "greek": "ἐντολαῖς",
+        "translit": "entolais",
+        "gloss": "to [the] commandments",
+        "strongs": "G1785",
+        "morphology": "N-DPF"
+      },
+      {
+        "greek": "ἀνθρώπων",
+        "translit": "anthrōpōn",
+        "gloss": "of men",
+        "strongs": "G0444",
+        "morphology": "N-GPM"
+      },
+      {
+        "greek": "ἀποστρεφομένων",
+        "translit": "apostrephomenōn",
+        "gloss": "turning away from",
+        "strongs": "G0654",
+        "morphology": "V-PPP-GPM"
+      },
+      {
+        "greek": "τὴν",
+        "translit": "tēn",
+        "gloss": "the",
+        "strongs": "G3588",
+        "morphology": "T-ASF"
+      },
+      {
+        "greek": "ἀλήθειαν.¶",
+        "translit": "alētheian",
+        "gloss": "truth.",
+        "strongs": "G0225",
+        "morphology": "N-ASF"
+      }
+    ],
+    "15": [
+      {
+        "greek": "Πάντα",
+        "translit": "Panta",
+        "gloss": "All things [are]",
+        "strongs": "G3956",
+        "morphology": "A-NPN"
+      },
+      {
+        "greek": "μὲν",
+        "translit": "men",
+        "gloss": "indeed",
+        "strongs": "G3303",
+        "morphology": "PRT"
+      },
+      {
+        "greek": "καθαρὰ",
+        "translit": "kathara",
+        "gloss": "pure",
+        "strongs": "G2513",
+        "morphology": "A-NPN"
+      },
+      {
+        "greek": "τοῖς",
+        "translit": "tois",
+        "gloss": "to the",
+        "strongs": "G3588",
+        "morphology": "T-DPM"
+      },
+      {
+        "greek": "καθαροῖς·",
+        "translit": "katharois",
+        "gloss": "pure;",
+        "strongs": "G2513",
+        "morphology": "A-DPM"
+      },
+      {
+        "greek": "τοῖς",
+        "translit": "tois",
+        "gloss": "to those",
+        "strongs": "G3588",
+        "morphology": "T-DPM"
+      },
+      {
+        "greek": "δὲ",
+        "translit": "de",
+        "gloss": "however",
+        "strongs": "G1161",
+        "morphology": "CONJ"
+      },
+      {
+        "greek": "μεμιαμμένοις",
+        "translit": "memiammenois",
+        "gloss": "defiled",
+        "strongs": "G3392",
+        "morphology": "V-RPP-DPM"
+      },
+      {
+        "greek": "καὶ",
+        "translit": "kai",
+        "gloss": "and",
+        "strongs": "G2532",
+        "morphology": "CONJ"
+      },
+      {
+        "greek": "ἀπίστοις",
+        "translit": "apistois",
+        "gloss": "unbelieving",
+        "strongs": "G0571",
+        "morphology": "A-DPM"
+      },
+      {
+        "greek": "οὐδὲν",
+        "translit": "ouden",
+        "gloss": "no [thing]",
+        "strongs": "G3762",
+        "morphology": "A-NSN"
+      },
+      {
+        "greek": "καθαρόν,",
+        "translit": "katharon",
+        "gloss": "[is] pure,",
+        "strongs": "G2513",
+        "morphology": "A-NSN"
+      },
+      {
+        "greek": "ἀλλὰ",
+        "translit": "alla",
+        "gloss": "Instead",
+        "strongs": "G0235",
+        "morphology": "CONJ"
+      },
+      {
+        "greek": "μεμίανται",
+        "translit": "memiantai",
+        "gloss": "have been defiled",
+        "strongs": "G3392",
+        "morphology": "V-RPI-3S"
+      },
+      {
+        "greek": "αὐτῶν",
+        "translit": "autōn",
+        "gloss": "of them",
+        "strongs": "G0846",
+        "morphology": "P-GPM"
+      },
+      {
+        "greek": "καὶ",
+        "translit": "kai",
+        "gloss": "both",
+        "strongs": "G2532",
+        "morphology": "CONJ"
+      },
+      {
+        "greek": "ὁ",
+        "translit": "ho",
+        "gloss": "the",
+        "strongs": "G3588",
+        "morphology": "T-NSM"
+      },
+      {
+        "greek": "νοῦς",
+        "translit": "nous",
+        "gloss": "mind",
+        "strongs": "G3563",
+        "morphology": "N-NSM"
+      },
+      {
+        "greek": "καὶ",
+        "translit": "kai",
+        "gloss": "and",
+        "strongs": "G2532",
+        "morphology": "CONJ"
+      },
+      {
+        "greek": "ἡ",
+        "translit": "hē",
+        "gloss": "the",
+        "strongs": "G3588",
+        "morphology": "T-NSF"
+      },
+      {
+        "greek": "συνείδησις.",
+        "translit": "suneidēsis",
+        "gloss": "conscience.",
+        "strongs": "G4893",
+        "morphology": "N-NSF"
+      }
+    ],
+    "16": [
+      {
+        "greek": "θεὸν",
+        "translit": "theon",
+        "gloss": "God",
+        "strongs": "G2316",
+        "morphology": "N-ASM-T"
+      },
+      {
+        "greek": "ὁμολογοῦσιν",
+        "translit": "homologousin",
+        "gloss": "they profess",
+        "strongs": "G3670",
+        "morphology": "V-PAI-3P"
+      },
+      {
+        "greek": "εἰδέναι,",
+        "translit": "eidenai",
+        "gloss": "to know,",
+        "strongs": "G6063",
+        "morphology": "V-RAN"
+      },
+      {
+        "greek": "τοῖς",
+        "translit": "tois",
+        "gloss": "the",
+        "strongs": "G3588",
+        "morphology": "T-DPN"
+      },
+      {
+        "greek": "δὲ",
+        "translit": "de",
+        "gloss": "however",
+        "strongs": "G1161",
+        "morphology": "CONJ"
+      },
+      {
+        "greek": "ἔργοις",
+        "translit": "ergois",
+        "gloss": "by [their] works",
+        "strongs": "G2041",
+        "morphology": "N-DPN"
+      },
+      {
+        "greek": "ἀρνοῦνται",
+        "translit": "arnountai",
+        "gloss": "they deny [Him]",
+        "strongs": "G0720",
+        "morphology": "V-PNI-3P"
+      },
+      {
+        "greek": "βδελυκτοὶ",
+        "translit": "bdeluktoi",
+        "gloss": "detestable",
+        "strongs": "G0947",
+        "morphology": "A-NPM"
+      },
+      {
+        "greek": "ὄντες",
+        "translit": "ontes",
+        "gloss": "being",
+        "strongs": "G1510",
+        "morphology": "V-PAP-NPM"
+      },
+      {
+        "greek": "καὶ",
+        "translit": "kai",
+        "gloss": "and",
+        "strongs": "G2532",
+        "morphology": "CONJ"
+      },
+      {
+        "greek": "ἀπειθεῖς",
+        "translit": "apeitheis",
+        "gloss": "disobedient",
+        "strongs": "G0545",
+        "morphology": "A-NPM"
+      },
+      {
+        "greek": "καὶ",
+        "translit": "kai",
+        "gloss": "and",
+        "strongs": "G2532",
+        "morphology": "CONJ"
+      },
+      {
+        "greek": "πρὸς",
+        "translit": "pros",
+        "gloss": "for",
+        "strongs": "G4314",
+        "morphology": "PREP"
+      },
+      {
+        "greek": "πᾶν",
+        "translit": "pan",
+        "gloss": "any",
+        "strongs": "G3956",
+        "morphology": "A-ASN"
+      },
+      {
+        "greek": "ἔργον",
+        "translit": "ergon",
+        "gloss": "work",
+        "strongs": "G2041",
+        "morphology": "N-ASN"
+      },
+      {
+        "greek": "ἀγαθὸν",
+        "translit": "agathon",
+        "gloss": "good",
+        "strongs": "G0018",
+        "morphology": "A-ASN"
+      },
+      {
+        "greek": "ἀδόκιμοι.¶",
+        "translit": "adokimoi",
+        "gloss": "unfit.",
+        "strongs": "G0096",
+        "morphology": "A-NPM"
+      }
+    ]
+  },
+  "2": {
+    "1": [
+      {
+        "greek": "Σὺ",
+        "translit": "Su",
+        "gloss": "You yourself",
+        "strongs": "G4771",
+        "morphology": "P-2NS"
+      },
+      {
+        "greek": "δὲ",
+        "translit": "de",
+        "gloss": "however",
+        "strongs": "G1161",
+        "morphology": "CONJ"
+      },
+      {
+        "greek": "λάλει",
+        "translit": "lalei",
+        "gloss": "do speak",
+        "strongs": "G2980",
+        "morphology": "V-PAM-2S"
+      },
+      {
+        "greek": "ἃ",
+        "translit": "ha",
+        "gloss": "[the things] that",
+        "strongs": "G3739",
+        "morphology": "R-NPN"
+      },
+      {
+        "greek": "πρέπει",
+        "translit": "prepei",
+        "gloss": "are consistent with",
+        "strongs": "G4241",
+        "morphology": "V-PAI-3S"
+      },
+      {
+        "greek": "τῇ",
+        "translit": "tēa",
+        "gloss": "the",
+        "strongs": "G3588",
+        "morphology": "T-DSF"
+      },
+      {
+        "greek": "ὑγιαινούσῃ",
+        "translit": "hugiainousē",
+        "gloss": "sound",
+        "strongs": "G5198",
+        "morphology": "V-PAP-DSF"
+      },
+      {
+        "greek": "διδασκαλίᾳ.¶",
+        "translit": "didaskalia",
+        "gloss": "doctrine.",
+        "strongs": "G1319",
+        "morphology": "N-DSF"
+      }
+    ],
+    "2": [
+      {
+        "greek": "Πρεσβύτας",
+        "translit": "Presbutas",
+        "gloss": "[The] aged [men]",
+        "strongs": "G4246",
+        "morphology": "N-APM"
+      },
+      {
+        "greek": "νηφαλίους",
+        "translit": "nēphalious",
+        "gloss": "sober-minded",
+        "strongs": "G3524",
+        "morphology": "A-APM"
+      },
+      {
+        "greek": "εἶναι,",
+        "translit": "einai",
+        "gloss": "are to be,",
+        "strongs": "G1511",
+        "morphology": "V-PAN"
+      },
+      {
+        "greek": "σεμνούς,",
+        "translit": "semnous",
+        "gloss": "dignified,",
+        "strongs": "G4586",
+        "morphology": "A-APM"
+      },
+      {
+        "greek": "σώφρονας,",
+        "translit": "sōphronas",
+        "gloss": "self-controlled,",
+        "strongs": "G4998",
+        "morphology": "A-APM"
+      },
+      {
+        "greek": "ὑγιαίνοντας",
+        "translit": "hugiainontas",
+        "gloss": "sound",
+        "strongs": "G5198",
+        "morphology": "V-PAP-APM"
+      },
+      {
+        "greek": "τῇ",
+        "translit": "tēa",
+        "gloss": "the",
+        "strongs": "G3588",
+        "morphology": "T-DSF"
+      },
+      {
+        "greek": "πίστει,",
+        "translit": "pistei",
+        "gloss": "in faith,",
+        "strongs": "G4102G",
+        "morphology": "N-DSF"
+      },
+      {
+        "greek": "τῇ",
+        "translit": "tēa",
+        "gloss": "the",
+        "strongs": "G3588",
+        "morphology": "T-DSF"
+      },
+      {
+        "greek": "ἀγάπῃ,",
+        "translit": "agapē",
+        "gloss": "in love,",
+        "strongs": "G0026",
+        "morphology": "N-DSF"
+      },
+      {
+        "greek": "τῇ",
+        "translit": "tēa",
+        "gloss": "the",
+        "strongs": "G3588",
+        "morphology": "T-DSF"
+      },
+      {
+        "greek": "ὑπομονῇ.¶",
+        "translit": "hupomonēa",
+        "gloss": "in endurance.",
+        "strongs": "G5281",
+        "morphology": "N-DSF"
+      }
+    ],
+    "3": [
+      {
+        "greek": "Πρεσβύτιδας",
+        "translit": "Presbutidas",
+        "gloss": "[the] aged [women]",
+        "strongs": "G4247",
+        "morphology": "N-APF"
+      },
+      {
+        "greek": "ὡσαύτως",
+        "translit": "hōsautōs",
+        "gloss": "likewise",
+        "strongs": "G5615",
+        "morphology": "ADV"
+      },
+      {
+        "greek": "ἐν",
+        "translit": "en",
+        "gloss": "in",
+        "strongs": "G1722",
+        "morphology": "PREP"
+      },
+      {
+        "greek": "καταστήματι",
+        "translit": "katastēmati",
+        "gloss": "behavior",
+        "strongs": "G2688",
+        "morphology": "N-DSN"
+      },
+      {
+        "greek": "ἱεροπρεπεῖς,",
+        "translit": "hi'eroprepeis",
+        "gloss": "reverent,",
+        "strongs": "G2412",
+        "morphology": "A-APF"
+      },
+      {
+        "greek": "μὴ",
+        "translit": "mē",
+        "gloss": "not",
+        "strongs": "G3361",
+        "morphology": "PRT-N"
+      },
+      {
+        "greek": "διαβόλους,",
+        "translit": "diabolous",
+        "gloss": "slanderers,",
+        "strongs": "G1228",
+        "morphology": "A-APF"
+      },
+      {
+        "greek": "μὴ",
+        "translit": "mē",
+        "gloss": "not",
+        "strongs": "G3361",
+        "morphology": "PRT-N"
+      },
+      {
+        "greek": "οἴνῳ",
+        "translit": "oinō",
+        "gloss": "to wine",
+        "strongs": "G3631",
+        "morphology": "N-DSM"
+      },
+      {
+        "greek": "πολλῷ",
+        "translit": "pollō",
+        "gloss": "much",
+        "strongs": "G4183",
+        "morphology": "A-DSM"
+      },
+      {
+        "greek": "δεδουλωμένας,",
+        "translit": "dedoulōmenas",
+        "gloss": "enslaved,",
+        "strongs": "G1402",
+        "morphology": "V-RPP-APF"
+      },
+      {
+        "greek": "καλοδιδασκάλους,",
+        "translit": "kalodidaskalous",
+        "gloss": "teachers of what is good,",
+        "strongs": "G2567",
+        "morphology": "A-APF"
+      }
+    ],
+    "4": [
+      {
+        "greek": "ἵνα",
+        "translit": "ina",
+        "gloss": "so that",
+        "strongs": "G2443",
+        "morphology": "CONJ"
+      },
+      {
+        "greek": "σωφρονίζωσιν",
+        "translit": "sōphronizōsin",
+        "gloss": "they may train",
+        "strongs": "G4994",
+        "morphology": "V-PAS-3P"
+      },
+      {
+        "greek": "τὰς",
+        "translit": "tas",
+        "gloss": "the",
+        "strongs": "G3588",
+        "morphology": "T-APF"
+      },
+      {
+        "greek": "νέας",
+        "translit": "neas",
+        "gloss": "young [women]",
+        "strongs": "G3501",
+        "morphology": "A-APF"
+      },
+      {
+        "greek": "φιλάνδρους",
+        "translit": "philandrous",
+        "gloss": "lovers of [their] husbands",
+        "strongs": "G5362",
+        "morphology": "A-APF"
+      },
+      {
+        "greek": "εἶναι,",
+        "translit": "einai",
+        "gloss": "to be,",
+        "strongs": "G1511",
+        "morphology": "V-PAN"
+      },
+      {
+        "greek": "φιλοτέκνους,",
+        "translit": "philoteknous",
+        "gloss": "loving [their] children,",
+        "strongs": "G5388",
+        "morphology": "A-APF"
+      }
+    ],
+    "5": [
+      {
+        "greek": "σώφρονας,",
+        "translit": "sōphronas",
+        "gloss": "self-controlled,",
+        "strongs": "G4998",
+        "morphology": "A-APF"
+      },
+      {
+        "greek": "ἁγνάς,",
+        "translit": "hagnas",
+        "gloss": "pure",
+        "strongs": "G0053",
+        "morphology": "A-APF"
+      },
+      {
+        "greek": "οἰκουργοὺς",
+        "translit": "oikourgous",
+        "gloss": "busy at home",
+        "strongs": "G9994",
+        "morphology": "A-APF"
+      },
+      {
+        "greek": "ἀγαθάς,",
+        "translit": "agathas",
+        "gloss": "kind,",
+        "strongs": "G0018",
+        "morphology": "A-APF"
+      },
+      {
+        "greek": "ὑποτασσομένας",
+        "translit": "hupotassomenas",
+        "gloss": "being subject",
+        "strongs": "G5293",
+        "morphology": "V-PPP-APF"
+      },
+      {
+        "greek": "τοῖς",
+        "translit": "tois",
+        "gloss": "the",
+        "strongs": "G3588",
+        "morphology": "T-DPM"
+      },
+      {
+        "greek": "ἰδίοις",
+        "translit": "idiois",
+        "gloss": "to [their] own",
+        "strongs": "G2398",
+        "morphology": "A-DPM"
+      },
+      {
+        "greek": "ἀνδράσιν,",
+        "translit": "andrasin",
+        "gloss": "husbands,",
+        "strongs": "G0435H",
+        "morphology": "N-DPM"
+      },
+      {
+        "greek": "ἵνα",
+        "translit": "ina",
+        "gloss": "so that",
+        "strongs": "G2443",
+        "morphology": "CONJ"
+      },
+      {
+        "greek": "μὴ",
+        "translit": "mē",
+        "gloss": "not",
+        "strongs": "G3361",
+        "morphology": "PRT-N"
+      },
+      {
+        "greek": "ὁ",
+        "translit": "ho",
+        "gloss": "the",
+        "strongs": "G3588",
+        "morphology": "T-NSM"
+      },
+      {
+        "greek": "λόγος",
+        "translit": "logos",
+        "gloss": "word",
+        "strongs": "G3056",
+        "morphology": "N-NSM"
+      },
+      {
+        "greek": "τοῦ",
+        "translit": "tou",
+        "gloss": "the",
+        "strongs": "G3588",
+        "morphology": "T-GSM"
+      },
+      {
+        "greek": "θεοῦ",
+        "translit": "theou",
+        "gloss": "of God",
+        "strongs": "G2316",
+        "morphology": "N-GSM-T"
+      },
+      {
+        "greek": "βλασφημῆται.¶",
+        "translit": "blasphēmētai",
+        "gloss": "may be denigrated.",
+        "strongs": "G0987",
+        "morphology": "V-PPS-3S"
+      }
+    ],
+    "6": [
+      {
+        "greek": "Τοὺς",
+        "translit": "Tous",
+        "gloss": "The",
+        "strongs": "G3588",
+        "morphology": "T-APM"
+      },
+      {
+        "greek": "νεωτέρους",
+        "translit": "neōterous",
+        "gloss": "younger [men]",
+        "strongs": "G3501",
+        "morphology": "A-APM-C"
+      },
+      {
+        "greek": "ὡσαύτως",
+        "translit": "hōsautōs",
+        "gloss": "likewise",
+        "strongs": "G5615",
+        "morphology": "ADV"
+      },
+      {
+        "greek": "παρακάλει",
+        "translit": "parakalei",
+        "gloss": "do exhort",
+        "strongs": "G3870",
+        "morphology": "V-PAM-2S"
+      },
+      {
+        "greek": "σωφρονεῖν,",
+        "translit": "sōphronein",
+        "gloss": "to be self-controlled,",
+        "strongs": "G4993",
+        "morphology": "V-PAN"
+      }
+    ],
+    "7": [
+      {
+        "greek": "περὶ",
+        "translit": "peri",
+        "gloss": "In",
+        "strongs": "G4012",
+        "morphology": "PREP"
+      },
+      {
+        "greek": "πάντα",
+        "translit": "panta",
+        "gloss": "all things",
+        "strongs": "G3956",
+        "morphology": "A-APN"
+      },
+      {
+        "greek": "σεαυτὸν",
+        "translit": "seauton",
+        "gloss": "yourself",
+        "strongs": "G4771",
+        "morphology": "F-2ASM"
+      },
+      {
+        "greek": "παρεχόμενος",
+        "translit": "parechomenos",
+        "gloss": "be holding forth",
+        "strongs": "G3930",
+        "morphology": "V-PMP-NSM"
+      },
+      {
+        "greek": "τύπον",
+        "translit": "tupon",
+        "gloss": "[as] a pattern",
+        "strongs": "G5179",
+        "morphology": "N-ASM"
+      },
+      {
+        "greek": "καλῶν",
+        "translit": "kalōn",
+        "gloss": "of good",
+        "strongs": "G2570G",
+        "morphology": "A-GPN"
+      },
+      {
+        "greek": "ἔργων,",
+        "translit": "ergōn",
+        "gloss": "works,",
+        "strongs": "G2041",
+        "morphology": "N-GPN"
+      },
+      {
+        "greek": "ἐν",
+        "translit": "en",
+        "gloss": "in",
+        "strongs": "G1722",
+        "morphology": "PREP"
+      },
+      {
+        "greek": "τῇ",
+        "translit": "tēa",
+        "gloss": "the",
+        "strongs": "G3588",
+        "morphology": "T-DSF"
+      },
+      {
+        "greek": "διδασκαλίᾳ",
+        "translit": "didaskalia",
+        "gloss": "teaching",
+        "strongs": "G1319",
+        "morphology": "N-DSF"
+      },
+      {
+        "greek": "ἀδιαφθορίαν",
+        "translit": "adiaphthorian",
+        "gloss": "unspoilable",
+        "strongs": "G0090",
+        "morphology": "N-ASF"
+      },
+      {
+        "greek": "ἀφθορίαν,",
+        "translit": "aphthorian",
+        "gloss": "incorruptable,",
+        "strongs": "G0861",
+        "morphology": "N-ASF"
+      },
+      {
+        "greek": "σεμνότητα,",
+        "translit": "semnotēta",
+        "gloss": "dignity",
+        "strongs": "G4587",
+        "morphology": "N-ASF"
+      }
+    ],
+    "8": [
+      {
+        "greek": "λόγον",
+        "translit": "logon",
+        "gloss": "speech",
+        "strongs": "G3056",
+        "morphology": "N-ASM"
+      },
+      {
+        "greek": "ὑγιῆ,",
+        "translit": "hugiē",
+        "gloss": "sound,",
+        "strongs": "G5199",
+        "morphology": "A-ASM"
+      },
+      {
+        "greek": "ἀκατάγνωστον,",
+        "translit": "akatagnōston",
+        "gloss": "beyond reproach,",
+        "strongs": "G0176",
+        "morphology": "A-ASM"
+      },
+      {
+        "greek": "ἵνα",
+        "translit": "ina",
+        "gloss": "so that",
+        "strongs": "G2443",
+        "morphology": "CONJ"
+      },
+      {
+        "greek": "ὁ",
+        "translit": "ho",
+        "gloss": "he who is",
+        "strongs": "G3588",
+        "morphology": "T-NSM"
+      },
+      {
+        "greek": "ἐξ",
+        "translit": "ex",
+        "gloss": "of the",
+        "strongs": "G1537",
+        "morphology": "PREP"
+      },
+      {
+        "greek": "ἐναντίας",
+        "translit": "enantias",
+        "gloss": "contrary",
+        "strongs": "G1727",
+        "morphology": "A-GSF"
+      },
+      {
+        "greek": "ἐντραπῇ",
+        "translit": "entrapēa",
+        "gloss": "may be ashamed",
+        "strongs": "G1788",
+        "morphology": "V-2APS-3S"
+      },
+      {
+        "greek": "μηδὲν",
+        "translit": "mēden",
+        "gloss": "nothing",
+        "strongs": "G3367",
+        "morphology": "A-ASN-N"
+      },
+      {
+        "greek": "ἔχων",
+        "translit": "echōn",
+        "gloss": "having",
+        "strongs": "G2192",
+        "morphology": "V-PAP-NSM"
+      },
+      {
+        "greek": "λέγειν",
+        "translit": "legein",
+        "gloss": "to say",
+        "strongs": "G3004G",
+        "morphology": "V-PAN"
+      },
+      {
+        "greek": "περὶ",
+        "translit": "peri",
+        "gloss": "concerning",
+        "strongs": "G4012",
+        "morphology": "PREP"
+      },
+      {
+        "greek": "ἡμῶν",
+        "translit": "hēmōn",
+        "gloss": "us",
+        "strongs": "G3165",
+        "morphology": "P-1GP"
+      },
+      {
+        "greek": "φαῦλον.¶",
+        "translit": "phaulon",
+        "gloss": "evil.",
+        "strongs": "G5337",
+        "morphology": "A-ASN"
+      }
+    ],
+    "9": [
+      {
+        "greek": "Δούλους",
+        "translit": "Doulous",
+        "gloss": "Servants",
+        "strongs": "G1401",
+        "morphology": "N-APM"
+      },
+      {
+        "greek": "ἰδίοις",
+        "translit": "idiois",
+        "gloss": "to [their] own",
+        "strongs": "G2398",
+        "morphology": "A-DPM"
+      },
+      {
+        "greek": "δεσπόταις",
+        "translit": "despotais",
+        "gloss": "masters",
+        "strongs": "G1203",
+        "morphology": "N-DPM"
+      },
+      {
+        "greek": "ὑποτάσσεσθαι,",
+        "translit": "hupotassesthai",
+        "gloss": "are to be subject,",
+        "strongs": "G5293",
+        "morphology": "V-PPN"
+      },
+      {
+        "greek": "ἐν",
+        "translit": "en",
+        "gloss": "in",
+        "strongs": "G1722",
+        "morphology": "PREP"
+      },
+      {
+        "greek": "πᾶσιν",
+        "translit": "pasin",
+        "gloss": "everything",
+        "strongs": "G3956",
+        "morphology": "A-DPN"
+      },
+      {
+        "greek": "εὐαρέστους",
+        "translit": "euarestous",
+        "gloss": "well-pleasing",
+        "strongs": "G2101",
+        "morphology": "A-APM"
+      },
+      {
+        "greek": "εἶναι,",
+        "translit": "einai",
+        "gloss": "to be,",
+        "strongs": "G1511",
+        "morphology": "V-PAN"
+      },
+      {
+        "greek": "μὴ",
+        "translit": "mē",
+        "gloss": "not",
+        "strongs": "G3361",
+        "morphology": "PRT-N"
+      },
+      {
+        "greek": "ἀντιλέγοντας,",
+        "translit": "antilegontas",
+        "gloss": "gainsaying,",
+        "strongs": "G0483",
+        "morphology": "V-PAP-APM"
+      }
+    ],
+    "10": [
+      {
+        "greek": "μὴ",
+        "translit": "mē",
+        "gloss": "not",
+        "strongs": "G3361",
+        "morphology": "PRT-N"
+      },
+      {
+        "greek": "νοσφιζομένους",
+        "translit": "nosphizomenous",
+        "gloss": "pilfering",
+        "strongs": "G3557",
+        "morphology": "V-PMP-APM"
+      },
+      {
+        "greek": "ἀλλὰ",
+        "translit": "alla",
+        "gloss": "but",
+        "strongs": "G0235",
+        "morphology": "CONJ"
+      },
+      {
+        "greek": "πᾶσαν",
+        "translit": "pasan",
+        "gloss": "all",
+        "strongs": "G3956",
+        "morphology": "A-ASF"
+      },
+      {
+        "greek": "πίστιν",
+        "translit": "pistin",
+        "gloss": "fidelity",
+        "strongs": "G4102G",
+        "morphology": "N-ASF"
+      },
+      {
+        "greek": "ἐνδεικνυμένους",
+        "translit": "endeiknumenous",
+        "gloss": "showing",
+        "strongs": "G1731",
+        "morphology": "V-PMP-APM"
+      },
+      {
+        "greek": "ἀγαθήν,",
+        "translit": "agathēn",
+        "gloss": "good,",
+        "strongs": "G0018",
+        "morphology": "A-ASF"
+      },
+      {
+        "greek": "ἵνα",
+        "translit": "ina",
+        "gloss": "so that",
+        "strongs": "G2443",
+        "morphology": "CONJ"
+      },
+      {
+        "greek": "τὴν",
+        "translit": "tēn",
+        "gloss": "the",
+        "strongs": "G3588",
+        "morphology": "T-ASF"
+      },
+      {
+        "greek": "διδασκαλίαν",
+        "translit": "didaskalian",
+        "gloss": "doctrine",
+        "strongs": "G1319",
+        "morphology": "N-ASF"
+      },
+      {
+        "greek": "τὴν",
+        "translit": "tēn",
+        "gloss": "which [is]",
+        "strongs": "G3588",
+        "morphology": "T-ASF"
+      },
+      {
+        "greek": "τοῦ",
+        "translit": "tou",
+        "gloss": "of the",
+        "strongs": "G3588",
+        "morphology": "T-GSM"
+      },
+      {
+        "greek": "σωτῆρος",
+        "translit": "sōtēros",
+        "gloss": "Savior",
+        "strongs": "G4990",
+        "morphology": "N-GSM"
+      },
+      {
+        "greek": "ἡμῶν",
+        "translit": "hēmōn",
+        "gloss": "of us",
+        "strongs": "G3165",
+        "morphology": "P-1GP"
+      },
+      {
+        "greek": "θεοῦ",
+        "translit": "theou",
+        "gloss": "God",
+        "strongs": "G2316",
+        "morphology": "N-GSM-T"
+      },
+      {
+        "greek": "κοσμῶσιν",
+        "translit": "kosmōsin",
+        "gloss": "they may adorn",
+        "strongs": "G2885",
+        "morphology": "V-PAS-3P"
+      },
+      {
+        "greek": "ἐν",
+        "translit": "en",
+        "gloss": "in",
+        "strongs": "G1722",
+        "morphology": "PREP"
+      },
+      {
+        "greek": "πᾶσιν.¶",
+        "translit": "pasin",
+        "gloss": "all things.",
+        "strongs": "G3956",
+        "morphology": "A-DPN"
+      }
+    ],
+    "11": [
+      {
+        "greek": "Ἐπεφάνη",
+        "translit": "Epephanē",
+        "gloss": "Has appeared",
+        "strongs": "G2014",
+        "morphology": "V-2API-3S"
+      },
+      {
+        "greek": "γὰρ",
+        "translit": "gar",
+        "gloss": "for",
+        "strongs": "G1063",
+        "morphology": "CONJ"
+      },
+      {
+        "greek": "ἡ",
+        "translit": "hē",
+        "gloss": "the",
+        "strongs": "G3588",
+        "morphology": "T-NSF"
+      },
+      {
+        "greek": "χάρις",
+        "translit": "charis",
+        "gloss": "grace",
+        "strongs": "G5485",
+        "morphology": "N-NSF"
+      },
+      {
+        "greek": "τοῦ",
+        "translit": "tou",
+        "gloss": "the",
+        "strongs": "G3588",
+        "morphology": "T-GSM"
+      },
+      {
+        "greek": "θεοῦ",
+        "translit": "theou",
+        "gloss": "of God",
+        "strongs": "G2316",
+        "morphology": "N-GSM-T"
+      },
+      {
+        "greek": "ἡ",
+        "translit": "hē",
+        "gloss": "the",
+        "strongs": "G3588",
+        "morphology": "T-NSF"
+      },
+      {
+        "greek": "σωτήριος",
+        "translit": "sōtērios",
+        "gloss": "[bringing] salvation",
+        "strongs": "G4991",
+        "morphology": "N-NSF"
+      },
+      {
+        "greek": "πᾶσιν",
+        "translit": "pasin",
+        "gloss": "to all",
+        "strongs": "G3956",
+        "morphology": "A-DPM"
+      },
+      {
+        "greek": "ἀνθρώποις",
+        "translit": "anthrōpois",
+        "gloss": "men",
+        "strongs": "G0444",
+        "morphology": "N-DPM"
+      }
+    ],
+    "12": [
+      {
+        "greek": "παιδεύουσα",
+        "translit": "paideuousa",
+        "gloss": "instructing",
+        "strongs": "G3811",
+        "morphology": "V-PAP-NSF"
+      },
+      {
+        "greek": "ἡμᾶς",
+        "translit": "hēmas",
+        "gloss": "us",
+        "strongs": "G3165",
+        "morphology": "P-1AP"
+      },
+      {
+        "greek": "ἵνα",
+        "translit": "ina",
+        "gloss": "that",
+        "strongs": "G2443",
+        "morphology": "CONJ"
+      },
+      {
+        "greek": "ἀρνησάμενοι",
+        "translit": "arnēsamenoi",
+        "gloss": "having denied",
+        "strongs": "G0720",
+        "morphology": "V-ADP-NPM"
+      },
+      {
+        "greek": "τὴν",
+        "translit": "tēn",
+        "gloss": "the",
+        "strongs": "G3588",
+        "morphology": "T-ASF"
+      },
+      {
+        "greek": "ἀσέβειαν",
+        "translit": "asebeian",
+        "gloss": "ungodliness",
+        "strongs": "G0763",
+        "morphology": "N-ASF"
+      },
+      {
+        "greek": "καὶ",
+        "translit": "kai",
+        "gloss": "and",
+        "strongs": "G2532",
+        "morphology": "CONJ"
+      },
+      {
+        "greek": "τὰς",
+        "translit": "tas",
+        "gloss": "the",
+        "strongs": "G3588",
+        "morphology": "T-APF"
+      },
+      {
+        "greek": "κοσμικὰς",
+        "translit": "kosmikas",
+        "gloss": "worldly",
+        "strongs": "G2886",
+        "morphology": "A-APF"
+      },
+      {
+        "greek": "ἐπιθυμίας",
+        "translit": "epithumias",
+        "gloss": "passions",
+        "strongs": "G1939",
+        "morphology": "N-APF"
+      },
+      {
+        "greek": "σωφρόνως",
+        "translit": "sōphronōs",
+        "gloss": "discreetly",
+        "strongs": "G4996",
+        "morphology": "ADV"
+      },
+      {
+        "greek": "καὶ",
+        "translit": "kai",
+        "gloss": "and",
+        "strongs": "G2532",
+        "morphology": "CONJ"
+      },
+      {
+        "greek": "δικαίως",
+        "translit": "dikaiōs",
+        "gloss": "righteously",
+        "strongs": "G1346",
+        "morphology": "ADV"
+      },
+      {
+        "greek": "καὶ",
+        "translit": "kai",
+        "gloss": "and",
+        "strongs": "G2532",
+        "morphology": "CONJ"
+      },
+      {
+        "greek": "εὐσεβῶς",
+        "translit": "eusebōs",
+        "gloss": "piously",
+        "strongs": "G2153",
+        "morphology": "ADV"
+      },
+      {
+        "greek": "ζήσωμεν",
+        "translit": "zēsōmen",
+        "gloss": "we may live",
+        "strongs": "G2198",
+        "morphology": "V-AAS-1P"
+      },
+      {
+        "greek": "ἐν",
+        "translit": "en",
+        "gloss": "in",
+        "strongs": "G1722",
+        "morphology": "PREP"
+      },
+      {
+        "greek": "τῷ",
+        "translit": "tō",
+        "gloss": "the",
+        "strongs": "G3588",
+        "morphology": "T-DSM"
+      },
+      {
+        "greek": "νῦν",
+        "translit": "nun",
+        "gloss": "present",
+        "strongs": "G3568",
+        "morphology": "ADV"
+      },
+      {
+        "greek": "αἰῶνι",
+        "translit": "aiōni",
+        "gloss": "age",
+        "strongs": "G0165G",
+        "morphology": "N-DSM"
+      }
+    ],
+    "13": [
+      {
+        "greek": "προσδεχόμενοι",
+        "translit": "prosdechomenoi",
+        "gloss": "awaiting",
+        "strongs": "G4327",
+        "morphology": "V-PNP-NPM"
+      },
+      {
+        "greek": "τὴν",
+        "translit": "tēn",
+        "gloss": "the",
+        "strongs": "G3588",
+        "morphology": "T-ASF"
+      },
+      {
+        "greek": "μακαρίαν",
+        "translit": "makarian",
+        "gloss": "blessed",
+        "strongs": "G3107",
+        "morphology": "A-ASF"
+      },
+      {
+        "greek": "ἐλπίδα",
+        "translit": "elpida",
+        "gloss": "hope",
+        "strongs": "G1680",
+        "morphology": "N-ASF"
+      },
+      {
+        "greek": "καὶ",
+        "translit": "kai",
+        "gloss": "and",
+        "strongs": "G2532",
+        "morphology": "CONJ"
+      },
+      {
+        "greek": "ἐπιφάνειαν",
+        "translit": "epiphaneian",
+        "gloss": "[the] appearing",
+        "strongs": "G2015",
+        "morphology": "N-ASF"
+      },
+      {
+        "greek": "τῆς",
+        "translit": "tēs",
+        "gloss": "of the",
+        "strongs": "G3588",
+        "morphology": "T-GSF"
+      },
+      {
+        "greek": "δόξης",
+        "translit": "doxēs",
+        "gloss": "glory",
+        "strongs": "G1391",
+        "morphology": "N-GSF"
+      },
+      {
+        "greek": "τοῦ",
+        "translit": "tou",
+        "gloss": "of the",
+        "strongs": "G3588",
+        "morphology": "T-GSM"
+      },
+      {
+        "greek": "μεγάλου",
+        "translit": "megalou",
+        "gloss": "great",
+        "strongs": "G3173",
+        "morphology": "A-GSM"
+      },
+      {
+        "greek": "θεοῦ",
+        "translit": "theou",
+        "gloss": "God",
+        "strongs": "G2316",
+        "morphology": "N-GSM-T"
+      },
+      {
+        "greek": "καὶ",
+        "translit": "kai",
+        "gloss": "and",
+        "strongs": "G2532",
+        "morphology": "CONJ"
+      },
+      {
+        "greek": "σωτῆρος",
+        "translit": "sōtēros",
+        "gloss": "Savior",
+        "strongs": "G4990",
+        "morphology": "N-GSM"
+      },
+      {
+        "greek": "ἡμῶν",
+        "translit": "hēmōn",
+        "gloss": "of us",
+        "strongs": "G3165",
+        "morphology": "P-1GP"
+      },
+      {
+        "greek": "Ἰησοῦ",
+        "translit": "Iēsou",
+        "gloss": "Jesus",
+        "strongs": "G2424G",
+        "morphology": "N-GSM-P"
+      },
+      {
+        "greek": "Χριστοῦ,",
+        "translit": "Christou",
+        "gloss": "Christ",
+        "strongs": "G5547",
+        "morphology": "N-GSM-T"
+      }
+    ],
+    "14": [
+      {
+        "greek": "ὃς",
+        "translit": "hos",
+        "gloss": "who",
+        "strongs": "G3739",
+        "morphology": "R-NSM"
+      },
+      {
+        "greek": "ἔδωκεν",
+        "translit": "edōken",
+        "gloss": "gave",
+        "strongs": "G1325",
+        "morphology": "V-AAI-3S"
+      },
+      {
+        "greek": "ἑαυτὸν",
+        "translit": "he'auton",
+        "gloss": "Himself",
+        "strongs": "G1438",
+        "morphology": "F-3ASM"
+      },
+      {
+        "greek": "ὑπὲρ",
+        "translit": "huper",
+        "gloss": "for",
+        "strongs": "G5228",
+        "morphology": "PREP"
+      },
+      {
+        "greek": "ἡμῶν",
+        "translit": "hēmōn",
+        "gloss": "us",
+        "strongs": "G3165",
+        "morphology": "P-1GP"
+      },
+      {
+        "greek": "ἵνα",
+        "translit": "ina",
+        "gloss": "that",
+        "strongs": "G2443",
+        "morphology": "CONJ"
+      },
+      {
+        "greek": "λυτρώσηται",
+        "translit": "lutrōsētai",
+        "gloss": "He may redeem",
+        "strongs": "G3084",
+        "morphology": "V-AMS-3S"
+      },
+      {
+        "greek": "ἡμᾶς",
+        "translit": "hēmas",
+        "gloss": "us",
+        "strongs": "G3165",
+        "morphology": "P-1AP"
+      },
+      {
+        "greek": "ἀπὸ",
+        "translit": "apo",
+        "gloss": "from",
+        "strongs": "G0575",
+        "morphology": "PREP"
+      },
+      {
+        "greek": "πάσης",
+        "translit": "pasēs",
+        "gloss": "all",
+        "strongs": "G3956",
+        "morphology": "A-GSF"
+      },
+      {
+        "greek": "ἀνομίας",
+        "translit": "anomias",
+        "gloss": "lawlessness",
+        "strongs": "G0458",
+        "morphology": "N-GSF"
+      },
+      {
+        "greek": "καὶ",
+        "translit": "kai",
+        "gloss": "and",
+        "strongs": "G2532",
+        "morphology": "CONJ"
+      },
+      {
+        "greek": "καθαρίσῃ",
+        "translit": "katharisē",
+        "gloss": "may purify",
+        "strongs": "G2511",
+        "morphology": "V-AAS-3S"
+      },
+      {
+        "greek": "ἑαυτῷ",
+        "translit": "he'autō",
+        "gloss": "to Himself",
+        "strongs": "G1438",
+        "morphology": "F-3DSM"
+      },
+      {
+        "greek": "λαὸν",
+        "translit": "laon",
+        "gloss": "a people",
+        "strongs": "G2992",
+        "morphology": "N-ASM"
+      },
+      {
+        "greek": "περιούσιον,",
+        "translit": "periousion",
+        "gloss": "specially chosen,",
+        "strongs": "G4041",
+        "morphology": "A-ASM"
+      },
+      {
+        "greek": "ζηλωτὴν",
+        "translit": "zēlōtēn",
+        "gloss": "zealous",
+        "strongs": "G2207",
+        "morphology": "N-ASM-T"
+      },
+      {
+        "greek": "καλῶν",
+        "translit": "kalōn",
+        "gloss": "of good",
+        "strongs": "G2570G",
+        "morphology": "A-GPN"
+      },
+      {
+        "greek": "ἔργων.¶",
+        "translit": "ergōn",
+        "gloss": "works.",
+        "strongs": "G2041",
+        "morphology": "N-GPN"
+      }
+    ],
+    "15": [
+      {
+        "greek": "Ταῦτα",
+        "translit": "Tauta",
+        "gloss": "These things",
+        "strongs": "G3778",
+        "morphology": "D-APN"
+      },
+      {
+        "greek": "λάλει",
+        "translit": "lalei",
+        "gloss": "do speak",
+        "strongs": "G2980",
+        "morphology": "V-PAM-2S"
+      },
+      {
+        "greek": "καὶ",
+        "translit": "kai",
+        "gloss": "and",
+        "strongs": "G2532",
+        "morphology": "CONJ"
+      },
+      {
+        "greek": "παρακάλει",
+        "translit": "parakalei",
+        "gloss": "do exhort",
+        "strongs": "G3870",
+        "morphology": "V-PAM-2S"
+      },
+      {
+        "greek": "καὶ",
+        "translit": "kai",
+        "gloss": "and",
+        "strongs": "G2532",
+        "morphology": "CONJ"
+      },
+      {
+        "greek": "ἔλεγχε",
+        "translit": "elegche",
+        "gloss": "do rebuke",
+        "strongs": "G1651",
+        "morphology": "V-PAM-2S"
+      },
+      {
+        "greek": "μετὰ",
+        "translit": "meta",
+        "gloss": "with",
+        "strongs": "G3326",
+        "morphology": "PREP"
+      },
+      {
+        "greek": "πάσης",
+        "translit": "pasēs",
+        "gloss": "all",
+        "strongs": "G3956",
+        "morphology": "A-GSF"
+      },
+      {
+        "greek": "ἐπιταγῆς.",
+        "translit": "epitagēs",
+        "gloss": "authority.",
+        "strongs": "G2003",
+        "morphology": "N-GSF"
+      },
+      {
+        "greek": "μηδείς",
+        "translit": "mēdeis",
+        "gloss": "No one",
+        "strongs": "G3367",
+        "morphology": "A-NSM"
+      },
+      {
+        "greek": "σου",
+        "translit": "sou",
+        "gloss": "you",
+        "strongs": "G4771",
+        "morphology": "P-2GS"
+      },
+      {
+        "greek": "περιφρονείτω.¶",
+        "translit": "periphroneitō",
+        "gloss": "should despise.",
+        "strongs": "G4065",
+        "morphology": "V-PAM-3S"
+      }
+    ]
+  },
+  "3": {
+    "1": [
+      {
+        "greek": "Ὑπομίμνῃσκε",
+        "translit": "Hupomimnēske",
+        "gloss": "do remind",
+        "strongs": "G5279",
+        "morphology": "V-PAM-2S"
+      },
+      {
+        "greek": "αὐτοὺς",
+        "translit": "autous",
+        "gloss": "them",
+        "strongs": "G0846",
+        "morphology": "P-APM"
+      },
+      {
+        "greek": "ἀρχαῖς",
+        "translit": "archais",
+        "gloss": "to rulers",
+        "strongs": "G0746",
+        "morphology": "N-DPF"
+      },
+      {
+        "greek": "καὶ",
+        "translit": "kai",
+        "gloss": "and",
+        "strongs": "G2532",
+        "morphology": "CONJ"
+      },
+      {
+        "greek": "ἐξουσίαις",
+        "translit": "exousiais",
+        "gloss": "to authorities",
+        "strongs": "G1849",
+        "morphology": "N-DPF"
+      },
+      {
+        "greek": "ὑποτάσσεσθαι,",
+        "translit": "hupotassesthai",
+        "gloss": "to be subject,",
+        "strongs": "G5293",
+        "morphology": "V-PPN"
+      },
+      {
+        "greek": "πειθαρχεῖν,",
+        "translit": "peitharchein",
+        "gloss": "to be obedient,",
+        "strongs": "G3980",
+        "morphology": "V-PAN"
+      },
+      {
+        "greek": "πρὸς",
+        "translit": "pros",
+        "gloss": "for",
+        "strongs": "G4314",
+        "morphology": "PREP"
+      },
+      {
+        "greek": "πᾶν",
+        "translit": "pan",
+        "gloss": "every",
+        "strongs": "G3956",
+        "morphology": "A-ASN"
+      },
+      {
+        "greek": "ἔργον",
+        "translit": "ergon",
+        "gloss": "work",
+        "strongs": "G2041",
+        "morphology": "N-ASN"
+      },
+      {
+        "greek": "ἀγαθὸν",
+        "translit": "agathon",
+        "gloss": "good",
+        "strongs": "G0018",
+        "morphology": "A-ASN"
+      },
+      {
+        "greek": "ἑτοίμους",
+        "translit": "hetoimous",
+        "gloss": "ready",
+        "strongs": "G2092",
+        "morphology": "A-APM"
+      },
+      {
+        "greek": "εἶναι,",
+        "translit": "einai",
+        "gloss": "to be,",
+        "strongs": "G1511",
+        "morphology": "V-PAN"
+      }
+    ],
+    "2": [
+      {
+        "greek": "μηδένα",
+        "translit": "mēdena",
+        "gloss": "no one",
+        "strongs": "G3367",
+        "morphology": "A-ASM"
+      },
+      {
+        "greek": "βλασφημεῖν,",
+        "translit": "blasphēmein",
+        "gloss": "to denigrate,",
+        "strongs": "G0987",
+        "morphology": "V-PAN"
+      },
+      {
+        "greek": "ἀμάχους",
+        "translit": "amachous",
+        "gloss": "peaceable",
+        "strongs": "G0269",
+        "morphology": "A-APM"
+      },
+      {
+        "greek": "εἶναι,",
+        "translit": "einai",
+        "gloss": "to be,",
+        "strongs": "G1511",
+        "morphology": "V-PAN"
+      },
+      {
+        "greek": "ἐπιεικεῖς,",
+        "translit": "epieikeis",
+        "gloss": "gentle,",
+        "strongs": "G1933",
+        "morphology": "A-APM"
+      },
+      {
+        "greek": "πᾶσαν",
+        "translit": "pasan",
+        "gloss": "all",
+        "strongs": "G3956",
+        "morphology": "A-ASF"
+      },
+      {
+        "greek": "ἐνδεικνυμένους",
+        "translit": "endeiknumenous",
+        "gloss": "showing",
+        "strongs": "G1731",
+        "morphology": "V-PMP-APM"
+      },
+      {
+        "greek": "πραΰτητα",
+        "translit": "prautēta",
+        "gloss": "humility",
+        "strongs": "G4236",
+        "morphology": "N-ASF"
+      },
+      {
+        "greek": "πρὸς",
+        "translit": "pros",
+        "gloss": "toward",
+        "strongs": "G4314",
+        "morphology": "PREP"
+      },
+      {
+        "greek": "πάντας",
+        "translit": "pantas",
+        "gloss": "all",
+        "strongs": "G3956",
+        "morphology": "A-APM"
+      },
+      {
+        "greek": "ἀνθρώπους.",
+        "translit": "anthrōpous",
+        "gloss": "men.",
+        "strongs": "G0444",
+        "morphology": "N-APM"
+      }
+    ],
+    "3": [
+      {
+        "greek": "ἦμεν",
+        "translit": "ēmen",
+        "gloss": "Were",
+        "strongs": "G1510",
+        "morphology": "V-IAI-1P"
+      },
+      {
+        "greek": "γάρ",
+        "translit": "gar",
+        "gloss": "for",
+        "strongs": "G1063",
+        "morphology": "CONJ"
+      },
+      {
+        "greek": "ποτε",
+        "translit": "pote",
+        "gloss": "once",
+        "strongs": "G4218",
+        "morphology": "PRT"
+      },
+      {
+        "greek": "καὶ",
+        "translit": "kai",
+        "gloss": "also",
+        "strongs": "G2532",
+        "morphology": "CONJ"
+      },
+      {
+        "greek": "ἡμεῖς",
+        "translit": "hēmeis",
+        "gloss": "we ourselves",
+        "strongs": "G3165",
+        "morphology": "P-1NP"
+      },
+      {
+        "greek": "ἀνόητοι,",
+        "translit": "anoētoi",
+        "gloss": "foolish,",
+        "strongs": "G0453",
+        "morphology": "A-NPM"
+      },
+      {
+        "greek": "ἀπειθεῖς,",
+        "translit": "apeitheis",
+        "gloss": "disobedient,",
+        "strongs": "G0545",
+        "morphology": "A-NPM"
+      },
+      {
+        "greek": "πλανώμενοι,",
+        "translit": "planōmenoi",
+        "gloss": "being deceived,",
+        "strongs": "G4105",
+        "morphology": "V-PPP-NPM"
+      },
+      {
+        "greek": "δουλεύοντες",
+        "translit": "douleuontes",
+        "gloss": "serving",
+        "strongs": "G1398",
+        "morphology": "V-PAP-NPM"
+      },
+      {
+        "greek": "ἐπιθυμίαις",
+        "translit": "epithumiais",
+        "gloss": "lusts",
+        "strongs": "G1939",
+        "morphology": "N-DPF"
+      },
+      {
+        "greek": "καὶ",
+        "translit": "kai",
+        "gloss": "and",
+        "strongs": "G2532",
+        "morphology": "CONJ"
+      },
+      {
+        "greek": "ἡδοναῖς",
+        "translit": "hēdonais",
+        "gloss": "pleasures",
+        "strongs": "G2237",
+        "morphology": "N-DPF"
+      },
+      {
+        "greek": "ποικίλαις,",
+        "translit": "poikilais",
+        "gloss": "various,",
+        "strongs": "G4164",
+        "morphology": "A-DPF"
+      },
+      {
+        "greek": "ἐν",
+        "translit": "en",
+        "gloss": "in",
+        "strongs": "G1722",
+        "morphology": "PREP"
+      },
+      {
+        "greek": "κακίᾳ",
+        "translit": "kakia",
+        "gloss": "malice",
+        "strongs": "G2549",
+        "morphology": "N-DSF"
+      },
+      {
+        "greek": "καὶ",
+        "translit": "kai",
+        "gloss": "and",
+        "strongs": "G2532",
+        "morphology": "CONJ"
+      },
+      {
+        "greek": "φθόνῳ",
+        "translit": "phthonō",
+        "gloss": "envy",
+        "strongs": "G5355",
+        "morphology": "N-DSM"
+      },
+      {
+        "greek": "διάγοντες,",
+        "translit": "diagontes",
+        "gloss": "living,",
+        "strongs": "G1236",
+        "morphology": "V-PAP-NPM"
+      },
+      {
+        "greek": "στυγητοί,",
+        "translit": "stugētoi",
+        "gloss": "hateful,",
+        "strongs": "G4767",
+        "morphology": "A-NPM"
+      },
+      {
+        "greek": "μισοῦντες",
+        "translit": "misountes",
+        "gloss": "hating",
+        "strongs": "G3404",
+        "morphology": "V-PAP-NPM"
+      },
+      {
+        "greek": "ἀλλήλους.¶",
+        "translit": "allēlous",
+        "gloss": "one another.",
+        "strongs": "G0240",
+        "morphology": "C-APM"
+      }
+    ],
+    "4": [
+      {
+        "greek": "Ὅτε",
+        "translit": "Hote",
+        "gloss": "When",
+        "strongs": "G3753",
+        "morphology": "CONJ"
+      },
+      {
+        "greek": "δὲ",
+        "translit": "de",
+        "gloss": "however",
+        "strongs": "G1161",
+        "morphology": "CONJ"
+      },
+      {
+        "greek": "ἡ",
+        "translit": "hē",
+        "gloss": "the",
+        "strongs": "G3588",
+        "morphology": "T-NSF"
+      },
+      {
+        "greek": "χρηστότης",
+        "translit": "chrēstotēs",
+        "gloss": "kindness",
+        "strongs": "G5544",
+        "morphology": "N-NSF"
+      },
+      {
+        "greek": "καὶ",
+        "translit": "kai",
+        "gloss": "and",
+        "strongs": "G2532",
+        "morphology": "CONJ"
+      },
+      {
+        "greek": "ἡ",
+        "translit": "hē",
+        "gloss": "the",
+        "strongs": "G3588",
+        "morphology": "T-NSF"
+      },
+      {
+        "greek": "φιλανθρωπία",
+        "translit": "philanthrōpia",
+        "gloss": "love of mankind",
+        "strongs": "G5363",
+        "morphology": "N-NSF"
+      },
+      {
+        "greek": "ἐπεφάνη",
+        "translit": "epephanē",
+        "gloss": "appeared",
+        "strongs": "G2014",
+        "morphology": "V-2API-3S"
+      },
+      {
+        "greek": "τοῦ",
+        "translit": "tou",
+        "gloss": "of the",
+        "strongs": "G3588",
+        "morphology": "T-GSM"
+      },
+      {
+        "greek": "σωτῆρος",
+        "translit": "sōtēros",
+        "gloss": "Savior",
+        "strongs": "G4990",
+        "morphology": "N-GSM"
+      },
+      {
+        "greek": "ἡμῶν",
+        "translit": "hēmōn",
+        "gloss": "of us",
+        "strongs": "G3165",
+        "morphology": "P-1GP"
+      },
+      {
+        "greek": "θεοῦ,",
+        "translit": "theou",
+        "gloss": "God,",
+        "strongs": "G2316",
+        "morphology": "N-GSM-T"
+      }
+    ],
+    "5": [
+      {
+        "greek": "οὐκ",
+        "translit": "ouk",
+        "gloss": "not",
+        "strongs": "G3756",
+        "morphology": "PRT-N"
+      },
+      {
+        "greek": "ἐξ",
+        "translit": "ex",
+        "gloss": "by",
+        "strongs": "G1537",
+        "morphology": "PREP"
+      },
+      {
+        "greek": "ἔργων",
+        "translit": "ergōn",
+        "gloss": "works",
+        "strongs": "G2041",
+        "morphology": "N-GPN"
+      },
+      {
+        "greek": "τῶν",
+        "translit": "tōn",
+        "gloss": "the",
+        "strongs": "G3588",
+        "morphology": "T-GPN"
+      },
+      {
+        "greek": "ἐν",
+        "translit": "en",
+        "gloss": "in",
+        "strongs": "G1722",
+        "morphology": "PREP"
+      },
+      {
+        "greek": "δικαιοσύνῃ",
+        "translit": "dikaiosunē",
+        "gloss": "righteousness",
+        "strongs": "G1343",
+        "morphology": "N-DSF"
+      },
+      {
+        "greek": "ἃ",
+        "translit": "ha",
+        "gloss": "that",
+        "strongs": "G3739",
+        "morphology": "R-APN"
+      },
+      {
+        "greek": "ἐποιήσαμεν",
+        "translit": "epoiēsamen",
+        "gloss": "did",
+        "strongs": "G4160G",
+        "morphology": "V-AAI-1P"
+      },
+      {
+        "greek": "ἡμεῖς,",
+        "translit": "hēmeis",
+        "gloss": "we ourselves,",
+        "strongs": "G3165",
+        "morphology": "P-1NP"
+      },
+      {
+        "greek": "ἀλλὰ",
+        "translit": "alla",
+        "gloss": "but",
+        "strongs": "G0235",
+        "morphology": "CONJ"
+      },
+      {
+        "greek": "κατὰ",
+        "translit": "kata",
+        "gloss": "according to",
+        "strongs": "G2596",
+        "morphology": "PREP"
+      },
+      {
+        "greek": "τὸ",
+        "translit": "to",
+        "gloss": "the",
+        "strongs": "G3588",
+        "morphology": "T-ASN"
+      },
+      {
+        "greek": "αὐτοῦ",
+        "translit": "autou",
+        "gloss": "His",
+        "strongs": "G0846",
+        "morphology": "P-GSM"
+      },
+      {
+        "greek": "ἔλεος",
+        "translit": "eleos",
+        "gloss": "mercy",
+        "strongs": "G1656",
+        "morphology": "N-ASN"
+      },
+      {
+        "greek": "ἔσωσεν",
+        "translit": "esōsen",
+        "gloss": "He saved",
+        "strongs": "G4982",
+        "morphology": "V-AAI-3S"
+      },
+      {
+        "greek": "ἡμᾶς",
+        "translit": "hēmas",
+        "gloss": "us",
+        "strongs": "G3165",
+        "morphology": "P-1AP"
+      },
+      {
+        "greek": "διὰ",
+        "translit": "dia",
+        "gloss": "through",
+        "strongs": "G1223",
+        "morphology": "PREP"
+      },
+      {
+        "greek": "λουτροῦ",
+        "translit": "loutrou",
+        "gloss": "[the] washing",
+        "strongs": "G3067",
+        "morphology": "N-GSN"
+      },
+      {
+        "greek": "παλιγγενεσίας",
+        "translit": "palingenesias",
+        "gloss": "of regeneration",
+        "strongs": "G3824",
+        "morphology": "N-GSF"
+      },
+      {
+        "greek": "καὶ",
+        "translit": "kai",
+        "gloss": "and",
+        "strongs": "G2532",
+        "morphology": "CONJ"
+      },
+      {
+        "greek": "ἀνακαινώσεως",
+        "translit": "anakainōseōs",
+        "gloss": "renewing",
+        "strongs": "G0342",
+        "morphology": "N-GSF"
+      },
+      {
+        "greek": "πνεύματος",
+        "translit": "pneumatos",
+        "gloss": "of [the] Spirit",
+        "strongs": "G4151G",
+        "morphology": "N-GSN"
+      },
+      {
+        "greek": "ἁγίου",
+        "translit": "hagiou",
+        "gloss": "Holy",
+        "strongs": "G0040G",
+        "morphology": "A-GSN"
+      }
+    ],
+    "6": [
+      {
+        "greek": "οὗ",
+        "translit": "hou",
+        "gloss": "whom",
+        "strongs": "G3739",
+        "morphology": "R-GSN"
+      },
+      {
+        "greek": "ἐξέχεεν",
+        "translit": "execheen",
+        "gloss": "He poured out",
+        "strongs": "G1632",
+        "morphology": "V-AAI-3S"
+      },
+      {
+        "greek": "ἐφ᾽",
+        "translit": "eph᾽",
+        "gloss": "on",
+        "strongs": "G1909",
+        "morphology": "PREP"
+      },
+      {
+        "greek": "ἡμᾶς",
+        "translit": "hēmas",
+        "gloss": "us",
+        "strongs": "G3165",
+        "morphology": "P-1AP"
+      },
+      {
+        "greek": "πλουσίως",
+        "translit": "plousiōs",
+        "gloss": "richly",
+        "strongs": "G4146",
+        "morphology": "ADV"
+      },
+      {
+        "greek": "διὰ",
+        "translit": "dia",
+        "gloss": "through",
+        "strongs": "G1223",
+        "morphology": "PREP"
+      },
+      {
+        "greek": "Ἰησοῦ",
+        "translit": "Iēsou",
+        "gloss": "Jesus",
+        "strongs": "G2424G",
+        "morphology": "N-GSM-P"
+      },
+      {
+        "greek": "Χριστοῦ",
+        "translit": "Christou",
+        "gloss": "Christ",
+        "strongs": "G5547",
+        "morphology": "N-GSM-T"
+      },
+      {
+        "greek": "τοῦ",
+        "translit": "tou",
+        "gloss": "the",
+        "strongs": "G3588",
+        "morphology": "T-GSM"
+      },
+      {
+        "greek": "σωτῆρος",
+        "translit": "sōtēros",
+        "gloss": "Savior",
+        "strongs": "G4990",
+        "morphology": "N-GSM"
+      },
+      {
+        "greek": "ἡμῶν,",
+        "translit": "hēmōn",
+        "gloss": "of us,",
+        "strongs": "G3165",
+        "morphology": "P-1GP"
+      }
+    ],
+    "7": [
+      {
+        "greek": "ἵνα",
+        "translit": "ina",
+        "gloss": "so that",
+        "strongs": "G2443",
+        "morphology": "CONJ"
+      },
+      {
+        "greek": "δικαιωθέντες",
+        "translit": "dikaiōthentes",
+        "gloss": "having been justified",
+        "strongs": "G1344",
+        "morphology": "V-APP-NPM"
+      },
+      {
+        "greek": "τῇ",
+        "translit": "tēa",
+        "gloss": "the",
+        "strongs": "G3588",
+        "morphology": "T-DSF"
+      },
+      {
+        "greek": "ἐκείνου",
+        "translit": "ekeinou",
+        "gloss": "by that",
+        "strongs": "G1565",
+        "morphology": "D-GSM"
+      },
+      {
+        "greek": "χάριτι",
+        "translit": "chariti",
+        "gloss": "grace",
+        "strongs": "G5485",
+        "morphology": "N-DSF"
+      },
+      {
+        "greek": "κληρονόμοι",
+        "translit": "klēronomoi",
+        "gloss": "heirs",
+        "strongs": "G2818",
+        "morphology": "N-NPM"
+      },
+      {
+        "greek": "γενηθῶμεν",
+        "translit": "genēthōmen",
+        "gloss": "we may become",
+        "strongs": "G1096",
+        "morphology": "V-AOS-1P"
+      },
+      {
+        "greek": "κατ᾽",
+        "translit": "kat᾽",
+        "gloss": "according to",
+        "strongs": "G2596",
+        "morphology": "PREP"
+      },
+      {
+        "greek": "ἐλπίδα",
+        "translit": "elpida",
+        "gloss": "[the] hope",
+        "strongs": "G1680",
+        "morphology": "N-ASF"
+      },
+      {
+        "greek": "ζωῆς",
+        "translit": "zōēs",
+        "gloss": "of life",
+        "strongs": "G2222",
+        "morphology": "N-GSF"
+      },
+      {
+        "greek": "αἰωνίου.¶",
+        "translit": "aiōniou",
+        "gloss": "eternal.",
+        "strongs": "G0166",
+        "morphology": "A-GSF"
+      }
+    ],
+    "8": [
+      {
+        "greek": "Πιστὸς",
+        "translit": "Pistos",
+        "gloss": "Trustworthy [is]",
+        "strongs": "G4103",
+        "morphology": "A-NSM"
+      },
+      {
+        "greek": "ὁ",
+        "translit": "ho",
+        "gloss": "the",
+        "strongs": "G3588",
+        "morphology": "T-NSM"
+      },
+      {
+        "greek": "λόγος,",
+        "translit": "logos",
+        "gloss": "saying,",
+        "strongs": "G3056",
+        "morphology": "N-NSM"
+      },
+      {
+        "greek": "καὶ",
+        "translit": "kai",
+        "gloss": "and",
+        "strongs": "G2532",
+        "morphology": "CONJ"
+      },
+      {
+        "greek": "περὶ",
+        "translit": "peri",
+        "gloss": "concerning",
+        "strongs": "G4012",
+        "morphology": "PREP"
+      },
+      {
+        "greek": "τούτων",
+        "translit": "toutōn",
+        "gloss": "these things",
+        "strongs": "G3778",
+        "morphology": "D-GPN"
+      },
+      {
+        "greek": "βούλομαί",
+        "translit": "boulomai",
+        "gloss": "I want",
+        "strongs": "G1014",
+        "morphology": "V-PNI-1S"
+      },
+      {
+        "greek": "σε",
+        "translit": "se",
+        "gloss": "you",
+        "strongs": "G4771",
+        "morphology": "P-2AS"
+      },
+      {
+        "greek": "διαβεβαιοῦσθαι",
+        "translit": "diabebaiousthai",
+        "gloss": "to affirm strongly",
+        "strongs": "G1226",
+        "morphology": "V-PNN"
+      },
+      {
+        "greek": "ἵνα",
+        "translit": "ina",
+        "gloss": "so that",
+        "strongs": "G2443",
+        "morphology": "CONJ"
+      },
+      {
+        "greek": "φροντίζωσιν",
+        "translit": "phrontizōsin",
+        "gloss": "may take care",
+        "strongs": "G5431",
+        "morphology": "V-PAS-3P"
+      },
+      {
+        "greek": "καλῶν",
+        "translit": "kalōn",
+        "gloss": "to good",
+        "strongs": "G2570G",
+        "morphology": "A-GPN"
+      },
+      {
+        "greek": "ἔργων",
+        "translit": "ergōn",
+        "gloss": "works",
+        "strongs": "G2041",
+        "morphology": "N-GPN"
+      },
+      {
+        "greek": "προΐστασθαι",
+        "translit": "proistasthai",
+        "gloss": "to be devoted",
+        "strongs": "G4291",
+        "morphology": "V-PMN"
+      },
+      {
+        "greek": "οἱ",
+        "translit": "hoi",
+        "gloss": "those",
+        "strongs": "G3588",
+        "morphology": "T-NPM"
+      },
+      {
+        "greek": "πεπιστευκότες",
+        "translit": "pepisteukotes",
+        "gloss": "already believing",
+        "strongs": "G4100",
+        "morphology": "V-RAP-NPM"
+      },
+      {
+        "greek": "τῷ",
+        "translit": "tō",
+        "gloss": "the",
+        "strongs": "G3588",
+        "morphology": "T-DSM"
+      },
+      {
+        "greek": "θεῷ·",
+        "translit": "theō",
+        "gloss": "in God;",
+        "strongs": "G2316",
+        "morphology": "N-DSM-T"
+      },
+      {
+        "greek": "ταῦτά",
+        "translit": "tauta",
+        "gloss": "These things",
+        "strongs": "G3778",
+        "morphology": "D-NPN"
+      },
+      {
+        "greek": "ἐστιν",
+        "translit": "estin",
+        "gloss": "are",
+        "strongs": "G1510",
+        "morphology": "V-PAI-3S"
+      },
+      {
+        "greek": "τὰ",
+        "translit": "ta",
+        "gloss": "the",
+        "strongs": "G3588",
+        "morphology": "T-NPN"
+      },
+      {
+        "greek": "καλὰ",
+        "translit": "kala",
+        "gloss": "excellent",
+        "strongs": "G2570G",
+        "morphology": "A-NPN"
+      },
+      {
+        "greek": "καὶ",
+        "translit": "kai",
+        "gloss": "and",
+        "strongs": "G2532",
+        "morphology": "CONJ"
+      },
+      {
+        "greek": "ὠφέλιμα",
+        "translit": "ōphelima",
+        "gloss": "profitable",
+        "strongs": "G5624",
+        "morphology": "A-NPN"
+      },
+      {
+        "greek": "τοῖς",
+        "translit": "tois",
+        "gloss": "the",
+        "strongs": "G3588",
+        "morphology": "T-DPM"
+      },
+      {
+        "greek": "ἀνθρώποις.",
+        "translit": "anthrōpois",
+        "gloss": "to men.",
+        "strongs": "G0444",
+        "morphology": "N-DPM"
+      }
+    ],
+    "9": [
+      {
+        "greek": "μωρὰς",
+        "translit": "mōras",
+        "gloss": "Foolish",
+        "strongs": "G3474",
+        "morphology": "A-APF"
+      },
+      {
+        "greek": "δὲ",
+        "translit": "de",
+        "gloss": "however",
+        "strongs": "G1161",
+        "morphology": "CONJ"
+      },
+      {
+        "greek": "ζητήσεις",
+        "translit": "zētēseis",
+        "gloss": "controversies",
+        "strongs": "G2214",
+        "morphology": "N-APF"
+      },
+      {
+        "greek": "καὶ",
+        "translit": "kai",
+        "gloss": "and",
+        "strongs": "G2532",
+        "morphology": "CONJ"
+      },
+      {
+        "greek": "γενεαλογίας",
+        "translit": "genealogias",
+        "gloss": "genealogies",
+        "strongs": "G1076",
+        "morphology": "N-APF"
+      },
+      {
+        "greek": "καὶ",
+        "translit": "kai",
+        "gloss": "and",
+        "strongs": "G2532",
+        "morphology": "CONJ"
+      },
+      {
+        "greek": "ἔρεις",
+        "translit": "ereis",
+        "gloss": "arguments",
+        "strongs": "G2054",
+        "morphology": "N-APF"
+      },
+      {
+        "greek": "καὶ",
+        "translit": "kai",
+        "gloss": "and",
+        "strongs": "G2532",
+        "morphology": "CONJ"
+      },
+      {
+        "greek": "μάχας",
+        "translit": "machas",
+        "gloss": "quarrels",
+        "strongs": "G3163",
+        "morphology": "N-APF"
+      },
+      {
+        "greek": "νομικὰς",
+        "translit": "nomikas",
+        "gloss": "about [the] Law",
+        "strongs": "G3544",
+        "morphology": "A-APF"
+      },
+      {
+        "greek": "περιΐστασο·",
+        "translit": "periistaso",
+        "gloss": "do yourself avoid;",
+        "strongs": "G4026",
+        "morphology": "V-PMM-2S"
+      },
+      {
+        "greek": "εἰσὶν",
+        "translit": "eisin",
+        "gloss": "they are",
+        "strongs": "G1510",
+        "morphology": "V-PAI-3P"
+      },
+      {
+        "greek": "γὰρ",
+        "translit": "gar",
+        "gloss": "for",
+        "strongs": "G1063",
+        "morphology": "CONJ"
+      },
+      {
+        "greek": "ἀνωφελεῖς",
+        "translit": "anōpheleis",
+        "gloss": "unprofitable",
+        "strongs": "G0512",
+        "morphology": "A-NPF"
+      },
+      {
+        "greek": "καὶ",
+        "translit": "kai",
+        "gloss": "and",
+        "strongs": "G2532",
+        "morphology": "CONJ"
+      },
+      {
+        "greek": "μάταιοι.",
+        "translit": "mataioi",
+        "gloss": "worthless.",
+        "strongs": "G3152",
+        "morphology": "A-NPF"
+      }
+    ],
+    "10": [
+      {
+        "greek": "αἱρετικὸν",
+        "translit": "hairetikon",
+        "gloss": "A factious",
+        "strongs": "G0141",
+        "morphology": "A-ASM"
+      },
+      {
+        "greek": "ἄνθρωπον",
+        "translit": "anthrōpon",
+        "gloss": "man",
+        "strongs": "G0444",
+        "morphology": "N-ASM"
+      },
+      {
+        "greek": "μετὰ",
+        "translit": "meta",
+        "gloss": "after",
+        "strongs": "G3326",
+        "morphology": "PREP"
+      },
+      {
+        "greek": "μίαν",
+        "translit": "mian",
+        "gloss": "one",
+        "strongs": "G1520",
+        "morphology": "A-ASF"
+      },
+      {
+        "greek": "καὶ",
+        "translit": "kai",
+        "gloss": "and",
+        "strongs": "G2532",
+        "morphology": "CONJ"
+      },
+      {
+        "greek": "δευτέραν",
+        "translit": "deuteran",
+        "gloss": "a second",
+        "strongs": "G1208",
+        "morphology": "A-ASF"
+      },
+      {
+        "greek": "νουθεσίαν",
+        "translit": "nouthesian",
+        "gloss": "admonition",
+        "strongs": "G3559",
+        "morphology": "N-ASF"
+      },
+      {
+        "greek": "παραιτοῦ",
+        "translit": "paraitou",
+        "gloss": "do reject",
+        "strongs": "G3868",
+        "morphology": "V-PNM-2S"
+      }
+    ],
+    "11": [
+      {
+        "greek": "εἰδὼς",
+        "translit": "eidōs",
+        "gloss": "knowing",
+        "strongs": "G6063",
+        "morphology": "V-RAP-NSM"
+      },
+      {
+        "greek": "ὅτι",
+        "translit": "hoti",
+        "gloss": "that",
+        "strongs": "G3754G",
+        "morphology": "CONJ"
+      },
+      {
+        "greek": "ἐξέστραπται",
+        "translit": "exestraptai",
+        "gloss": "has been corrupt",
+        "strongs": "G1612",
+        "morphology": "V-RPI-3S"
+      },
+      {
+        "greek": "ὁ",
+        "translit": "ho",
+        "gloss": "the",
+        "strongs": "G3588",
+        "morphology": "T-NSM"
+      },
+      {
+        "greek": "τοιοῦτος",
+        "translit": "toioutos",
+        "gloss": "such a man",
+        "strongs": "G5108",
+        "morphology": "D-NSM"
+      },
+      {
+        "greek": "καὶ",
+        "translit": "kai",
+        "gloss": "and",
+        "strongs": "G2532",
+        "morphology": "CONJ"
+      },
+      {
+        "greek": "ἁμαρτάνει",
+        "translit": "hamartanei",
+        "gloss": "is sinning",
+        "strongs": "G0264",
+        "morphology": "V-PAI-3S"
+      },
+      {
+        "greek": "ὢν",
+        "translit": "ōn",
+        "gloss": "being",
+        "strongs": "G1510",
+        "morphology": "V-PAP-NSM"
+      },
+      {
+        "greek": "αὐτοκατάκριτος.¶",
+        "translit": "autokatakritos",
+        "gloss": "self-condemned.",
+        "strongs": "G0843",
+        "morphology": "A-NSM"
+      }
+    ],
+    "12": [
+      {
+        "greek": "Ὅταν",
+        "translit": "Hotan",
+        "gloss": "When",
+        "strongs": "G3752",
+        "morphology": "CONJ"
+      },
+      {
+        "greek": "πέμψω",
+        "translit": "pempsō",
+        "gloss": "I may send",
+        "strongs": "G3992",
+        "morphology": "V-AAS-1S"
+      },
+      {
+        "greek": "Ἀρτεμᾶν",
+        "translit": "Arteman",
+        "gloss": "Artemas",
+        "strongs": "G0734",
+        "morphology": "N-ASM-P"
+      },
+      {
+        "greek": "πρὸς",
+        "translit": "pros",
+        "gloss": "to",
+        "strongs": "G4314",
+        "morphology": "PREP"
+      },
+      {
+        "greek": "σὲ",
+        "translit": "se",
+        "gloss": "you",
+        "strongs": "G4771",
+        "morphology": "P-2AS"
+      },
+      {
+        "greek": "ἢ",
+        "translit": "ē",
+        "gloss": "or",
+        "strongs": "G2228",
+        "morphology": "CONJ"
+      },
+      {
+        "greek": "Τύχικον,",
+        "translit": "Tuchikon",
+        "gloss": "Tychicus,",
+        "strongs": "G5190",
+        "morphology": "N-ASM-P"
+      },
+      {
+        "greek": "σπούδασον",
+        "translit": "spoudason",
+        "gloss": "do be diligent",
+        "strongs": "G4704",
+        "morphology": "V-AAM-2S"
+      },
+      {
+        "greek": "ἐλθεῖν",
+        "translit": "elthein",
+        "gloss": "to come",
+        "strongs": "G2064",
+        "morphology": "V-2AAN"
+      },
+      {
+        "greek": "πρός",
+        "translit": "pros",
+        "gloss": "to",
+        "strongs": "G4314",
+        "morphology": "PREP"
+      },
+      {
+        "greek": "με",
+        "translit": "me",
+        "gloss": "me",
+        "strongs": "G3165",
+        "morphology": "P-1AS"
+      },
+      {
+        "greek": "εἰς",
+        "translit": "eis",
+        "gloss": "into",
+        "strongs": "G1519",
+        "morphology": "PREP"
+      },
+      {
+        "greek": "Νικόπολιν·",
+        "translit": "Nikopolin",
+        "gloss": "Nicopolis;",
+        "strongs": "G3533",
+        "morphology": "N-ASF-L"
+      },
+      {
+        "greek": "ἐκεῖ",
+        "translit": "ekei",
+        "gloss": "there",
+        "strongs": "G1563",
+        "morphology": "ADV"
+      },
+      {
+        "greek": "γὰρ",
+        "translit": "gar",
+        "gloss": "for",
+        "strongs": "G1063",
+        "morphology": "CONJ"
+      },
+      {
+        "greek": "κέκρικα",
+        "translit": "kekrika",
+        "gloss": "I have decided",
+        "strongs": "G2919",
+        "morphology": "V-RAI-1S"
+      },
+      {
+        "greek": "παραχειμάσαι.",
+        "translit": "paracheimasai",
+        "gloss": "to winter.",
+        "strongs": "G3914",
+        "morphology": "V-AAN"
+      }
+    ],
+    "13": [
+      {
+        "greek": "Ζηνᾶν",
+        "translit": "Zēnan",
+        "gloss": "Zenas",
+        "strongs": "G2211",
+        "morphology": "N-ASM-P"
+      },
+      {
+        "greek": "τὸν",
+        "translit": "ton",
+        "gloss": "the",
+        "strongs": "G3588",
+        "morphology": "T-ASM"
+      },
+      {
+        "greek": "νομικὸν",
+        "translit": "nomikon",
+        "gloss": "lawyer",
+        "strongs": "G3544",
+        "morphology": "A-ASM"
+      },
+      {
+        "greek": "καὶ",
+        "translit": "kai",
+        "gloss": "and",
+        "strongs": "G2532",
+        "morphology": "CONJ"
+      },
+      {
+        "greek": "Ἀπολλῶν",
+        "translit": "Apollōn",
+        "gloss": "Apollos",
+        "strongs": "G0625",
+        "morphology": "N-ASM-P"
+      },
+      {
+        "greek": "σπουδαίως",
+        "translit": "spoudaiōs",
+        "gloss": "earnestly",
+        "strongs": "G4709",
+        "morphology": "ADV"
+      },
+      {
+        "greek": "πρόπεμψον,",
+        "translit": "propempson",
+        "gloss": "do equip,",
+        "strongs": "G4311",
+        "morphology": "V-AAM-2S"
+      },
+      {
+        "greek": "ἵνα",
+        "translit": "ina",
+        "gloss": "so that",
+        "strongs": "G2443",
+        "morphology": "CONJ"
+      },
+      {
+        "greek": "μηδὲν",
+        "translit": "mēden",
+        "gloss": "nothing",
+        "strongs": "G3367",
+        "morphology": "A-NSN"
+      },
+      {
+        "greek": "αὐτοῖς",
+        "translit": "autois",
+        "gloss": "to them",
+        "strongs": "G0846",
+        "morphology": "P-DPM"
+      },
+      {
+        "greek": "λείπῃ.",
+        "translit": "leipē",
+        "gloss": "may be lacking.",
+        "strongs": "G3007",
+        "morphology": "V-PAS-3S"
+      }
+    ],
+    "14": [
+      {
+        "greek": "μανθανέτωσαν",
+        "translit": "manthanetōsan",
+        "gloss": "should learn",
+        "strongs": "G3129",
+        "morphology": "V-PAM-3P"
+      },
+      {
+        "greek": "δὲ",
+        "translit": "de",
+        "gloss": "now",
+        "strongs": "G1161",
+        "morphology": "CONJ"
+      },
+      {
+        "greek": "καὶ",
+        "translit": "kai",
+        "gloss": "also",
+        "strongs": "G2532",
+        "morphology": "CONJ"
+      },
+      {
+        "greek": "οἱ",
+        "translit": "hoi",
+        "gloss": "the",
+        "strongs": "G3588",
+        "morphology": "T-NPM"
+      },
+      {
+        "greek": "ἡμέτεροι",
+        "translit": "hēmeteroi",
+        "gloss": "our own [people]",
+        "strongs": "G1473",
+        "morphology": "S-1PNPM"
+      },
+      {
+        "greek": "καλῶν",
+        "translit": "kalōn",
+        "gloss": "to good",
+        "strongs": "G2570G",
+        "morphology": "A-GPN"
+      },
+      {
+        "greek": "ἔργων",
+        "translit": "ergōn",
+        "gloss": "works",
+        "strongs": "G2041",
+        "morphology": "N-GPN"
+      },
+      {
+        "greek": "προΐστασθαι",
+        "translit": "proistasthai",
+        "gloss": "to devote themselves",
+        "strongs": "G4291",
+        "morphology": "V-PMN"
+      },
+      {
+        "greek": "εἰς",
+        "translit": "eis",
+        "gloss": "for",
+        "strongs": "G1519",
+        "morphology": "PREP"
+      },
+      {
+        "greek": "τὰς",
+        "translit": "tas",
+        "gloss": "the",
+        "strongs": "G3588",
+        "morphology": "T-APF"
+      },
+      {
+        "greek": "ἀναγκαίας",
+        "translit": "anagkaias",
+        "gloss": "necessary",
+        "strongs": "G0316",
+        "morphology": "A-APF"
+      },
+      {
+        "greek": "χρείας,",
+        "translit": "chreias",
+        "gloss": "needs,",
+        "strongs": "G5532",
+        "morphology": "N-APF"
+      },
+      {
+        "greek": "ἵνα",
+        "translit": "ina",
+        "gloss": "so that",
+        "strongs": "G2443",
+        "morphology": "CONJ"
+      },
+      {
+        "greek": "μὴ",
+        "translit": "mē",
+        "gloss": "not",
+        "strongs": "G3361",
+        "morphology": "PRT-N"
+      },
+      {
+        "greek": "ὦσιν",
+        "translit": "ōsin",
+        "gloss": "they may be",
+        "strongs": "G1510",
+        "morphology": "V-PAS-3P"
+      },
+      {
+        "greek": "ἄκαρποι.¶",
+        "translit": "akarpoi",
+        "gloss": "unfruitful.",
+        "strongs": "G0175",
+        "morphology": "A-NPM"
+      }
+    ],
+    "15": [
+      {
+        "greek": "Ἀσπάζονταί",
+        "translit": "Aspazontai",
+        "gloss": "Greet",
+        "strongs": "G0782",
+        "morphology": "V-PNI-3P"
+      },
+      {
+        "greek": "σε",
+        "translit": "se",
+        "gloss": "you",
+        "strongs": "G4771",
+        "morphology": "P-2AS"
+      },
+      {
+        "greek": "οἱ",
+        "translit": "hoi",
+        "gloss": "those",
+        "strongs": "G3588",
+        "morphology": "T-NPM"
+      },
+      {
+        "greek": "μετ᾽",
+        "translit": "met᾽",
+        "gloss": "with",
+        "strongs": "G3326",
+        "morphology": "PREP"
+      },
+      {
+        "greek": "ἐμοῦ",
+        "translit": "emou",
+        "gloss": "me",
+        "strongs": "G1473",
+        "morphology": "S-1SGSN"
+      },
+      {
+        "greek": "πάντες.",
+        "translit": "pantes",
+        "gloss": "all.",
+        "strongs": "G3956",
+        "morphology": "A-NPM"
+      },
+      {
+        "greek": "ἄσπασαι",
+        "translit": "aspasai",
+        "gloss": "do greet",
+        "strongs": "G0782",
+        "morphology": "V-ADM-2S"
+      },
+      {
+        "greek": "τοὺς",
+        "translit": "tous",
+        "gloss": "those",
+        "strongs": "G3588",
+        "morphology": "T-APM"
+      },
+      {
+        "greek": "φιλοῦντας",
+        "translit": "philountas",
+        "gloss": "loving",
+        "strongs": "G5368",
+        "morphology": "V-PAP-APM"
+      },
+      {
+        "greek": "ἡμᾶς",
+        "translit": "hēmas",
+        "gloss": "us",
+        "strongs": "G3165",
+        "morphology": "P-1AP"
+      },
+      {
+        "greek": "ἐν",
+        "translit": "en",
+        "gloss": "in",
+        "strongs": "G1722",
+        "morphology": "PREP"
+      },
+      {
+        "greek": "πίστει.¶",
+        "translit": "pistei",
+        "gloss": "[the] faith.",
+        "strongs": "G4102G",
+        "morphology": "N-DSF"
+      },
+      {
+        "greek": "Ἡ",
+        "translit": "Hē",
+        "gloss": "the",
+        "strongs": "G3588",
+        "morphology": "T-NSF"
+      },
+      {
+        "greek": "χάρις",
+        "translit": "charis",
+        "gloss": "Grace [be]",
+        "strongs": "G5485",
+        "morphology": "N-NSF"
+      },
+      {
+        "greek": "μετὰ",
+        "translit": "meta",
+        "gloss": "with",
+        "strongs": "G3326",
+        "morphology": "PREP"
+      },
+      {
+        "greek": "πάντων",
+        "translit": "pantōn",
+        "gloss": "all",
+        "strongs": "G3956",
+        "morphology": "A-GPM"
+      },
+      {
+        "greek": "ὑμῶν",
+        "translit": "humōn",
+        "gloss": "of you",
+        "strongs": "G4771",
+        "morphology": "P-2GP"
+      },
+      {
+        "greek": "ἀμήν.",
+        "translit": "amēn",
+        "gloss": "Amen.",
+        "strongs": "G0281",
+        "morphology": "INJ-HEB"
+      },
+      {
+        "greek": "πρός",
+        "translit": "pros",
+        "gloss": "to",
+        "strongs": "G4314",
+        "morphology": "PREP"
+      },
+      {
+        "greek": "Τίτον",
+        "translit": "Titon",
+        "gloss": "Titus",
+        "strongs": "G5103",
+        "morphology": "N-ASM-P"
+      },
+      {
+        "greek": "τῆς",
+        "translit": "tēs",
+        "gloss": "of the",
+        "strongs": "G3588",
+        "morphology": "T-GSF"
+      },
+      {
+        "greek": "Κρητῶν",
+        "translit": "Krētōn",
+        "gloss": "Cretan",
+        "strongs": "G2912",
+        "morphology": "N-GPM-LG"
+      },
+      {
+        "greek": "ἐκκλησίας",
+        "translit": "ekklēsias",
+        "gloss": "church",
+        "strongs": "G1577",
+        "morphology": "N-GSF"
+      },
+      {
+        "greek": "πρῶτον",
+        "translit": "prōton",
+        "gloss": "first",
+        "strongs": "G4413G",
+        "morphology": "A-ASM-S"
+      },
+      {
+        "greek": "ἐπίσκοπον",
+        "translit": "episkopon",
+        "gloss": "overseer",
+        "strongs": "G1985",
+        "morphology": "N-ASM"
+      },
+      {
+        "greek": "χειροτονηθέντα",
+        "translit": "cheirotonēthenta",
+        "gloss": "having been chosen",
+        "strongs": "G5500",
+        "morphology": "V-APP-ASM"
+      },
+      {
+        "greek": "ἐγράφη",
+        "translit": "egraphē",
+        "gloss": "It was written",
+        "strongs": "G1125",
+        "morphology": "V-2API-3S"
+      },
+      {
+        "greek": "ἀπό",
+        "translit": "apo",
+        "gloss": "from",
+        "strongs": "G0575",
+        "morphology": "PREP"
+      },
+      {
+        "greek": "Νικοπόλεως",
+        "translit": "Nikopoleōs",
+        "gloss": "Nicopolis",
+        "strongs": "G3533",
+        "morphology": "N-GSF-L"
+      },
+      {
+        "greek": "τῆς",
+        "translit": "tēs",
+        "gloss": "the",
+        "strongs": "G3588",
+        "morphology": "T-GSF"
+      },
+      {
+        "greek": "Κρητῶν.¶",
+        "translit": "Krētōn",
+        "gloss": "of Macedonia.",
+        "strongs": "G3109",
+        "morphology": "N-GSF-L"
+      }
+    ]
+  }
+}

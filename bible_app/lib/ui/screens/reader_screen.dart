@@ -220,6 +220,26 @@ class ReaderScreenState extends State<ReaderScreen> {
     _updateUrl();
   }
 
+  /// Public method to set interlinear mode (called from navigation)
+  void setInterlinearMode() {
+    if (_viewMode != ViewMode.interlinear) {
+      setState(() {
+        _viewMode = ViewMode.interlinear;
+      });
+      _updateUrl();
+    }
+  }
+
+  /// Public method to set standard reading mode (called from navigation)
+  void setStandardMode() {
+    if (_viewMode != ViewMode.standard) {
+      setState(() {
+        _viewMode = ViewMode.standard;
+      });
+      _updateUrl();
+    }
+  }
+
   void _showInterlinear(Verse verse) {
     if (_currentBook == null) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -348,7 +368,7 @@ class ReaderScreenState extends State<ReaderScreen> {
                 fontWeight: FontWeight.w600,
               ),
             ),
-            // Right: Translation + Bookmark + Interlinear + TTS
+            // Right: Translation + Bookmark + TTS
             Row(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -369,17 +389,6 @@ class ReaderScreenState extends State<ReaderScreen> {
                   child: Icon(
                     Icons.bookmark_border,
                     color: colorScheme.primary,
-                    size: 24,
-                  ),
-                ),
-                const SizedBox(width: 12),
-                GestureDetector(
-                  onTap: _verses.isNotEmpty ? _toggleViewMode : null,
-                  child: Icon(
-                    _viewMode == ViewMode.interlinear 
-                        ? Icons.text_fields 
-                        : Icons.text_fields_outlined,
-                    color: _verses.isNotEmpty ? colorScheme.primary : colorScheme.onSurface.withOpacity(0.38),
                     size: 24,
                   ),
                 ),

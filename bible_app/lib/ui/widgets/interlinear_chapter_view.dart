@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:bible_core/models/verse.dart';
 import 'package:bible_core/data/sources/tahot_repository.dart';
+import 'package:bible_core/data/sources/tagnt_repository.dart';
+import 'package:bible_app/ui/models/interlinear_word.dart';
 
 /// Displays multiple verses in interlinear format for chapter reading
 /// Shows Hebrew/Greek text alongside English translation
@@ -21,7 +23,7 @@ class InterlinearChapterView extends StatefulWidget {
 }
 
 class _InterlinearChapterViewState extends State<InterlinearChapterView> {
-  final Map<int, List<TAHOTWord>> _verseData = {};
+  final Map<int, List<InterlinearWord>> _verseData = {};
   final Map<int, bool> _loading = {};
 
   @override
@@ -52,15 +54,33 @@ class _InterlinearChapterViewState extends State<InterlinearChapterView> {
       });
 
       try {
+        List<InterlinearWord>? words;
+        
+        // Try loading from TAHOT (Hebrew OT) first
         final tahot = await TAHOTRepository.instance.getVerse(
           widget.bookId,
           widget.chapter,
           verse.number,
         );
         
-        if (mounted && tahot != null) {
+        if (tahot != null) {
+          words = tahot.map((w) => InterlinearWord.fromTAHOT(w)).toList();
+        } else {
+          // If not in TAHOT, try TAGNT (Greek NT)
+          final tagnt = await TAGNTRepository.instance.getVerse(
+            widget.bookId,
+            widget.chapter,
+            verse.number,
+          );
+          
+          if (tagnt != null) {
+            words = tagnt.map((w) => InterlinearWord.fromTAGNT(w)).toList();
+          }
+        }
+        
+        if (mounted && words != null) {
           setState(() {
-            _verseData[verse.number] = tahot;
+            _verseData[verse.number] = words!;  // Safe to use ! here since we checked above
             _loading[verse.number] = false;
           });
         } else if (mounted) {
@@ -85,16 +105,16 @@ class _InterlinearChapterViewState extends State<InterlinearChapterView> {
       itemCount: widget.verses.length,
       itemBuilder: (context, index) {
         final verse = widget.verses[index];
-        final tahotWords = _verseData[verse.number];
+        final words = _verseData[verse.number];
         final isLoading = _loading[verse.number] ?? true;
 
-        return _buildInterlinearVerse(verse, tahotWords, isLoading);
+        return _buildInterlinearVerse(verse, words, isLoading);
       },
     );
   }
 
-  Widget _buildInterlinearVerse(Verse verse, List<TAHOTWord>? tahotWords, bool isLoading) {
-    final hasData = tahotWords != null && tahotWords.isNotEmpty;
+  Widget _buildInterlinearVerse(Verse verse, List<InterlinearWord>? words, bool isLoading) {
+    final hasData = words != null && words.isNotEmpty;
 
     return Container(
       margin: const EdgeInsets.only(bottom: 24),
@@ -121,7 +141,7 @@ class _InterlinearChapterViewState extends State<InterlinearChapterView> {
 
           // Hebrew/Greek text (if available)
           if (hasData) ...[
-            _buildOriginalLanguageText(tahotWords),
+            _buildOriginalLanguageText(words),
             const SizedBox(height: 12),
           ] else if (isLoading) ...[
             const SizedBox(
@@ -145,17 +165,16 @@ class _InterlinearChapterViewState extends State<InterlinearChapterView> {
           // Word glosses (compact format for chapter view)
           if (hasData) ...[
             const SizedBox(height: 8),
-            _buildCompactGlosses(tahotWords),
+            _buildCompactGlosses(words),
           ],
         ],
       ),
     );
   }
 
-  Widget _buildOriginalLanguageText(List<TAHOTWord> words) {
+  Widget _buildOriginalLanguageText(List<InterlinearWord> words) {
     // Determine if this is Hebrew (RTL) or Greek (LTR)
-    final isHebrew = words.isNotEmpty && 
-                     words.first.hebrew.isNotEmpty;
+    final isHebrew = words.isNotEmpty && words.first.isHebrew;
 
     return Wrap(
       direction: Axis.horizontal,
@@ -164,8 +183,8 @@ class _InterlinearChapterViewState extends State<InterlinearChapterView> {
       runSpacing: 4,
       children: words.map((word) {
         // Remove prefix markers (/) from Hebrew text
-        final displayText = word.hebrew.isNotEmpty 
-            ? word.hebrew.replaceAll('/', '')
+        final displayText = word.originalText.isNotEmpty 
+            ? word.originalText.replaceAll('/', '')
             : word.translit;
             
         return Text(
@@ -182,7 +201,7 @@ class _InterlinearChapterViewState extends State<InterlinearChapterView> {
     );
   }
 
-  Widget _buildCompactGlosses(List<TAHOTWord> words) {
+  Widget _buildCompactGlosses(List<InterlinearWord> words) {
     return Wrap(
       spacing: 6,
       runSpacing: 4,

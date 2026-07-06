@@ -1,0 +1,27 @@
+TAGNT - Translators Amalgamated Greek New Testament
+===================================================
+
+Source: STEPBible.org
+License: CC BY 4.0 (Creative Commons Attribution 4.0 International)
+URL: https://github.com/STEPBible/STEPBible-Data
+
+Description:
+All the words from standard Greek editions (NA27/28, TR, SBL, TH, Byz, WH, Treg)
+with translations, grammar, sources & variants that affect translation.
+
+Provides enhanced Greek New Testament text with transliteration, English glosses,
+disambiguated Strong's numbers, and full morphological analysis for all words.
+
+Attribution:
+Data created by www.STEPBible.org based on work at Tyndale House Cambridge (CC BY 4.0)
+
+You may:
+- Include any part of this data in software or publications without requesting permission
+- Make changes to the data and record the differences
+- Refer others to github.com/STEPBible as the source of the data
+
+You should:
+- Credit it to "STEP Bible" linked to www.STEPBible.org
+- Note any changes made to the original data
+
+For questions or corrections: STEPBible@gmail.com
