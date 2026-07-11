@@ -729,6 +729,7 @@ class ReaderScreenState extends State<ReaderScreen> {
 
     return ConfigurableChapterView(
       chapter: chapter,
+      bookName: _currentBook?.name,
       view: _selectedView,
     );
   }

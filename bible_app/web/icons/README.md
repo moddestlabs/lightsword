@@ -123,13 +123,23 @@ After creating icons:
 
 ## Current Status
 
-⚠️ **Icons not yet created** - Placeholder references in manifest.json
+✅ Generated assets now exist in `bible_app/web/icons/`:
+- `Icon-192.png`
+- `Icon-512.png`
+- `apple-touch-icon.png`
+- `lightsword_app_icon.svg` (source)
 
-When icons are ready:
-1. Place in `bible_app/web/icons/`
-2. Ensure filenames match manifest.json
-3. Test in browser DevTools
-4. Rebuild and deploy
+✅ Additional browser asset:
+- `bible_app/web/favicon.ico`
+
+### SVG Source
+
+- `lightsword_app_icon.svg` - Source vector icon with a cross-and-sword mark in the app's sepia palette
+- Export this SVG to create `Icon-192.png`, `Icon-512.png`, and `apple-touch-icon.png`
+
+Next steps:
+1. Test in browser DevTools
+2. Rebuild and deploy
 
 ## Resources
 

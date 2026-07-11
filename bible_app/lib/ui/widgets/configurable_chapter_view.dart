@@ -1,17 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:bible_core/bible_core.dart';
-import 'package:bible_core/data/sources/tagnt_repository.dart';
-import 'package:bible_core/data/sources/tahot_repository.dart';
+import 'package:bible_core/services/bookmark_service.dart';
+import 'package:bible_app/services/local_bookmark_service.dart';
+import 'package:bible_app/services/tts_service.dart';
 import 'package:bible_app/ui/models/chapter_view_definition.dart';
 import 'package:bible_app/ui/models/interlinear_word.dart';
+import 'package:bible_app/ui/widgets/interlinear_view.dart';
 
 class ConfigurableChapterView extends StatefulWidget {
   final Chapter chapter;
+  final String? bookName;
   final ChapterViewDefinition view;
 
   const ConfigurableChapterView({
     super.key,
     required this.chapter,
+    this.bookName,
     required this.view,
   });
 
@@ -22,6 +28,8 @@ class ConfigurableChapterView extends StatefulWidget {
 class _ConfigurableChapterViewState extends State<ConfigurableChapterView> {
   final Map<int, List<InterlinearWord>> _verseData = {};
   final Map<int, bool> _loading = {};
+  final Map<int, Bookmark> _bookmarksByVerse = {};
+  int? _selectedVerseNumber;
 
   bool get _needsInterlinearData {
     return widget.view.showOriginalLanguage || widget.view.showGloss;
@@ -31,6 +39,7 @@ class _ConfigurableChapterViewState extends State<ConfigurableChapterView> {
   void initState() {
     super.initState();
     _loadInterlinearDataIfNeeded();
+    _loadBookmarks();
   }
 
   @override
@@ -47,8 +56,117 @@ class _ConfigurableChapterViewState extends State<ConfigurableChapterView> {
     if (chapterChanged || dataRequirementsChanged) {
       _verseData.clear();
       _loading.clear();
+      _bookmarksByVerse.clear();
+      _selectedVerseNumber = null;
       _loadInterlinearDataIfNeeded();
+      _loadBookmarks();
     }
+  }
+
+  Future<void> _loadBookmarks() async {
+    final bookmarks = await LocalBookmarkService.instance.getBookmarks();
+    if (!mounted) return;
+
+    setState(() {
+      _bookmarksByVerse
+        ..clear()
+        ..addEntries(
+          bookmarks
+              .where(
+                (bookmark) =>
+                    bookmark.bookId == widget.chapter.bookId &&
+                    bookmark.chapter == widget.chapter.number,
+              )
+              .map((bookmark) => MapEntry(bookmark.verse, bookmark)),
+        );
+    });
+  }
+
+  void _handleVerseTap(BuildContext context, Verse verse) {
+    if (_selectedVerseNumber == verse.number) {
+      _openVerseDetails(context, verse);
+      return;
+    }
+
+    setState(() {
+      _selectedVerseNumber = verse.number;
+    });
+  }
+
+  Future<void> _openVerseDetails(BuildContext context, Verse verse) {
+    return InterlinearReaderPage.show(
+      context: context,
+      bookName: widget.bookName ?? widget.chapter.bookId,
+      bookId: widget.chapter.bookId,
+      chapter: widget.chapter.number,
+      verseNumber: verse.number,
+      verse: verse,
+    );
+  }
+
+  Future<void> _playVerse(Verse verse) {
+    return TtsService.instance.speak(verse.text);
+  }
+
+  Future<void> _copyVerse(BuildContext context, Verse verse) async {
+    final messenger = ScaffoldMessenger.of(context);
+    await Clipboard.setData(ClipboardData(text: _buildCopyText(verse)));
+    if (!mounted) return;
+
+    messenger.showSnackBar(
+      const SnackBar(
+        content: Text('Copied to clipboard'),
+        duration: Duration(seconds: 1),
+      ),
+    );
+  }
+
+  Future<void> _toggleBookmark(BuildContext context, Verse verse) async {
+    final messenger = ScaffoldMessenger.of(context);
+    final existingBookmark = _bookmarksByVerse[verse.number];
+
+    if (existingBookmark != null) {
+      await LocalBookmarkService.instance.removeBookmark(existingBookmark.id);
+      if (!mounted) return;
+
+      setState(() {
+        _bookmarksByVerse.remove(verse.number);
+      });
+
+      messenger.showSnackBar(
+        SnackBar(
+          content: Text(
+            'Removed bookmark from ${widget.chapter.bookId} ${widget.chapter.number}:${verse.number}',
+          ),
+          duration: const Duration(seconds: 1),
+        ),
+      );
+      return;
+    }
+
+    final bookmark = Bookmark(
+      id: '${widget.chapter.bookId}-${widget.chapter.number}-${verse.number}',
+      bookId: widget.chapter.bookId,
+      chapter: widget.chapter.number,
+      verse: verse.number,
+      createdAt: DateTime.now(),
+    );
+
+    await LocalBookmarkService.instance.addBookmark(bookmark);
+    if (!mounted) return;
+
+    setState(() {
+      _bookmarksByVerse[verse.number] = bookmark;
+    });
+
+    messenger.showSnackBar(
+      SnackBar(
+        content: Text(
+          'Bookmarked ${widget.chapter.bookId} ${widget.chapter.number}:${verse.number}',
+        ),
+        duration: const Duration(seconds: 1),
+      ),
+    );
   }
 
   Future<void> _loadInterlinearDataIfNeeded() async {
@@ -167,48 +285,164 @@ class _ConfigurableChapterViewState extends State<ConfigurableChapterView> {
     bool isLoading,
   ) {
     final colorScheme = Theme.of(context).colorScheme;
+    final isSelected = _selectedVerseNumber == verse.number;
+    final isBookmarked = _bookmarksByVerse.containsKey(verse.number);
 
-    return Container(
-      margin: EdgeInsets.only(bottom: widget.view.lineByLine ? 20 : 12),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+    return Slidable(
+      key: ValueKey(
+        'verse-${widget.chapter.bookId}-${widget.chapter.number}-${verse.number}',
+      ),
+      endActionPane: ActionPane(
+        motion: const DrawerMotion(),
+        extentRatio: 0.42,
         children: [
-          if (widget.view.showVerseNumbers && widget.view.lineByLine)
-            Container(
-              margin: const EdgeInsets.only(bottom: 8),
-              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-              decoration: BoxDecoration(
-                color: colorScheme.primaryContainer,
-                borderRadius: BorderRadius.circular(4),
-              ),
-              child: Text(
-                '${verse.number}',
-                style: TextStyle(
-                  fontSize: 12,
-                  fontWeight: FontWeight.w600,
-                  color: colorScheme.onPrimaryContainer,
-                ),
+          SlidableAction(
+            onPressed: (_) {
+              _toggleBookmark(context, verse);
+            },
+            backgroundColor: isBookmarked
+                ? colorScheme.secondaryContainer
+                : colorScheme.primaryContainer,
+            foregroundColor: isBookmarked
+                ? colorScheme.onSecondaryContainer
+                : colorScheme.onPrimaryContainer,
+            icon: isBookmarked ? Icons.bookmark : Icons.bookmark_outline,
+            label: isBookmarked ? 'Saved' : 'Bookmark',
+            borderRadius: BorderRadius.circular(16),
+          ),
+          SlidableAction(
+            onPressed: (_) {
+              _copyVerse(context, verse);
+            },
+            backgroundColor: colorScheme.surfaceContainerHighest,
+            foregroundColor: colorScheme.onSurfaceVariant,
+            icon: Icons.copy_outlined,
+            label: 'Copy',
+            borderRadius: BorderRadius.circular(16),
+          ),
+        ],
+      ),
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 180),
+        margin: EdgeInsets.only(bottom: widget.view.lineByLine ? 20 : 12),
+        padding: const EdgeInsets.all(12),
+        decoration: BoxDecoration(
+          color: isSelected
+              ? colorScheme.primaryContainer.withValues(alpha: 0.32)
+              : Colors.transparent,
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(
+            color: isSelected
+                ? colorScheme.primary.withValues(alpha: 0.35)
+                : Colors.transparent,
+          ),
+        ),
+        child: Material(
+          color: Colors.transparent,
+          child: InkWell(
+            borderRadius: BorderRadius.circular(12),
+            onTap: () => _handleVerseTap(context, verse),
+            child: Padding(
+              padding: const EdgeInsets.all(4),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  if (widget.view.showVerseNumbers && widget.view.lineByLine)
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Container(
+                          margin: const EdgeInsets.only(bottom: 8),
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 8,
+                            vertical: 4,
+                          ),
+                          decoration: BoxDecoration(
+                            color: colorScheme.primaryContainer,
+                            borderRadius: BorderRadius.circular(4),
+                          ),
+                          child: Text(
+                            '${verse.number}',
+                            style: TextStyle(
+                              fontSize: 12,
+                              fontWeight: FontWeight.w600,
+                              color: colorScheme.onPrimaryContainer,
+                            ),
+                          ),
+                        ),
+                        if (isBookmarked) ...[
+                          const SizedBox(width: 8),
+                          Padding(
+                            padding: const EdgeInsets.only(bottom: 8),
+                            child: Icon(
+                              Icons.bookmark,
+                              size: 16,
+                              color: colorScheme.primary,
+                            ),
+                          ),
+                        ],
+                      ],
+                    ),
+                  if (widget.view.showOriginalLanguage)
+                    _buildOriginalLanguageBlock(context, words, isLoading),
+                  if (widget.view.showTranslation)
+                    Padding(
+                      padding: EdgeInsets.only(
+                        top: widget.view.showOriginalLanguage ? 10 : 0,
+                        bottom: widget.view.showGloss ? 8 : 0,
+                      ),
+                      child: Text(
+                        _buildTranslationText(verse),
+                        style: TextStyle(
+                          fontSize: widget.view.lineByLine ? 16 : 18,
+                          height: 1.7,
+                          color: colorScheme.onSurface,
+                        ),
+                      ),
+                    ),
+                  if (widget.view.showGloss)
+                    _buildGlossBlock(context, verse.number, words, isLoading),
+                  if (isSelected) _buildSelectedActions(context, verse),
+                ],
               ),
             ),
-          if (widget.view.showOriginalLanguage)
-            _buildOriginalLanguageBlock(context, words, isLoading),
-          if (widget.view.showTranslation)
-            Padding(
-              padding: EdgeInsets.only(
-                top: widget.view.showOriginalLanguage ? 10 : 0,
-                bottom: widget.view.showGloss ? 8 : 0,
-              ),
-              child: Text(
-                _buildTranslationText(verse),
-                style: TextStyle(
-                  fontSize: widget.view.lineByLine ? 16 : 18,
-                  height: 1.7,
-                  color: colorScheme.onSurface,
-                ),
-              ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildSelectedActions(BuildContext context, Verse verse) {
+    final colorScheme = Theme.of(context).colorScheme;
+
+    return Padding(
+      padding: const EdgeInsets.only(top: 12),
+      child: Wrap(
+        spacing: 8,
+        runSpacing: 8,
+        crossAxisAlignment: WrapCrossAlignment.center,
+        children: [
+          _VerseActionChip(
+            icon: Icons.play_arrow_rounded,
+            label: 'Play',
+            onTap: () {
+              _playVerse(verse);
+            },
+          ),
+          _VerseActionChip(
+            icon: Icons.menu_book_outlined,
+            label: 'Details',
+            onTap: () {
+              _openVerseDetails(context, verse);
+            },
+          ),
+          Text(
+            'Tap the verse again to open details',
+            style: TextStyle(
+              fontSize: 12,
+              color: colorScheme.onSurfaceVariant,
             ),
-          if (widget.view.showGloss)
-            _buildGlossBlock(context, verse.number, words, isLoading),
+          ),
         ],
       ),
     );
@@ -239,7 +473,7 @@ class _ConfigurableChapterViewState extends State<ConfigurableChapterView> {
 
     final direction = _resolveTextDirection(words);
     final originalText = words
-      .map((word) => word.displayOriginalText)
+        .map((word) => word.displayOriginalText)
         .where((word) => word.isNotEmpty)
         .join(' ');
 
@@ -296,6 +530,11 @@ class _ConfigurableChapterViewState extends State<ConfigurableChapterView> {
     return '${verse.number}. ${verse.text}';
   }
 
+  String _buildCopyText(Verse verse) {
+    final bookLabel = widget.bookName ?? widget.chapter.bookId;
+    return '$bookLabel ${widget.chapter.number}:${verse.number} ${verse.text}';
+  }
+
   TextDirection _resolveTextDirection(List<InterlinearWord> words) {
     switch (widget.view.originalLanguageTextDirection) {
       case ChapterViewTextDirection.ltr:
@@ -308,5 +547,48 @@ class _ConfigurableChapterViewState extends State<ConfigurableChapterView> {
         }
         return TextDirection.ltr;
     }
+  }
+}
+
+class _VerseActionChip extends StatelessWidget {
+  final IconData icon;
+  final String label;
+  final VoidCallback onTap;
+
+  const _VerseActionChip({
+    required this.icon,
+    required this.label,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
+    return Material(
+      color: colorScheme.surface,
+      borderRadius: BorderRadius.circular(999),
+      child: InkWell(
+        borderRadius: BorderRadius.circular(999),
+        onTap: onTap,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(icon, size: 18, color: colorScheme.primary),
+              const SizedBox(width: 6),
+              Text(
+                label,
+                style: TextStyle(
+                  color: colorScheme.onSurface,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }

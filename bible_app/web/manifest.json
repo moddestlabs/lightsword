@@ -1,7 +1,7 @@
 {
     "name": "LIGHTSWORD - Bible Study",
     "short_name": "LIGHTSWORD",
-    "start_url": ".",
+    "start_url": "./",
     "display": "standalone",
     "background_color": "#FFFEF8",
     "theme_color": "#8B4513",
@@ -11,7 +11,7 @@
     "categories": ["education", "books", "reference"],
     "lang": "en-US",
     "dir": "auto",
-    "scope": "/",
+    "scope": "./",
     "icons": [
         {
             "src": "icons/Icon-192.png",
@@ -31,7 +31,7 @@
             "name": "Read Bible",
             "short_name": "Read",
             "description": "Open Bible reader",
-            "url": "/#/read",
+            "url": "./#/read",
             "icons": [
                 {
                     "src": "icons/Icon-192.png",
@@ -43,7 +43,7 @@
             "name": "Study Mode",
             "short_name": "Study",
             "description": "Open study tools",
-            "url": "/#/study",
+            "url": "./#/study",
             "icons": [
                 {
                     "src": "icons/Icon-192.png",
@@ -54,7 +54,7 @@
     ],
     "screenshots": [],
     "share_target": {
-        "action": "/share",
+        "action": "./share",
         "method": "GET",
         "params": {
             "text": "reference"

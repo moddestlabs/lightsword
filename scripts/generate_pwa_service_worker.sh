@@ -17,6 +17,29 @@ fi
 build_dir="$(cd "$build_dir" && pwd)"
 service_worker_path="$build_dir/lightsword_service_worker.js"
 
+precache_allowlist=(
+  '.last_build_id'
+  'index.html'
+  'main.dart.js'
+  'flutter.js'
+  'flutter_bootstrap.js'
+  'manifest.json'
+  'pwa.js'
+  'version.json'
+  'assets/AssetManifest.bin'
+  'assets/AssetManifest.bin.json'
+  'assets/FontManifest.json'
+  'assets/NOTICES'
+  'assets/fonts/MaterialIcons-Regular.otf'
+  'assets/packages/cupertino_icons/assets/CupertinoIcons.ttf'
+  'assets/shaders/ink_sparkle.frag'
+  'assets/shaders/stretch_effect.frag'
+  'canvaskit/canvaskit.js'
+  'canvaskit/canvaskit.wasm'
+  'icons/Icon-192.png'
+  'icons/Icon-512.png'
+)
+
 mapfile -d '' all_files < <(
   cd "$build_dir"
   find . -type f \
@@ -36,19 +59,10 @@ version="$({
 
 precache_urls=("./")
 
-for relative_path in "${all_files[@]}"; do
-  relative_path="${relative_path#./}"
-
-  case "$relative_path" in
-    assets/assets/data/*)
-      continue
-      ;;
-    assets/packages/bible_core/assets/data/*)
-      continue
-      ;;
-  esac
-
-  precache_urls+=("$relative_path")
+for relative_path in "${precache_allowlist[@]}"; do
+  if [[ -f "$build_dir/$relative_path" ]]; then
+    precache_urls+=("$relative_path")
+  fi
 done
 
 write_js_array() {
