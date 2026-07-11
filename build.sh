@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Script to build and serve the LIGHTSWORD web app
-# Usage: ./serve_web.sh [--clean] [--port PORT]
+# Usage: ./build.sh [--clean] [--port PORT]
 
 set -e  # Exit on error
 
@@ -28,6 +28,14 @@ while [[ $# -gt 0 ]]; do
   esac
 done
 
+# Kill any existing Python HTTP servers
+echo "🛑 Checking for existing servers..."
+if pgrep -f "python.*http.server" > /dev/null; then
+  echo "   Stopping existing Python HTTP servers..."
+  pkill -f "python.*http.server" || true
+  sleep 1
+fi
+
 # Change to the bible_app directory
 cd "$(dirname "$0")/bible_app"
 
@@ -41,7 +49,10 @@ fi
 
 # Build the web version
 echo "📦 Building for web..."
-flutter build web --release
+flutter build web --release --no-wasm-dry-run
+
+echo "🧰 Generating offline service worker..."
+../scripts/generate_pwa_service_worker.sh build/web
 
 # Check if build was successful
 if [ ! -d "build/web" ]; then
@@ -53,8 +64,10 @@ fi
 cd build/web
 
 echo "✅ Build complete!"
-echo "🌐 Starting web server on http://localhost:$PORT"
-echo "📖 Press Ctrl+C to stop the server"
+echo ""
+echo "🌐 Starting fresh web server on http://localhost:$PORT"
+echo "📖 Open the URL above in your browser to see the latest changes"
+echo "🛑 Press Ctrl+C to stop the server"
 echo ""
 
 # Start the Python HTTP server

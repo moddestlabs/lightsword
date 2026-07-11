@@ -23,59 +23,6 @@
   
   <!-- PWA helpers -->
   <script src="pwa.js"></script>
-
-  <script>
-    // Service worker registration
-    var serviceWorkerVersion = null;
-    var scriptLoaded = false;
-    function loadMainDartJs() {
-      if (scriptLoaded) {
-        return;
-      }
-      scriptLoaded = true;
-      var scriptTag = document.createElement('script');
-      scriptTag.src = 'main.dart.js';
-      scriptTag.type = 'application/javascript';
-      document.body.append(scriptTag);
-    }
-
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', function () {
-        var serviceWorkerUrl = 'flutter_service_worker.js?v=' + serviceWorkerVersion;
-        navigator.serviceWorker.register(serviceWorkerUrl)
-          .then((reg) => {
-            function waitForActivation(serviceWorker) {
-              serviceWorker.addEventListener('statechange', () => {
-                if (serviceWorker.state == 'activated') {
-                  console.log('Installed new service worker.');
-                  loadMainDartJs();
-                }
-              });
-            }
-            if (!reg.active && (reg.installing || reg.waiting)) {
-              waitForActivation(reg.installing || reg.waiting);
-            } else if (!reg.active.scriptURL.endsWith(serviceWorkerVersion)) {
-              const waiting = reg.waiting;
-              if (waiting != null) {
-                waitForActivation(waiting);
-                return;
-              }
-              const installing = reg.installing;
-              if (installing != null) {
-                waitForActivation(installing);
-                return;
-              }
-              reg.update();
-              waitForActivation(reg.installing);
-            } else {
-              loadMainDartJs();
-            }
-          });
-      });
-    } else {
-      loadMainDartJs();
-    }
-  </script>
 </head>
 <body>
   <script src="flutter_bootstrap.js" async></script>

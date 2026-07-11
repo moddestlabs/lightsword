@@ -26,3 +26,7 @@ Thumbs.db
 # Coverage
 coverage/
 *.lcov
+
+# Local data regeneration artifacts
+scripts/tahot/raw/
+scripts/tahot/output/

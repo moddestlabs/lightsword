@@ -239,7 +239,7 @@ class __InterlinearWordCardState extends State<_InterlinearWordCard> {
         children: [
           // Original language text (Hebrew or Greek)
           Text(
-            widget.word.originalText.replaceAll('/', ''), // Remove prefix markers
+            widget.word.displayOriginalText,
             style: TextStyle(
               fontSize: 28,
               color: Theme.of(context).colorScheme.primary,
@@ -581,7 +581,7 @@ class _InterlinearReaderPageState extends State<InterlinearReaderPage> {
     
     // Construct full original text from all words
     final originalText = words
-        .map((w) => w.originalText.replaceAll('/', '')) // Remove prefix markers
+      .map((w) => w.displayOriginalText)
         .join(' ');
     
     // Construct transliteration for fallback

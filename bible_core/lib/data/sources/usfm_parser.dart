@@ -122,9 +122,10 @@ class UsfmParser {
         
         // For poetry lines and other content, remove the marker and keep the text
         var content = trimmed;
-        // Remove poetry markers (\q1, \q2, etc.) and paragraph markers (\p)
+        // Remove continuation markers such as \q1, \pmo, or \m before keeping text.
         content = content.replaceAll(RegExp(r'^\\q\d*\s*'), '');
-        content = content.replaceAll(RegExp(r'^\\p\s*'), '');
+        content = content.replaceAll(RegExp(r'^\\p[a-z0-9]*\s*'), '');
+        content = content.replaceAll(RegExp(r'^\\m[a-z0-9]*\s*'), '');
         
         if (content.isNotEmpty) {
           verseContentBuffer.write(content);

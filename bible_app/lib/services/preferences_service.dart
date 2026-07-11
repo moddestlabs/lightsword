@@ -1,9 +1,13 @@
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/material.dart';
+import 'package:bible_app/ui/models/chapter_view_definition.dart';
 
 /// Service for managing user preferences and settings
 class PreferencesService {
   static const String _themeModeKey = 'theme_mode';
+  static const String _appearancePaletteKey = 'appearance_palette';
+  static const String _customChapterViewsKey = 'custom_chapter_views';
+  static const String _selectedChapterViewIdKey = 'selected_chapter_view_id';
   
   static PreferencesService? _instance;
   static PreferencesService get instance {
@@ -52,11 +56,54 @@ class PreferencesService {
         modeString = 'dark';
         break;
       case ThemeMode.system:
-      default:
         modeString = 'system';
         break;
     }
     
     await _prefs!.setString(_themeModeKey, modeString);
+  }
+
+  /// Get the saved appearance palette id.
+  /// Returns null if not set.
+  String? getAppearancePalette() {
+    if (_prefs == null) return null;
+    return _prefs!.getString(_appearancePaletteKey);
+  }
+
+  /// Save the appearance palette id.
+  Future<void> setAppearancePalette(String paletteId) async {
+    if (_prefs == null) return;
+    await _prefs!.setString(_appearancePaletteKey, paletteId);
+  }
+
+  /// Get all saved custom chapter views.
+  List<ChapterViewDefinition> getCustomChapterViews() {
+    if (_prefs == null) return const [];
+
+    return ChapterViewDefinition.decodeList(
+      _prefs!.getString(_customChapterViewsKey),
+    );
+  }
+
+  /// Save custom chapter views.
+  Future<void> setCustomChapterViews(List<ChapterViewDefinition> views) async {
+    if (_prefs == null) return;
+
+    await _prefs!.setString(
+      _customChapterViewsKey,
+      ChapterViewDefinition.encodeList(views),
+    );
+  }
+
+  /// Get the selected chapter view id.
+  String? getSelectedChapterViewId() {
+    if (_prefs == null) return null;
+    return _prefs!.getString(_selectedChapterViewIdKey);
+  }
+
+  /// Save the selected chapter view id.
+  Future<void> setSelectedChapterViewId(String viewId) async {
+    if (_prefs == null) return;
+    await _prefs!.setString(_selectedChapterViewIdKey, viewId);
   }
 }

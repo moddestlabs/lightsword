@@ -43,6 +43,10 @@ jobs:
       - name: Build web
         working-directory: ./bible_app
         run: flutter build web --release --base-href /lightsword/
+
+      - name: Generate PWA service worker
+        working-directory: ./bible_app
+        run: ../scripts/generate_pwa_service_worker.sh build/web
       
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3

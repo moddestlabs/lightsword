@@ -75,9 +75,38 @@ class _HomeScreenState extends State<HomeScreen> {
     _readerKey.currentState?.setInterlinearMode();
   }
 
+  void _setVerseMode() {
+    // Always set to verse reading mode
+    _readerKey.currentState?.setVerseMode();
+  }
+
+  void _handleReadDestination() {
+    final readerState = _readerKey.currentState;
+
+    if (_currentIndex != 0) {
+      setState(() {
+        _currentIndex = 0;
+      });
+      readerState?.showCurrentReadingView();
+      return;
+    }
+
+    if (readerState?.isShowingStudySurface ?? false) {
+      readerState?.showCurrentReadingView();
+      return;
+    }
+
+    readerState?.cycleAvailableView();
+  }
+
   void _setStandardMode() {
-    // Always set to standard reading mode
-    _readerKey.currentState?.setStandardMode();
+    // Alias for setVerseMode for backward compatibility
+    _setVerseMode();
+  }
+
+  void _setStudyMode() {
+    // Set to study mode (new mode with highlights and arcs)
+    _readerKey.currentState?.setStudyMode();
   }
 
   @override
@@ -98,19 +127,16 @@ class _HomeScreenState extends State<HomeScreen> {
         selectedIndex: _currentIndex == 0 ? 0 : _currentIndex + 1,
         onDestinationSelected: (index) {
           if (index == 0) {
-            // Read button - switch to standard mode and ensure we're on reader screen
-            setState(() {
-              _currentIndex = 0;
-            });
-            _setStandardMode();
+            // Read button - return to reading, then cycle views on repeated taps
+            _handleReadDestination();
             return;
           }
           if (index == 1) {
-            // Study button - switch to interlinear mode and ensure we're on reader screen
+            // Study button - switch to study mode with annotations
             setState(() {
               _currentIndex = 0;
             });
-            _setInterlinearMode();
+            _setStudyMode();
             return;
           }
           // Adjust index for other screens (Library is now index 1, Settings is 2)

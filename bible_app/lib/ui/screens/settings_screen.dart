@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:provider/provider.dart';
 import 'package:bible_app/services/tts_service.dart';
-import 'package:bible_app/services/pwa_service.dart';
 import 'package:bible_app/state/theme_provider.dart';
 import '../widgets/pwa_widgets.dart';
 
@@ -32,7 +31,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ),
           ListTile(
             title: const Text('Theme'),
-            subtitle: Text(_getThemeModeLabel(themeProvider.themeMode)),
+            subtitle: Text(
+              '${_getThemeModeLabel(themeProvider.themeMode)} • ${themeProvider.palette.label}',
+            ),
             leading: Icon(_getThemeModeIcon(themeProvider.themeMode)),
             trailing: const Icon(Icons.chevron_right),
             onTap: () {
@@ -62,8 +63,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ),
           const Divider(),
           if (kIsWeb)
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16),
               child: TtsCapabilityIndicator(),
             ),
           const ListTile(
@@ -161,7 +162,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
       case ThemeMode.dark:
         return 'Dark';
       case ThemeMode.system:
-      default:
         return 'System';
     }
   }
@@ -173,7 +173,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
       case ThemeMode.dark:
         return Icons.dark_mode;
       case ThemeMode.system:
-      default:
         return Icons.brightness_auto;
     }
   }
@@ -181,58 +180,85 @@ class _SettingsScreenState extends State<SettingsScreen> {
   Future<void> _showThemeDialog(BuildContext context, ThemeProvider themeProvider) async {
     return showDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Choose Theme'),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            RadioListTile<ThemeMode>(
-              title: const Text('System'),
-              subtitle: const Text('Follow system theme'),
-              value: ThemeMode.system,
-              groupValue: themeProvider.themeMode,
-              secondary: const Icon(Icons.brightness_auto),
-              onChanged: (value) {
-                if (value != null) {
-                  themeProvider.setThemeMode(value);
-                  Navigator.of(context).pop();
-                }
-              },
+      builder: (context) => Consumer<ThemeProvider>(
+        builder: (context, provider, child) => AlertDialog(
+          title: const Text('Theme'),
+          content: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Mode',
+                  style: Theme.of(context).textTheme.titleSmall,
+                ),
+                RadioGroup<ThemeMode>(
+                  groupValue: provider.themeMode,
+                  onChanged: (value) {
+                    if (value != null) {
+                      provider.setThemeMode(value);
+                    }
+                  },
+                  child: const Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      RadioListTile<ThemeMode>(
+                        title: Text('System'),
+                        subtitle: Text('Follow system theme'),
+                        value: ThemeMode.system,
+                        secondary: Icon(Icons.brightness_auto),
+                      ),
+                      RadioListTile<ThemeMode>(
+                        title: Text('Light'),
+                        subtitle: Text('Always use light theme'),
+                        value: ThemeMode.light,
+                        secondary: Icon(Icons.light_mode),
+                      ),
+                      RadioListTile<ThemeMode>(
+                        title: Text('Dark'),
+                        subtitle: Text('Always use dark theme'),
+                        value: ThemeMode.dark,
+                        secondary: Icon(Icons.dark_mode),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 12),
+                Text(
+                  'Palette',
+                  style: Theme.of(context).textTheme.titleSmall,
+                ),
+                RadioGroup<AppPalette>(
+                  groupValue: provider.palette,
+                  onChanged: (value) {
+                    if (value != null) {
+                      provider.setPalette(value);
+                    }
+                  },
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: AppPalette.values
+                        .map(
+                          (palette) => RadioListTile<AppPalette>(
+                            title: Text(palette.label),
+                            subtitle: Text(palette.description),
+                            value: palette,
+                            secondary: Icon(palette.icon),
+                          ),
+                        )
+                        .toList(),
+                  ),
+                ),
+              ],
             ),
-            RadioListTile<ThemeMode>(
-              title: const Text('Light'),
-              subtitle: const Text('Always use light theme'),
-              value: ThemeMode.light,
-              groupValue: themeProvider.themeMode,
-              secondary: const Icon(Icons.light_mode),
-              onChanged: (value) {
-                if (value != null) {
-                  themeProvider.setThemeMode(value);
-                  Navigator.of(context).pop();
-                }
-              },
-            ),
-            RadioListTile<ThemeMode>(
-              title: const Text('Dark'),
-              subtitle: const Text('Always use dark theme'),
-              value: ThemeMode.dark,
-              groupValue: themeProvider.themeMode,
-              secondary: const Icon(Icons.dark_mode),
-              onChanged: (value) {
-                if (value != null) {
-                  themeProvider.setThemeMode(value);
-                  Navigator.of(context).pop();
-                }
-              },
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text('Done'),
             ),
           ],
         ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: const Text('Cancel'),
-          ),
-        ],
       ),
     );
   }
@@ -292,83 +318,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
   }
 
   List<Widget> _buildPwaWidgets() {
-    // PWA service temporarily disabled due to dart:js compatibility issues
     return [];
-    
-    /* Disabled code:
-    final pwa = PwaService.instance;
-    
-    if (!pwa.isAvailable) {
-      return [];
-    }
-
-    final platform = pwa.platformInfo;
-    final storage = pwa.storageInfo;
-
-    return [
-      const Divider(),
-      ListTile(
-        title: const Text('Platform'),
-        subtitle: Text(_getPlatformDescription(platform)),
-        leading: Icon(
-          platform?.isStandalone ?? false
-              ? Icons.install_mobile
-              : Icons.web,
-        ),
-      ),
-      if (storage != null)
-        ListTile(
-          title: const Text('Storage'),
-          subtitle: Text(
-            '${storage.usageMB} MB used of ${storage.quotaMB} MB\n'
-            '${storage.persisted ? "Persisted" : "May be cleared by browser"}',
-          ),
-          leading: Icon(
-            storage.persisted ? Icons.storage : Icons.storage_outlined,
-          ),
-          trailing: TextButton(
-            onPressed: _refreshStorageInfo,
-            child: const Text('Refresh'),
-          ),
-        ),
-    ];
-    */
   }
-
-  String _getPlatformDescription(dynamic platform) {
-    if (platform == null) return 'Web Browser';
-    
-    final parts = <String>[];
-    if (platform.isStandalone) {
-      parts.add('Installed PWA');
-    } else {
-      parts.add('Web Browser');
-    }
-    
-    if (platform.isIOS) {
-      parts.add('iOS');
-    } else if (platform.isAndroid) {
-      parts.add('Android');
-    } else if (platform.isMobile) {
-      parts.add('Mobile');
-    } else {
-      parts.add('Desktop');
-    }
-    
-    return parts.join(' • ');
-  }
-
-  Future<void> _refreshStorageInfo() async {
-    return; // PWA service disabled
-    /* Disabled code:
-    final storage = await PwaService.instance.refreshStorageEstimate();
-    if (storage != null && mounted) {
-      setState(() {});
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Storage: ${storage.usageMB} MB / ${storage.quotaMB} MB'),
-          duration: const Duration(seconds: 2),
-        ),
-      );
-    }    */  }
 }

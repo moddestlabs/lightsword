@@ -19,6 +19,10 @@ class InterlinearWord {
     required this.isHebrew,
   });
 
+  String get displayOriginalText {
+    return originalText.replaceAll('/', '').replaceAll('\\', '');
+  }
+
   factory InterlinearWord.fromTAHOT(TAHOTWord word) {
     return InterlinearWord(
       originalText: word.hebrew,

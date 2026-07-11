@@ -182,9 +182,8 @@ class _InterlinearChapterViewState extends State<InterlinearChapterView> {
       spacing: 8,
       runSpacing: 4,
       children: words.map((word) {
-        // Remove prefix markers (/) from Hebrew text
         final displayText = word.originalText.isNotEmpty 
-            ? word.originalText.replaceAll('/', '')
+            ? word.displayOriginalText
             : word.translit;
             
         return Text(

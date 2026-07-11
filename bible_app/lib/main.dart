@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:provider/provider.dart';
 import 'ui/screens/home_screen.dart';
 import 'services/tts_service.dart';
@@ -45,16 +44,18 @@ class LightswordApp extends StatelessWidget {
             theme: ThemeData(
               useMaterial3: true,
               colorScheme: ColorScheme.fromSeed(
-                seedColor: const Color(0xFF8B4513),
+                seedColor: themeProvider.seedColor,
                 brightness: Brightness.light,
+                contrastLevel: themeProvider.palette.contrastLevel,
               ),
               fontFamily: 'Georgia',
             ),
             darkTheme: ThemeData(
               useMaterial3: true,
               colorScheme: ColorScheme.fromSeed(
-                seedColor: const Color(0xFF8B4513),
+                seedColor: themeProvider.seedColor,
                 brightness: Brightness.dark,
+                contrastLevel: themeProvider.palette.contrastLevel,
               ),
               fontFamily: 'Georgia',
             ),

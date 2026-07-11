@@ -1,17 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
-import 'package:bible_core/models/verse.dart';
-import 'package:bible_core/models/book.dart';
-import 'package:bible_core/models/passage_reference.dart';
+import 'package:bible_core/bible_core.dart';
 import 'package:bible_app/services/bible_service.dart';
 import 'package:bible_app/services/tts_service.dart';
 import 'package:bible_app/services/deep_linking_service.dart';
+import 'package:bible_app/services/preferences_service.dart';
+import 'package:bible_app/state/chapter_view_controller.dart';
 import 'package:bible_app/ui/widgets/chapter_picker_modal.dart';
 import 'package:bible_app/ui/widgets/book_selection_page.dart';
-import 'package:bible_app/ui/widgets/interlinear_view.dart';
-import 'package:bible_app/ui/widgets/interlinear_chapter_view.dart';
+import 'package:bible_app/ui/widgets/chapter_view.dart';
+import 'package:bible_app/ui/widgets/chapter_view_editor_dialog.dart';
+import 'package:bible_app/ui/widgets/configurable_chapter_view.dart';
 import 'package:bible_app/ui/widgets/tts_control_widget.dart';
-import 'package:bible_app/ui/models/view_mode.dart';
+import 'package:bible_app/ui/models/chapter_view_definition.dart';
+import 'package:bible_app/ui/models/view_mode.dart' as old_view;
 
 class ReaderScreen extends StatefulWidget {
   const ReaderScreen({super.key});
@@ -32,7 +34,12 @@ class ReaderScreenState extends State<ReaderScreen> {
   int? _startVerse; // For verse ranges
   int? _endVerse;   // For verse ranges
   String _translation = 'BSB'; // Bible version abbreviation
-  ViewMode _viewMode = ViewMode.standard; // Current display mode
+  ReadingMode _viewMode = ReadingMode.verse; // Reading vs study surface
+  List<ChapterViewDefinition> _customViews = const [];
+  ChapterViewDefinition _selectedView = ChapterViewDefinition.lineByLineView;
+  
+  // Persistent repository instance to maintain user content across rebuilds
+  final LocalUserContentRepository _contentRepository = LocalUserContentRepository();
   
   PassageReference get _currentRef => PassageReference(
     bookId: _bookId,
@@ -44,9 +51,39 @@ class ReaderScreenState extends State<ReaderScreen> {
   @override
   void initState() {
     super.initState();
+    _loadSavedViews();
     _loadBooks();
     _loadBook();
     _loadVerses();
+  }
+
+  List<ChapterViewDefinition> get _availableViews => [
+        ...ChapterViewDefinition.defaults,
+        ..._customViews,
+      ];
+
+  IconData get _selectedViewIcon {
+    if (_selectedView.showOriginalLanguage || _selectedView.showGloss) {
+      return Icons.translate;
+    }
+    if (_selectedView.lineByLine) {
+      return Icons.format_list_numbered;
+    }
+    return Icons.notes;
+  }
+
+  void _loadSavedViews() {
+    final savedCustomViews = PreferencesService.instance.getCustomChapterViews();
+    final savedViewId = PreferencesService.instance.getSelectedChapterViewId();
+    final matchingView = [
+      ...ChapterViewDefinition.defaults,
+      ...savedCustomViews,
+    ].where((view) => view.id == savedViewId).firstOrNull;
+
+    setState(() {
+      _customViews = savedCustomViews;
+      _selectedView = matchingView ?? ChapterViewDefinition.lineByLineView;
+    });
   }
 
   Future<void> _loadBooks() async {
@@ -106,18 +143,30 @@ class ReaderScreenState extends State<ReaderScreen> {
 
   /// Update browser URL to match current passage (web only)
   void _updateUrl() {
-    DeepLinkingService.instance.updateWebUrl(_currentRef, _viewMode);
+    final oldMode = _viewMode == ReadingMode.study || _viewMode == ReadingMode.drawing
+      ? old_view.ViewMode.paragraph
+      : _selectedView.showOriginalLanguage || _selectedView.showGloss
+        ? old_view.ViewMode.interlinear
+        : _selectedView.lineByLine
+          ? old_view.ViewMode.standard
+          : old_view.ViewMode.paragraph;
+    DeepLinkingService.instance.updateWebUrl(_currentRef, oldMode);
   }
 
   /// Navigate to a specific reference (called from deep links)
-  void navigateToReference(PassageReference reference, {ViewMode? viewMode}) {
+  void navigateToReference(PassageReference reference, {old_view.ViewMode? viewMode}) {
     setState(() {
       _bookId = reference.bookId;
       _chapter = reference.chapter;
       _startVerse = reference.startVerse;
       _endVerse = reference.endVerse;
       if (viewMode != null) {
-        _viewMode = viewMode;
+        _viewMode = ReadingMode.verse;
+        _selectedView = switch (viewMode) {
+          old_view.ViewMode.interlinear => ChapterViewDefinition.interlinearView,
+          old_view.ViewMode.paragraph => ChapterViewDefinition.paragraphView,
+          old_view.ViewMode.standard => ChapterViewDefinition.lineByLineView,
+        };
       }
     });
     _loadBook();
@@ -202,61 +251,273 @@ class ReaderScreenState extends State<ReaderScreen> {
     );
   }
 
-  void _toggleBookmark() {
-    // TODO: Implement bookmark functionality
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Bookmark feature coming soon')),
+  Future<void> _showViewPicker() async {
+    final result = await showModalBottomSheet<_ViewPickerResult>(
+      context: context,
+      showDragHandle: true,
+      builder: (context) {
+        final availableViews = _availableViews;
+        return SafeArea(
+          child: ListView(
+            shrinkWrap: true,
+            children: [
+              for (final view in availableViews)
+                ListTile(
+                  leading: Icon(
+                    view.showOriginalLanguage || view.showGloss
+                        ? Icons.translate
+                        : view.lineByLine
+                            ? Icons.format_list_numbered
+                            : Icons.notes,
+                  ),
+                  title: Text(view.name),
+                  subtitle: Text(_describeView(view)),
+                  trailing: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      if (_selectedView.id == view.id)
+                        const Icon(Icons.check, size: 18),
+                      IconButton(
+                        tooltip: view.isBuiltIn ? 'Duplicate and edit' : 'Edit view',
+                        onPressed: () {
+                          Navigator.of(context).pop(
+                            _ViewPickerResult.edit(view),
+                          );
+                        },
+                        icon: const Icon(Icons.edit_outlined),
+                      ),
+                      if (!view.isBuiltIn)
+                        IconButton(
+                          tooltip: 'Delete view',
+                          onPressed: () {
+                            Navigator.of(context).pop(
+                              _ViewPickerResult.delete(view),
+                            );
+                          },
+                          icon: const Icon(Icons.delete_outline),
+                        ),
+                    ],
+                  ),
+                  onTap: () {
+                    Navigator.of(context).pop(_ViewPickerResult.select(view));
+                  },
+                ),
+              const Divider(),
+              ListTile(
+                leading: const Icon(Icons.add),
+                title: const Text('Create View'),
+                subtitle: const Text('Save a custom chapter reading layout'),
+                onTap: () {
+                  Navigator.of(context).pop(const _ViewPickerResult.create());
+                },
+              ),
+            ],
+          ),
+        );
+      },
     );
+
+    if (!mounted || result == null) {
+      return;
+    }
+
+    switch (result.action) {
+      case _ViewPickerAction.select:
+        if (result.view != null) {
+          _applySelectedView(result.view!);
+        }
+        break;
+      case _ViewPickerAction.create:
+        await _createView();
+        break;
+      case _ViewPickerAction.edit:
+        if (result.view != null) {
+          await _editView(result.view!);
+        }
+        break;
+      case _ViewPickerAction.delete:
+        if (result.view != null) {
+          await _deleteView(result.view!);
+        }
+        break;
+    }
   }
 
-  void _toggleViewMode() {
+  Future<void> _createView() async {
+    final createdView = await ChapterViewEditorDialog.show(
+      context,
+      title: 'Create View',
+      initialView: ChapterViewDefinition.lineByLineView.copyWith(
+        id: _newViewId(),
+        name: 'Custom View',
+        isBuiltIn: false,
+      ),
+    );
+    if (createdView == null) {
+      return;
+    }
+
+    await _saveCustomView(createdView, selectAfterSave: true);
+  }
+
+  Future<void> _editView(ChapterViewDefinition view) async {
+    final draft = view.isBuiltIn
+        ? view.copyWith(
+            id: _newViewId(),
+            name: '${view.name} Copy',
+            isBuiltIn: false,
+          )
+        : view;
+
+    final updatedView = await ChapterViewEditorDialog.show(
+      context,
+      title: view.isBuiltIn ? 'Duplicate View' : 'Edit View',
+      initialView: draft,
+    );
+    if (updatedView == null) {
+      return;
+    }
+
+    await _saveCustomView(updatedView, selectAfterSave: true);
+  }
+
+  Future<void> _deleteView(ChapterViewDefinition view) async {
+    if (view.isBuiltIn) {
+      return;
+    }
+
+    final updatedViews = _customViews.where((item) => item.id != view.id).toList();
+    await PreferencesService.instance.setCustomChapterViews(updatedViews);
+
+    final nextView = _selectedView.id == view.id
+        ? ChapterViewDefinition.lineByLineView
+        : _selectedView;
+
     setState(() {
-      // Toggle between standard and interlinear
-      _viewMode = _viewMode == ViewMode.standard 
-          ? ViewMode.interlinear 
-          : ViewMode.standard;
+      _customViews = updatedViews;
+      _selectedView = nextView;
+      _viewMode = _viewMode == ReadingMode.study ? ReadingMode.study : ReadingMode.verse;
     });
-    // Update URL to reflect new view mode
+
+    await PreferencesService.instance.setSelectedChapterViewId(nextView.id);
     _updateUrl();
+  }
+
+  Future<void> _saveCustomView(
+    ChapterViewDefinition view, {
+    required bool selectAfterSave,
+  }) async {
+    final existingIndex = _customViews.indexWhere((item) => item.id == view.id);
+    final updatedViews = [..._customViews];
+    if (existingIndex >= 0) {
+      updatedViews[existingIndex] = view;
+    } else {
+      updatedViews.add(view);
+    }
+
+    await PreferencesService.instance.setCustomChapterViews(updatedViews);
+
+    setState(() {
+      _customViews = updatedViews;
+      if (selectAfterSave) {
+        _selectedView = view;
+        _viewMode = ReadingMode.verse;
+      } else if (_selectedView.id == view.id) {
+        _selectedView = view;
+      }
+    });
+
+    if (selectAfterSave || _selectedView.id == view.id) {
+      await PreferencesService.instance.setSelectedChapterViewId(view.id);
+      _updateUrl();
+    }
+  }
+
+  void _applySelectedView(ChapterViewDefinition view) {
+    setState(() {
+      _selectedView = view;
+      _viewMode = ReadingMode.verse;
+    });
+    PreferencesService.instance.setSelectedChapterViewId(view.id);
+    _updateUrl();
+  }
+
+  String _newViewId() {
+    return 'view_${DateTime.now().microsecondsSinceEpoch}';
+  }
+
+  String _describeView(ChapterViewDefinition view) {
+    final layout = view.lineByLine ? 'Line-by-line' : 'Paragraph';
+    final layers = <String>[];
+    if (view.showOriginalLanguage) {
+      layers.add('Hebrew/Greek');
+    }
+    if (view.showTranslation) {
+      layers.add('Translation');
+    }
+    if (view.showGloss) {
+      layers.add('Glosses');
+    }
+    return '$layout • ${layers.join(' • ')}';
+  }
+
+  /// Public method to set verse mode (called from navigation)
+  void setVerseMode() {
+    _applySelectedView(ChapterViewDefinition.lineByLineView);
+  }
+
+  bool get isShowingStudySurface {
+    return _viewMode == ReadingMode.study || _viewMode == ReadingMode.drawing;
+  }
+
+  void showCurrentReadingView() {
+    if (!isShowingStudySurface) {
+      return;
+    }
+
+    setState(() {
+      _viewMode = ReadingMode.verse;
+    });
+    _updateUrl();
+  }
+
+  void cycleAvailableView() {
+    if (_availableViews.isEmpty) {
+      return;
+    }
+
+    final currentIndex = _availableViews.indexWhere(
+      (view) => view.id == _selectedView.id,
+    );
+    final nextIndex = currentIndex < 0
+        ? 0
+        : (currentIndex + 1) % _availableViews.length;
+    _applySelectedView(_availableViews[nextIndex]);
   }
 
   /// Public method to set interlinear mode (called from navigation)
   void setInterlinearMode() {
-    if (_viewMode != ViewMode.interlinear) {
-      setState(() {
-        _viewMode = ViewMode.interlinear;
-      });
-      _updateUrl();
-    }
+    _applySelectedView(ChapterViewDefinition.interlinearView);
   }
 
   /// Public method to set standard reading mode (called from navigation)
   void setStandardMode() {
-    if (_viewMode != ViewMode.standard) {
+    // Alias for setVerseMode for backward compatibility
+    setVerseMode();
+  }
+
+  /// Public method to set study mode (called from navigation)
+  void setStudyMode() {
+    if (_viewMode != ReadingMode.study) {
       setState(() {
-        _viewMode = ViewMode.standard;
+        _viewMode = ReadingMode.study;
       });
       _updateUrl();
     }
   }
 
-  void _showInterlinear(Verse verse) {
-    if (_currentBook == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Loading book information...')),
-      );
-      return;
-    }
-
-    InterlinearReaderPage.show(
-      context: context,
-      bookName: _currentBook!.name,
-      bookId: _currentBook!.id,
-      chapter: _chapter,
-      verseNumber: verse.number,
-      verse: verse,
-    );
-  }
+  // Old interlinear viewer - now handled by ChapterView ReadingMode.interlinear
+  // void _showInterlinear(Verse verse) { ... }
 
   void _startTtsReading() {
     if (_verses.isEmpty) return;
@@ -368,7 +629,7 @@ class ReaderScreenState extends State<ReaderScreen> {
                 fontWeight: FontWeight.w600,
               ),
             ),
-            // Right: Translation + Bookmark + TTS
+            // Right: Translation + View + TTS
             Row(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -385,9 +646,9 @@ class ReaderScreenState extends State<ReaderScreen> {
                 ),
                 const SizedBox(width: 12),
                 GestureDetector(
-                  onTap: _toggleBookmark,
+                  onTap: _showViewPicker,
                   child: Icon(
-                    Icons.bookmark_border,
+                    _selectedViewIcon,
                     color: colorScheme.primary,
                     size: 24,
                   ),
@@ -433,75 +694,68 @@ class ReaderScreenState extends State<ReaderScreen> {
   }
 
   Widget _buildContentView() {
-    switch (_viewMode) {
-      case ViewMode.standard:
-        return _buildStandardView();
-      case ViewMode.interlinear:
-        return _buildInterlinearView();
-      case ViewMode.paragraph:
-        // Not yet implemented
-        return _buildStandardView();
-    }
-  }
-
-  Widget _buildStandardView() {
-    final colorScheme = Theme.of(context).colorScheme;
+    print('DEBUG: _buildContentView called, verses count: ${_verses.length}, mode: $_viewMode');
     
-    return SingleChildScrollView(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          for (final verse in _verses)
-            GestureDetector(
-              onTap: () => _showInterlinear(verse),
-              child: Padding(
-                padding: const EdgeInsets.only(bottom: 14),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // Verse number in left margin
-                    SizedBox(
-                      width: 40,
-                      child: Text(
-                        '${verse.number}',
-                        style: TextStyle(
-                          color: colorScheme.primary,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
-                          height: 1.6,
-                        ),
-                      ),
-                    ),
-                    // Verse text
-                    Expanded(
-                      child: Text(
-                        verse.text,
-                        style: TextStyle(
-                          color: colorScheme.onSurface,
-                          fontSize: 19,
-                          fontWeight: FontWeight.w400,
-                          height: 1.6,
-                          letterSpacing: 0.2,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          // Add padding at bottom for TTS controls
-          const SizedBox(height: 80),
-        ],
-      ),
-    );
-  }
+    if (_verses.isEmpty) {
+      print('DEBUG: Verses are empty, showing error message');
+      return const Center(child: Text('No verses loaded'));
+    }
 
-  Widget _buildInterlinearView() {
-    return InterlinearChapterView(
-      verses: _verses,
+    // Create Chapter object from loaded verses
+    final chapter = Chapter(
       bookId: _bookId,
-      chapter: _chapter,
+      number: _chapter,
+      verseCount: _verses.length,
+      verses: _verses,
+    );
+    
+    print('DEBUG: Created chapter ${chapter.bookId} ${chapter.number} with ${chapter.verses.length} verses');
+
+    if (_viewMode == ReadingMode.study || _viewMode == ReadingMode.drawing) {
+      return ChapterView(
+        chapter: chapter,
+        contentRepository: _contentRepository,
+        initialMode: _viewMode,
+        showAppBar: false,
+        onModeChanged: (mode) {
+          print('DEBUG: Mode changed callback received: $mode');
+          setState(() {
+            _viewMode = mode;
+          });
+          _updateUrl();
+        },
+      );
+    }
+
+    return ConfigurableChapterView(
+      chapter: chapter,
+      view: _selectedView,
     );
   }
+}
+
+enum _ViewPickerAction {
+  select,
+  create,
+  edit,
+  delete,
+}
+
+class _ViewPickerResult {
+  final _ViewPickerAction action;
+  final ChapterViewDefinition? view;
+
+  const _ViewPickerResult._(this.action, this.view);
+
+  const _ViewPickerResult.select(ChapterViewDefinition view)
+      : this._(_ViewPickerAction.select, view);
+
+  const _ViewPickerResult.create()
+      : this._(_ViewPickerAction.create, null);
+
+  const _ViewPickerResult.edit(ChapterViewDefinition view)
+      : this._(_ViewPickerAction.edit, view);
+
+  const _ViewPickerResult.delete(ChapterViewDefinition view)
+      : this._(_ViewPickerAction.delete, view);
 }
