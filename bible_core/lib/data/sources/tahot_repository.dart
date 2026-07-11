@@ -91,6 +91,26 @@ class TAHOTRepository {
     return verseWords;
   }
 
+  Future<Map<String, List<TAHOTWord>>?> getChapter(
+    String bookId,
+    int chapter,
+  ) async {
+    if (!_hasTAHOTData(bookId)) {
+      return null;
+    }
+
+    if (!_cache.containsKey(bookId)) {
+      await _loadBook(bookId);
+    }
+
+    final bookData = _cache[bookId];
+    if (bookData == null || bookData.isEmpty) {
+      return null;
+    }
+
+    return bookData[chapter.toString()];
+  }
+
   /// Check if a book has TAHOT data (OT only)
   bool _hasTAHOTData(String bookId) {
     // Map book IDs to their TAHOT file prefixes

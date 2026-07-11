@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:provider/provider.dart';
+import 'package:bible_app/services/bible_service.dart';
 import 'package:bible_app/services/tts_service.dart';
 import 'package:bible_app/state/theme_provider.dart';
 import '../widgets/pwa_widgets.dart';
@@ -54,11 +55,15 @@ class _SettingsScreenState extends State<SettingsScreen> {
             },
           ),
           ListTile(
-            title: const Text('Default Translation'),
-            subtitle: const Text('ESV'),
+            title: const Text('Primary Text Source'),
+            subtitle: Text(BibleService.currentSourceOption.label),
             trailing: const Icon(Icons.chevron_right),
             onTap: () {
-              // TODO: Translation picker
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text('Change the text source from the reader header.'),
+                ),
+              );
             },
           ),
           const Divider(),
@@ -318,6 +323,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
   }
 
   List<Widget> _buildPwaWidgets() {
-    return [];
+    return const [
+      Divider(),
+      Padding(
+        padding: EdgeInsets.symmetric(horizontal: 16),
+        child: OfflinePackManager(),
+      ),
+    ];
   }
 }

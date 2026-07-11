@@ -1,9 +1,11 @@
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'ui/screens/home_screen.dart';
 import 'services/tts_service.dart';
-// import 'services/pwa_service.dart';  // Temporarily disabled - has dart:js compatibility issues
+import 'services/pwa_service.dart';
 import 'services/deep_linking_service.dart';
+import 'services/bible_service.dart';
 import 'services/preferences_service.dart';
 import 'state/theme_provider.dart';
 
@@ -15,12 +17,14 @@ void main() async {
   
   // Initialize TTS service
   await TtsService.instance.initialize();
+
+  // Initialize primary text source
+  await BibleService.initialize();
   
   // Initialize PWA service (web only)
-  // Temporarily disabled - has dart:js compatibility issues
-  // if (kIsWeb) {
-  //   await PwaService.instance.initialize();
-  // }
+  if (kIsWeb) {
+    await PwaService.instance.initialize();
+  }
   
   // Initialize deep linking service
   await DeepLinkingService.instance.initialize();

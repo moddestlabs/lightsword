@@ -8,6 +8,7 @@ import 'package:bible_core/data/sources/tagnt_repository.dart';
 import 'package:bible_app/services/tts_service.dart';
 import 'package:bible_app/ui/widgets/tts_control_widget.dart';
 import 'package:bible_app/ui/models/interlinear_word.dart';
+import 'package:bible_app/services/bible_service.dart';
 
 /// Widget to display a single word in interlinear format
 class InterlinearWordCard extends StatefulWidget {
@@ -493,7 +494,11 @@ class _InterlinearReaderPageState extends State<InterlinearReaderPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 // Translation tile
-                _buildTranslationTile('BSB', widget.verse.text, isPrimary: true),
+                _buildTranslationTile(
+                  BibleService.currentSourceOption.label,
+                  widget.verse.text,
+                  isPrimary: true,
+                ),
                 
                 // Full original language text (if available)
                 if (hasInterlinear) ...[
@@ -539,7 +544,7 @@ class _InterlinearReaderPageState extends State<InterlinearReaderPage> {
                 ),
               ),
             ] else if (hasWords) ...[
-              // Fallback to BSB words if no interlinear data
+              // Fallback to the verse's primary text if no interlinear data
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                 child: Text(

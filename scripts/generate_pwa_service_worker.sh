@@ -38,6 +38,37 @@ precache_allowlist=(
   'canvaskit/canvaskit.wasm'
   'icons/Icon-192.png'
   'icons/Icon-512.png'
+  'icons/apple-touch-icon.png'
+  'favicon.ico'
+)
+
+collect_paths() {
+  local target_dir="$1"
+  local pattern="$2"
+
+  if [[ ! -d "$build_dir/$target_dir" ]]; then
+    return
+  fi
+
+  (
+    cd "$build_dir"
+    find "$target_dir" -type f -name "$pattern" | LC_ALL=C sort
+  )
+}
+
+mapfile -t default_original_language_pack < <(
+  {
+    collect_paths 'assets/packages/bible_core/assets/data/greek' '*.json'
+    collect_paths 'assets/packages/bible_core/assets/data/lexicon' '*.json'
+  } | awk 'NF'
+)
+
+mapfile -t optional_original_language_ot_pack < <(
+  collect_paths 'assets/packages/bible_core/assets/data/tahot' '*.json' | awk 'NF'
+)
+
+mapfile -t optional_translation_bsb_pack < <(
+  collect_paths 'assets/assets/data/usfm/bsb' '*.usfm' | awk 'NF'
 )
 
 mapfile -d '' all_files < <(
@@ -78,23 +109,67 @@ write_js_array() {
   printf '];\n\n'
 }
 
+write_js_object_of_arrays() {
+  local object_name="$1"
+  shift
+
+  printf 'const %s = {\n' "$object_name"
+  while (($# > 0)); do
+    local property_name="$1"
+    shift
+    local value_count="$1"
+    shift
+    printf "  '%s': [\n" "$property_name"
+    local index=0
+    while ((index < value_count)); do
+      local value="$1"
+      shift
+      printf "    '%s',\n" "${value//\'/\\\'}"
+      index=$((index + 1))
+    done
+    printf '  ],\n'
+  done
+  printf '};\n\n'
+}
+
+append_array_args() {
+  local array_name="$1"
+  local property_name="$2"
+  local -n values_ref="$array_name"
+
+  object_args+=("$property_name" "${#values_ref[@]}")
+  local value
+  for value in "${values_ref[@]}"; do
+    object_args+=("$value")
+  done
+}
+
 {
   cat <<EOF
 'use strict';
 
 const CACHE_VERSION = '$version';
 const APP_SHELL_CACHE = 'lightsword-app-shell-' + CACHE_VERSION;
+const DEFAULT_PACK_CACHE = 'lightsword-default-pack-' + CACHE_VERSION;
 const RUNTIME_CACHE = 'lightsword-runtime-' + CACHE_VERSION;
 const NAVIGATION_FALLBACKS = ['./', 'index.html'];
 
 EOF
   write_js_array "PRECACHE_URLS" "${precache_urls[@]}"
+  write_js_array "DEFAULT_PACK_URLS" "${default_original_language_pack[@]}"
+  object_args=()
+  append_array_args optional_original_language_ot_pack 'original-language-ot'
+  append_array_args optional_translation_bsb_pack 'translation-bsb'
+  write_js_object_of_arrays "OPTIONAL_PACKS" "${object_args[@]}"
   cat <<'EOF'
 self.addEventListener('install', (event) => {
   event.waitUntil(
     (async () => {
-      const cache = await caches.open(APP_SHELL_CACHE);
-      await cache.addAll(PRECACHE_URLS);
+      const shellCache = await caches.open(APP_SHELL_CACHE);
+      await shellCache.addAll(PRECACHE_URLS);
+
+      const defaultPackCache = await caches.open(DEFAULT_PACK_CACHE);
+      await defaultPackCache.addAll(DEFAULT_PACK_URLS);
       await self.skipWaiting();
     })()
   );
@@ -103,17 +178,46 @@ self.addEventListener('install', (event) => {
 self.addEventListener('activate', (event) => {
   event.waitUntil(
     (async () => {
+      const activeCaches = new Set([
+        APP_SHELL_CACHE,
+        DEFAULT_PACK_CACHE,
+        RUNTIME_CACHE,
+        ...Object.keys(OPTIONAL_PACKS).map(getOptionalPackCacheName),
+      ]);
       const cacheNames = await caches.keys();
       await Promise.all(
         cacheNames
-          .filter((cacheName) => cacheName.startsWith('lightsword-') &&
-            cacheName !== APP_SHELL_CACHE &&
-            cacheName !== RUNTIME_CACHE)
+          .filter((cacheName) => cacheName.startsWith('lightsword-') && !activeCaches.has(cacheName))
           .map((cacheName) => caches.delete(cacheName))
       );
       await self.clients.claim();
     })()
   );
+});
+
+self.addEventListener('message', (event) => {
+  const data = event.data || {};
+  if (data.type === 'CACHE_PACK') {
+    event.waitUntil(cacheOptionalPack(data.pack).then((result) => {
+      event.source?.postMessage({
+        type: 'CACHE_PACK_RESULT',
+        pack: data.pack,
+        ok: result.ok,
+        cachedCount: result.cachedCount,
+        error: result.error,
+      });
+    }));
+    return;
+  }
+
+  if (data.type === 'GET_PACK_STATUS') {
+    event.waitUntil(getPackStatus().then((status) => {
+      event.source?.postMessage({
+        type: 'PACK_STATUS_RESULT',
+        status,
+      });
+    }));
+  }
 });
 
 self.addEventListener('fetch', (event) => {
@@ -138,7 +242,7 @@ async function handleNavigationRequest(request) {
   try {
     const networkResponse = await fetch(request);
     const runtimeCache = await caches.open(RUNTIME_CACHE);
-    runtimeCache.put(request, networkResponse.clone());
+    await runtimeCache.put(request, networkResponse.clone());
     return networkResponse;
   } catch (error) {
     const runtimeCache = await caches.open(RUNTIME_CACHE);
@@ -160,8 +264,7 @@ async function handleNavigationRequest(request) {
 }
 
 async function handleStaticRequest(request) {
-  const appShellCache = await caches.open(APP_SHELL_CACHE);
-  const precachedResponse = await appShellCache.match(request, { ignoreSearch: true });
+  const precachedResponse = await matchPrecachedRequest(request);
   if (precachedResponse) {
     return precachedResponse;
   }
@@ -174,9 +277,85 @@ async function handleStaticRequest(request) {
 
   const networkResponse = await fetch(request);
   if (networkResponse && networkResponse.ok) {
-    runtimeCache.put(request, networkResponse.clone());
+    await runtimeCache.put(request, networkResponse.clone());
   }
   return networkResponse;
+}
+
+async function matchPrecachedRequest(request) {
+  const appShellCache = await caches.open(APP_SHELL_CACHE);
+  const shellResponse = await appShellCache.match(request, { ignoreSearch: true });
+  if (shellResponse) {
+    return shellResponse;
+  }
+
+  const defaultPackCache = await caches.open(DEFAULT_PACK_CACHE);
+  const defaultPackResponse = await defaultPackCache.match(request, { ignoreSearch: true });
+  if (defaultPackResponse) {
+    return defaultPackResponse;
+  }
+
+  for (const packName of Object.keys(OPTIONAL_PACKS)) {
+    const packCache = await caches.open(getOptionalPackCacheName(packName));
+    const packResponse = await packCache.match(request, { ignoreSearch: true });
+    if (packResponse) {
+      return packResponse;
+    }
+  }
+
+  return null;
+}
+
+function getOptionalPackCacheName(packName) {
+  return 'lightsword-pack-' + packName + '-' + CACHE_VERSION;
+}
+
+async function cacheOptionalPack(packName) {
+  if (!Object.prototype.hasOwnProperty.call(OPTIONAL_PACKS, packName)) {
+    return { ok: false, cachedCount: 0, error: 'unknown_pack' };
+  }
+
+  const urls = OPTIONAL_PACKS[packName];
+  const cache = await caches.open(getOptionalPackCacheName(packName));
+  await cache.addAll(urls);
+  return { ok: true, cachedCount: urls.length, error: null };
+}
+
+async function getPackStatus() {
+  const results = {};
+
+  results.shell = {
+    cacheName: APP_SHELL_CACHE,
+    total: PRECACHE_URLS.length,
+    cached: await countCachedEntries(APP_SHELL_CACHE, PRECACHE_URLS),
+  };
+  results.defaultPack = {
+    cacheName: DEFAULT_PACK_CACHE,
+    total: DEFAULT_PACK_URLS.length,
+    cached: await countCachedEntries(DEFAULT_PACK_CACHE, DEFAULT_PACK_URLS),
+  };
+
+  for (const [packName, urls] of Object.entries(OPTIONAL_PACKS)) {
+    const cacheName = getOptionalPackCacheName(packName);
+    results[packName] = {
+      cacheName,
+      total: urls.length,
+      cached: await countCachedEntries(cacheName, urls),
+    };
+  }
+
+  return results;
+}
+
+async function countCachedEntries(cacheName, urls) {
+  const cache = await caches.open(cacheName);
+  let cached = 0;
+  for (const url of urls) {
+    if (await cache.match(url, { ignoreSearch: true })) {
+      cached += 1;
+    }
+  }
+  return cached;
 }
 EOF
 } > "$service_worker_path"

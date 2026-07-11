@@ -22,6 +22,8 @@ class _PwaApi {}
 extension _PwaApiExtension on _PwaApi {
   external JSPromise showInstallPrompt();
   external JSPromise getStorageEstimate();
+  external JSPromise cacheOfflinePack(JSString packName);
+  external JSPromise getOfflinePackStatus();
 }
 
 _PwaApi? get _pwaApi => _lightswordPwa as _PwaApi?;
@@ -57,10 +59,13 @@ class PwaService {
   PlatformInfo? _platformInfo;
   TtsInfo? _ttsInfo;
   StorageInfo? _storageInfo;
+  final Map<OfflinePackId, OfflinePackStatus> _offlinePackStatuses = {};
 
   final _installAvailableController = StreamController<void>.broadcast();
   final _appInstalledController = StreamController<void>.broadcast();
   final _onlineStatusController = StreamController<bool>.broadcast();
+  final _offlinePackStatusController =
+      StreamController<Map<OfflinePackId, OfflinePackStatus>>.broadcast();
 
   /// Stream of install availability events
   Stream<void> get installAvailableStream => _installAvailableController.stream;
@@ -70,6 +75,9 @@ class PwaService {
 
   /// Stream of online/offline status changes
   Stream<bool> get onlineStatusStream => _onlineStatusController.stream;
+
+  Stream<Map<OfflinePackId, OfflinePackStatus>> get offlinePackStatusStream =>
+      _offlinePackStatusController.stream;
 
   /// Check if running on web
   bool get isWeb => kIsWeb;
@@ -94,6 +102,9 @@ class PwaService {
 
   /// Get storage information
   StorageInfo? get storageInfo => _storageInfo;
+
+  Map<OfflinePackId, OfflinePackStatus> get offlinePackStatuses =>
+      Map.unmodifiable(_offlinePackStatuses);
 
   /// Initialize PWA service
   Future<void> initialize() async {
@@ -132,6 +143,7 @@ class PwaService {
       );
 
       _isInitialized = true;
+      await refreshOfflinePackStatus();
       print('✅ PWA service initialized');
     } catch (e) {
       print('❌ Error initializing PWA service: $e');
@@ -279,13 +291,152 @@ class PwaService {
     }
   }
 
+  Future<OfflinePackOperationResult> cacheOfflinePack(OfflinePackId packId) async {
+    if (!isWeb) {
+      return const OfflinePackOperationResult(
+        ok: false,
+        cachedCount: 0,
+        error: 'not_web',
+      );
+    }
+
+    try {
+      final api = _pwaApi;
+      if (api == null) {
+        return const OfflinePackOperationResult(
+          ok: false,
+          cachedCount: 0,
+          error: 'pwa_unavailable',
+        );
+      }
+
+      final result = await api.cacheOfflinePack(_packName(packId).toJS).toDart;
+      final resultObj = result as JSAny?;
+      final operation = OfflinePackOperationResult(
+        ok: (_getProperty(resultObj!, 'ok') as JSBoolean?)?.toDart ?? false,
+        cachedCount:
+            (_getProperty(resultObj, 'cachedCount') as JSNumber?)?.toDartInt ?? 0,
+        error: (_getProperty(resultObj, 'error') as JSString?)?.toDart,
+      );
+
+      await refreshOfflinePackStatus();
+      return operation;
+    } catch (e) {
+      return OfflinePackOperationResult(
+        ok: false,
+        cachedCount: 0,
+        error: e.toString(),
+      );
+    }
+  }
+
+  Future<Map<OfflinePackId, OfflinePackStatus>> refreshOfflinePackStatus() async {
+    if (!isWeb) {
+      return offlinePackStatuses;
+    }
+
+    try {
+      final api = _pwaApi;
+      if (api == null) {
+        return offlinePackStatuses;
+      }
+
+      final result = await api.getOfflinePackStatus().toDart;
+      final statusObj = result as JSAny?;
+      if (statusObj == null) {
+        return offlinePackStatuses;
+      }
+
+      _offlinePackStatuses.clear();
+      for (final packId in OfflinePackId.values) {
+        final rawPackStatus = _getProperty(statusObj, _packName(packId));
+        if (rawPackStatus == null) {
+          continue;
+        }
+
+        _offlinePackStatuses[packId] = OfflinePackStatus(
+          totalFiles:
+              (_getProperty(rawPackStatus, 'total') as JSNumber?)?.toDartInt ?? 0,
+          cachedFiles:
+              (_getProperty(rawPackStatus, 'cached') as JSNumber?)?.toDartInt ?? 0,
+        );
+      }
+
+      _offlinePackStatusController.add(offlinePackStatuses);
+    } catch (e) {
+      print('❌ Error refreshing offline pack status: $e');
+    }
+
+    return offlinePackStatuses;
+  }
+
+  String _packName(OfflinePackId packId) {
+    switch (packId) {
+      case OfflinePackId.originalLanguageOt:
+        return 'original-language-ot';
+    }
+  }
+
   /// Dispose resources
   void dispose() {
     _installAvailableController.close();
     _appInstalledController.close();
     _onlineStatusController.close();
+    _offlinePackStatusController.close();
   }
 }
+
+enum OfflinePackId {
+  originalLanguageOt,
+}
+
+class OfflinePackDefinition {
+  const OfflinePackDefinition({
+    required this.id,
+    required this.title,
+    required this.subtitle,
+    required this.sizeLabel,
+  });
+
+  final OfflinePackId id;
+  final String title;
+  final String subtitle;
+  final String sizeLabel;
+}
+
+class OfflinePackStatus {
+  const OfflinePackStatus({
+    required this.totalFiles,
+    required this.cachedFiles,
+  });
+
+  final int totalFiles;
+  final int cachedFiles;
+
+  bool get isInstalled => totalFiles > 0 && cachedFiles >= totalFiles;
+  bool get isPartial => cachedFiles > 0 && cachedFiles < totalFiles;
+}
+
+class OfflinePackOperationResult {
+  const OfflinePackOperationResult({
+    required this.ok,
+    required this.cachedCount,
+    this.error,
+  });
+
+  final bool ok;
+  final int cachedCount;
+  final String? error;
+}
+
+const List<OfflinePackDefinition> offlinePackDefinitions = [
+  OfflinePackDefinition(
+    id: OfflinePackId.originalLanguageOt,
+    title: 'Original Language OT',
+    subtitle: 'TAHOT Hebrew OT pack for offline Torah, Prophets, and Writings.',
+    sizeLabel: '34.45 MB',
+  ),
+];
 
 /// Platform information
 class PlatformInfo {

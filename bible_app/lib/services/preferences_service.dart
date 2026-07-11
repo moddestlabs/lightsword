@@ -8,6 +8,7 @@ class PreferencesService {
   static const String _appearancePaletteKey = 'appearance_palette';
   static const String _customChapterViewsKey = 'custom_chapter_views';
   static const String _selectedChapterViewIdKey = 'selected_chapter_view_id';
+  static const String _selectedTextSourceKey = 'selected_text_source';
   
   static PreferencesService? _instance;
   static PreferencesService get instance {
@@ -105,5 +106,15 @@ class PreferencesService {
   Future<void> setSelectedChapterViewId(String viewId) async {
     if (_prefs == null) return;
     await _prefs!.setString(_selectedChapterViewIdKey, viewId);
+  }
+
+  String? getSelectedTextSource() {
+    if (_prefs == null) return null;
+    return _prefs!.getString(_selectedTextSourceKey);
+  }
+
+  Future<void> setSelectedTextSource(String sourceId) async {
+    if (_prefs == null) return;
+    await _prefs!.setString(_selectedTextSourceKey, sourceId);
   }
 }

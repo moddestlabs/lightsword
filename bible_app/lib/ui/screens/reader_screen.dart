@@ -33,7 +33,7 @@ class ReaderScreenState extends State<ReaderScreen> {
   int _chapter = 1;
   int? _startVerse; // For verse ranges
   int? _endVerse;   // For verse ranges
-  String _translation = 'BSB'; // Bible version abbreviation
+  BibleTextSource _textSource = BibleService.currentSource;
   ReadingMode _viewMode = ReadingMode.verse; // Reading vs study surface
   List<ChapterViewDefinition> _customViews = const [];
   ChapterViewDefinition _selectedView = ChapterViewDefinition.lineByLineView;
@@ -83,6 +83,7 @@ class ReaderScreenState extends State<ReaderScreen> {
     setState(() {
       _customViews = savedCustomViews;
       _selectedView = matchingView ?? ChapterViewDefinition.lineByLineView;
+      _textSource = BibleService.currentSource;
     });
   }
 
@@ -244,11 +245,48 @@ class ReaderScreenState extends State<ReaderScreen> {
     );
   }
 
-  void _showTranslationPicker() {
-    // TODO: Implement translation picker modal
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Translation picker coming soon')),
+  Future<void> _showTranslationPicker() async {
+    final selectedSource = await showModalBottomSheet<BibleTextSource>(
+      context: context,
+      showDragHandle: true,
+      builder: (context) {
+        return SafeArea(
+          child: ListView(
+            shrinkWrap: true,
+            children: [
+              for (final option in BibleService.availableSources)
+                ListTile(
+                  leading: Icon(
+                    option.isTranslation ? Icons.menu_book : Icons.translate,
+                  ),
+                  title: Text(option.label),
+                  subtitle: Text(option.description),
+                  trailing: option.source == _textSource
+                      ? const Icon(Icons.check)
+                      : null,
+                  onTap: () => Navigator.of(context).pop(option.source),
+                ),
+            ],
+          ),
+        );
+      },
     );
+
+    if (!mounted || selectedSource == null || selectedSource == _textSource) {
+      return;
+    }
+
+    await BibleService.setSource(selectedSource);
+    if (!mounted) {
+      return;
+    }
+
+    setState(() {
+      _textSource = selectedSource;
+    });
+    await _loadBooks();
+    await _loadBook();
+    await _loadVerses();
   }
 
   Future<void> _showViewPicker() async {
@@ -453,7 +491,7 @@ class ReaderScreenState extends State<ReaderScreen> {
       layers.add('Hebrew/Greek');
     }
     if (view.showTranslation) {
-      layers.add('Translation');
+      layers.add('Primary text');
     }
     if (view.showGloss) {
       layers.add('Glosses');
@@ -636,7 +674,7 @@ class ReaderScreenState extends State<ReaderScreen> {
                 GestureDetector(
                   onTap: _showTranslationPicker,
                   child: Text(
-                    _translation,
+                    BibleService.sourceLabel(_textSource),
                     style: TextStyle(
                       color: colorScheme.primary,
                       fontSize: 17,

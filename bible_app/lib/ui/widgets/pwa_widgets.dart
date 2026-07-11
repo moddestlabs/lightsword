@@ -319,3 +319,124 @@ class TtsCapabilityIndicator extends StatelessWidget {
     return const SizedBox.shrink();
   }
 }
+
+class OfflinePackManager extends StatefulWidget {
+  const OfflinePackManager({super.key});
+
+  @override
+  State<OfflinePackManager> createState() => _OfflinePackManagerState();
+}
+
+class _OfflinePackManagerState extends State<OfflinePackManager> {
+  bool _isLoading = false;
+  Map<OfflinePackId, OfflinePackStatus> _statuses = const {};
+
+  @override
+  void initState() {
+    super.initState();
+    _refreshStatus();
+    PwaService.instance.offlinePackStatusStream.listen((statuses) {
+      if (!mounted) return;
+      setState(() {
+        _statuses = statuses;
+      });
+    });
+  }
+
+  Future<void> _refreshStatus() async {
+    final statuses = await PwaService.instance.refreshOfflinePackStatus();
+    if (!mounted) return;
+    setState(() {
+      _statuses = statuses;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final pwa = PwaService.instance;
+    if (!pwa.isWeb || !pwa.isAvailable) {
+      return const SizedBox.shrink();
+    }
+
+    return Card(
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Offline Packs',
+              style: Theme.of(context).textTheme.titleMedium,
+            ),
+            const SizedBox(height: 8),
+            Text(
+              'Install larger study packs only when you want them offline. The default install keeps this separate to stay reliable on iPhone.',
+              style: Theme.of(context).textTheme.bodySmall,
+            ),
+            const SizedBox(height: 16),
+            for (final pack in offlinePackDefinitions)
+              _buildPackTile(context, pack, _statuses[pack.id]),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildPackTile(
+    BuildContext context,
+    OfflinePackDefinition pack,
+    OfflinePackStatus? status,
+  ) {
+    final theme = Theme.of(context);
+    final statusText = switch (status) {
+      null => 'Not checked yet',
+      final s when s.isInstalled => 'Installed (${s.cachedFiles}/${s.totalFiles} files)',
+      final s when s.isPartial => 'Partial (${s.cachedFiles}/${s.totalFiles} files)',
+      final s => 'Not installed (${s.cachedFiles}/${s.totalFiles} files)',
+    };
+
+    return ListTile(
+      contentPadding: EdgeInsets.zero,
+      leading: Icon(
+        status?.isInstalled == true ? Icons.download_done : Icons.download,
+      ),
+      title: Text(pack.title),
+      subtitle: Text('${pack.subtitle}\n$statusText • ${pack.sizeLabel}'),
+      isThreeLine: true,
+      trailing: _isLoading
+          ? const SizedBox(
+              width: 20,
+              height: 20,
+              child: CircularProgressIndicator(strokeWidth: 2),
+            )
+          : FilledButton.tonal(
+              onPressed: status?.isInstalled == true ? _refreshStatus : () => _downloadPack(pack.id),
+              child: Text(status?.isInstalled == true ? 'Refresh' : 'Download'),
+            ),
+      iconColor: theme.colorScheme.primary,
+    );
+  }
+
+  Future<void> _downloadPack(OfflinePackId packId) async {
+    setState(() {
+      _isLoading = true;
+    });
+
+    final result = await PwaService.instance.cacheOfflinePack(packId);
+    if (!mounted) return;
+
+    setState(() {
+      _isLoading = false;
+    });
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          result.ok
+              ? 'Offline pack downloaded.'
+              : 'Could not download offline pack${result.error != null ? ': ${result.error}' : ''}',
+        ),
+      ),
+    );
+  }
+}

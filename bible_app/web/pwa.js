@@ -74,6 +74,55 @@
     return navigator.onLine;
   }
 
+  function getServiceWorkerController() {
+    return navigator.serviceWorker && navigator.serviceWorker.controller
+      ? navigator.serviceWorker.controller
+      : null;
+  }
+
+  function waitForServiceWorkerMessage(expectedType) {
+    return new Promise((resolve, reject) => {
+      const timeoutId = setTimeout(() => {
+        navigator.serviceWorker.removeEventListener('message', onMessage);
+        reject(new Error(`Timed out waiting for ${expectedType}`));
+      }, 15000);
+
+      function onMessage(event) {
+        if (!event.data || event.data.type !== expectedType) {
+          return;
+        }
+        clearTimeout(timeoutId);
+        navigator.serviceWorker.removeEventListener('message', onMessage);
+        resolve(event.data);
+      }
+
+      navigator.serviceWorker.addEventListener('message', onMessage);
+    });
+  }
+
+  async function cacheOfflinePack(packName) {
+    const controller = getServiceWorkerController();
+    if (!controller) {
+      return { ok: false, error: 'service_worker_unavailable', cachedCount: 0 };
+    }
+
+    const responsePromise = waitForServiceWorkerMessage('CACHE_PACK_RESULT');
+    controller.postMessage({ type: 'CACHE_PACK', pack: packName });
+    return responsePromise;
+  }
+
+  async function getOfflinePackStatus() {
+    const controller = getServiceWorkerController();
+    if (!controller) {
+      return null;
+    }
+
+    const responsePromise = waitForServiceWorkerMessage('PACK_STATUS_RESULT');
+    controller.postMessage({ type: 'GET_PACK_STATUS' });
+    const response = await responsePromise;
+    return response.status;
+  }
+
   // Check TTS support and available languages
   async function checkTtsSupport() {
     if (!('speechSynthesis' in window)) {
@@ -169,7 +218,9 @@
       showInstallPrompt: showInstallPrompt,
       getStorageEstimate: getStorageEstimate,
       isOnline: isOnline,
-      checkTtsSupport: checkTtsSupport
+      checkTtsSupport: checkTtsSupport,
+      cacheOfflinePack: cacheOfflinePack,
+      getOfflinePackStatus: getOfflinePackStatus
     };
 
     console.log('✅ PWA initialized:', window.lightswordPwa);

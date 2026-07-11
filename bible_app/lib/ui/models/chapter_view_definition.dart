@@ -56,7 +56,7 @@ class ChapterViewDefinition {
 
   static const ChapterViewDefinition paragraphView = ChapterViewDefinition(
     id: 'paragraph',
-    name: 'Paragraph',
+    name: 'Gloss Paragraph',
     isBuiltIn: true,
     showVerseNumbers: true,
     lineByLine: false,
@@ -67,23 +67,23 @@ class ChapterViewDefinition {
 
   static const ChapterViewDefinition lineByLineView = ChapterViewDefinition(
     id: 'line_by_line',
-    name: 'Line by Line',
+    name: 'Original + Gloss',
     isBuiltIn: true,
     showVerseNumbers: true,
     lineByLine: true,
-    showOriginalLanguage: false,
+    showOriginalLanguage: true,
     showTranslation: true,
     showGloss: false,
   );
 
   static const ChapterViewDefinition interlinearView = ChapterViewDefinition(
     id: 'interlinear',
-    name: 'Interlinear',
+    name: 'Interlinear Study',
     isBuiltIn: true,
     showVerseNumbers: true,
     lineByLine: true,
     showOriginalLanguage: true,
-    showTranslation: true,
+    showTranslation: false,
     showGloss: true,
     originalLanguageTextDirection: ChapterViewTextDirection.auto,
   );
