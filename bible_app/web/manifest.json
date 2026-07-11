@@ -1,7 +1,7 @@
 {
     "name": "LIGHTSWORD - Bible Study",
     "short_name": "LIGHTSWORD",
-    "start_url": "./",
+    "start_url": "./index.html",
     "display": "standalone",
     "background_color": "#FFFEF8",
     "theme_color": "#8B4513",
@@ -31,7 +31,7 @@
             "name": "Read Bible",
             "short_name": "Read",
             "description": "Open Bible reader",
-            "url": "./#/read",
+            "url": "./index.html#/read",
             "icons": [
                 {
                     "src": "icons/Icon-192.png",
@@ -43,7 +43,7 @@
             "name": "Study Mode",
             "short_name": "Study",
             "description": "Open study tools",
-            "url": "./#/study",
+            "url": "./index.html#/study",
             "icons": [
                 {
                     "src": "icons/Icon-192.png",

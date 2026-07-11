@@ -152,7 +152,6 @@ const CACHE_VERSION = '$version';
 const APP_SHELL_CACHE = 'lightsword-app-shell-' + CACHE_VERSION;
 const DEFAULT_PACK_CACHE = 'lightsword-default-pack-' + CACHE_VERSION;
 const RUNTIME_CACHE = 'lightsword-runtime-' + CACHE_VERSION;
-const NAVIGATION_FALLBACKS = ['./', 'index.html'];
 
 EOF
   write_js_array "PRECACHE_URLS" "${precache_urls[@]}"
@@ -252,7 +251,7 @@ async function handleNavigationRequest(request) {
     }
 
     const appShellCache = await caches.open(APP_SHELL_CACHE);
-    for (const fallbackUrl of NAVIGATION_FALLBACKS) {
+    for (const fallbackUrl of getNavigationFallbackUrls(request)) {
       const fallbackResponse = await appShellCache.match(fallbackUrl);
       if (fallbackResponse) {
         return fallbackResponse;
@@ -280,6 +279,27 @@ async function handleStaticRequest(request) {
     await runtimeCache.put(request, networkResponse.clone());
   }
   return networkResponse;
+}
+
+function getNavigationFallbackUrls(request) {
+  const scopeUrl = new URL('./', self.registration.scope);
+  const indexUrl = new URL('index.html', scopeUrl);
+  const requestUrl = new URL(request.url);
+
+  const fallbackUrls = [
+    scopeUrl.href,
+    indexUrl.href,
+    scopeUrl.pathname,
+    indexUrl.pathname,
+    './',
+    'index.html',
+  ];
+
+  if (!requestUrl.pathname.endsWith('/')) {
+    fallbackUrls.push(requestUrl.pathname + '/');
+  }
+
+  return [...new Set(fallbackUrls)];
 }
 
 async function matchPrecachedRequest(request) {
