@@ -173,6 +173,9 @@ class PwaService {
         previousBootLastUpdated: (_getProperty(diagnosticsObj, 'previousBootLastUpdated') as JSString?)?.toDart,
         previousBootLastFailure: _parseBootFailure(_getProperty(diagnosticsObj, 'previousBootLastFailure')),
         previousBootEvents: _toStringList(_getProperty(diagnosticsObj, 'previousBootEvents')),
+        serviceWorkerDiagnostics: _parseServiceWorkerDiagnostics(
+          _getProperty(diagnosticsObj, 'serviceWorkerDiagnostics'),
+        ),
         errors: _toStringList(_getProperty(diagnosticsObj, 'errors')),
       );
     } catch (e) {
@@ -519,6 +522,53 @@ class PwaService {
     );
   }
 
+  ServiceWorkerDiagnostics? _parseServiceWorkerDiagnostics(JSAny? rawDiagnostics) {
+    if (rawDiagnostics == null) {
+      return null;
+    }
+
+    return ServiceWorkerDiagnostics(
+      currentSessionId:
+          (_getProperty(rawDiagnostics, 'currentSessionId') as JSString?)?.toDart,
+      lastUpdated:
+          (_getProperty(rawDiagnostics, 'lastUpdated') as JSString?)?.toDart,
+      events: _parseServiceWorkerEvents(_getProperty(rawDiagnostics, 'events')),
+    );
+  }
+
+  List<ServiceWorkerDiagnosticEvent> _parseServiceWorkerEvents(JSAny? rawList) {
+    if (rawList == null) {
+      return const [];
+    }
+
+    try {
+      final jsArray = rawList as JSArray<JSAny?>;
+      final events = <ServiceWorkerDiagnosticEvent>[];
+      for (var index = 0; index < jsArray.length; index++) {
+        final value = jsArray[index];
+        if (value == null) {
+          continue;
+        }
+        events.add(
+          ServiceWorkerDiagnosticEvent(
+            kind: (_getProperty(value, 'kind') as JSString?)?.toDart ?? 'unknown',
+            url: (_getProperty(value, 'url') as JSString?)?.toDart,
+            destination:
+                (_getProperty(value, 'destination') as JSString?)?.toDart,
+            mode: (_getProperty(value, 'mode') as JSString?)?.toDart,
+            fallbackUrl:
+                (_getProperty(value, 'fallbackUrl') as JSString?)?.toDart,
+            error: (_getProperty(value, 'error') as JSString?)?.toDart,
+            at: (_getProperty(value, 'at') as JSString?)?.toDart,
+          ),
+        );
+      }
+      return events;
+    } catch (_) {
+      return const [];
+    }
+  }
+
   static const Map<OfflinePackId, String> _optionalPackNames = {
     OfflinePackId.originalLanguageOt: 'original-language-ot',
   };
@@ -612,6 +662,7 @@ class PwaDiagnostics {
     required this.previousBootLastUpdated,
     required this.previousBootLastFailure,
     required this.previousBootEvents,
+    required this.serviceWorkerDiagnostics,
     required this.errors,
   });
 
@@ -648,6 +699,7 @@ class PwaDiagnostics {
   final String? previousBootLastUpdated;
   final PwaBootFailure? previousBootLastFailure;
   final List<String> previousBootEvents;
+  final ServiceWorkerDiagnostics? serviceWorkerDiagnostics;
   final List<String> errors;
 
   String toDebugReport() {
@@ -704,6 +756,14 @@ class PwaDiagnostics {
     for (final event in previousBootEvents) {
       buffer.writeln('previousBootEvent: $event');
     }
+    if (serviceWorkerDiagnostics != null) {
+      buffer.writeln(
+        'serviceWorkerDiagnosticsUpdated: ${serviceWorkerDiagnostics!.lastUpdated ?? 'none'}',
+      );
+      for (final event in serviceWorkerDiagnostics!.events) {
+        buffer.writeln('swEvent: ${event.summary}');
+      }
+    }
 
     buffer.writeln('cacheKeys: ${cacheKeys.join(', ')}');
     if (errors.isNotEmpty) {
@@ -740,6 +800,61 @@ class PwaBootFailure {
   final String? at;
 
   String get summary => '$step${detail == null || detail!.isEmpty ? '' : ' (${detail!})'}${at == null || at!.isEmpty ? '' : ' @ $at'}';
+}
+
+class ServiceWorkerDiagnostics {
+  const ServiceWorkerDiagnostics({
+    required this.currentSessionId,
+    required this.lastUpdated,
+    required this.events,
+  });
+
+  final String? currentSessionId;
+  final String? lastUpdated;
+  final List<ServiceWorkerDiagnosticEvent> events;
+}
+
+class ServiceWorkerDiagnosticEvent {
+  const ServiceWorkerDiagnosticEvent({
+    required this.kind,
+    required this.url,
+    required this.destination,
+    required this.mode,
+    required this.fallbackUrl,
+    required this.error,
+    required this.at,
+  });
+
+  final String kind;
+  final String? url;
+  final String? destination;
+  final String? mode;
+  final String? fallbackUrl;
+  final String? error;
+  final String? at;
+
+  String get summary {
+    final parts = <String>[kind];
+    if (url != null && url!.isNotEmpty) {
+      parts.add(url!);
+    }
+    if (fallbackUrl != null && fallbackUrl!.isNotEmpty) {
+      parts.add('fallback=$fallbackUrl');
+    }
+    if (destination != null && destination!.isNotEmpty) {
+      parts.add('destination=$destination');
+    }
+    if (mode != null && mode!.isNotEmpty) {
+      parts.add('mode=$mode');
+    }
+    if (error != null && error!.isNotEmpty) {
+      parts.add('error=$error');
+    }
+    if (at != null && at!.isNotEmpty) {
+      parts.add('at=$at');
+    }
+    return parts.join(' | ');
+  }
 }
 
 const List<OfflinePackDefinition> offlinePackDefinitions = [

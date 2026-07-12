@@ -597,6 +597,14 @@ class _PwaDiagnosticsCardState extends State<PwaDiagnosticsCard> {
                   'Previous Boot Events',
                   diagnostics.previousBootEvents.join(' | '),
                 ),
+              if ((diagnostics.serviceWorkerDiagnostics?.events.length ?? 0) > 0)
+                _buildValue(
+                  context,
+                  'SW Fetch Events',
+                  diagnostics.serviceWorkerDiagnostics!.events
+                      .map((event) => event.summary)
+                      .join(' | '),
+                ),
               const SizedBox(height: 12),
               OutlinedButton.icon(
                 onPressed: () => _copyDiagnostics(diagnostics),

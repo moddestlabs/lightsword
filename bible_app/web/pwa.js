@@ -149,6 +149,18 @@
     return response.status;
   }
 
+  async function getServiceWorkerDiagnostics() {
+    const controller = getServiceWorkerController();
+    if (!controller) {
+      return null;
+    }
+
+    const responsePromise = waitForServiceWorkerMessage('SW_DIAGNOSTICS_RESULT');
+    controller.postMessage({ type: 'GET_SW_DIAGNOSTICS' });
+    const response = await responsePromise;
+    return response.diagnostics;
+  }
+
   async function getPwaDiagnostics() {
     const diagnostics = {
       timestamp: new Date().toISOString(),
@@ -179,6 +191,7 @@
       bootLastUpdated: null,
       bootLastFailure: null,
       bootEvents: [],
+      serviceWorkerDiagnostics: null,
       errors: []
     };
 
@@ -252,6 +265,12 @@
       });
     } catch (error) {
       diagnostics.errors.push(`launchProbes:${String(error)}`);
+    }
+
+    try {
+      diagnostics.serviceWorkerDiagnostics = await getServiceWorkerDiagnostics();
+    } catch (error) {
+      diagnostics.errors.push(`swDiagnostics:${String(error)}`);
     }
 
     return diagnostics;

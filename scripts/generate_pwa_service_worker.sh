@@ -161,6 +161,8 @@ const CACHE_VERSION = '$version';
 const APP_SHELL_CACHE = 'lightsword-app-shell-' + CACHE_VERSION;
 const DEFAULT_PACK_CACHE = 'lightsword-default-pack-' + CACHE_VERSION;
 const RUNTIME_CACHE = 'lightsword-runtime-' + CACHE_VERSION;
+const DIAGNOSTICS_CACHE = 'lightsword-diagnostics-' + CACHE_VERSION;
+const DIAGNOSTICS_REQUEST_URL = '__lightsword_sw_diagnostics__';
 
 EOF
   write_js_array "PRECACHE_URLS" "${precache_urls[@]}"
@@ -190,6 +192,7 @@ self.addEventListener('activate', (event) => {
         APP_SHELL_CACHE,
         DEFAULT_PACK_CACHE,
         RUNTIME_CACHE,
+        DIAGNOSTICS_CACHE,
         ...Object.keys(OPTIONAL_PACKS).map(getOptionalPackCacheName),
       ]);
       const cacheNames = await caches.keys();
@@ -223,6 +226,16 @@ self.addEventListener('message', (event) => {
       event.source?.postMessage({
         type: 'PACK_STATUS_RESULT',
         status,
+      });
+    }));
+    return;
+  }
+
+  if (data.type === 'GET_SW_DIAGNOSTICS') {
+    event.waitUntil(getServiceWorkerDiagnostics().then((diagnostics) => {
+      event.source?.postMessage({
+        type: 'SW_DIAGNOSTICS_RESULT',
+        diagnostics,
       });
     }));
   }
@@ -263,10 +276,20 @@ async function handleNavigationRequest(request) {
     for (const fallbackUrl of getNavigationFallbackUrls(request)) {
       const fallbackResponse = await appShellCache.match(fallbackUrl);
       if (fallbackResponse) {
+        await recordDiagnosticEvent({
+          kind: 'navigation-fallback',
+          url: request.url,
+          fallbackUrl,
+        });
         return fallbackResponse;
       }
     }
 
+    await recordDiagnosticEvent({
+      kind: 'navigation-failure',
+      url: request.url,
+      error: stringifyError(error),
+    });
     throw error;
   }
 }
@@ -283,11 +306,22 @@ async function handleStaticRequest(request) {
     return cachedResponse;
   }
 
-  const networkResponse = await fetch(request);
-  if (networkResponse && networkResponse.ok) {
-    await runtimeCache.put(request, networkResponse.clone());
+  try {
+    const networkResponse = await fetch(request);
+    if (networkResponse && networkResponse.ok) {
+      await runtimeCache.put(request, networkResponse.clone());
+    }
+    return networkResponse;
+  } catch (error) {
+    await recordDiagnosticEvent({
+      kind: 'static-failure',
+      url: request.url,
+      destination: request.destination || 'unknown',
+      mode: request.mode || 'unknown',
+      error: stringifyError(error),
+    });
+    throw error;
   }
-  return networkResponse;
 }
 
 function getNavigationFallbackUrls(request) {
@@ -385,6 +419,76 @@ async function countCachedEntries(cacheName, urls) {
     }
   }
   return cached;
+}
+
+async function getServiceWorkerDiagnostics() {
+  const diagnostics = await readDiagnosticsState();
+  return {
+    currentSessionId: diagnostics.currentSessionId,
+    lastUpdated: diagnostics.lastUpdated,
+    events: diagnostics.events,
+  };
+}
+
+async function recordDiagnosticEvent(event) {
+  const diagnostics = await readDiagnosticsState();
+  diagnostics.currentSessionId = CACHE_VERSION;
+  diagnostics.lastUpdated = new Date().toISOString();
+  diagnostics.events.push({
+    at: diagnostics.lastUpdated,
+    ...event,
+  });
+  if (diagnostics.events.length > 20) {
+    diagnostics.events = diagnostics.events.slice(-20);
+  }
+  await writeDiagnosticsState(diagnostics);
+}
+
+async function readDiagnosticsState() {
+  const cache = await caches.open(DIAGNOSTICS_CACHE);
+  const response = await cache.match(DIAGNOSTICS_REQUEST_URL, { ignoreSearch: true });
+  if (!response) {
+    return {
+      currentSessionId: CACHE_VERSION,
+      lastUpdated: null,
+      events: [],
+    };
+  }
+
+  try {
+    return await response.json();
+  } catch (_) {
+    return {
+      currentSessionId: CACHE_VERSION,
+      lastUpdated: null,
+      events: [],
+    };
+  }
+}
+
+async function writeDiagnosticsState(diagnostics) {
+  const cache = await caches.open(DIAGNOSTICS_CACHE);
+  await cache.put(
+    DIAGNOSTICS_REQUEST_URL,
+    new Response(JSON.stringify(diagnostics), {
+      headers: {
+        'content-type': 'application/json',
+      },
+    }),
+  );
+}
+
+function stringifyError(error) {
+  if (error == null) {
+    return 'unknown_error';
+  }
+  if (typeof error === 'string') {
+    return error;
+  }
+  if (typeof error.message === 'string') {
+    return error.message;
+  }
+  return String(error);
 }
 EOF
 } > "$service_worker_path"
