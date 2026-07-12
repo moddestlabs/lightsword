@@ -1,22 +1,34 @@
 # LIGHTSWORD
 
-A free, open-source, fully offline-capable Bible study application with advanced Hebrew and Greek functionality.
+Cross-platform and fully offline-capable Bible study application built on advanced language functionality but focused on usability. The goal is to provide an extremely easy and intuitive but powerful study tool with markup, cross-reference and language capabilities.
 
-**Status:** Early development (v0.1.0)  
 **Tech Stack:** Dart + Flutter (iOS, Android, Web, macOS, Windows, Linux)  
-**Web Demo:** Coming soon (GitHub Pages)
+**Web: https://moddestlabs.github.io/lightsword/
 
-## Vision
+## Design
 
-LIGHTSWORD is inspired by Bible Bento, eSword, and the SWORD Project, but built with modern cross-platform technology and focused on:
-
-1. **Advanced Hebrew and Greek** — Interlinear display, morphological parsing, Strong's numbers, lexicon lookups
-2. **Text-to-speech** — Read any displayed text aloud, including Hebrew and Greek
-3. **Open data only** — All Bible texts and lexicons from freely redistributable sources
-4. **Offline-first** — No internet required after initial asset download
-5. **No ads, no tracking, no account**
+LIGHTSWORD is inspired by Bible Bento, eSword, and the SWORD Project, but built with modern cross-platform technology. Bible Bento served as the main inspiration behind the UI/UX while the longstanding SWORD Project and eSword help inform the more complex features. We want to provide the easiest possible entry point and still pave way for advanced language study meanwhile ensuring it's all totally usable on mobile.
 
 See [PLAN.md](PLAN.md) for full product vision and roadmap.
+
+### Features
+
+LIGHTSWORD features:
+- **Advanced Hebrew and Greek**: Interlinear display, morphological parsing, Strong's numbers, lexicon lookups.
+- **Text-to-speech**: Read any displayed text aloud, including Hebrew and Greek.
+- **Open data first**: All core Bible texts and lexicons from freely redistributable sources.
+- **Offline-first**: No internet required after initial asset download.
+- **No ads, no tracking, no account.**
+
+#### Views
+
+LIGHTSWORD is built around the concept of customizable Views to Bible content.
+
+We start with just 2 core Views:
+- Paragraph: language gloss or translation in typical, paragraph form.
+- Interlinear: original language + language gloss + translation, each on separate line.
+
+Create editable copies of core Views or create new Views from scratch to configure layout and structure for easy study as well as for copy-and-paste and TTS (Text-to-Speech) reading. Need to copy Scripture text in specific formats like "Jhn 3:16 For God so loved the world..."? Create a View showing Bible text line-by-line with Book (abbreviated), Chapter and Verse on each line. Wanna just sit and listen to Scripture being read aloud? Create a View showing text without verse numbers and untick the line-by-line option.
 
 ## Repository Structure
 
@@ -81,40 +93,6 @@ flutter build web --release --base-href /lightsword/
 Output: `bible_app/build/web/`
 
 GitHub Actions automatically builds and deploys to Pages on push to `main`.
-
-## Current Status (Milestone 0: Bootstrap)
-
-✅ Monorepo structure with `bible_core` + `bible_app`  
-✅ Core domain models (Book, Verse, Word, MorphologyTag, etc.)  
-✅ Abstract interfaces (BibleRepository, TtsEngine, DataSource)  
-✅ **Full PWA implementation** with offline support, installability, and TTS detection
-✅ Basic Flutter UI scaffold with Reader, Study, Library, Settings screens  
-✅ GitHub Actions workflow for web deployment  
-
-⏳ **Next:** Implement data loading, choose open Bible text sources, add passage picker
-
-## Roadmap
-
-See [PLAN.md](PLAN.md) for full details.
-
-**Phase 1:** Web prototype via GitHub Pages  
-**Phase 2:** Native mobile and desktop builds  
-**Phase 3:** Advanced study features (interlinear, concordance, TTS)
-
-## Documentation
-
-- [PLAN.md](PLAN.md) — Full product vision and technical direction
-- [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) — Codebase structure and design
-- [docs/DATA_LICENSES.md](docs/DATA_LICENSES.md) — Open Bible data sources and licenses
-
-## Contributing
-
-Contributions welcome! This project is in early development.
-
-Open questions to help with:
-- Best open-source Hebrew/Greek Bible datasets
-- State management library choice (Provider/Riverpod/Bloc)
-- Hebrew/Greek TTS quality testing across platforms
 
 ## License
 
