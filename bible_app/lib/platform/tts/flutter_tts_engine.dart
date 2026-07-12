@@ -9,7 +9,8 @@ class FlutterTtsEngine implements TtsEngine {
   bool _isSpeaking = false;
   Function()? _onComplete;
   Function(String)? _onError;
-  
+  TtsProgressHandler? _onProgress;
+
   FlutterTtsEngine() {
     _initialize();
   }
@@ -19,13 +20,13 @@ class FlutterTtsEngine implements TtsEngine {
     await _flutterTts.setVolume(1.0);
     await _flutterTts.setSpeechRate(0.5);
     await _flutterTts.setPitch(1.0);
-    
+
     // Check available languages on initialization
     try {
       final languages = await _flutterTts.getLanguages;
       print('🔊 TTS Engine initialized');
       print('🔊 Available languages: $languages');
-      
+
       // Check specifically for Hebrew and Greek
       if (languages != null) {
         final langList = languages as List;
@@ -37,64 +38,77 @@ class FlutterTtsEngine implements TtsEngine {
     } catch (e) {
       print('🔊 Error checking languages: $e');
     }
-    
+
     // Setup callbacks
     _flutterTts.setStartHandler(() {
       print('🔊 TTS Started');
       _isSpeaking = true;
     });
-    
+
     _flutterTts.setCompletionHandler(() {
       print('🔊 TTS Completed');
       _isSpeaking = false;
       _onComplete?.call();
     });
-    
+
     _flutterTts.setCancelHandler(() {
       print('🔊 TTS Cancelled');
       _isSpeaking = false;
     });
-    
+
     _flutterTts.setErrorHandler((msg) {
       print('🔊 TTS Error Handler: $msg');
       _isSpeaking = false;
       _onError?.call(msg);
     });
+
+    _flutterTts.setProgressHandler((text, start, end, word) {
+      _onProgress?.call(text, start, end, word);
+    });
   }
-  
+
   /// Set callback for when speech completes
   void setCompletionHandler(Function() handler) {
     _onComplete = handler;
   }
-  
+
   /// Set callback for errors
   void setErrorHandler(Function(String) handler) {
     _onError = handler;
   }
 
   @override
-  Future<bool> speak(String text, {String? languageCode}) async {
+  void setProgressHandler(TtsProgressHandler handler) {
+    _onProgress = handler;
+  }
+
+  @override
+  Future<bool> speak(String text,
+      {String? languageCode, TtsVoice? voice}) async {
     try {
       if (languageCode != null) {
         debugPrint('🔊 Setting TTS language to: $languageCode');
         final result = await _flutterTts.setLanguage(languageCode);
         debugPrint('🔊 setLanguage result: $result');
-        
+
         // Check if language was rejected (result is 0 on some platforms when unsupported)
         // However, many platforms return 1 even when the voice isn't great
         // So we'll be optimistic and try to speak anyway
         if (result == 0) {
-          debugPrint('⚠️ setLanguage returned 0 for $languageCode - language may not be supported');
+          debugPrint(
+              '⚠️ setLanguage returned 0 for $languageCode - language may not be supported');
           // Check if we have any voices for this language
           final voices = await _flutterTts.getVoices;
           if (voices != null) {
             final voicesList = voices as List;
             final hasVoice = voicesList.any((v) {
               final voiceMap = v as Map;
-              final lang = voiceMap['locale']?.toString() ?? voiceMap['language']?.toString() ?? '';
+              final lang = voiceMap['locale']?.toString() ??
+                  voiceMap['language']?.toString() ??
+                  '';
               return lang.startsWith(languageCode.substring(0, 2));
             });
-            
+
             if (!hasVoice) {
               debugPrint('⚠️ No voice available for $languageCode.');
               return false; // Definitely no voice
@@ -102,16 +116,25 @@ class FlutterTtsEngine implements TtsEngine {
           }
         }
       }
-      
+
+      if (voice != null) {
+        debugPrint('🔊 Setting TTS voice to: ${voice.label}');
+        await _flutterTts.setVoice({
+          'name': voice.name,
+          'locale': voice.locale,
+          'identifier': voice.id,
+        });
+      }
+
       debugPrint('🔊 Calling TTS speak with text length: ${text.length}');
       final speakResult = await _flutterTts.speak(text);
       debugPrint('🔊 speak() result: $speakResult');
-      
+
       // On many platforms, speak() returns 1 for success, but on some platforms
-      // it may return 0 or null even when it's working. The completion/error 
+      // it may return 0 or null even when it's working. The completion/error
       // handlers are more reliable, so we'll assume success unless there's a clear error.
       // We only return false if the result is explicitly indicating an error state.
-      
+
       return true; // Assume success - failures will be caught by error handler
     } catch (e) {
       debugPrint('🔊 TTS Error: $e');
@@ -133,26 +156,73 @@ class FlutterTtsEngine implements TtsEngine {
 
   @override
   Future<void> resume() async {
-    // Note: flutter_tts doesn't have a built-in resume, 
+    // Note: flutter_tts doesn't have a built-in resume,
     // so we'll rely on the app to re-call speak() if needed
   }
 
   @override
   Future<List<TtsLanguage>> availableLanguages() async {
     final languages = await _flutterTts.getLanguages;
-    
+    final voices = await availableVoices();
+
     print('🔊 Available TTS languages: $languages');
-    
+
     if (languages == null) return [];
-    
+
     // Convert to our TtsLanguage model
     return (languages as List).map((lang) {
       final langStr = lang.toString();
       return TtsLanguage(
         code: langStr,
         name: _languageCodeToName(langStr),
+        voices: voices
+            .where((voice) => _matchesLanguageCode(voice.locale, langStr))
+            .map((voice) => voice.name)
+            .toList(),
       );
     }).toList();
+  }
+
+  @override
+  Future<List<TtsVoice>> availableVoices({String? languageCode}) async {
+    final rawVoices = await _flutterTts.getVoices;
+    if (rawVoices == null) {
+      return const [];
+    }
+
+    final voices = <TtsVoice>[];
+    for (final item in rawVoices as List) {
+      if (item is! Map) {
+        continue;
+      }
+
+      final locale =
+          item['locale']?.toString() ?? item['language']?.toString() ?? '';
+      final name =
+          item['name']?.toString() ?? item['identifier']?.toString() ?? locale;
+      if (locale.isEmpty || name.isEmpty) {
+        continue;
+      }
+
+      final voice = TtsVoice(
+        id: _voiceIdFromMap(item),
+        name: name,
+        locale: locale,
+      );
+      if (languageCode == null || _matchesLanguageCode(locale, languageCode)) {
+        voices.add(voice);
+      }
+    }
+
+    voices.sort((a, b) {
+      final localeCompare = a.locale.compareTo(b.locale);
+      if (localeCompare != 0) {
+        return localeCompare;
+      }
+      return a.name.compareTo(b.name);
+    });
+
+    return voices;
   }
 
   @override
@@ -194,7 +264,30 @@ class FlutterTtsEngine implements TtsEngine {
       'ja-JP': 'Japanese',
       'ko-KR': 'Korean',
     };
-    
+
     return names[code] ?? code;
+  }
+
+  bool _matchesLanguageCode(String locale, String languageCode) {
+    if (locale == languageCode) {
+      return true;
+    }
+
+    final localePrefix = locale.split(RegExp('[-_]')).first.toLowerCase();
+    final codePrefix = languageCode.split(RegExp('[-_]')).first.toLowerCase();
+    return localePrefix == codePrefix;
+  }
+
+  String _voiceIdFromMap(Map<dynamic, dynamic> voiceMap) {
+    final identifier = voiceMap['identifier']?.toString();
+    if (identifier != null && identifier.isNotEmpty) {
+      return identifier;
+    }
+
+    final name = voiceMap['name']?.toString() ?? 'voice';
+    final locale = voiceMap['locale']?.toString() ??
+        voiceMap['language']?.toString() ??
+        'unknown';
+    return '$locale::$name';
   }
 }

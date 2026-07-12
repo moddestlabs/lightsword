@@ -37,7 +37,7 @@ class BibleService {
   static const List<BibleTextSourceOption> availableSources = [
     BibleTextSourceOption(
       source: BibleTextSource.originalLanguage,
-      label: 'Hebrew/Greek Glosses',
+      label: 'Gloss',
       description: 'Original language text with literal gloss-based reading.',
       isTranslation: false,
     ),
@@ -63,7 +63,8 @@ class BibleService {
   static BibleTextSource get currentSource => _currentSource;
 
   static BibleTextSourceOption get currentSourceOption {
-    return availableSources.firstWhere((option) => option.source == _currentSource);
+    return availableSources
+        .firstWhere((option) => option.source == _currentSource);
   }
 
   static Future<void> setSource(BibleTextSource source) async {
@@ -72,7 +73,9 @@ class BibleService {
   }
 
   static String sourceLabel(BibleTextSource source) {
-    return availableSources.firstWhere((option) => option.source == source).label;
+    return availableSources
+        .firstWhere((option) => option.source == source)
+        .label;
   }
 
   static String _sourceId(BibleTextSource source) {

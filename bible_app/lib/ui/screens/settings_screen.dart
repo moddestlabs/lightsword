@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:provider/provider.dart';
+import 'package:bible_core/tts/tts_engine.dart';
 import 'package:bible_app/services/bible_service.dart';
 import 'package:bible_app/services/tts_service.dart';
 import 'package:bible_app/state/theme_provider.dart';
@@ -15,6 +16,19 @@ class SettingsScreen extends StatefulWidget {
 
 class _SettingsScreenState extends State<SettingsScreen> {
   final TtsService _ttsService = TtsService.instance;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadVoices();
+  }
+
+  Future<void> _loadVoices() async {
+    await _ttsService.refreshAvailableVoices();
+    if (mounted) {
+      setState(() {});
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -129,6 +143,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               _showAvailableLanguages(context);
             },
           ),
+          ..._buildVoiceSelectionTiles(context),
           ListTile(
             title: const Text('Test TTS'),
             subtitle: const Text('Hear a sample in each language'),
@@ -293,7 +308,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   color: isSupported ? Colors.green : Colors.grey,
                 ),
                 title: Text(lang.name),
-                subtitle: Text(lang.code),
+                subtitle: Text(
+                  lang.voices == null || lang.voices!.isEmpty
+                      ? lang.code
+                      : '${lang.code} • ${lang.voices!.length} voice(s)',
+                ),
               );
             },
           ),
@@ -319,6 +338,130 @@ class _SettingsScreenState extends State<SettingsScreen> {
     for (final entry in samples.entries) {
       await _ttsService.speak(entry.value);
       await Future.delayed(const Duration(milliseconds: 500));
+    }
+  }
+
+  List<Widget> _buildVoiceSelectionTiles(BuildContext context) {
+    return [
+      _buildVoiceTile(
+        context,
+        title: 'English Voice',
+        languageCode: 'en-US',
+        voices: _ttsService.englishVoices,
+        selectedVoice: _ttsService.selectedEnglishVoice,
+      ),
+      _buildVoiceTile(
+        context,
+        title: 'Hebrew Voice',
+        languageCode: 'he-IL',
+        voices: _ttsService.hebrewVoices,
+        selectedVoice: _ttsService.selectedHebrewVoice,
+      ),
+      _buildVoiceTile(
+        context,
+        title: 'Greek Voice',
+        languageCode: 'el-GR',
+        voices: _ttsService.greekVoices,
+        selectedVoice: _ttsService.selectedGreekVoice,
+      ),
+    ];
+  }
+
+  Widget _buildVoiceTile(
+    BuildContext context, {
+    required String title,
+    required String languageCode,
+    required List<TtsVoice> voices,
+    required TtsVoice? selectedVoice,
+  }) {
+    final hasVoices = voices.isNotEmpty;
+    return ListTile(
+      title: Text(title),
+      subtitle: Text(
+        hasVoices
+            ? (selectedVoice?.label ?? 'Automatic (${voices.length} available)')
+            : 'No voices detected on this device/browser',
+      ),
+      trailing: hasVoices ? const Icon(Icons.chevron_right) : null,
+      onTap: hasVoices
+          ? () => _showVoiceSelectionDialog(
+                context,
+                title: title,
+                languageCode: languageCode,
+                voices: voices,
+                selectedVoice: selectedVoice,
+              )
+          : null,
+    );
+  }
+
+  Future<void> _showVoiceSelectionDialog(
+    BuildContext context, {
+    required String title,
+    required String languageCode,
+    required List<TtsVoice> voices,
+    required TtsVoice? selectedVoice,
+  }) async {
+    final selectedId = await showDialog<String?>(
+      context: context,
+      builder: (context) {
+        String? draftValue = selectedVoice?.id;
+        return StatefulBuilder(
+          builder: (context, setStateDialog) => AlertDialog(
+            title: Text(title),
+            content: SizedBox(
+              width: double.maxFinite,
+              child: RadioGroup<String?>(
+                groupValue: draftValue,
+                onChanged: (value) {
+                  setStateDialog(() {
+                    draftValue = value;
+                  });
+                },
+                child: ListView(
+                  shrinkWrap: true,
+                  children: [
+                    const RadioListTile<String?>(
+                      value: null,
+                      title: Text('Automatic'),
+                      subtitle: Text('Let the platform choose the default voice.'),
+                    ),
+                    for (final voice in voices)
+                      RadioListTile<String?>(
+                        value: voice.id,
+                        title: Text(voice.name),
+                        subtitle: Text(voice.locale),
+                      ),
+                  ],
+                ),
+              ),
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(),
+                child: const Text('Cancel'),
+              ),
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(draftValue),
+                child: const Text('Save'),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+
+    if (!mounted) {
+      return;
+    }
+
+    final voice = voices.where((item) => item.id == selectedId).cast<TtsVoice?>().firstWhere(
+          (item) => item != null,
+          orElse: () => null,
+        );
+    await _ttsService.selectVoiceForLanguage(languageCode, voice);
+    if (mounted) {
+      setState(() {});
     }
   }
 

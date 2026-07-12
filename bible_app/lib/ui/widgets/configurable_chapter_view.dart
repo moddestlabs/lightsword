@@ -22,10 +22,12 @@ class ConfigurableChapterView extends StatefulWidget {
   });
 
   @override
-  State<ConfigurableChapterView> createState() => _ConfigurableChapterViewState();
+  State<ConfigurableChapterView> createState() =>
+      _ConfigurableChapterViewState();
 }
 
 class _ConfigurableChapterViewState extends State<ConfigurableChapterView> {
+  final TtsService _ttsService = TtsService.instance;
   final Map<int, List<InterlinearWord>> _verseData = {};
   final Map<int, bool> _loading = {};
   final Map<int, Bookmark> _bookmarksByVerse = {};
@@ -38,19 +40,25 @@ class _ConfigurableChapterViewState extends State<ConfigurableChapterView> {
   @override
   void initState() {
     super.initState();
+    _ttsService.addListener(_handleTtsChanged);
     _loadInterlinearDataIfNeeded();
     _loadBookmarks();
   }
 
   @override
+  void dispose() {
+    _ttsService.removeListener(_handleTtsChanged);
+    super.dispose();
+  }
+
+  @override
   void didUpdateWidget(ConfigurableChapterView oldWidget) {
     super.didUpdateWidget(oldWidget);
-    final chapterChanged =
-        oldWidget.chapter.bookId != widget.chapter.bookId ||
+    final chapterChanged = oldWidget.chapter.bookId != widget.chapter.bookId ||
         oldWidget.chapter.number != widget.chapter.number ||
         oldWidget.chapter.verses.length != widget.chapter.verses.length;
-    final dataRequirementsChanged =
-        oldWidget.view.showOriginalLanguage != widget.view.showOriginalLanguage ||
+    final dataRequirementsChanged = oldWidget.view.showOriginalLanguage !=
+            widget.view.showOriginalLanguage ||
         oldWidget.view.showGloss != widget.view.showGloss;
 
     if (chapterChanged || dataRequirementsChanged) {
@@ -105,7 +113,14 @@ class _ConfigurableChapterViewState extends State<ConfigurableChapterView> {
   }
 
   Future<void> _playVerse(Verse verse) {
-    return TtsService.instance.speak(verse.text);
+    return _ttsService.speak(verse.text, verseNumber: verse.number);
+  }
+
+  void _handleTtsChanged() {
+    if (!mounted) {
+      return;
+    }
+    setState(() {});
   }
 
   Future<void> _copyVerse(BuildContext context, Verse verse) async {
@@ -252,7 +267,9 @@ class _ConfigurableChapterViewState extends State<ConfigurableChapterView> {
                 height: 1.8,
               ),
           children: [
-            for (int index = 0; index < widget.chapter.verses.length; index++) ...[
+            for (int index = 0;
+                index < widget.chapter.verses.length;
+                index++) ...[
               if (widget.view.showVerseNumbers)
                 WidgetSpan(
                   alignment: PlaceholderAlignment.middle,
@@ -268,7 +285,14 @@ class _ConfigurableChapterViewState extends State<ConfigurableChapterView> {
                     ),
                   ),
                 ),
-              TextSpan(text: widget.chapter.verses[index].text),
+              ..._buildTranslationSpans(
+                context,
+                widget.chapter.verses[index],
+                DefaultTextStyle.of(context).style.copyWith(
+                      fontSize: 18,
+                      height: 1.8,
+                    ),
+              ),
               if (index != widget.chapter.verses.length - 1)
                 const TextSpan(text: ' '),
             ],
@@ -391,12 +415,25 @@ class _ConfigurableChapterViewState extends State<ConfigurableChapterView> {
                         top: widget.view.showOriginalLanguage ? 10 : 0,
                         bottom: widget.view.showGloss ? 8 : 0,
                       ),
-                      child: Text(
-                        _buildTranslationText(verse),
-                        style: TextStyle(
-                          fontSize: widget.view.lineByLine ? 16 : 18,
-                          height: 1.7,
-                          color: colorScheme.onSurface,
+                      child: Text.rich(
+                        TextSpan(
+                          style: TextStyle(
+                            fontSize: widget.view.lineByLine ? 16 : 18,
+                            height: 1.7,
+                            color: colorScheme.onSurface,
+                          ),
+                          children: _buildTranslationSpans(
+                            context,
+                            verse,
+                            TextStyle(
+                              fontSize: widget.view.lineByLine ? 16 : 18,
+                              height: 1.7,
+                              color: colorScheme.onSurface,
+                            ),
+                            includeInlineVerseNumber:
+                                widget.view.showVerseNumbers &&
+                                    !widget.view.lineByLine,
+                          ),
                         ),
                       ),
                     ),
@@ -522,12 +559,56 @@ class _ConfigurableChapterViewState extends State<ConfigurableChapterView> {
     );
   }
 
-  String _buildTranslationText(Verse verse) {
-    if (!widget.view.showVerseNumbers || widget.view.lineByLine) {
-      return verse.text;
+  List<InlineSpan> _buildTranslationSpans(
+    BuildContext context,
+    Verse verse,
+    TextStyle baseStyle, {
+    bool includeInlineVerseNumber = false,
+  }) {
+    final spans = <InlineSpan>[];
+    if (includeInlineVerseNumber) {
+      spans.add(TextSpan(text: '${verse.number}. ', style: baseStyle));
     }
 
-    return '${verse.number}. ${verse.text}';
+    final progress = _ttsService.progressState;
+    final isActiveVerse = _ttsService.currentVerseNumber == verse.number &&
+        progress != null &&
+        progress.verseNumber == verse.number;
+    if (!isActiveVerse) {
+      spans.add(TextSpan(text: verse.text, style: baseStyle));
+      return spans;
+    }
+
+    final highlightStart = progress.startOffset.clamp(0, verse.text.length);
+    final highlightEnd = progress.endOffset.clamp(0, verse.text.length);
+    if (highlightStart >= highlightEnd) {
+      spans.add(TextSpan(text: verse.text, style: baseStyle));
+      return spans;
+    }
+
+    final highlightStyle = baseStyle.copyWith(
+      backgroundColor: Theme.of(context).colorScheme.tertiaryContainer,
+      color: Theme.of(context).colorScheme.onTertiaryContainer,
+      fontWeight: FontWeight.w600,
+    );
+
+    if (highlightStart > 0) {
+      spans.add(TextSpan(
+        text: verse.text.substring(0, highlightStart),
+        style: baseStyle,
+      ));
+    }
+    spans.add(TextSpan(
+      text: verse.text.substring(highlightStart, highlightEnd),
+      style: highlightStyle,
+    ));
+    if (highlightEnd < verse.text.length) {
+      spans.add(TextSpan(
+        text: verse.text.substring(highlightEnd),
+        style: baseStyle,
+      ));
+    }
+    return spans;
   }
 
   String _buildCopyText(Verse verse) {

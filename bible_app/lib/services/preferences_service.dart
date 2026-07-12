@@ -6,33 +6,41 @@ import 'package:bible_app/ui/models/chapter_view_definition.dart';
 class PreferencesService {
   static const String _themeModeKey = 'theme_mode';
   static const String _appearancePaletteKey = 'appearance_palette';
+  static const String _lastBookIdKey = 'last_book_id';
+  static const String _lastChapterKey = 'last_chapter';
+  static const String _lastStartVerseKey = 'last_start_verse';
+  static const String _lastEndVerseKey = 'last_end_verse';
   static const String _customChapterViewsKey = 'custom_chapter_views';
   static const String _selectedChapterViewIdKey = 'selected_chapter_view_id';
   static const String _selectedTextSourceKey = 'selected_text_source';
-  
+  static const String _selectedTtsVoiceEnglishKey =
+      'selected_tts_voice_english';
+  static const String _selectedTtsVoiceHebrewKey = 'selected_tts_voice_hebrew';
+  static const String _selectedTtsVoiceGreekKey = 'selected_tts_voice_greek';
+
   static PreferencesService? _instance;
   static PreferencesService get instance {
     _instance ??= PreferencesService._();
     return _instance!;
   }
-  
+
   PreferencesService._();
-  
+
   SharedPreferences? _prefs;
-  
+
   /// Initialize the preferences service
   Future<void> initialize() async {
     _prefs = await SharedPreferences.getInstance();
   }
-  
+
   /// Get the saved theme mode
   /// Returns null if not set (defaults to system)
   ThemeMode? getThemeMode() {
     if (_prefs == null) return null;
-    
+
     final themeModeString = _prefs!.getString(_themeModeKey);
     if (themeModeString == null) return null;
-    
+
     switch (themeModeString) {
       case 'light':
         return ThemeMode.light;
@@ -43,11 +51,11 @@ class PreferencesService {
         return ThemeMode.system;
     }
   }
-  
+
   /// Save the theme mode preference
   Future<void> setThemeMode(ThemeMode mode) async {
     if (_prefs == null) return;
-    
+
     String modeString;
     switch (mode) {
       case ThemeMode.light:
@@ -60,7 +68,7 @@ class PreferencesService {
         modeString = 'system';
         break;
     }
-    
+
     await _prefs!.setString(_themeModeKey, modeString);
   }
 
@@ -75,6 +83,50 @@ class PreferencesService {
   Future<void> setAppearancePalette(String paletteId) async {
     if (_prefs == null) return;
     await _prefs!.setString(_appearancePaletteKey, paletteId);
+  }
+
+  String? getLastBookId() {
+    if (_prefs == null) return null;
+    return _prefs!.getString(_lastBookIdKey);
+  }
+
+  int? getLastChapter() {
+    if (_prefs == null) return null;
+    return _prefs!.getInt(_lastChapterKey);
+  }
+
+  int? getLastStartVerse() {
+    if (_prefs == null) return null;
+    return _prefs!.getInt(_lastStartVerseKey);
+  }
+
+  int? getLastEndVerse() {
+    if (_prefs == null) return null;
+    return _prefs!.getInt(_lastEndVerseKey);
+  }
+
+  Future<void> setLastReadingLocation({
+    required String bookId,
+    required int chapter,
+    int? startVerse,
+    int? endVerse,
+  }) async {
+    if (_prefs == null) return;
+
+    await _prefs!.setString(_lastBookIdKey, bookId);
+    await _prefs!.setInt(_lastChapterKey, chapter);
+
+    if (startVerse == null) {
+      await _prefs!.remove(_lastStartVerseKey);
+    } else {
+      await _prefs!.setInt(_lastStartVerseKey, startVerse);
+    }
+
+    if (endVerse == null) {
+      await _prefs!.remove(_lastEndVerseKey);
+    } else {
+      await _prefs!.setInt(_lastEndVerseKey, endVerse);
+    }
   }
 
   /// Get all saved custom chapter views.
@@ -116,5 +168,37 @@ class PreferencesService {
   Future<void> setSelectedTextSource(String sourceId) async {
     if (_prefs == null) return;
     await _prefs!.setString(_selectedTextSourceKey, sourceId);
+  }
+
+  String? getSelectedTtsVoiceId(String languageFamily) {
+    if (_prefs == null) return null;
+    return _prefs!.getString(_ttsVoiceKeyFor(languageFamily));
+  }
+
+  Future<void> setSelectedTtsVoiceId(
+    String languageFamily,
+    String? voiceId,
+  ) async {
+    if (_prefs == null) return;
+
+    final key = _ttsVoiceKeyFor(languageFamily);
+    if (voiceId == null || voiceId.isEmpty) {
+      await _prefs!.remove(key);
+      return;
+    }
+
+    await _prefs!.setString(key, voiceId);
+  }
+
+  String _ttsVoiceKeyFor(String languageFamily) {
+    switch (languageFamily) {
+      case 'he':
+        return _selectedTtsVoiceHebrewKey;
+      case 'el':
+        return _selectedTtsVoiceGreekKey;
+      case 'en':
+      default:
+        return _selectedTtsVoiceEnglishKey;
+    }
   }
 }

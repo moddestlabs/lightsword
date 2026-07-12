@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:bible_core/bible_core.dart';
 import 'package:bible_app/state/chapter_view_controller.dart';
+import 'package:bible_app/services/tts_service.dart';
 import 'package:bible_app/ui/widgets/arc_painter.dart';
 import 'package:bible_app/ui/widgets/study_toolbar.dart';
 
@@ -21,9 +21,29 @@ class StudyModeView extends StatefulWidget {
 
 class _StudyModeViewState extends State<StudyModeView> {
   final GlobalKey _textKey = GlobalKey();
+  final TtsService _ttsService = TtsService.instance;
   TextSelection? _currentSelection;
   Offset? _selectionOffset;
   final Map<int, ArcGeometry> _arcGeometry = {};
+
+  @override
+  void initState() {
+    super.initState();
+    _ttsService.addListener(_handleTtsChanged);
+  }
+
+  @override
+  void dispose() {
+    _ttsService.removeListener(_handleTtsChanged);
+    super.dispose();
+  }
+
+  void _handleTtsChanged() {
+    if (!mounted) {
+      return;
+    }
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -129,28 +149,33 @@ class _StudyModeViewState extends State<StudyModeView> {
     return spans;
   }
 
-  List<InlineSpan> _buildHighlightedText(Verse verse, List<Highlight> allHighlights) {
+  List<InlineSpan> _buildHighlightedText(
+    Verse verse,
+    List<Highlight> allHighlights,
+  ) {
     final spans = <InlineSpan>[];
-    final verseHighlights = allHighlights
-        .where((h) {
-          final start = h.reference.startVerse;
-          final end = h.reference.endVerse;
-          if (start == null) return false;
-          return start == verse.number ||
-              (end != null && start <= verse.number && end >= verse.number);
-        })
-        .toList();
+    final verseHighlights = allHighlights.where((h) {
+      final start = h.reference.startVerse;
+      final end = h.reference.endVerse;
+      if (start == null) return false;
+      return start == verse.number ||
+          (end != null && start <= verse.number && end >= verse.number);
+    }).toList();
 
-    if (verseHighlights.isEmpty) {
-      spans.add(TextSpan(text: '${verse.text} '));
-      return spans;
-    }
+    final progress = _ttsService.progressState;
+    final isActiveVerse = _ttsService.currentVerseNumber == verse.number &&
+        progress != null &&
+        progress.verseNumber == verse.number;
 
-    // Word-level highlighting: tokenize verse and apply highlights to word ranges
     final words = _tokenizeVerse(verse.text);
-    
+    int charOffset = 0;
+
     for (int i = 0; i < words.length; i++) {
-      // Check if this word is highlighted
+      final token = words[i];
+      final tokenStart = charOffset;
+      final tokenEnd = tokenStart + token.length;
+      charOffset = tokenEnd;
+
       Highlight? activeHighlight;
       for (var highlight in verseHighlights) {
         if (i >= highlight.wordStart && i <= highlight.wordEnd) {
@@ -158,40 +183,58 @@ class _StudyModeViewState extends State<StudyModeView> {
           break;
         }
       }
-      
+
+      final hasTtsHighlight = isActiveVerse &&
+          progress.startOffset < tokenEnd &&
+          progress.endOffset > tokenStart;
+
+      TextStyle? style;
+      if (activeHighlight != null) {
+        style = TextStyle(
+          backgroundColor: activeHighlight.color.withValues(alpha: 0.3),
+        );
+      }
+      if (hasTtsHighlight) {
+        final ttsColor = Theme.of(context).colorScheme.tertiaryContainer;
+        style = (style ?? const TextStyle()).copyWith(
+          backgroundColor: ttsColor,
+          color: Theme.of(context).colorScheme.onTertiaryContainer,
+          fontWeight: FontWeight.w600,
+        );
+      }
+
       spans.add(TextSpan(
-        text: words[i],
-        style: activeHighlight != null
-            ? TextStyle(backgroundColor: activeHighlight.color.withOpacity(0.3))
-            : null,
+        text: token,
+        style: style,
       ));
     }
-    
+
     spans.add(const TextSpan(text: ' ')); // Space after verse
 
     return spans;
   }
-  
+
   /// Tokenize verse text into words, preserving spaces and punctuation
   List<String> _tokenizeVerse(String text) {
     final words = <String>[];
     final buffer = StringBuffer();
-    
+
     for (int i = 0; i < text.length; i++) {
       final char = text[i];
       buffer.write(char);
-      
+
       // Add word on space or end of string
       if (char == ' ' || i == text.length - 1) {
         words.add(buffer.toString());
         buffer.clear();
       }
     }
-    
+
     return words;
   }
 
-  void _handleSelectionChanged(TextSelection selection, SelectionChangedCause? cause) {
+  void _handleSelectionChanged(
+      TextSelection selection, SelectionChangedCause? cause) {
     if (selection.isCollapsed) {
       setState(() {
         _currentSelection = null;
@@ -244,7 +287,7 @@ class _StudyModeViewState extends State<StudyModeView> {
 
   void _showNoteEditor([BuildContext? ctx, StudyNote? existingNote]) {
     final dialogContext = ctx ?? context;
-    
+
     showDialog(
       context: dialogContext,
       builder: (context) => _NoteEditorDialog(
@@ -276,55 +319,59 @@ class _StudyModeViewState extends State<StudyModeView> {
     // Calculate which verse and words were selected
     final verses = widget.controller.state.chapter.verses;
     final showVerseNumbers = widget.controller.state.showVerseNumbers;
-    
+
     // Build full text to map character positions
     int charPosition = 0;
     Verse? selectedVerse;
     int wordStart = 0;
     int wordEnd = 0;
-    
+
     for (var verse in verses) {
       // Account for verse number if shown
       if (showVerseNumbers) {
         charPosition += '${verse.number} '.length;
       }
-      
+
       final verseTextStart = charPosition;
       final verseTextEnd = charPosition + verse.text.length;
-      
+
       // Check if selection overlaps with this verse
-      if (_currentSelection!.start >= verseTextStart && _currentSelection!.start < verseTextEnd) {
+      if (_currentSelection!.start >= verseTextStart &&
+          _currentSelection!.start < verseTextEnd) {
         selectedVerse = verse;
-        
+
         // Calculate word indices within the verse
         final words = _tokenizeVerse(verse.text);
         int wordCharPos = verseTextStart;
-        
+
         // Find start word
         for (int i = 0; i < words.length; i++) {
           final wordLen = words[i].length;
-          if (_currentSelection!.start >= wordCharPos && _currentSelection!.start < wordCharPos + wordLen) {
+          if (_currentSelection!.start >= wordCharPos &&
+              _currentSelection!.start < wordCharPos + wordLen) {
             wordStart = i;
           }
-          if (_currentSelection!.end >= wordCharPos && _currentSelection!.end <= wordCharPos + wordLen) {
+          if (_currentSelection!.end >= wordCharPos &&
+              _currentSelection!.end <= wordCharPos + wordLen) {
             wordEnd = i;
           }
           wordCharPos += wordLen;
         }
-        
+
         break;
       }
-      
+
       charPosition = verseTextEnd + 1; // +1 for space or newline
     }
-    
+
     if (selectedVerse == null) {
       print('DEBUG: Could not determine selected verse');
       return;
     }
-    
-    print('DEBUG: Adding highlight to verse ${selectedVerse.number}, words $wordStart-$wordEnd');
-    
+
+    print(
+        'DEBUG: Adding highlight to verse ${selectedVerse.number}, words $wordStart-$wordEnd');
+
     final highlight = Highlight.create(
       reference: PassageReference(
         bookId: widget.controller.state.chapter.bookId,
@@ -338,7 +385,7 @@ class _StudyModeViewState extends State<StudyModeView> {
     );
 
     widget.controller.addHighlight(highlight);
-    
+
     // Don't call setState - the controller will notify listeners which triggers rebuild
     // Just clear the selection state for the next interaction
     _currentSelection = null;
@@ -365,7 +412,7 @@ class _StudyModeViewState extends State<StudyModeView> {
     );
 
     widget.controller.addArc(arc);
-    
+
     // Don't call setState - the controller will notify listeners which triggers rebuild
     _currentSelection = null;
     _selectionOffset = null;
@@ -373,12 +420,12 @@ class _StudyModeViewState extends State<StudyModeView> {
 
   void _copySelection() async {
     if (_currentSelection == null) return;
-    
+
     // Build full text from verses
     final verses = widget.controller.state.chapter.verses;
     final showVerseNumbers = widget.controller.state.showVerseNumbers;
     final buffer = StringBuffer();
-    
+
     for (var verse in verses) {
       if (showVerseNumbers) {
         buffer.write('${verse.number} ');
@@ -386,16 +433,16 @@ class _StudyModeViewState extends State<StudyModeView> {
       buffer.write(verse.text);
       buffer.write(' ');
     }
-    
+
     final fullText = buffer.toString();
     final selectedText = fullText.substring(
       _currentSelection!.start,
       _currentSelection!.end,
     );
-    
+
     // Copy to clipboard
     await Clipboard.setData(ClipboardData(text: selectedText));
-    
+
     // Show confirmation
     if (mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -405,7 +452,7 @@ class _StudyModeViewState extends State<StudyModeView> {
         ),
       );
     }
-    
+
     // Clear selection - no setState needed, just update local state
     _currentSelection = null;
     _selectionOffset = null;
@@ -535,7 +582,8 @@ class _NoteEditorDialogState extends State<_NoteEditorDialog> {
   @override
   void initState() {
     super.initState();
-    _contentController = TextEditingController(text: widget.note?.content ?? '');
+    _contentController =
+        TextEditingController(text: widget.note?.content ?? '');
     _tagsController = TextEditingController(
       text: widget.note?.tags.join(', ') ?? '',
     );

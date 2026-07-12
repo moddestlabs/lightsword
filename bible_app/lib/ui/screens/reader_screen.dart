@@ -30,30 +30,32 @@ class ReaderScreenState extends State<ReaderScreen> {
   bool _isLoading = true;
   String? _error;
   PassageReference? _offlineFallbackReference;
-  
+
   String _bookId = 'John';
   int _chapter = 1;
   int? _startVerse; // For verse ranges
-  int? _endVerse;   // For verse ranges
+  int? _endVerse; // For verse ranges
   BibleTextSource _textSource = BibleService.currentSource;
   ReadingMode _viewMode = ReadingMode.verse; // Reading vs study surface
   List<ChapterViewDefinition> _customViews = const [];
   ChapterViewDefinition _selectedView = ChapterViewDefinition.lineByLineView;
-  
+
   // Persistent repository instance to maintain user content across rebuilds
-  final LocalUserContentRepository _contentRepository = LocalUserContentRepository();
-  
+  final LocalUserContentRepository _contentRepository =
+      LocalUserContentRepository();
+
   PassageReference get _currentRef => PassageReference(
-    bookId: _bookId,
-    chapter: _chapter,
-    startVerse: _startVerse,
-    endVerse: _endVerse,
-  );
+        bookId: _bookId,
+        chapter: _chapter,
+        startVerse: _startVerse,
+        endVerse: _endVerse,
+      );
 
   @override
   void initState() {
     super.initState();
     _loadSavedViews();
+    _restoreSavedReadingLocation();
     _loadBooks();
     _loadBook();
     _loadVerses();
@@ -75,7 +77,8 @@ class ReaderScreenState extends State<ReaderScreen> {
   }
 
   void _loadSavedViews() {
-    final savedCustomViews = PreferencesService.instance.getCustomChapterViews();
+    final savedCustomViews =
+        PreferencesService.instance.getCustomChapterViews();
     final savedViewId = PreferencesService.instance.getSelectedChapterViewId();
     final matchingView = [
       ...ChapterViewDefinition.defaults,
@@ -87,6 +90,22 @@ class ReaderScreenState extends State<ReaderScreen> {
       _selectedView = matchingView ?? ChapterViewDefinition.lineByLineView;
       _textSource = BibleService.currentSource;
     });
+  }
+
+  void _restoreSavedReadingLocation() {
+    final savedBookId = PreferencesService.instance.getLastBookId();
+    final savedChapter = PreferencesService.instance.getLastChapter();
+    if (savedBookId == null ||
+        savedBookId.isEmpty ||
+        savedChapter == null ||
+        savedChapter < 1) {
+      return;
+    }
+
+    _bookId = savedBookId;
+    _chapter = savedChapter;
+    _startVerse = PreferencesService.instance.getLastStartVerse();
+    _endVerse = PreferencesService.instance.getLastEndVerse();
   }
 
   Future<void> _loadBooks() async {
@@ -138,7 +157,7 @@ class ReaderScreenState extends State<ReaderScreen> {
         });
         return;
       }
-      
+
       // Filter verses if we have a verse range
       List<Verse> filteredVerses = verses;
       if (_startVerse != null && _endVerse != null) {
@@ -146,13 +165,20 @@ class ReaderScreenState extends State<ReaderScreen> {
             .where((v) => v.number >= _startVerse! && v.number <= _endVerse!)
             .toList();
       }
-      
+
       setState(() {
         _verses = filteredVerses;
         _isLoading = false;
         _offlineFallbackReference = null;
       });
-      
+
+      await PreferencesService.instance.setLastReadingLocation(
+        bookId: _bookId,
+        chapter: _chapter,
+        startVerse: _startVerse,
+        endVerse: _endVerse,
+      );
+
       // Update URL to reflect current location
       _updateUrl();
     } catch (e) {
@@ -184,7 +210,8 @@ class ReaderScreenState extends State<ReaderScreen> {
 
     final book = _resolveBook(reference.bookId);
     final isOldTestament = book?.testament == Testament.old;
-    final otPackStatus = pwa.offlinePackStatuses[OfflinePackId.originalLanguageOt];
+    final otPackStatus =
+        pwa.offlinePackStatuses[OfflinePackId.originalLanguageOt];
     final hasOtOfflinePack = otPackStatus?.isInstalled ?? false;
 
     if (_textSource == BibleTextSource.originalLanguage &&
@@ -196,7 +223,7 @@ class ReaderScreenState extends State<ReaderScreen> {
 
     if (_textSource == BibleTextSource.bsb &&
         (loadedVerses == null || loadedVerses.isEmpty)) {
-      return 'The BSB translation is not currently cached offline. Switch to Hebrew/Greek Glosses or use the offline fallback below.';
+      return 'The BSB translation is not currently cached offline. Switch to Gloss or use the offline fallback below.';
     }
 
     return null;
@@ -256,18 +283,22 @@ class ReaderScreenState extends State<ReaderScreen> {
 
   /// Update browser URL to match current passage (web only)
   void _updateUrl() {
-    final oldMode = _viewMode == ReadingMode.study || _viewMode == ReadingMode.drawing
-      ? old_view.ViewMode.paragraph
-      : _selectedView.showOriginalLanguage || _selectedView.showGloss
-        ? old_view.ViewMode.interlinear
-        : _selectedView.lineByLine
-          ? old_view.ViewMode.standard
-          : old_view.ViewMode.paragraph;
+    final oldMode =
+        _viewMode == ReadingMode.study || _viewMode == ReadingMode.drawing
+            ? old_view.ViewMode.paragraph
+            : _selectedView.showOriginalLanguage || _selectedView.showGloss
+                ? old_view.ViewMode.interlinear
+                : _selectedView.lineByLine
+                    ? old_view.ViewMode.standard
+                    : old_view.ViewMode.paragraph;
     DeepLinkingService.instance.updateWebUrl(_currentRef, oldMode);
   }
 
   /// Navigate to a specific reference (called from deep links)
-  void navigateToReference(PassageReference reference, {old_view.ViewMode? viewMode}) {
+  void navigateToReference(
+    PassageReference reference, {
+    old_view.ViewMode? viewMode,
+  }) {
     setState(() {
       _bookId = reference.bookId;
       _chapter = reference.chapter;
@@ -276,7 +307,8 @@ class ReaderScreenState extends State<ReaderScreen> {
       if (viewMode != null) {
         _viewMode = ReadingMode.verse;
         _selectedView = switch (viewMode) {
-          old_view.ViewMode.interlinear => ChapterViewDefinition.interlinearView,
+          old_view.ViewMode.interlinear =>
+            ChapterViewDefinition.interlinearView,
           old_view.ViewMode.paragraph => ChapterViewDefinition.paragraphView,
           old_view.ViewMode.standard => ChapterViewDefinition.lineByLineView,
         };
@@ -428,7 +460,8 @@ class ReaderScreenState extends State<ReaderScreen> {
                       if (_selectedView.id == view.id)
                         const Icon(Icons.check, size: 18),
                       IconButton(
-                        tooltip: view.isBuiltIn ? 'Duplicate and edit' : 'Edit view',
+                        tooltip:
+                            view.isBuiltIn ? 'Duplicate and edit' : 'Edit view',
                         onPressed: () {
                           Navigator.of(context).pop(
                             _ViewPickerResult.edit(view),
@@ -536,7 +569,8 @@ class ReaderScreenState extends State<ReaderScreen> {
       return;
     }
 
-    final updatedViews = _customViews.where((item) => item.id != view.id).toList();
+    final updatedViews =
+        _customViews.where((item) => item.id != view.id).toList();
     await PreferencesService.instance.setCustomChapterViews(updatedViews);
 
     final nextView = _selectedView.id == view.id
@@ -546,7 +580,9 @@ class ReaderScreenState extends State<ReaderScreen> {
     setState(() {
       _customViews = updatedViews;
       _selectedView = nextView;
-      _viewMode = _viewMode == ReadingMode.study ? ReadingMode.study : ReadingMode.verse;
+      _viewMode = _viewMode == ReadingMode.study
+          ? ReadingMode.study
+          : ReadingMode.verse;
     });
 
     await PreferencesService.instance.setSelectedChapterViewId(nextView.id);
@@ -606,7 +642,7 @@ class ReaderScreenState extends State<ReaderScreen> {
       layers.add('Primary text');
     }
     if (view.showGloss) {
-      layers.add('Glosses');
+      layers.add('Gloss');
     }
     return '$layout • ${layers.join(' • ')}';
   }
@@ -639,9 +675,8 @@ class ReaderScreenState extends State<ReaderScreen> {
     final currentIndex = _availableViews.indexWhere(
       (view) => view.id == _selectedView.id,
     );
-    final nextIndex = currentIndex < 0
-        ? 0
-        : (currentIndex + 1) % _availableViews.length;
+    final nextIndex =
+        currentIndex < 0 ? 0 : (currentIndex + 1) % _availableViews.length;
     _applySelectedView(_availableViews[nextIndex]);
   }
 
@@ -677,7 +712,7 @@ class ReaderScreenState extends State<ReaderScreen> {
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
-    
+
     return Scaffold(
       backgroundColor: colorScheme.surface,
       appBar: AppBar(
@@ -687,7 +722,6 @@ class ReaderScreenState extends State<ReaderScreen> {
         leading: null,
         automaticallyImplyLeading: false,
         title: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             // Left: Chapter navigation
             Row(
@@ -704,9 +738,9 @@ class ReaderScreenState extends State<ReaderScreen> {
                     onLongPress: _showChapterPicker,
                     child: Icon(
                       Icons.chevron_left,
-                      color: _chapter > 1 
+                      color: _chapter > 1
                           ? colorScheme.primary
-                          : colorScheme.onSurface.withOpacity(0.38),
+                          : colorScheme.onSurface.withValues(alpha: 0.38),
                       size: 24,
                     ),
                   ),
@@ -761,24 +795,17 @@ class ReaderScreenState extends State<ReaderScreen> {
                     onLongPress: _showChapterPicker,
                     child: Icon(
                       Icons.chevron_right,
-                      color: _currentBook != null && _chapter < _currentBook!.chapterCount
+                      color: _currentBook != null &&
+                              _chapter < _currentBook!.chapterCount
                           ? colorScheme.primary
-                          : colorScheme.onSurface.withOpacity(0.38),
+                          : colorScheme.onSurface.withValues(alpha: 0.38),
                       size: 24,
                     ),
                   ),
                 ),
               ],
             ),
-            // Center: App name
-            Text(
-              'LIGHTSWORD',
-              style: TextStyle(
-                color: colorScheme.onSurface,
-                fontSize: 17,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
+            const Spacer(),
             // Right: Translation + View + TTS
             Row(
               mainAxisSize: MainAxisSize.min,
@@ -807,8 +834,10 @@ class ReaderScreenState extends State<ReaderScreen> {
                 GestureDetector(
                   onTap: _verses.isNotEmpty ? _startTtsReading : null,
                   child: Icon(
-                    Icons.volume_up,
-                    color: _verses.isNotEmpty ? colorScheme.primary : colorScheme.onSurface.withOpacity(0.38),
+                    Icons.play_arrow_rounded,
+                    color: _verses.isNotEmpty
+                        ? colorScheme.primary
+                        : colorScheme.onSurface.withValues(alpha: 0.38),
                     size: 24,
                   ),
                 ),
@@ -863,8 +892,9 @@ class ReaderScreenState extends State<ReaderScreen> {
   }
 
   Widget _buildContentView() {
-    print('DEBUG: _buildContentView called, verses count: ${_verses.length}, mode: $_viewMode');
-    
+    print(
+        'DEBUG: _buildContentView called, verses count: ${_verses.length}, mode: $_viewMode');
+
     if (_verses.isEmpty) {
       print('DEBUG: Verses are empty, showing error message');
       return const Center(child: Text('No verses loaded'));
@@ -877,8 +907,9 @@ class ReaderScreenState extends State<ReaderScreen> {
       verseCount: _verses.length,
       verses: _verses,
     );
-    
-    print('DEBUG: Created chapter ${chapter.bookId} ${chapter.number} with ${chapter.verses.length} verses');
+
+    print(
+        'DEBUG: Created chapter ${chapter.bookId} ${chapter.number} with ${chapter.verses.length} verses');
 
     if (_viewMode == ReadingMode.study || _viewMode == ReadingMode.drawing) {
       return ChapterView(
@@ -920,8 +951,7 @@ class _ViewPickerResult {
   const _ViewPickerResult.select(ChapterViewDefinition view)
       : this._(_ViewPickerAction.select, view);
 
-  const _ViewPickerResult.create()
-      : this._(_ViewPickerAction.create, null);
+  const _ViewPickerResult.create() : this._(_ViewPickerAction.create, null);
 
   const _ViewPickerResult.edit(ChapterViewDefinition view)
       : this._(_ViewPickerAction.edit, view);

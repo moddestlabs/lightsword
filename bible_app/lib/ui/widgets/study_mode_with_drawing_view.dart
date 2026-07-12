@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:bible_core/bible_core.dart';
+import 'package:bible_app/services/tts_service.dart';
 import 'package:bible_app/state/chapter_view_controller.dart';
 import 'package:bible_app/ui/widgets/drawing_painter.dart';
 import 'package:bible_app/ui/widgets/drawing_canvas.dart';
@@ -23,6 +24,8 @@ class StudyModeWithDrawingView extends StatefulWidget {
 }
 
 class _StudyModeWithDrawingViewState extends State<StudyModeWithDrawingView> {
+  final TtsService _ttsService = TtsService.instance;
+
   // Drawing state
   bool _isDrawingMode = false;
   DrawingToolSettings _toolSettings = const DrawingToolSettings();
@@ -36,6 +39,7 @@ class _StudyModeWithDrawingViewState extends State<StudyModeWithDrawingView> {
   @override
   void initState() {
     super.initState();
+    _ttsService.addListener(_handleTtsChanged);
     _loadDrawings();
     _initializeVerseKeys();
     
@@ -46,6 +50,19 @@ class _StudyModeWithDrawingViewState extends State<StudyModeWithDrawingView> {
         setState(() {}); // Trigger rebuild with positions
       }
     });
+  }
+
+  @override
+  void dispose() {
+    _ttsService.removeListener(_handleTtsChanged);
+    super.dispose();
+  }
+
+  void _handleTtsChanged() {
+    if (!mounted) {
+      return;
+    }
+    setState(() {});
   }
 
   Future<void> _loadDrawings() async {
@@ -146,7 +163,7 @@ class _StudyModeWithDrawingViewState extends State<StudyModeWithDrawingView> {
                         fontWeight: FontWeight.w600,
                       ),
                     ),
-                  TextSpan(text: verse.text),
+                  ..._buildVerseTextSpans(verse),
                 ],
               ),
             ),
@@ -156,6 +173,40 @@ class _StudyModeWithDrawingViewState extends State<StudyModeWithDrawingView> {
     }
 
     return widgets;
+  }
+
+  List<InlineSpan> _buildVerseTextSpans(Verse verse) {
+    final progress = _ttsService.progressState;
+    final isActiveVerse = _ttsService.currentVerseNumber == verse.number &&
+        progress != null &&
+        progress.verseNumber == verse.number;
+    if (!isActiveVerse) {
+      return [TextSpan(text: verse.text)];
+    }
+
+    final highlightStart = progress.startOffset.clamp(0, verse.text.length);
+    final highlightEnd = progress.endOffset.clamp(0, verse.text.length);
+    if (highlightStart >= highlightEnd) {
+      return [TextSpan(text: verse.text)];
+    }
+
+    final colorScheme = Theme.of(context).colorScheme;
+    final spans = <InlineSpan>[];
+    if (highlightStart > 0) {
+      spans.add(TextSpan(text: verse.text.substring(0, highlightStart)));
+    }
+    spans.add(TextSpan(
+      text: verse.text.substring(highlightStart, highlightEnd),
+      style: TextStyle(
+        backgroundColor: colorScheme.tertiaryContainer,
+        color: colorScheme.onTertiaryContainer,
+        fontWeight: FontWeight.w600,
+      ),
+    ));
+    if (highlightEnd < verse.text.length) {
+      spans.add(TextSpan(text: verse.text.substring(highlightEnd)));
+    }
+    return spans;
   }
 
   /// Calculate current positions of verses in the layout

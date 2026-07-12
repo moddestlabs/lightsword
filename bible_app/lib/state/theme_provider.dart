@@ -21,7 +21,8 @@ enum AppPalette {
   highContrast(
     id: 'high_contrast',
     label: 'High Contrast',
-    description: 'Stronger foreground and accent separation for maximum legibility',
+    description:
+        'Stronger foreground and accent separation for maximum legibility',
     icon: Icons.visibility,
     seedColor: Color(0xFF000000),
     contrastLevel: 1.0,
@@ -53,25 +54,25 @@ enum AppPalette {
 
 /// Provider for managing app theme mode
 class ThemeProvider extends ChangeNotifier {
-  ThemeMode _themeMode = ThemeMode.system;
+  ThemeMode _themeMode = ThemeMode.light;
   AppPalette _palette = AppPalette.neutral;
   final PreferencesService _prefsService = PreferencesService.instance;
-  
+
   ThemeMode get themeMode => _themeMode;
   AppPalette get palette => _palette;
   Color get seedColor => _palette.seedColor;
-  
+
   /// Initialize theme from saved preferences
   Future<void> initialize() async {
-    _themeMode = _prefsService.getThemeMode() ?? ThemeMode.system;
+    _themeMode = _prefsService.getThemeMode() ?? ThemeMode.light;
     _palette = AppPalette.fromId(_prefsService.getAppearancePalette());
     notifyListeners();
   }
-  
+
   /// Set the theme mode and persist the preference
   Future<void> setThemeMode(ThemeMode mode) async {
     if (_themeMode == mode) return;
-    
+
     _themeMode = mode;
     await _prefsService.setThemeMode(mode);
     notifyListeners();
@@ -85,12 +86,12 @@ class ThemeProvider extends ChangeNotifier {
     await _prefsService.setAppearancePalette(palette.id);
     notifyListeners();
   }
-  
+
   /// Check if currently using dark theme based on context
   bool isDark(BuildContext context) {
     if (_themeMode == ThemeMode.dark) return true;
     if (_themeMode == ThemeMode.light) return false;
-    
+
     // System mode - check platform brightness
     final brightness = MediaQuery.platformBrightnessOf(context);
     return brightness == Brightness.dark;
