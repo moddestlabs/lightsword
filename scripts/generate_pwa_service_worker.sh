@@ -297,12 +297,14 @@ async function handleNavigationRequest(request) {
 async function handleStaticRequest(request) {
   const precachedResponse = await matchPrecachedRequest(request);
   if (precachedResponse) {
+    await maybeRecordStaticCacheHit(request, 'precache');
     return precachedResponse;
   }
 
   const runtimeCache = await caches.open(RUNTIME_CACHE);
   const cachedResponse = await runtimeCache.match(request, { ignoreSearch: true });
   if (cachedResponse) {
+    await maybeRecordStaticCacheHit(request, 'runtime');
     return cachedResponse;
   }
 
@@ -489,6 +491,29 @@ function stringifyError(error) {
     return error.message;
   }
   return String(error);
+}
+
+async function maybeRecordStaticCacheHit(request, source) {
+  if (!shouldTraceAssetRequest(request)) {
+    return;
+  }
+
+  await recordDiagnosticEvent({
+    kind: 'static-cache-hit',
+    url: request.url,
+    destination: request.destination || 'unknown',
+    mode: request.mode || 'unknown',
+    source,
+  });
+}
+
+function shouldTraceAssetRequest(request) {
+  const url = request.url || '';
+  return (
+    url.includes('/canvaskit/') ||
+    url.endsWith('.js') ||
+    url.endsWith('.wasm')
+  );
 }
 EOF
 } > "$service_worker_path"
