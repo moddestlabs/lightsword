@@ -35,6 +35,37 @@ void main() async {
 class LightswordApp extends StatelessWidget {
   const LightswordApp({super.key});
 
+  ThemeData _buildTheme({
+    required ThemeProvider themeProvider,
+    required Brightness brightness,
+  }) {
+    final colorScheme = ColorScheme.fromSeed(
+      seedColor: themeProvider.seedColor,
+      brightness: brightness,
+      contrastLevel: themeProvider.palette.contrastLevel,
+    );
+    final baseTheme = ThemeData(
+      useMaterial3: true,
+      colorScheme: colorScheme,
+    );
+
+    const fallbackFonts = <String>['NotoSansHebrew', 'NotoRashiHebrew'];
+
+    return ThemeData(
+      useMaterial3: true,
+      colorScheme: colorScheme,
+      fontFamily: 'Cardo',
+      textTheme: baseTheme.textTheme.apply(
+        fontFamily: 'Cardo',
+        fontFamilyFallback: fallbackFonts,
+      ),
+      primaryTextTheme: baseTheme.primaryTextTheme.apply(
+        fontFamily: 'Cardo',
+        fontFamilyFallback: fallbackFonts,
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
@@ -45,23 +76,13 @@ class LightswordApp extends StatelessWidget {
             title: 'LIGHTSWORD',
             debugShowCheckedModeBanner: false,
             themeMode: themeProvider.themeMode,
-            theme: ThemeData(
-              useMaterial3: true,
-              colorScheme: ColorScheme.fromSeed(
-                seedColor: themeProvider.seedColor,
-                brightness: Brightness.light,
-                contrastLevel: themeProvider.palette.contrastLevel,
-              ),
-              fontFamily: 'Georgia',
+            theme: _buildTheme(
+              themeProvider: themeProvider,
+              brightness: Brightness.light,
             ),
-            darkTheme: ThemeData(
-              useMaterial3: true,
-              colorScheme: ColorScheme.fromSeed(
-                seedColor: themeProvider.seedColor,
-                brightness: Brightness.dark,
-                contrastLevel: themeProvider.palette.contrastLevel,
-              ),
-              fontFamily: 'Georgia',
+            darkTheme: _buildTheme(
+              themeProvider: themeProvider,
+              brightness: Brightness.dark,
             ),
             home: const HomeScreen(),
           );

@@ -68,6 +68,13 @@ mapfile -t renderer_runtime_assets < <(
   } | awk 'NF'
 )
 
+mapfile -t bundled_font_assets < <(
+  {
+    collect_paths 'assets/assets/fonts' '*.ttf'
+    collect_paths 'assets/assets/fonts' '*.otf'
+  } | awk 'NF'
+)
+
 mapfile -t optional_original_language_ot_pack < <(
   collect_paths 'assets/packages/bible_core/assets/data/tahot' '*.json' | awk 'NF'
 )
@@ -102,6 +109,10 @@ for relative_path in "${precache_allowlist[@]}"; do
 done
 
 for relative_path in "${renderer_runtime_assets[@]}"; do
+  precache_urls+=("$relative_path")
+done
+
+for relative_path in "${bundled_font_assets[@]}"; do
   precache_urls+=("$relative_path")
 done
 

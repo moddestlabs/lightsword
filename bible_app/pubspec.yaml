@@ -41,3 +41,14 @@ flutter:
     - assets/data/
     - assets/data/sword/
     - assets/data/usfm/bsb/
+
+  fonts:
+    - family: Cardo
+      fonts:
+        - asset: assets/fonts/Cardo-Regular.ttf
+    - family: NotoSansHebrew
+      fonts:
+        - asset: assets/fonts/NotoSansHebrew.ttf
+    - family: NotoRashiHebrew
+      fonts:
+        - asset: assets/fonts/NotoRashiHebrew.ttf
