@@ -3,7 +3,8 @@
 Cross-platform and fully offline-capable Bible study application built on advanced language functionality but focused on usability. The goal is to provide an extremely easy and intuitive but powerful study tool with markup, cross-reference and language capabilities.
 
 **Tech Stack:** Dart + Flutter (iOS, Android, Web, macOS, Windows, Linux)  
-**Web: https://moddestlabs.github.io/lightsword/
+
+See it live: https://moddestlabs.github.io/lightsword/
 
 ## Design
 
@@ -20,7 +21,7 @@ LIGHTSWORD features:
 - **Offline-first**: No internet required after initial asset download.
 - **No ads, no tracking, no account.**
 
-#### Views
+### Views
 
 LIGHTSWORD is built around the concept of customizable Views to Bible content.
 
