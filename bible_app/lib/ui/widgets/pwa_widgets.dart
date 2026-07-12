@@ -571,6 +571,13 @@ class _PwaDiagnosticsCardState extends State<PwaDiagnosticsCard> {
                 'Last Boot Failure',
                 diagnostics.bootLastFailure?.summary,
               ),
+              _buildValue(context, 'Previous Boot Status', diagnostics.previousBootStatus),
+              _buildValue(context, 'Previous Boot Detail', diagnostics.previousBootLastDetail),
+              _buildValue(
+                context,
+                'Previous Boot Failure',
+                diagnostics.previousBootLastFailure?.summary,
+              ),
               _buildValue(context, 'Shell Cache', diagnostics.shellStatus?.summary),
               _buildValue(context, 'Default Pack Cache', diagnostics.defaultPackStatus?.summary),
               for (final entry in diagnostics.optionalPacks.entries)
@@ -584,6 +591,12 @@ class _PwaDiagnosticsCardState extends State<PwaDiagnosticsCard> {
                 _buildValue(context, 'Errors', diagnostics.errors.join(' | ')),
               if (diagnostics.bootEvents.isNotEmpty)
                 _buildValue(context, 'Boot Events', diagnostics.bootEvents.join(' | ')),
+              if (diagnostics.previousBootEvents.isNotEmpty)
+                _buildValue(
+                  context,
+                  'Previous Boot Events',
+                  diagnostics.previousBootEvents.join(' | '),
+                ),
               const SizedBox(height: 12),
               OutlinedButton.icon(
                 onPressed: () => _copyDiagnostics(diagnostics),

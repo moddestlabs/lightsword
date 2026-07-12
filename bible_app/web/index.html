@@ -106,6 +106,20 @@
   <script>
     (function() {
       const storageKey = 'lightsword_boot_state_v1';
+      const lastStorageKey = 'lightsword_boot_state_last_v1';
+      let previousSession = null;
+
+      try {
+        const priorRaw = window.localStorage.getItem(storageKey);
+        if (priorRaw) {
+          previousSession = JSON.parse(priorRaw);
+          window.localStorage.setItem(lastStorageKey, priorRaw);
+        } else {
+          const lastRaw = window.localStorage.getItem(lastStorageKey);
+          previousSession = lastRaw ? JSON.parse(lastRaw) : null;
+        }
+      } catch (_) {}
+
       const state = {
         sessionId: String(Date.now()),
         status: 'html-loaded',
@@ -113,6 +127,7 @@
         lastUpdated: new Date().toISOString(),
         events: [],
         lastFailure: null,
+        previousSession,
       };
 
       function save() {

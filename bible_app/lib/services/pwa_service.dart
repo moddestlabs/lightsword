@@ -168,6 +168,11 @@ class PwaService {
         bootLastUpdated: (_getProperty(diagnosticsObj, 'bootLastUpdated') as JSString?)?.toDart,
         bootLastFailure: _parseBootFailure(_getProperty(diagnosticsObj, 'bootLastFailure')),
         bootEvents: _toStringList(_getProperty(diagnosticsObj, 'bootEvents')),
+        previousBootStatus: (_getProperty(diagnosticsObj, 'previousBootStatus') as JSString?)?.toDart,
+        previousBootLastDetail: (_getProperty(diagnosticsObj, 'previousBootLastDetail') as JSString?)?.toDart,
+        previousBootLastUpdated: (_getProperty(diagnosticsObj, 'previousBootLastUpdated') as JSString?)?.toDart,
+        previousBootLastFailure: _parseBootFailure(_getProperty(diagnosticsObj, 'previousBootLastFailure')),
+        previousBootEvents: _toStringList(_getProperty(diagnosticsObj, 'previousBootEvents')),
         errors: _toStringList(_getProperty(diagnosticsObj, 'errors')),
       );
     } catch (e) {
@@ -602,6 +607,11 @@ class PwaDiagnostics {
     required this.bootLastUpdated,
     required this.bootLastFailure,
     required this.bootEvents,
+    required this.previousBootStatus,
+    required this.previousBootLastDetail,
+    required this.previousBootLastUpdated,
+    required this.previousBootLastFailure,
+    required this.previousBootEvents,
     required this.errors,
   });
 
@@ -633,6 +643,11 @@ class PwaDiagnostics {
   final String? bootLastUpdated;
   final PwaBootFailure? bootLastFailure;
   final List<String> bootEvents;
+  final String? previousBootStatus;
+  final String? previousBootLastDetail;
+  final String? previousBootLastUpdated;
+  final PwaBootFailure? previousBootLastFailure;
+  final List<String> previousBootEvents;
   final List<String> errors;
 
   String toDebugReport() {
@@ -664,6 +679,14 @@ class PwaDiagnostics {
     if (bootLastFailure != null) {
       buffer.writeln('bootLastFailure: ${bootLastFailure!.summary}');
     }
+    if (previousBootStatus != null || previousBootLastFailure != null) {
+      buffer.writeln('previousBootStatus: ${previousBootStatus ?? 'unknown'}');
+      buffer.writeln('previousBootLastDetail: ${previousBootLastDetail ?? 'none'}');
+      buffer.writeln('previousBootLastUpdated: ${previousBootLastUpdated ?? 'none'}');
+      if (previousBootLastFailure != null) {
+        buffer.writeln('previousBootLastFailure: ${previousBootLastFailure!.summary}');
+      }
+    }
 
     for (final entry in optionalPacks.entries) {
       buffer.writeln('${entry.key}: ${entry.value.summary}');
@@ -677,6 +700,9 @@ class PwaDiagnostics {
 
     for (final event in bootEvents) {
       buffer.writeln('bootEvent: $event');
+    }
+    for (final event in previousBootEvents) {
+      buffer.writeln('previousBootEvent: $event');
     }
 
     buffer.writeln('cacheKeys: ${cacheKeys.join(', ')}');

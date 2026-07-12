@@ -21,6 +21,17 @@
     }
   }
 
+  function formatBootEvents(rawEvents) {
+    return Array.isArray(rawEvents)
+      ? rawEvents.map((event) => {
+          const step = event?.step || 'unknown';
+          const detail = event?.detail ? ` (${event.detail})` : '';
+          const at = event?.at ? ` @ ${event.at}` : '';
+          return `${step}${detail}${at}`;
+        })
+      : [];
+  }
+
   // Check if running as installed PWA
   function checkStandalone() {
     isStandalone = window.matchMedia('(display-mode: standalone)').matches ||
@@ -177,14 +188,12 @@
       diagnostics.bootLastDetail = bootState.lastDetail || null;
       diagnostics.bootLastUpdated = bootState.lastUpdated || null;
       diagnostics.bootLastFailure = bootState.lastFailure || null;
-      diagnostics.bootEvents = Array.isArray(bootState.events)
-        ? bootState.events.map((event) => {
-            const step = event?.step || 'unknown';
-            const detail = event?.detail ? ` (${event.detail})` : '';
-            const at = event?.at ? ` @ ${event.at}` : '';
-            return `${step}${detail}${at}`;
-          })
-        : [];
+      diagnostics.bootEvents = formatBootEvents(bootState.events);
+      diagnostics.previousBootStatus = bootState.previousSession?.status || null;
+      diagnostics.previousBootLastDetail = bootState.previousSession?.lastDetail || null;
+      diagnostics.previousBootLastUpdated = bootState.previousSession?.lastUpdated || null;
+      diagnostics.previousBootLastFailure = bootState.previousSession?.lastFailure || null;
+      diagnostics.previousBootEvents = formatBootEvents(bootState.previousSession?.events);
     }
 
     let registrationScope = null;
