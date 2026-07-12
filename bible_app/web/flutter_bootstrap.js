@@ -18,6 +18,9 @@ function markBoot(step, detail) {
         serviceWorkerVersion,
         serviceWorkerUrl: `lightsword_service_worker.js?v=${serviceWorkerVersion}`
       },
+      config: {
+        canvasKitBaseUrl: 'canvaskit/'
+      },
       onEntrypointLoaded: async (engineInitializer) => {
         markBoot('entrypoint-loaded', 'Flutter entrypoint loaded. Initializing engine.');
 
