@@ -5,6 +5,7 @@ import 'package:bible_app/services/bible_service.dart';
 import 'package:bible_app/services/tts_service.dart';
 import 'package:bible_app/services/deep_linking_service.dart';
 import 'package:bible_app/services/preferences_service.dart';
+import 'package:bible_app/services/pwa_service.dart';
 import 'package:bible_app/state/chapter_view_controller.dart';
 import 'package:bible_app/ui/widgets/chapter_picker_modal.dart';
 import 'package:bible_app/ui/widgets/book_selection_page.dart';
@@ -28,6 +29,7 @@ class ReaderScreenState extends State<ReaderScreen> {
   List<Book> _allBooks = [];
   bool _isLoading = true;
   String? _error;
+  PassageReference? _offlineFallbackReference;
   
   String _bookId = 'John';
   int _chapter = 1;
@@ -114,10 +116,28 @@ class ReaderScreenState extends State<ReaderScreen> {
     setState(() {
       _isLoading = true;
       _error = null;
+      _offlineFallbackReference = null;
     });
 
     try {
       final verses = await BibleService.instance.getVerses(_currentRef);
+
+      final offlineMessage = _buildOfflineUnavailableMessage(
+        reference: _currentRef,
+        loadedVerses: verses,
+      );
+      if (offlineMessage != null) {
+        setState(() {
+          _verses = const [];
+          _error = offlineMessage;
+          _offlineFallbackReference = const PassageReference(
+            bookId: 'John',
+            chapter: 1,
+          );
+          _isLoading = false;
+        });
+        return;
+      }
       
       // Filter verses if we have a verse range
       List<Verse> filteredVerses = verses;
@@ -130,16 +150,108 @@ class ReaderScreenState extends State<ReaderScreen> {
       setState(() {
         _verses = filteredVerses;
         _isLoading = false;
+        _offlineFallbackReference = null;
       });
       
       // Update URL to reflect current location
       _updateUrl();
     } catch (e) {
+      final offlineMessage = _buildOfflineUnavailableMessage(
+        reference: _currentRef,
+        loadedVerses: null,
+      );
       setState(() {
-        _error = e.toString();
+        _error = offlineMessage ?? e.toString();
+        _offlineFallbackReference = offlineMessage == null
+            ? null
+            : const PassageReference(
+                bookId: 'John',
+                chapter: 1,
+              );
         _isLoading = false;
       });
     }
+  }
+
+  String? _buildOfflineUnavailableMessage({
+    required PassageReference reference,
+    required List<Verse>? loadedVerses,
+  }) {
+    final pwa = PwaService.instance;
+    if (!pwa.isWeb || pwa.isOnline) {
+      return null;
+    }
+
+    final book = _resolveBook(reference.bookId);
+    final isOldTestament = book?.testament == Testament.old;
+    final otPackStatus = pwa.offlinePackStatuses[OfflinePackId.originalLanguageOt];
+    final hasOtOfflinePack = otPackStatus?.isInstalled ?? false;
+
+    if (_textSource == BibleTextSource.originalLanguage &&
+        isOldTestament &&
+        !hasOtOfflinePack &&
+        (loadedVerses == null || loadedVerses.isEmpty)) {
+      return 'This Old Testament chapter is not installed for offline use yet. Open Settings while online and download the Original Language OT pack, or use the offline fallback below.';
+    }
+
+    if (_textSource == BibleTextSource.bsb &&
+        (loadedVerses == null || loadedVerses.isEmpty)) {
+      return 'The BSB translation is not currently cached offline. Switch to Hebrew/Greek Glosses or use the offline fallback below.';
+    }
+
+    return null;
+  }
+
+  Book? _resolveBook(String bookId) {
+    if (_currentBook?.id == bookId) {
+      return _currentBook;
+    }
+
+    for (final book in _allBooks) {
+      if (book.id == bookId) {
+        return book;
+      }
+    }
+
+    return null;
+  }
+
+  Future<void> _openOfflineFallback() async {
+    final fallbackReference = _offlineFallbackReference;
+    if (fallbackReference == null) {
+      return;
+    }
+
+    if (_textSource != BibleTextSource.originalLanguage) {
+      await BibleService.setSource(BibleTextSource.originalLanguage);
+    }
+
+    if (!mounted) {
+      return;
+    }
+
+    setState(() {
+      _textSource = BibleTextSource.originalLanguage;
+      _bookId = fallbackReference.bookId;
+      _chapter = fallbackReference.chapter;
+      _startVerse = fallbackReference.startVerse;
+      _endVerse = fallbackReference.endVerse;
+      _error = null;
+      _offlineFallbackReference = null;
+    });
+
+    await _loadBook();
+    await _loadVerses();
+
+    if (!mounted) {
+      return;
+    }
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('Opened John 1 from the default offline pack.'),
+      ),
+    );
   }
 
   /// Update browser URL to match current passage (web only)
@@ -711,9 +823,28 @@ class ReaderScreenState extends State<ReaderScreen> {
               ? const Center(child: CircularProgressIndicator())
               : _error != null
                   ? Center(
-                      child: Text(
-                        'ERROR: $_error',
-                        style: const TextStyle(color: Colors.red),
+                      child: Padding(
+                        padding: const EdgeInsets.all(24),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            const Icon(Icons.cloud_off, size: 36),
+                            const SizedBox(height: 16),
+                            Text(
+                              _error!,
+                              textAlign: TextAlign.center,
+                              style: TextStyle(color: colorScheme.onSurface),
+                            ),
+                            if (_offlineFallbackReference != null) ...[
+                              const SizedBox(height: 16),
+                              FilledButton.tonalIcon(
+                                onPressed: _openOfflineFallback,
+                                icon: const Icon(Icons.arrow_forward),
+                                label: const Text('Open John 1 Offline'),
+                              ),
+                            ],
+                          ],
+                        ),
                       ),
                     )
                   : _buildContentView(),
