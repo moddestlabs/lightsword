@@ -34,8 +34,6 @@ precache_allowlist=(
   'assets/packages/cupertino_icons/assets/CupertinoIcons.ttf'
   'assets/shaders/ink_sparkle.frag'
   'assets/shaders/stretch_effect.frag'
-  'canvaskit/canvaskit.js'
-  'canvaskit/canvaskit.wasm'
   'icons/Icon-192.png'
   'icons/Icon-512.png'
   'icons/apple-touch-icon.png'
@@ -60,6 +58,13 @@ mapfile -t default_original_language_pack < <(
   {
     collect_paths 'assets/packages/bible_core/assets/data/greek' '*.json'
     collect_paths 'assets/packages/bible_core/assets/data/lexicon' '*.json'
+  } | awk 'NF'
+)
+
+mapfile -t renderer_runtime_assets < <(
+  {
+    collect_paths 'canvaskit' '*.js'
+    collect_paths 'canvaskit' '*.wasm'
   } | awk 'NF'
 )
 
@@ -94,6 +99,10 @@ for relative_path in "${precache_allowlist[@]}"; do
   if [[ -f "$build_dir/$relative_path" ]]; then
     precache_urls+=("$relative_path")
   fi
+done
+
+for relative_path in "${renderer_runtime_assets[@]}"; do
+  precache_urls+=("$relative_path")
 done
 
 write_js_array() {
