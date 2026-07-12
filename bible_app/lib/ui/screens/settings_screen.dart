@@ -329,6 +329,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
         padding: EdgeInsets.symmetric(horizontal: 16),
         child: OfflinePackManager(),
       ),
+      Padding(
+        padding: EdgeInsets.fromLTRB(16, 0, 16, 16),
+        child: PwaDiagnosticsCard(),
+      ),
     ];
   }
 }

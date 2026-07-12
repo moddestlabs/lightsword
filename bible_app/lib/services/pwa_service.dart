@@ -24,6 +24,7 @@ extension _PwaApiExtension on _PwaApi {
   external JSPromise getStorageEstimate();
   external JSPromise cacheOfflinePack(JSString packName);
   external JSPromise getOfflinePackStatus();
+  external JSPromise getPwaDiagnostics();
 }
 
 _PwaApi? get _pwaApi => _lightswordPwa as _PwaApi?;
@@ -105,6 +106,70 @@ class PwaService {
 
   Map<OfflinePackId, OfflinePackStatus> get offlinePackStatuses =>
       Map.unmodifiable(_offlinePackStatuses);
+
+  Future<PwaDiagnostics?> getDiagnostics() async {
+    if (!isWeb) {
+      return null;
+    }
+
+    try {
+      final api = _pwaApi;
+      if (api == null) {
+        return null;
+      }
+
+      final result = await api.getPwaDiagnostics().toDart;
+      final diagnosticsObj = result as JSAny?;
+      if (diagnosticsObj == null) {
+        return null;
+      }
+
+      final optionalPacks = <String, OfflinePackStatus>{};
+      final optionalPacksObj = _getProperty(diagnosticsObj, 'optionalPacks');
+      if (optionalPacksObj != null) {
+        for (final pack in _optionalPackNames.entries) {
+          final rawStatus = _getProperty(optionalPacksObj, pack.value);
+          if (rawStatus == null) {
+            continue;
+          }
+          optionalPacks[pack.value] = OfflinePackStatus(
+            totalFiles: (_getProperty(rawStatus, 'total') as JSNumber?)?.toDartInt ?? 0,
+            cachedFiles: (_getProperty(rawStatus, 'cached') as JSNumber?)?.toDartInt ?? 0,
+          );
+        }
+      }
+
+      return PwaDiagnostics(
+        timestamp: (_getProperty(diagnosticsObj, 'timestamp') as JSString?)?.toDart,
+        online: (_getProperty(diagnosticsObj, 'online') as JSBoolean?)?.toDart ?? _isOnline,
+        locationHref: (_getProperty(diagnosticsObj, 'locationHref') as JSString?)?.toDart,
+        locationPathname: (_getProperty(diagnosticsObj, 'locationPathname') as JSString?)?.toDart,
+        referrer: (_getProperty(diagnosticsObj, 'referrer') as JSString?)?.toDart,
+        userAgent: (_getProperty(diagnosticsObj, 'userAgent') as JSString?)?.toDart,
+        standalone: (_getProperty(diagnosticsObj, 'standalone') as JSBoolean?)?.toDart ?? false,
+        displayModeStandalone: (_getProperty(diagnosticsObj, 'displayModeStandalone') as JSBoolean?)?.toDart ?? false,
+        iosStandalone: (_getProperty(diagnosticsObj, 'iosStandalone') as JSBoolean?)?.toDart ?? false,
+        baseHref: (_getProperty(diagnosticsObj, 'baseHref') as JSString?)?.toDart,
+        serviceWorkerSupported: (_getProperty(diagnosticsObj, 'serviceWorkerSupported') as JSBoolean?)?.toDart ?? false,
+        serviceWorkerController: (_getProperty(diagnosticsObj, 'serviceWorkerController') as JSBoolean?)?.toDart ?? false,
+        serviceWorkerControllerScriptUrl: (_getProperty(diagnosticsObj, 'serviceWorkerControllerScriptUrl') as JSString?)?.toDart,
+        serviceWorkerRegistrationScope: (_getProperty(diagnosticsObj, 'serviceWorkerRegistrationScope') as JSString?)?.toDart,
+        serviceWorkerRegistrationActiveScriptUrl: (_getProperty(diagnosticsObj, 'serviceWorkerRegistrationActiveScriptUrl') as JSString?)?.toDart,
+        serviceWorkerRegistrationInstallingScriptUrl: (_getProperty(diagnosticsObj, 'serviceWorkerRegistrationInstallingScriptUrl') as JSString?)?.toDart,
+        serviceWorkerRegistrationWaitingScriptUrl: (_getProperty(diagnosticsObj, 'serviceWorkerRegistrationWaitingScriptUrl') as JSString?)?.toDart,
+        serviceWorkerRegistrationActiveState: (_getProperty(diagnosticsObj, 'serviceWorkerRegistrationActiveState') as JSString?)?.toDart,
+        cacheKeys: _toStringList(_getProperty(diagnosticsObj, 'cacheKeys')),
+        shellStatus: _parseOfflinePackStatus(_getProperty(diagnosticsObj, 'shell')),
+        defaultPackStatus: _parseOfflinePackStatus(_getProperty(diagnosticsObj, 'defaultPack')),
+        optionalPacks: optionalPacks,
+        launchProbes: _parseLaunchProbes(_getProperty(diagnosticsObj, 'launchProbes')),
+        errors: _toStringList(_getProperty(diagnosticsObj, 'errors')),
+      );
+    } catch (e) {
+      print('❌ Error retrieving PWA diagnostics: $e');
+      return null;
+    }
+  }
 
   /// Initialize PWA service
   Future<void> initialize() async {
@@ -371,11 +436,70 @@ class PwaService {
   }
 
   String _packName(OfflinePackId packId) {
-    switch (packId) {
-      case OfflinePackId.originalLanguageOt:
-        return 'original-language-ot';
+    return _optionalPackNames[packId]!;
+  }
+
+  OfflinePackStatus? _parseOfflinePackStatus(JSAny? rawStatus) {
+    if (rawStatus == null) {
+      return null;
+    }
+
+    return OfflinePackStatus(
+      totalFiles: (_getProperty(rawStatus, 'total') as JSNumber?)?.toDartInt ?? 0,
+      cachedFiles: (_getProperty(rawStatus, 'cached') as JSNumber?)?.toDartInt ?? 0,
+    );
+  }
+
+  List<String> _toStringList(JSAny? rawList) {
+    if (rawList == null) {
+      return const [];
+    }
+
+    try {
+      final jsArray = rawList as JSArray<JSString?>;
+      final values = <String>[];
+      for (var index = 0; index < jsArray.length; index++) {
+        final value = jsArray[index];
+        if (value != null) {
+          values.add(value.toDart);
+        }
+      }
+      return values;
+    } catch (_) {
+      return const [];
     }
   }
+
+  List<PwaLaunchProbe> _parseLaunchProbes(JSAny? rawList) {
+    if (rawList == null) {
+      return const [];
+    }
+
+    try {
+      final jsArray = rawList as JSArray<JSAny?>;
+      final probes = <PwaLaunchProbe>[];
+      for (var index = 0; index < jsArray.length; index++) {
+        final value = jsArray[index];
+        if (value == null) {
+          continue;
+        }
+        probes.add(
+          PwaLaunchProbe(
+            url: (_getProperty(value, 'url') as JSString?)?.toDart ?? 'unknown',
+            anyCache: (_getProperty(value, 'anyCache') as JSBoolean?)?.toDart ?? false,
+            shellCache: (_getProperty(value, 'shellCache') as JSBoolean?)?.toDart ?? false,
+          ),
+        );
+      }
+      return probes;
+    } catch (_) {
+      return const [];
+    }
+  }
+
+  static const Map<OfflinePackId, String> _optionalPackNames = {
+    OfflinePackId.originalLanguageOt: 'original-language-ot',
+  };
 
   /// Dispose resources
   void dispose() {
@@ -415,6 +539,8 @@ class OfflinePackStatus {
 
   bool get isInstalled => totalFiles > 0 && cachedFiles >= totalFiles;
   bool get isPartial => cachedFiles > 0 && cachedFiles < totalFiles;
+
+  String get summary => '$cachedFiles/$totalFiles files';
 }
 
 class OfflinePackOperationResult {
@@ -427,6 +553,115 @@ class OfflinePackOperationResult {
   final bool ok;
   final int cachedCount;
   final String? error;
+}
+
+class PwaDiagnostics {
+  const PwaDiagnostics({
+    required this.timestamp,
+    required this.online,
+    required this.locationHref,
+    required this.locationPathname,
+    required this.referrer,
+    required this.userAgent,
+    required this.standalone,
+    required this.displayModeStandalone,
+    required this.iosStandalone,
+    required this.baseHref,
+    required this.serviceWorkerSupported,
+    required this.serviceWorkerController,
+    required this.serviceWorkerControllerScriptUrl,
+    required this.serviceWorkerRegistrationScope,
+    required this.serviceWorkerRegistrationActiveScriptUrl,
+    required this.serviceWorkerRegistrationInstallingScriptUrl,
+    required this.serviceWorkerRegistrationWaitingScriptUrl,
+    required this.serviceWorkerRegistrationActiveState,
+    required this.cacheKeys,
+    required this.shellStatus,
+    required this.defaultPackStatus,
+    required this.optionalPacks,
+    required this.launchProbes,
+    required this.errors,
+  });
+
+  final String? timestamp;
+  final bool online;
+  final String? locationHref;
+  final String? locationPathname;
+  final String? referrer;
+  final String? userAgent;
+  final bool standalone;
+  final bool displayModeStandalone;
+  final bool iosStandalone;
+  final String? baseHref;
+  final bool serviceWorkerSupported;
+  final bool serviceWorkerController;
+  final String? serviceWorkerControllerScriptUrl;
+  final String? serviceWorkerRegistrationScope;
+  final String? serviceWorkerRegistrationActiveScriptUrl;
+  final String? serviceWorkerRegistrationInstallingScriptUrl;
+  final String? serviceWorkerRegistrationWaitingScriptUrl;
+  final String? serviceWorkerRegistrationActiveState;
+  final List<String> cacheKeys;
+  final OfflinePackStatus? shellStatus;
+  final OfflinePackStatus? defaultPackStatus;
+  final Map<String, OfflinePackStatus> optionalPacks;
+  final List<PwaLaunchProbe> launchProbes;
+  final List<String> errors;
+
+  String toDebugReport() {
+    final buffer = StringBuffer()
+      ..writeln('LIGHTSWORD PWA Diagnostics')
+      ..writeln('timestamp: ${timestamp ?? 'unknown'}')
+      ..writeln('online: $online')
+      ..writeln('standalone: $standalone')
+      ..writeln('displayModeStandalone: $displayModeStandalone')
+      ..writeln('iosStandalone: $iosStandalone')
+      ..writeln('locationHref: ${locationHref ?? 'unknown'}')
+      ..writeln('locationPathname: ${locationPathname ?? 'unknown'}')
+      ..writeln('baseHref: ${baseHref ?? 'unknown'}')
+      ..writeln('referrer: ${referrer ?? 'unknown'}')
+      ..writeln('serviceWorkerSupported: $serviceWorkerSupported')
+      ..writeln('serviceWorkerController: $serviceWorkerController')
+      ..writeln('controllerScriptUrl: ${serviceWorkerControllerScriptUrl ?? 'none'}')
+      ..writeln('registrationScope: ${serviceWorkerRegistrationScope ?? 'none'}')
+      ..writeln('registrationActiveScriptUrl: ${serviceWorkerRegistrationActiveScriptUrl ?? 'none'}')
+      ..writeln('registrationInstallingScriptUrl: ${serviceWorkerRegistrationInstallingScriptUrl ?? 'none'}')
+      ..writeln('registrationWaitingScriptUrl: ${serviceWorkerRegistrationWaitingScriptUrl ?? 'none'}')
+      ..writeln('registrationActiveState: ${serviceWorkerRegistrationActiveState ?? 'none'}')
+      ..writeln('shellStatus: ${shellStatus?.summary ?? 'none'}')
+      ..writeln('defaultPackStatus: ${defaultPackStatus?.summary ?? 'none'}');
+
+    for (final entry in optionalPacks.entries) {
+      buffer.writeln('${entry.key}: ${entry.value.summary}');
+    }
+
+    for (final probe in launchProbes) {
+      buffer.writeln(
+        'launchProbe: ${probe.url} | shellCache=${probe.shellCache} | anyCache=${probe.anyCache}',
+      );
+    }
+
+    buffer.writeln('cacheKeys: ${cacheKeys.join(', ')}');
+    if (errors.isNotEmpty) {
+      buffer.writeln('errors: ${errors.join(' | ')}');
+    }
+    if (userAgent != null && userAgent!.isNotEmpty) {
+      buffer.writeln('userAgent: $userAgent');
+    }
+    return buffer.toString();
+  }
+}
+
+class PwaLaunchProbe {
+  const PwaLaunchProbe({
+    required this.url,
+    required this.anyCache,
+    required this.shellCache,
+  });
+
+  final String url;
+  final bool anyCache;
+  final bool shellCache;
 }
 
 const List<OfflinePackDefinition> offlinePackDefinitions = [

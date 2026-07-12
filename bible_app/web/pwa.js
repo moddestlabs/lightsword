@@ -123,6 +123,130 @@
     return response.status;
   }
 
+  async function getPwaDiagnostics() {
+    const diagnostics = {
+      timestamp: new Date().toISOString(),
+      online: navigator.onLine,
+      locationHref: window.location.href,
+      locationPathname: window.location.pathname,
+      referrer: document.referrer,
+      userAgent: navigator.userAgent,
+      standalone: checkStandalone(),
+      displayModeStandalone: window.matchMedia('(display-mode: standalone)').matches,
+      iosStandalone: window.navigator.standalone === true,
+      baseHref: document.querySelector('base')?.href || null,
+      serviceWorkerSupported: 'serviceWorker' in navigator,
+      serviceWorkerController: false,
+      serviceWorkerControllerScriptUrl: null,
+      serviceWorkerRegistrationScope: null,
+      serviceWorkerRegistrationActiveScriptUrl: null,
+      serviceWorkerRegistrationInstallingScriptUrl: null,
+      serviceWorkerRegistrationWaitingScriptUrl: null,
+      serviceWorkerRegistrationActiveState: null,
+      cacheKeys: [],
+      shell: null,
+      defaultPack: null,
+      optionalPacks: {},
+      launchProbes: [],
+      errors: []
+    };
+
+    let registrationScope = null;
+
+    try {
+      const controller = getServiceWorkerController();
+      diagnostics.serviceWorkerController = !!controller;
+      diagnostics.serviceWorkerControllerScriptUrl = controller?.scriptURL || null;
+    } catch (error) {
+      diagnostics.errors.push(`controller:${String(error)}`);
+    }
+
+    try {
+      if (navigator.serviceWorker) {
+        const registration = await navigator.serviceWorker.getRegistration();
+        if (registration) {
+          registrationScope = registration.scope || null;
+          diagnostics.serviceWorkerRegistrationScope = registration.scope || null;
+          diagnostics.serviceWorkerRegistrationActiveScriptUrl = registration.active?.scriptURL || null;
+          diagnostics.serviceWorkerRegistrationInstallingScriptUrl = registration.installing?.scriptURL || null;
+          diagnostics.serviceWorkerRegistrationWaitingScriptUrl = registration.waiting?.scriptURL || null;
+          diagnostics.serviceWorkerRegistrationActiveState = registration.active?.state || null;
+        }
+      }
+    } catch (error) {
+      diagnostics.errors.push(`registration:${String(error)}`);
+    }
+
+    try {
+      diagnostics.cacheKeys = await caches.keys();
+    } catch (error) {
+      diagnostics.errors.push(`caches:${String(error)}`);
+    }
+
+    try {
+      const packStatus = await getOfflinePackStatus();
+      if (packStatus) {
+        diagnostics.shell = packStatus.shell || null;
+        diagnostics.defaultPack = packStatus.defaultPack || null;
+        for (const [name, status] of Object.entries(packStatus)) {
+          if (name === 'shell' || name === 'defaultPack') {
+            continue;
+          }
+          diagnostics.optionalPacks[name] = status;
+        }
+      }
+    } catch (error) {
+      diagnostics.errors.push(`packStatus:${String(error)}`);
+    }
+
+    try {
+      const shellCacheName = diagnostics.cacheKeys.find((key) => key.startsWith('lightsword-app-shell-')) || null;
+      diagnostics.launchProbes = await probeLaunchUrls({
+        registrationScope,
+        shellCacheName,
+      });
+    } catch (error) {
+      diagnostics.errors.push(`launchProbes:${String(error)}`);
+    }
+
+    return diagnostics;
+  }
+
+  async function probeLaunchUrls({ registrationScope, shellCacheName }) {
+    const scopeUrl = new URL(registrationScope || './', window.location.href);
+    const scopePath = scopeUrl.pathname;
+    const indexUrl = new URL('index.html', scopeUrl);
+    const locationUrl = new URL(window.location.href);
+    const candidates = [
+      locationUrl.href,
+      locationUrl.origin + locationUrl.pathname,
+      scopeUrl.href,
+      scopePath,
+      indexUrl.href,
+      indexUrl.pathname,
+      './',
+      'index.html'
+    ];
+
+    const uniqueCandidates = [...new Set(candidates)];
+    const shellCache = shellCacheName ? await caches.open(shellCacheName) : null;
+    const probes = [];
+
+    for (const candidate of uniqueCandidates) {
+      const anyCacheMatch = await caches.match(candidate, { ignoreSearch: true });
+      const shellCacheMatch = shellCache
+        ? await shellCache.match(candidate, { ignoreSearch: true })
+        : null;
+      probes.push({
+        url: candidate,
+        anyCache: !!anyCacheMatch,
+        shellCache: !!shellCacheMatch,
+      });
+    }
+
+    return probes;
+  }
+
   // Check TTS support and available languages
   async function checkTtsSupport() {
     if (!('speechSynthesis' in window)) {
@@ -220,7 +344,8 @@
       isOnline: isOnline,
       checkTtsSupport: checkTtsSupport,
       cacheOfflinePack: cacheOfflinePack,
-      getOfflinePackStatus: getOfflinePackStatus
+      getOfflinePackStatus: getOfflinePackStatus,
+      getPwaDiagnostics: getPwaDiagnostics
     };
 
     console.log('✅ PWA initialized:', window.lightswordPwa);

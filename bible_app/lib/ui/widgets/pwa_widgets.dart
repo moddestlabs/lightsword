@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import '../../services/pwa_service.dart';
 
 /// Banner widget that shows online/offline status and install prompt
@@ -354,7 +355,7 @@ class _OfflinePackManagerState extends State<OfflinePackManager> {
   @override
   Widget build(BuildContext context) {
     final pwa = PwaService.instance;
-    if (!pwa.isWeb || !pwa.isAvailable) {
+    if (!pwa.isWeb) {
       return const SizedBox.shrink();
     }
 
@@ -369,13 +370,20 @@ class _OfflinePackManagerState extends State<OfflinePackManager> {
               style: Theme.of(context).textTheme.titleMedium,
             ),
             const SizedBox(height: 8),
-            Text(
-              'Install larger study packs only when you want them offline. The default install keeps this separate to stay reliable on iPhone.',
-              style: Theme.of(context).textTheme.bodySmall,
-            ),
-            const SizedBox(height: 16),
-            for (final pack in offlinePackDefinitions)
-              _buildPackTile(context, pack, _statuses[pack.id]),
+            if (!pwa.isAvailable) ...[
+              Text(
+                'PWA controls are unavailable because the web bridge did not initialize in this session.',
+                style: Theme.of(context).textTheme.bodySmall,
+              ),
+            ] else ...[
+              Text(
+                'Install larger study packs only when you want them offline. The default install keeps this separate to stay reliable on iPhone.',
+                style: Theme.of(context).textTheme.bodySmall,
+              ),
+              const SizedBox(height: 16),
+              for (final pack in offlinePackDefinitions)
+                _buildPackTile(context, pack, _statuses[pack.id]),
+            ],
           ],
         ),
       ),
@@ -437,6 +445,189 @@ class _OfflinePackManagerState extends State<OfflinePackManager> {
               : 'Could not download offline pack${result.error != null ? ': ${result.error}' : ''}',
         ),
       ),
+    );
+  }
+}
+
+class PwaDiagnosticsCard extends StatefulWidget {
+  const PwaDiagnosticsCard({super.key});
+
+  @override
+  State<PwaDiagnosticsCard> createState() => _PwaDiagnosticsCardState();
+}
+
+class _PwaDiagnosticsCardState extends State<PwaDiagnosticsCard> {
+  PwaDiagnostics? _diagnostics;
+  bool _isLoading = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _refreshDiagnostics();
+  }
+
+  Future<void> _refreshDiagnostics() async {
+    setState(() {
+      _isLoading = true;
+    });
+
+    final diagnostics = await PwaService.instance.getDiagnostics();
+    if (!mounted) {
+      return;
+    }
+
+    setState(() {
+      _diagnostics = diagnostics;
+      _isLoading = false;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final pwa = PwaService.instance;
+    if (!pwa.isWeb) {
+      return const SizedBox.shrink();
+    }
+
+    final diagnostics = _diagnostics;
+    final theme = Theme.of(context);
+
+    return Card(
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Expanded(
+                  child: Text(
+                    'PWA Diagnostics',
+                    style: theme.textTheme.titleMedium,
+                  ),
+                ),
+                IconButton(
+                  onPressed: _isLoading ? null : _refreshDiagnostics,
+                  icon: _isLoading
+                      ? const SizedBox(
+                          width: 18,
+                          height: 18,
+                          child: CircularProgressIndicator(strokeWidth: 2),
+                        )
+                      : const Icon(Icons.refresh),
+                ),
+              ],
+            ),
+            Text(
+              'Use this on iPhone to confirm whether the home-screen app has a controller, registration scope, and cached shell before testing Airplane mode.',
+              style: theme.textTheme.bodySmall,
+            ),
+            const SizedBox(height: 16),
+            if (!pwa.isAvailable)
+              Text(
+                'PWA bridge unavailable. This usually means the page is not running the web PWA helpers yet, or initialization did not complete. Refresh once and check whether this page is the web build.',
+                style: theme.textTheme.bodyMedium,
+              )
+            else if (diagnostics == null)
+              Text(
+                _isLoading ? 'Loading diagnostics…' : 'Diagnostics unavailable.',
+                style: theme.textTheme.bodyMedium,
+              )
+            else ...[
+              Wrap(
+                spacing: 8,
+                runSpacing: 8,
+                children: [
+                  _buildChip(
+                    context,
+                    label: diagnostics.online ? 'Online' : 'Offline',
+                    icon: diagnostics.online ? Icons.cloud_done : Icons.cloud_off,
+                  ),
+                  _buildChip(
+                    context,
+                    label: diagnostics.standalone ? 'Standalone' : 'Browser Tab',
+                    icon: diagnostics.standalone ? Icons.phone_iphone : Icons.public,
+                  ),
+                  _buildChip(
+                    context,
+                    label: diagnostics.serviceWorkerController ? 'SW Controlled' : 'No SW Controller',
+                    icon: diagnostics.serviceWorkerController ? Icons.shield_outlined : Icons.warning_amber_outlined,
+                  ),
+                ],
+              ),
+              const SizedBox(height: 16),
+              _buildValue(context, 'Launch URL', diagnostics.locationHref),
+              _buildValue(context, 'Path', diagnostics.locationPathname),
+              _buildValue(context, 'Base Href', diagnostics.baseHref),
+              _buildValue(context, 'Referrer', diagnostics.referrer),
+              _buildValue(context, 'Registration Scope', diagnostics.serviceWorkerRegistrationScope),
+              _buildValue(context, 'Controller Script', diagnostics.serviceWorkerControllerScriptUrl),
+              _buildValue(context, 'Active Script', diagnostics.serviceWorkerRegistrationActiveScriptUrl),
+              _buildValue(context, 'Active State', diagnostics.serviceWorkerRegistrationActiveState),
+              _buildValue(context, 'Shell Cache', diagnostics.shellStatus?.summary),
+              _buildValue(context, 'Default Pack Cache', diagnostics.defaultPackStatus?.summary),
+              for (final entry in diagnostics.optionalPacks.entries)
+                _buildValue(context, 'Pack ${entry.key}', entry.value.summary),
+              _buildValue(
+                context,
+                'Cache Buckets',
+                diagnostics.cacheKeys.isEmpty ? 'none' : diagnostics.cacheKeys.join(', '),
+              ),
+              if (diagnostics.errors.isNotEmpty)
+                _buildValue(context, 'Errors', diagnostics.errors.join(' | ')),
+              const SizedBox(height: 12),
+              OutlinedButton.icon(
+                onPressed: () => _copyDiagnostics(diagnostics),
+                icon: const Icon(Icons.copy_all_outlined),
+                label: const Text('Copy Diagnostics'),
+              ),
+            ],
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildChip(
+    BuildContext context, {
+    required String label,
+    required IconData icon,
+  }) {
+    return Chip(
+      avatar: Icon(icon, size: 18),
+      label: Text(label),
+    );
+  }
+
+  Widget _buildValue(BuildContext context, String label, String? value) {
+    final theme = Theme.of(context);
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 8),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            label,
+            style: theme.textTheme.labelMedium,
+          ),
+          const SizedBox(height: 2),
+          Text(
+            value == null || value.isEmpty ? 'unknown' : value,
+            style: theme.textTheme.bodyMedium,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Future<void> _copyDiagnostics(PwaDiagnostics diagnostics) async {
+    await Clipboard.setData(ClipboardData(text: diagnostics.toDebugReport()));
+    if (!mounted) {
+      return;
+    }
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Diagnostics copied to clipboard')),
     );
   }
 }
