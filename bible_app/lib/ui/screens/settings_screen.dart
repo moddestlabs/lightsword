@@ -91,36 +91,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
             leading: Icon(Icons.volume_up_outlined),
           ),
           ListTile(
-            title: const Text('Speech Rate'),
-            subtitle: Slider(
-              value: _ttsService.rate,
-              min: 0.1,
-              max: 1.0,
-              divisions: 9,
-              label: '${(_ttsService.rate * 100).round()}%',
-              onChanged: (value) {
-                setState(() {
-                  _ttsService.setRate(value);
-                });
-              },
-            ),
-          ),
-          ListTile(
-            title: const Text('Speech Pitch'),
-            subtitle: Slider(
-              value: _ttsService.pitch,
-              min: 0.5,
-              max: 2.0,
-              divisions: 15,
-              label: _ttsService.pitch.toStringAsFixed(1),
-              onChanged: (value) {
-                setState(() {
-                  _ttsService.setPitch(value);
-                });
-              },
-            ),
-          ),
-          ListTile(
             title: const Text('Volume'),
             subtitle: Slider(
               value: _ttsService.volume,
@@ -134,14 +104,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 });
               },
             ),
-          ),
-          ListTile(
-            title: const Text('Available Languages'),
-            subtitle: const Text('Check TTS language support'),
-            trailing: const Icon(Icons.chevron_right),
-            onTap: () {
-              _showAvailableLanguages(context);
-            },
           ),
           ..._buildVoiceSelectionTiles(context),
           ListTile(
@@ -283,50 +245,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
     );
   }
 
-  Future<void> _showAvailableLanguages(BuildContext context) async {
-    final languages = await _ttsService.getAvailableLanguages();
-    
-    if (!context.mounted) return;
-    
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Available TTS Languages'),
-        content: SizedBox(
-          width: double.maxFinite,
-          child: ListView.builder(
-            shrinkWrap: true,
-            itemCount: languages.length,
-            itemBuilder: (context, index) {
-              final lang = languages[index];
-              final isSupported = lang.code == 'en-US' || 
-                                 lang.code == 'he-IL' || 
-                                 lang.code == 'el-GR';
-              return ListTile(
-                leading: Icon(
-                  isSupported ? Icons.check_circle : Icons.circle_outlined,
-                  color: isSupported ? Colors.green : Colors.grey,
-                ),
-                title: Text(lang.name),
-                subtitle: Text(
-                  lang.voices == null || lang.voices!.isEmpty
-                      ? lang.code
-                      : '${lang.code} • ${lang.voices!.length} voice(s)',
-                ),
-              );
-            },
-          ),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: const Text('Close'),
-          ),
-        ],
-      ),
-    );
-  }
-
   Future<void> _testTts() async {
     // Test samples in different languages
     const samples = {
@@ -343,21 +261,21 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   List<Widget> _buildVoiceSelectionTiles(BuildContext context) {
     return [
-      _buildVoiceTile(
+      _buildVoiceSection(
         context,
         title: 'English Voice',
         languageCode: 'en-US',
         voices: _ttsService.englishVoices,
         selectedVoice: _ttsService.selectedEnglishVoice,
       ),
-      _buildVoiceTile(
+      _buildVoiceSection(
         context,
         title: 'Hebrew Voice',
         languageCode: 'he-IL',
         voices: _ttsService.hebrewVoices,
         selectedVoice: _ttsService.selectedHebrewVoice,
       ),
-      _buildVoiceTile(
+      _buildVoiceSection(
         context,
         title: 'Greek Voice',
         languageCode: 'el-GR',
@@ -367,7 +285,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     ];
   }
 
-  Widget _buildVoiceTile(
+  Widget _buildVoiceSection(
     BuildContext context, {
     required String title,
     required String languageCode,
@@ -375,23 +293,83 @@ class _SettingsScreenState extends State<SettingsScreen> {
     required TtsVoice? selectedVoice,
   }) {
     final hasVoices = voices.isNotEmpty;
+    return Column(
+      children: [
+        ListTile(
+          title: Text(title),
+          subtitle: Text(
+            hasVoices
+                ? (selectedVoice?.label ?? 'Automatic (${voices.length} available)')
+                : 'No voices detected on this device/browser',
+          ),
+          trailing: hasVoices ? const Icon(Icons.chevron_right) : null,
+          onTap: hasVoices
+              ? () => _showVoiceSelectionDialog(
+                    context,
+                    title: title,
+                    languageCode: languageCode,
+                    voices: voices,
+                    selectedVoice: selectedVoice,
+                  )
+              : null,
+        ),
+        _buildVoiceSliderTile(
+          context,
+          title: 'Speech Rate',
+          value: _ttsService.rateForLanguage(languageCode),
+          min: 0.1,
+          max: 1.0,
+          divisions: 9,
+          label: '${(_ttsService.rateForLanguage(languageCode) * 100).round()}%',
+          onChanged: (value) async {
+            await _ttsService.setRateForLanguage(languageCode, value);
+            if (mounted) {
+              setState(() {});
+            }
+          },
+        ),
+        _buildVoiceSliderTile(
+          context,
+          title: 'Speech Pitch',
+          value: _ttsService.pitchForLanguage(languageCode),
+          min: 0.5,
+          max: 2.0,
+          divisions: 15,
+          label: _ttsService.pitchForLanguage(languageCode).toStringAsFixed(1),
+          onChanged: (value) async {
+            await _ttsService.setPitchForLanguage(languageCode, value);
+            if (mounted) {
+              setState(() {});
+            }
+          },
+        ),
+        const Divider(),
+      ],
+    );
+  }
+
+  Widget _buildVoiceSliderTile(
+    BuildContext context, {
+    required String title,
+    required double value,
+    required double min,
+    required double max,
+    required int divisions,
+    required String label,
+    required ValueChanged<double> onChanged,
+  }) {
     return ListTile(
+      dense: true,
+      contentPadding: const EdgeInsets.symmetric(horizontal: 16),
       title: Text(title),
-      subtitle: Text(
-        hasVoices
-            ? (selectedVoice?.label ?? 'Automatic (${voices.length} available)')
-            : 'No voices detected on this device/browser',
+      subtitle: Slider(
+        value: value,
+        min: min,
+        max: max,
+        divisions: divisions,
+        label: label,
+        onChanged: onChanged,
       ),
-      trailing: hasVoices ? const Icon(Icons.chevron_right) : null,
-      onTap: hasVoices
-          ? () => _showVoiceSelectionDialog(
-                context,
-                title: title,
-                languageCode: languageCode,
-                voices: voices,
-                selectedVoice: selectedVoice,
-              )
-          : null,
     );
   }
 

@@ -704,9 +704,28 @@ class ReaderScreenState extends State<ReaderScreen> {
   // Old interlinear viewer - now handled by ChapterView ReadingMode.interlinear
   // void _showInterlinear(Verse verse) { ... }
 
-  void _startTtsReading() {
+  Future<void> _startTtsReading() async {
     if (_verses.isEmpty) return;
-    TtsService.instance.readVerses(_verses);
+
+    if (_viewMode == ReadingMode.study || _viewMode == ReadingMode.drawing) {
+      await TtsService.instance.readVerses(_verses);
+      return;
+    }
+
+    final chapter = Chapter(
+      bookId: _bookId,
+      number: _chapter,
+      verseCount: _verses.length,
+      verses: _verses,
+    );
+    final utterances = await ConfigurableChapterView.buildTtsUtterances(
+      chapter: chapter,
+      view: _selectedView,
+    );
+    if (utterances.isEmpty) {
+      return;
+    }
+    await TtsService.instance.readUtterances(utterances);
   }
 
   @override
@@ -745,45 +764,55 @@ class ReaderScreenState extends State<ReaderScreen> {
                     ),
                   ),
                 ),
-                GestureDetector(
-                  onTap: _showChapterPicker,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 4),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Listener(
-                          onPointerDown: (event) {
-                            if (event.buttons == kMiddleMouseButton) {
-                              _showChapterPicker();
-                            }
-                          },
-                          child: GestureDetector(
-                            onTap: _showBookSelection,
-                            onLongPress: _showChapterPicker,
-                            child: Text(
-                              _currentBook?.name ?? _bookId,
-                              style: TextStyle(
-                                color: colorScheme.primary,
-                                fontSize: 17,
-                                fontWeight: FontWeight.w400,
-                              ),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(width: 4),
-                        Text(
-                          '$_chapter',
+                const SizedBox(width: 8),
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Listener(
+                      onPointerDown: (event) {
+                        if (event.buttons == kMiddleMouseButton) {
+                          _showChapterPicker();
+                        }
+                      },
+                      child: GestureDetector(
+                        onTap: _showBookSelection,
+                        onLongPress: _showChapterPicker,
+                        child: Text(
+                          _currentBook?.name ?? _bookId,
                           style: TextStyle(
                             color: colorScheme.primary,
                             fontSize: 17,
                             fontWeight: FontWeight.w400,
                           ),
                         ),
-                      ],
+                      ),
                     ),
-                  ),
+                    const SizedBox(width: 8),
+                    GestureDetector(
+                      onTap: _showChapterPicker,
+                      child: Container(
+                        constraints: const BoxConstraints(minWidth: 40),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 12,
+                          vertical: 5,
+                        ),
+                        decoration: BoxDecoration(
+                          color: colorScheme.primaryContainer,
+                          borderRadius: BorderRadius.circular(999),
+                        ),
+                        child: Text(
+                          '$_chapter',
+                          style: TextStyle(
+                            color: colorScheme.onPrimaryContainer,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
+                const SizedBox(width: 8),
                 Listener(
                   onPointerDown: (event) {
                     if (event.buttons == kMiddleMouseButton) {

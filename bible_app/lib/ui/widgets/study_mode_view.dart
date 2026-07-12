@@ -165,6 +165,7 @@ class _StudyModeViewState extends State<StudyModeView> {
     final progress = _ttsService.progressState;
     final isActiveVerse = _ttsService.currentVerseNumber == verse.number &&
         progress != null &&
+        progress.contentType == TtsContentType.translation &&
         progress.verseNumber == verse.number;
 
     final words = _tokenizeVerse(verse.text);

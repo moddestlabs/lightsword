@@ -7,7 +7,7 @@ import 'package:bible_app/ui/widgets/drawing_canvas.dart';
 import 'package:bible_app/ui/widgets/drawing_toolbar.dart';
 
 /// Enhanced study mode view with vector drawing support
-/// 
+///
 /// This example shows how to integrate the drawing system into
 /// the existing study mode. It wraps the study content with a
 /// DrawingCanvas and overlays drawings using DrawingPainter.
@@ -20,7 +20,8 @@ class StudyModeWithDrawingView extends StatefulWidget {
   });
 
   @override
-  State<StudyModeWithDrawingView> createState() => _StudyModeWithDrawingViewState();
+  State<StudyModeWithDrawingView> createState() =>
+      _StudyModeWithDrawingViewState();
 }
 
 class _StudyModeWithDrawingViewState extends State<StudyModeWithDrawingView> {
@@ -30,7 +31,7 @@ class _StudyModeWithDrawingViewState extends State<StudyModeWithDrawingView> {
   bool _isDrawingMode = false;
   DrawingToolSettings _toolSettings = const DrawingToolSettings();
   List<Drawing> _drawings = [];
-  
+
   // Verse position tracking for content anchoring
   final Map<int, GlobalKey> _verseKeys = {};
   final Map<int, Rect> _versePositions = {};
@@ -42,7 +43,7 @@ class _StudyModeWithDrawingViewState extends State<StudyModeWithDrawingView> {
     _ttsService.addListener(_handleTtsChanged);
     _loadDrawings();
     _initializeVerseKeys();
-    
+
     // Calculate verse positions after first frame
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (mounted) {
@@ -179,6 +180,7 @@ class _StudyModeWithDrawingViewState extends State<StudyModeWithDrawingView> {
     final progress = _ttsService.progressState;
     final isActiveVerse = _ttsService.currentVerseNumber == verse.number &&
         progress != null &&
+        progress.contentType == TtsContentType.translation &&
         progress.verseNumber == verse.number;
     if (!isActiveVerse) {
       return [TextSpan(text: verse.text)];
@@ -220,7 +222,7 @@ class _StudyModeWithDrawingViewState extends State<StudyModeWithDrawingView> {
       }
 
       bool positionsChanged = false;
-      
+
       for (var entry in _verseKeys.entries) {
         final key = entry.value;
         final verseNumber = entry.key;
@@ -232,21 +234,21 @@ class _StudyModeWithDrawingViewState extends State<StudyModeWithDrawingView> {
             Offset.zero,
             ancestor: stackBox,
           );
-          
+
           final newRect = Rect.fromLTWH(
             position.dx,
             position.dy,
             box.size.width,
             box.size.height,
           );
-          
+
           if (_versePositions[verseNumber] != newRect) {
             _versePositions[verseNumber] = newRect;
             positionsChanged = true;
           }
         }
       }
-      
+
       // Trigger rebuild if positions changed and we have drawings
       if (positionsChanged && _drawings.isNotEmpty && mounted) {
         setState(() {});
@@ -257,7 +259,8 @@ class _StudyModeWithDrawingViewState extends State<StudyModeWithDrawingView> {
   }
 
   /// Handle completion of a drawing stroke
-  Future<void> _handleStrokeCompleted(DrawingStroke stroke, Offset localStartPosition) async {
+  Future<void> _handleStrokeCompleted(
+      DrawingStroke stroke, Offset localStartPosition) async {
     // Determine which verse the drawing is anchored to
     final anchorVerse = _findAnchorVerse(localStartPosition);
     if (anchorVerse == null) return;
@@ -357,9 +360,8 @@ class _StudyModeWithDrawingViewState extends State<StudyModeWithDrawingView> {
     switch (zone) {
       case DrawingZone.leftMargin:
         final leftMarginWidth = verseRect.left;
-        relativeX = leftMarginWidth > 0
-            ? startPosition.dx / leftMarginWidth
-            : 0.0;
+        relativeX =
+            leftMarginWidth > 0 ? startPosition.dx / leftMarginWidth : 0.0;
         break;
       case DrawingZone.rightMargin:
         final rightMarginWidth = viewportWidth - verseRect.right;

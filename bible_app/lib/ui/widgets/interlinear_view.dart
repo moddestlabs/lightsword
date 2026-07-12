@@ -1,22 +1,26 @@
 import 'package:flutter/material.dart';
-import 'package:bible_core/models/verse.dart';
-import 'package:bible_core/models/word.dart';
+import 'package:bible_core/data/sources/tagnt_repository.dart';
+import 'package:bible_core/data/sources/tahot_repository.dart';
 import 'package:bible_core/lexicon/strongs.dart';
 import 'package:bible_core/models/strongs_entry.dart';
-import 'package:bible_core/data/sources/tahot_repository.dart';
-import 'package:bible_core/data/sources/tagnt_repository.dart';
-import 'package:bible_app/services/tts_service.dart';
-import 'package:bible_app/ui/widgets/tts_control_widget.dart';
-import 'package:bible_app/ui/models/interlinear_word.dart';
+import 'package:bible_core/models/verse.dart';
+import 'package:bible_core/models/word.dart';
 import 'package:bible_app/services/bible_service.dart';
+import 'package:bible_app/services/tts_service.dart';
+import 'package:bible_app/ui/models/interlinear_word.dart';
+import 'package:bible_app/ui/widgets/tts_control_widget.dart';
 
-/// Widget to display a single word in interlinear format
+/// Widget to display a single fallback word when full interlinear data is unavailable.
 class InterlinearWordCard extends StatefulWidget {
   final Word word;
+  final int? verseNumber;
+  final String? progressKey;
 
   const InterlinearWordCard({
     super.key,
     required this.word,
+    this.verseNumber,
+    this.progressKey,
   });
 
   @override
@@ -39,7 +43,9 @@ class _InterlinearWordCardState extends State<InterlinearWordCard> {
       return;
     }
 
-    final entry = await StrongsLookup.instance.getEntry(widget.word.strongsNumber!);
+    final entry = await StrongsLookup.instance.getEntry(
+      widget.word.strongsNumber!,
+    );
     if (mounted) {
       setState(() {
         _entry = entry;
@@ -52,7 +58,10 @@ class _InterlinearWordCardState extends State<InterlinearWordCard> {
   Widget build(BuildContext context) {
     final hasStrongs = widget.word.strongsNumber != null;
     final isHebrew = hasStrongs && widget.word.strongsNumber!.startsWith('H');
-    
+    final progress = TtsService.instance.progressState;
+    final isActiveWord = widget.progressKey != null &&
+        progress?.progressKey == widget.progressKey;
+
     if (_loading && hasStrongs) {
       return Container(
         margin: const EdgeInsets.only(bottom: 16),
@@ -73,7 +82,15 @@ class _InterlinearWordCardState extends State<InterlinearWordCard> {
         ),
       );
     }
-    
+
+    final wordStyle = TextStyle(
+      fontSize: 18,
+      color: Theme.of(context).colorScheme.error,
+      fontWeight: FontWeight.w500,
+      backgroundColor:
+          isActiveWord ? Theme.of(context).colorScheme.tertiaryContainer : null,
+    );
+
     return Container(
       margin: const EdgeInsets.only(bottom: 16),
       padding: const EdgeInsets.all(16),
@@ -89,7 +106,6 @@ class _InterlinearWordCardState extends State<InterlinearWordCard> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Original language lemma (dictionary form) with label
           if (_entry != null && _entry!.lemma.isNotEmpty)
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -101,7 +117,8 @@ class _InterlinearWordCardState extends State<InterlinearWordCard> {
                     color: Theme.of(context).colorScheme.primary,
                     fontWeight: FontWeight.w400,
                   ),
-                  textDirection: isHebrew ? TextDirection.rtl : TextDirection.ltr,
+                  textDirection:
+                      isHebrew ? TextDirection.rtl : TextDirection.ltr,
                 ),
                 const SizedBox(height: 4),
                 Text(
@@ -115,9 +132,8 @@ class _InterlinearWordCardState extends State<InterlinearWordCard> {
               ],
             ),
           const SizedBox(height: 12),
-          
-          // Transliteration
-          if (_entry?.transliteration != null && _entry!.transliteration!.isNotEmpty)
+          if (_entry?.transliteration != null &&
+              _entry!.transliteration!.isNotEmpty)
             Text(
               _entry!.transliteration!,
               style: TextStyle(
@@ -127,26 +143,34 @@ class _InterlinearWordCardState extends State<InterlinearWordCard> {
               ),
             ),
           if (_entry?.transliteration != null) const SizedBox(height: 4),
-          
-          // English translation (as it appears in this verse)
-          Text(
-            widget.word.text,
-            style: TextStyle(
-              fontSize: 18,
-              color: Theme.of(context).colorScheme.error,
-              fontWeight: FontWeight.w500,
+          GestureDetector(
+            onTap: () {
+              TtsService.instance.speak(
+                widget.word.text,
+                verseNumber: widget.verseNumber,
+                contentType: TtsContentType.translation,
+                progressKey: widget.progressKey,
+              );
+            },
+            child: Icon(
+              Icons.play_circle_outline,
+              color: Theme.of(context).colorScheme.primary,
+              size: 22,
             ),
           ),
           const SizedBox(height: 8),
-          
-          // Strong's number and definition
+          Text(
+            widget.word.text,
+            style: wordStyle,
+          ),
+          const SizedBox(height: 8),
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // H/G badge with Strong's number
               if (hasStrongs)
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                   decoration: BoxDecoration(
                     color: Theme.of(context).colorScheme.tertiary,
                     borderRadius: BorderRadius.circular(4),
@@ -161,11 +185,11 @@ class _InterlinearWordCardState extends State<InterlinearWordCard> {
                   ),
                 ),
               const SizedBox(width: 8),
-              // Definition
               Expanded(
                 child: Text(
-                  _entry?.shortDefinition ?? 
-                  (_entry?.longDefinition?.substring(0, 100) ?? widget.word.text),
+                  _entry?.shortDefinition ??
+                      (_entry?.longDefinition?.substring(0, 100) ??
+                          widget.word.text),
                   style: TextStyle(
                     fontSize: 14,
                     color: Theme.of(context).colorScheme.secondary,
@@ -183,11 +207,16 @@ class _InterlinearWordCardState extends State<InterlinearWordCard> {
   }
 }
 
-/// Widget to display an interlinear word (Hebrew or Greek) with transliteration, gloss, and Strong's
 class _InterlinearWordCard extends StatefulWidget {
   final InterlinearWord word;
+  final int? verseNumber;
+  final String? progressKey;
 
-  const _InterlinearWordCard({required this.word});
+  const _InterlinearWordCard({
+    required this.word,
+    this.verseNumber,
+    this.progressKey,
+  });
 
   @override
   State<_InterlinearWordCard> createState() => __InterlinearWordCardState();
@@ -222,7 +251,19 @@ class __InterlinearWordCardState extends State<_InterlinearWordCard> {
   Widget build(BuildContext context) {
     final hasStrongs = widget.word.strongs != null;
     final isHebrew = widget.word.isHebrew;
-    
+    final progress = TtsService.instance.progressState;
+    final isActiveWord = widget.progressKey != null &&
+        progress?.progressKey == widget.progressKey;
+
+    final originalStyle = TextStyle(
+      fontSize: 28,
+      color: Theme.of(context).colorScheme.primary,
+      fontWeight: FontWeight.w400,
+      height: 1.4,
+      backgroundColor:
+          isActiveWord ? Theme.of(context).colorScheme.tertiaryContainer : null,
+    );
+
     return Container(
       margin: const EdgeInsets.only(bottom: 1),
       padding: const EdgeInsets.all(16),
@@ -238,34 +279,44 @@ class __InterlinearWordCardState extends State<_InterlinearWordCard> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Original language text (Hebrew or Greek)
+          GestureDetector(
+            onTap: () {
+              TtsService.instance.speak(
+                widget.word.displayOriginalText,
+                verseNumber: widget.verseNumber,
+                transliteration: widget.word.translit
+                    .replaceAll('.', '')
+                    .replaceAll('/', '')
+                    .replaceAll("'", ''),
+                contentType: TtsContentType.originalLanguage,
+                progressKey: widget.progressKey,
+              );
+            },
+            child: Icon(
+              Icons.play_circle_outline,
+              color: Theme.of(context).colorScheme.primary,
+              size: 22,
+            ),
+          ),
+          const SizedBox(height: 8),
           Text(
             widget.word.displayOriginalText,
-            style: TextStyle(
-              fontSize: 28,
-              color: Theme.of(context).colorScheme.primary,
-              fontWeight: FontWeight.w400,
-              height: 1.4,
-            ),
+            style: originalStyle,
             textDirection: isHebrew ? TextDirection.rtl : TextDirection.ltr,
           ),
-          
           const SizedBox(height: 8),
-          
-          // Transliteration
           Text(
             widget.word.translit.replaceAll('.', ''),
             style: TextStyle(
               fontSize: 16,
-              color: Theme.of(context).colorScheme.onSurface.withOpacity(0.87),
+              color: Theme.of(context).colorScheme.onSurface.withValues(
+                    alpha: 0.87,
+                  ),
               fontStyle: FontStyle.italic,
               letterSpacing: 0.5,
             ),
           ),
-          
           const SizedBox(height: 6),
-          
-          // English gloss
           Text(
             widget.word.gloss,
             style: TextStyle(
@@ -274,36 +325,36 @@ class __InterlinearWordCardState extends State<_InterlinearWordCard> {
               fontWeight: FontWeight.w500,
             ),
           ),
-          
           const SizedBox(height: 12),
-          
-          // Strong's number and definition
           if (hasStrongs && _entry != null) ...[
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Strong's badge
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                   decoration: BoxDecoration(
-                    color: isHebrew ? Theme.of(context).colorScheme.tertiary : Theme.of(context).colorScheme.primary,
+                    color: isHebrew
+                        ? Theme.of(context).colorScheme.tertiary
+                        : Theme.of(context).colorScheme.primary,
                     borderRadius: BorderRadius.circular(4),
                   ),
                   child: Text(
                     widget.word.strongs!,
                     style: TextStyle(
                       fontSize: 11,
-                      color: isHebrew ? Theme.of(context).colorScheme.onTertiary : Theme.of(context).colorScheme.onPrimary,
+                      color: isHebrew
+                          ? Theme.of(context).colorScheme.onTertiary
+                          : Theme.of(context).colorScheme.onPrimary,
                       fontWeight: FontWeight.w600,
                     ),
                   ),
                 ),
                 const SizedBox(width: 8),
-                // Definition
                 Expanded(
                   child: Text(
-                    _entry!.shortDefinition.isNotEmpty 
-                        ? _entry!.shortDefinition 
+                    _entry!.shortDefinition.isNotEmpty
+                        ? _entry!.shortDefinition
                         : (_entry!.longDefinition?.substring(0, 100) ?? ''),
                     style: TextStyle(
                       fontSize: 13,
@@ -323,8 +374,6 @@ class __InterlinearWordCardState extends State<_InterlinearWordCard> {
               child: CircularProgressIndicator(strokeWidth: 2),
             ),
           ],
-          
-          // Morphology (optional, can be shown on tap)
           if (widget.word.morphology.isNotEmpty) ...[
             const SizedBox(height: 8),
             Text(
@@ -342,7 +391,6 @@ class __InterlinearWordCardState extends State<_InterlinearWordCard> {
   }
 }
 
-/// Page to show interlinear view for a single verse
 class InterlinearReaderPage extends StatefulWidget {
   final String bookName;
   final String bookId;
@@ -361,8 +409,7 @@ class InterlinearReaderPage extends StatefulWidget {
 
   @override
   State<InterlinearReaderPage> createState() => _InterlinearReaderPageState();
-  
-  /// Show the interlinear reader for a single verse
+
   static Future<void> show({
     required BuildContext context,
     required String bookName,
@@ -386,16 +433,26 @@ class InterlinearReaderPage extends StatefulWidget {
 }
 
 class _InterlinearReaderPageState extends State<InterlinearReaderPage> {
+  final TtsService _ttsService = TtsService.instance;
+
   List<InterlinearWord>? _interlinearWords;
   bool _loadingInterlinear = true;
+
+  String get _translationProgressKey =>
+      'detail:${widget.bookId}:${widget.chapter}:${widget.verseNumber}:translation';
+
+  String get _originalProgressKey =>
+      'detail:${widget.bookId}:${widget.chapter}:${widget.verseNumber}:original';
+
+  String _wordProgressKey(int index) =>
+      'detail:${widget.bookId}:${widget.chapter}:${widget.verseNumber}:word:$index';
 
   @override
   void initState() {
     super.initState();
+    _ttsService.addListener(_handleTtsChanged);
     _loadInterlinearData();
-    
-    // Set up notification callback for TTS fallback messages
-    TtsService.instance.onShowNotification = (message) {
+    _ttsService.onShowNotification = (message) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -410,47 +467,42 @@ class _InterlinearReaderPageState extends State<InterlinearReaderPage> {
       }
     };
   }
-  
+
   @override
   void dispose() {
-    // Clean up notification callback
-    TtsService.instance.onShowNotification = null;
+    _ttsService.onShowNotification = null;
+    _ttsService.removeListener(_handleTtsChanged);
     super.dispose();
   }
 
+  void _handleTtsChanged() {
+    if (mounted) {
+      setState(() {});
+    }
+  }
+
   Future<void> _loadInterlinearData() async {
-    print('🔍 Loading interlinear for ${widget.bookId} ${widget.chapter}:${widget.verseNumber}');
-    
     List<InterlinearWord>? words;
-    
-    // Try loading from TAHOT (Hebrew OT) first
+
     final tahot = await TAHOTRepository.instance.getVerse(
       widget.bookId,
       widget.chapter,
       widget.verseNumber,
     );
-    
+
     if (tahot != null) {
-      words = tahot.map((w) => InterlinearWord.fromTAHOT(w)).toList();
-      print('🔍 TAHOT result: ${words.length} Hebrew words');
+      words = tahot.map(InterlinearWord.fromTAHOT).toList();
     } else {
-      // If not in TAHOT, try TAGNT (Greek NT)
       final tagnt = await TAGNTRepository.instance.getVerse(
         widget.bookId,
         widget.chapter,
         widget.verseNumber,
       );
-      
       if (tagnt != null) {
-        words = tagnt.map((w) => InterlinearWord.fromTAGNT(w)).toList();
-        print('🔍 TAGNT result: ${words.length} Greek words');
+        words = tagnt.map(InterlinearWord.fromTAGNT).toList();
       }
     }
-    
-    if (words != null && words.isNotEmpty) {
-      print('🔍 First word: ${words[0].originalText} = ${words[0].gloss}');
-    }
-    
+
     if (mounted) {
       setState(() {
         _interlinearWords = words;
@@ -459,13 +511,47 @@ class _InterlinearReaderPageState extends State<InterlinearReaderPage> {
     }
   }
 
+  List<InlineSpan> _buildProgressSpans(
+    String text,
+    TextStyle baseStyle,
+    String progressKey,
+  ) {
+    final progress = _ttsService.progressState;
+    if (progress == null || progress.progressKey != progressKey) {
+      return [TextSpan(text: text, style: baseStyle)];
+    }
+
+    final highlightStart = progress.startOffset.clamp(0, text.length);
+    final highlightEnd = progress.endOffset.clamp(0, text.length);
+    if (highlightStart >= highlightEnd) {
+      return [TextSpan(text: text, style: baseStyle)];
+    }
+
+    final highlightStyle = baseStyle.copyWith(
+      backgroundColor: Theme.of(context).colorScheme.tertiaryContainer,
+      color: Theme.of(context).colorScheme.onTertiaryContainer,
+      fontWeight: FontWeight.w600,
+    );
+
+    return [
+      if (highlightStart > 0)
+        TextSpan(text: text.substring(0, highlightStart), style: baseStyle),
+      TextSpan(
+        text: text.substring(highlightStart, highlightEnd),
+        style: highlightStyle,
+      ),
+      if (highlightEnd < text.length)
+        TextSpan(text: text.substring(highlightEnd), style: baseStyle),
+    ];
+  }
+
   @override
   Widget build(BuildContext context) {
-    final hasWords = widget.verse.words != null && widget.verse.words!.isNotEmpty;
-    final hasInterlinear = _interlinearWords != null && _interlinearWords!.isNotEmpty;
+    final hasWords =
+        widget.verse.words != null && widget.verse.words!.isNotEmpty;
+    final hasInterlinear =
+        _interlinearWords != null && _interlinearWords!.isNotEmpty;
     final colorScheme = Theme.of(context).colorScheme;
-    
-    print('🎨 Build: hasInterlinear=$hasInterlinear, hasWords=$hasWords, loading=$_loadingInterlinear');
 
     return Scaffold(
       backgroundColor: colorScheme.surfaceContainerLow,
@@ -489,18 +575,15 @@ class _InterlinearReaderPageState extends State<InterlinearReaderPage> {
       body: Stack(
         children: [
           SingleChildScrollView(
-            padding: const EdgeInsets.only(bottom: 80), // Extra padding for TTS controls
+            padding: const EdgeInsets.only(bottom: 80),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Translation tile
                 _buildTranslationTile(
                   BibleService.currentSourceOption.label,
                   widget.verse.text,
                   isPrimary: true,
                 ),
-                
-                // Full original language text (if available)
                 if (hasInterlinear) ...[
                   _buildOriginalLanguageVerseTile(_interlinearWords!),
                 ] else if (_loadingInterlinear) ...[
@@ -516,55 +599,64 @@ class _InterlinearReaderPageState extends State<InterlinearReaderPage> {
                     ),
                   ),
                 ],
-                
                 const SizedBox(height: 16),
-                
-                // Interlinear section header
                 if (hasInterlinear) ...[
                   Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 12,
+                    ),
                     color: colorScheme.surfaceContainerLow,
                     child: Text(
                       'Word-by-Word Breakdown',
                       style: TextStyle(
                         fontSize: 15,
                         fontWeight: FontWeight.w600,
-                        color: colorScheme.onSurface.withOpacity(0.87),
+                        color: colorScheme.onSurface.withValues(alpha: 0.87),
+                      ),
+                    ),
                   ),
-                ),
-              ),
-              
-              // Interlinear word cards
-              ..._interlinearWords!.map((word) => _buildInterlinearWordCard(word)),
-            ] else if (_loadingInterlinear) ...[
-              const Center(
-                child: Padding(
-                  padding: EdgeInsets.all(32.0),
-                  child: CircularProgressIndicator(),
-                ),
-              ),
-            ] else if (hasWords) ...[
-              // Fallback to the verse's primary text if no interlinear data
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                child: Text(
-                  'Word Breakdown',
-                  style: TextStyle(
-                    fontSize: 15,
-                    fontWeight: FontWeight.w600,
-                    color: colorScheme.onSurface.withOpacity(0.87),
+                  ..._interlinearWords!.asMap().entries.map(
+                        (entry) => _buildInterlinearWordCard(
+                          entry.value,
+                          entry.key,
+                        ),
+                      ),
+                ] else if (_loadingInterlinear) ...[
+                  const Center(
+                    child: Padding(
+                      padding: EdgeInsets.all(32),
+                      child: CircularProgressIndicator(),
+                    ),
                   ),
-                ),
-              ),
-              ...widget.verse.words!.map((word) => InterlinearWordCard(word: word)),
-            ],
-            
-            const SizedBox(height: 32),
-          ],
-        ),
+                ] else if (hasWords) ...[
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 12,
+                    ),
+                    child: Text(
+                      'Word Breakdown',
+                      style: TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.w600,
+                        color: colorScheme.onSurface.withValues(alpha: 0.87),
+                      ),
+                    ),
+                  ),
+                  ...widget.verse.words!.asMap().entries.map(
+                        (entry) => InterlinearWordCard(
+                          word: entry.value,
+                          verseNumber: widget.verseNumber,
+                          progressKey: _wordProgressKey(entry.key),
+                        ),
+                      ),
+                ],
+                const SizedBox(height: 32),
+              ],
+            ),
           ),
-          // Floating TTS controls
-          Positioned(
+          const Positioned(
             left: 0,
             right: 0,
             bottom: 0,
@@ -576,29 +668,34 @@ class _InterlinearReaderPageState extends State<InterlinearReaderPage> {
       ),
     );
   }
-  
-  Widget _buildInterlinearWordCard(InterlinearWord word) {
-    return _InterlinearWordCard(word: word);
+
+  Widget _buildInterlinearWordCard(InterlinearWord word, int index) {
+    return _InterlinearWordCard(
+      word: word,
+      verseNumber: widget.verseNumber,
+      progressKey: _wordProgressKey(index),
+    );
   }
-  
+
   Widget _buildOriginalLanguageVerseTile(List<InterlinearWord> words) {
     final isHebrew = words.isNotEmpty && words.first.isHebrew;
-    
-    // Construct full original text from all words
-    final originalText = words
-      .map((w) => w.displayOriginalText)
-        .join(' ');
-    
-    // Construct transliteration for fallback
-    // Remove syllable markers (.), prefix markers (/), and apostrophes (')
-    // Apostrophes represent glottal stops but TTS pronounces them awkwardly
+    final originalText =
+        words.map((word) => word.displayOriginalText).join(' ');
     final translitText = words
-        .map((w) => w.translit
-            .replaceAll('.', '')    // Remove syllable markers
-            .replaceAll('/', '')    // Remove prefix markers  
-            .replaceAll("'", ''))   // Remove apostrophes (glottal stops)
+        .map(
+          (word) => word.translit
+              .replaceAll('.', '')
+              .replaceAll('/', '')
+              .replaceAll("'", ''),
+        )
         .join(' ');
-    
+    final textStyle = TextStyle(
+      color: Theme.of(context).colorScheme.primary,
+      fontSize: 24,
+      fontWeight: FontWeight.w400,
+      height: 1.8,
+    );
+
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
@@ -613,17 +710,18 @@ class _InterlinearReaderPageState extends State<InterlinearReaderPage> {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Play icon with transliteration indicator
           Stack(
             clipBehavior: Clip.none,
             children: [
               GestureDetector(
                 onTap: () {
-                  print('🔊 Interlinear Play tapped!');
-                  print('🔊 Original text length: ${originalText.length}');
-                  print('🔊 Original text: $originalText');
-                  print('🔊 Transliteration: $translitText');
-                  TtsService.instance.speak(originalText, transliteration: translitText);
+                  _ttsService.speak(
+                    originalText,
+                    verseNumber: widget.verseNumber,
+                    transliteration: translitText,
+                    contentType: TtsContentType.originalLanguage,
+                    progressKey: _originalProgressKey,
+                  );
                 },
                 child: Icon(
                   Icons.play_circle_outline,
@@ -631,7 +729,6 @@ class _InterlinearReaderPageState extends State<InterlinearReaderPage> {
                   size: 24,
                 ),
               ),
-              // Small indicator that transliteration is available as fallback
               Positioned(
                 right: -2,
                 top: -2,
@@ -641,7 +738,10 @@ class _InterlinearReaderPageState extends State<InterlinearReaderPage> {
                   decoration: BoxDecoration(
                     color: Theme.of(context).colorScheme.tertiary,
                     shape: BoxShape.circle,
-                    border: Border.all(color: Theme.of(context).colorScheme.surface, width: 1),
+                    border: Border.all(
+                      color: Theme.of(context).colorScheme.surface,
+                      width: 1,
+                    ),
                   ),
                 ),
               ),
@@ -658,13 +758,14 @@ class _InterlinearReaderPageState extends State<InterlinearReaderPage> {
           ),
           const SizedBox(width: 16),
           Expanded(
-            child: Text(
-              originalText,
-              style: TextStyle(
-                color: Theme.of(context).colorScheme.primary,
-                fontSize: 24,
-                fontWeight: FontWeight.w400,
-                height: 1.8,
+            child: Text.rich(
+              TextSpan(
+                style: textStyle,
+                children: _buildProgressSpans(
+                  originalText,
+                  textStyle,
+                  _originalProgressKey,
+                ),
               ),
               textDirection: isHebrew ? TextDirection.rtl : TextDirection.ltr,
             ),
@@ -674,7 +775,18 @@ class _InterlinearReaderPageState extends State<InterlinearReaderPage> {
     );
   }
 
-  Widget _buildTranslationTile(String version, String text, {bool isPrimary = false, bool isSecondary = false}) {
+  Widget _buildTranslationTile(
+    String version,
+    String text, {
+    bool isPrimary = false,
+  }) {
+    final textStyle = TextStyle(
+      color: Theme.of(context).colorScheme.onSurface,
+      fontSize: isPrimary ? 18 : 17,
+      fontWeight: FontWeight.w400,
+      height: 1.5,
+    );
+
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
@@ -688,12 +800,14 @@ class _InterlinearReaderPageState extends State<InterlinearReaderPage> {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Play icon
           GestureDetector(
             onTap: () {
-              print('🔊 $version Play tapped!');
-              print('🔊 Text length: ${text.length}');
-              TtsService.instance.speak(text);
+              _ttsService.speak(
+                text,
+                verseNumber: widget.verseNumber,
+                contentType: TtsContentType.translation,
+                progressKey: _translationProgressKey,
+              );
             },
             child: Icon(
               Icons.play_circle_outline,
@@ -712,54 +826,15 @@ class _InterlinearReaderPageState extends State<InterlinearReaderPage> {
           ),
           const SizedBox(width: 16),
           Expanded(
-            child: Text(
-              text,
-              style: TextStyle(
-                color: Theme.of(context).colorScheme.onSurface,
-                fontSize: isPrimary ? 18 : 17,
-                fontWeight: FontWeight.w400,
-                height: 1.5,
+            child: Text.rich(
+              TextSpan(
+                style: textStyle,
+                children: _buildProgressSpans(
+                  text,
+                  textStyle,
+                  _translationProgressKey,
+                ),
               ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildHebrewTile(String hebrewText) {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        border: Border(
-          bottom: BorderSide(
-            color: Theme.of(context).colorScheme.outlineVariant,
-            width: 0.5,
-          ),
-        ),
-      ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            'OSHB',
-            style: TextStyle(
-              color: Theme.of(context).colorScheme.primary,
-              fontSize: 16,
-              fontWeight: FontWeight.w600,
-            ),
-          ),
-          const SizedBox(width: 16),
-          Expanded(
-            child: Text(
-              hebrewText,
-              style: TextStyle(
-                color: Theme.of(context).colorScheme.onSurface,
-                fontSize: 24,
-                fontWeight: FontWeight.w400,
-                height: 1.8,
-              ),
-              textDirection: TextDirection.rtl,
             ),
           ),
         ],

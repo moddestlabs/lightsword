@@ -21,6 +21,139 @@ class ConfigurableChapterView extends StatefulWidget {
     required this.view,
   });
 
+  static Future<List<TtsUtterance>> buildTtsUtterances({
+    required Chapter chapter,
+    required ChapterViewDefinition view,
+  }) async {
+    final utterances = <TtsUtterance>[];
+    final needsInterlinearData = view.showOriginalLanguage || view.showGloss;
+
+    for (final verse in chapter.verses) {
+      final words = needsInterlinearData
+          ? await _loadVerseWordsForChapter(
+              chapter.bookId,
+              chapter.number,
+              verse.number,
+            )
+          : const <InterlinearWord>[];
+      utterances.addAll(
+          _buildVerseUtterances(view: view, verse: verse, words: words));
+    }
+
+    return utterances;
+  }
+
+  static Future<List<TtsUtterance>> buildVerseTtsUtterances({
+    required Chapter chapter,
+    required ChapterViewDefinition view,
+    required Verse verse,
+  }) async {
+    final words = (view.showOriginalLanguage || view.showGloss)
+        ? await _loadVerseWordsForChapter(
+            chapter.bookId,
+            chapter.number,
+            verse.number,
+          )
+        : const <InterlinearWord>[];
+    return _buildVerseUtterances(view: view, verse: verse, words: words);
+  }
+
+  static List<TtsUtterance> _buildVerseUtterances({
+    required ChapterViewDefinition view,
+    required Verse verse,
+    required List<InterlinearWord> words,
+  }) {
+    final utterances = <TtsUtterance>[];
+
+    if (view.showVerseNumbers) {
+      utterances.add(
+        TtsUtterance(
+          text: 'Verse ${verse.number}.',
+          verseNumber: verse.number,
+          contentType: TtsContentType.verseNumber,
+          languageCode: 'en-US',
+        ),
+      );
+    }
+
+    if (view.showOriginalLanguage) {
+      final originalText = words
+          .map((word) => word.displayOriginalText)
+          .where((word) => word.isNotEmpty)
+          .join(' ');
+      if (originalText.isNotEmpty) {
+        utterances.add(
+          TtsUtterance(
+            text: originalText,
+            verseNumber: verse.number,
+            contentType: TtsContentType.originalLanguage,
+            languageCode:
+                words.isNotEmpty && words.first.isHebrew ? 'he-IL' : 'el-GR',
+            transliteration: words
+                .map((word) => word.translit.trim())
+                .where((word) => word.isNotEmpty)
+                .join(' '),
+          ),
+        );
+      }
+    }
+
+    if (view.showTranslation && verse.text.isNotEmpty) {
+      utterances.add(
+        TtsUtterance(
+          text: verse.text,
+          verseNumber: verse.number,
+          contentType: TtsContentType.translation,
+        ),
+      );
+    }
+
+    if (view.showGloss) {
+      final glossText = words
+          .map((word) => word.gloss.trim())
+          .where((gloss) => gloss.isNotEmpty)
+          .join(' ');
+      if (glossText.isNotEmpty) {
+        utterances.add(
+          TtsUtterance(
+            text: glossText,
+            verseNumber: verse.number,
+            contentType: TtsContentType.gloss,
+            languageCode: 'en-US',
+          ),
+        );
+      }
+    }
+
+    return utterances;
+  }
+
+  static Future<List<InterlinearWord>> _loadVerseWordsForChapter(
+    String bookId,
+    int chapter,
+    int verseNumber,
+  ) async {
+    final tahot = await TAHOTRepository.instance.getVerse(
+      bookId,
+      chapter,
+      verseNumber,
+    );
+    if (tahot != null) {
+      return tahot.map(InterlinearWord.fromTAHOT).toList();
+    }
+
+    final tagnt = await TAGNTRepository.instance.getVerse(
+      bookId,
+      chapter,
+      verseNumber,
+    );
+    if (tagnt != null) {
+      return tagnt.map(InterlinearWord.fromTAGNT).toList();
+    }
+
+    return const [];
+  }
+
   @override
   State<ConfigurableChapterView> createState() =>
       _ConfigurableChapterViewState();
@@ -113,7 +246,11 @@ class _ConfigurableChapterViewState extends State<ConfigurableChapterView> {
   }
 
   Future<void> _playVerse(Verse verse) {
-    return _ttsService.speak(verse.text, verseNumber: verse.number);
+    return ConfigurableChapterView.buildVerseTtsUtterances(
+      chapter: widget.chapter,
+      view: widget.view,
+      verse: verse,
+    ).then(_ttsService.readUtterances);
   }
 
   void _handleTtsChanged() {
@@ -215,25 +352,11 @@ class _ConfigurableChapterViewState extends State<ConfigurableChapterView> {
   }
 
   Future<List<InterlinearWord>> _loadVerseWords(int verseNumber) async {
-    final tahot = await TAHOTRepository.instance.getVerse(
+    return ConfigurableChapterView._loadVerseWordsForChapter(
       widget.chapter.bookId,
       widget.chapter.number,
       verseNumber,
     );
-    if (tahot != null) {
-      return tahot.map(InterlinearWord.fromTAHOT).toList();
-    }
-
-    final tagnt = await TAGNTRepository.instance.getVerse(
-      widget.chapter.bookId,
-      widget.chapter.number,
-      verseNumber,
-    );
-    if (tagnt != null) {
-      return tagnt.map(InterlinearWord.fromTAGNT).toList();
-    }
-
-    return const [];
   }
 
   @override
@@ -408,7 +531,12 @@ class _ConfigurableChapterViewState extends State<ConfigurableChapterView> {
                       ],
                     ),
                   if (widget.view.showOriginalLanguage)
-                    _buildOriginalLanguageBlock(context, words, isLoading),
+                    _buildOriginalLanguageBlock(
+                      context,
+                      verse.number,
+                      words,
+                      isLoading,
+                    ),
                   if (widget.view.showTranslation)
                     Padding(
                       padding: EdgeInsets.only(
@@ -487,6 +615,7 @@ class _ConfigurableChapterViewState extends State<ConfigurableChapterView> {
 
   Widget _buildOriginalLanguageBlock(
     BuildContext context,
+    int verseNumber,
     List<InterlinearWord> words,
     bool isLoading,
   ) {
@@ -514,14 +643,24 @@ class _ConfigurableChapterViewState extends State<ConfigurableChapterView> {
         .where((word) => word.isNotEmpty)
         .join(' ');
 
-    return Text(
-      originalText,
-      textDirection: direction,
-      style: TextStyle(
-        fontSize: widget.view.lineByLine ? 22 : 20,
-        height: 1.6,
-        color: Theme.of(context).colorScheme.primary,
+    final baseStyle = TextStyle(
+      fontSize: widget.view.lineByLine ? 22 : 20,
+      height: 1.6,
+      color: Theme.of(context).colorScheme.primary,
+    );
+
+    return Text.rich(
+      TextSpan(
+        style: baseStyle,
+        children: _buildContentSpans(
+          context,
+          verseNumber: verseNumber,
+          text: originalText,
+          contentType: TtsContentType.originalLanguage,
+          baseStyle: baseStyle,
+        ),
       ),
+      textDirection: direction,
     );
   }
 
@@ -549,12 +688,22 @@ class _ConfigurableChapterViewState extends State<ConfigurableChapterView> {
       );
     }
 
-    return Text(
-      glossText,
-      style: TextStyle(
-        fontSize: 14,
-        height: 1.6,
-        color: Theme.of(context).colorScheme.onSurfaceVariant,
+    final baseStyle = TextStyle(
+      fontSize: 14,
+      height: 1.6,
+      color: Theme.of(context).colorScheme.onSurfaceVariant,
+    );
+
+    return Text.rich(
+      TextSpan(
+        style: baseStyle,
+        children: _buildContentSpans(
+          context,
+          verseNumber: verseNumber,
+          text: glossText,
+          contentType: TtsContentType.gloss,
+          baseStyle: baseStyle,
+        ),
       ),
     );
   }
@@ -573,17 +722,43 @@ class _ConfigurableChapterViewState extends State<ConfigurableChapterView> {
     final progress = _ttsService.progressState;
     final isActiveVerse = _ttsService.currentVerseNumber == verse.number &&
         progress != null &&
+        progress.contentType == TtsContentType.translation &&
         progress.verseNumber == verse.number;
     if (!isActiveVerse) {
       spans.add(TextSpan(text: verse.text, style: baseStyle));
       return spans;
     }
 
-    final highlightStart = progress.startOffset.clamp(0, verse.text.length);
-    final highlightEnd = progress.endOffset.clamp(0, verse.text.length);
+    return _buildContentSpans(
+      context,
+      verseNumber: verse.number,
+      text: verse.text,
+      contentType: TtsContentType.translation,
+      baseStyle: baseStyle,
+    );
+  }
+
+  List<InlineSpan> _buildContentSpans(
+    BuildContext context, {
+    required int? verseNumber,
+    required String text,
+    required TtsContentType contentType,
+    required TextStyle baseStyle,
+  }) {
+    final progress = _ttsService.progressState;
+    final isActiveContent = verseNumber != null &&
+        _ttsService.currentVerseNumber == verseNumber &&
+        progress != null &&
+        progress.verseNumber == verseNumber &&
+        progress.contentType == contentType;
+    if (!isActiveContent) {
+      return [TextSpan(text: text, style: baseStyle)];
+    }
+
+    final highlightStart = progress.startOffset.clamp(0, text.length);
+    final highlightEnd = progress.endOffset.clamp(0, text.length);
     if (highlightStart >= highlightEnd) {
-      spans.add(TextSpan(text: verse.text, style: baseStyle));
-      return spans;
+      return [TextSpan(text: text, style: baseStyle)];
     }
 
     final highlightStyle = baseStyle.copyWith(
@@ -591,22 +766,17 @@ class _ConfigurableChapterViewState extends State<ConfigurableChapterView> {
       color: Theme.of(context).colorScheme.onTertiaryContainer,
       fontWeight: FontWeight.w600,
     );
-
+    final spans = <InlineSpan>[];
     if (highlightStart > 0) {
-      spans.add(TextSpan(
-        text: verse.text.substring(0, highlightStart),
-        style: baseStyle,
-      ));
+      spans.add(
+          TextSpan(text: text.substring(0, highlightStart), style: baseStyle));
     }
     spans.add(TextSpan(
-      text: verse.text.substring(highlightStart, highlightEnd),
+      text: text.substring(highlightStart, highlightEnd),
       style: highlightStyle,
     ));
-    if (highlightEnd < verse.text.length) {
-      spans.add(TextSpan(
-        text: verse.text.substring(highlightEnd),
-        style: baseStyle,
-      ));
+    if (highlightEnd < text.length) {
+      spans.add(TextSpan(text: text.substring(highlightEnd), style: baseStyle));
     }
     return spans;
   }

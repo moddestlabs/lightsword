@@ -16,8 +16,8 @@ class TtsService extends ChangeNotifier {
 
   bool _isPlaying = false;
   bool _isPaused = false;
-  double _rate = 0.5;
-  double _pitch = 1.0;
+  static const double _defaultRate = 0.5;
+  static const double _defaultPitch = 1.0;
   double _volume = 1.0;
   final Map<String, List<TtsVoice>> _voicesByLanguageFamily = {
     'en': const [],
@@ -30,14 +30,14 @@ class TtsService extends ChangeNotifier {
     'el': null,
   };
 
-  List<Verse> _currentVerses = [];
-  int _currentVerseIndex = 0;
-  int? _currentStandaloneVerseNumber;
+  List<TtsUtterance> _currentUtterances = [];
+  int _currentUtteranceIndex = 0;
   String? _detectedLanguage;
+  String? _currentProfileKey;
   bool _stopRequested = false;
-  bool _isSequencePlayback = false;
-  int _currentUtterancePrefixLength = 0;
   TtsProgressState? _progressState;
+  final Map<String, double> _ratesByProfile = {};
+  final Map<String, double> _pitchesByProfile = {};
 
   // Callback for showing user notifications
   Function(String message)? onShowNotification;
@@ -55,21 +55,28 @@ class TtsService extends ChangeNotifier {
   // Getters
   bool get isPlaying => _isPlaying;
   bool get isPaused => _isPaused;
-  double get rate => _rate;
-  double get pitch => _pitch;
+  double get rate => rateForLanguage('en-US');
+  double get pitch => pitchForLanguage('en-US');
   double get volume => _volume;
-  int get currentVerseIndex => _currentVerseIndex;
+  int get currentVerseIndex => _currentUtteranceIndex;
   int? get currentVerseNumber {
-    if (_isSequencePlayback &&
-        _currentVerseIndex >= 0 &&
-        _currentVerseIndex < _currentVerses.length) {
-      return _currentVerses[_currentVerseIndex].number;
+    if (_currentUtteranceIndex >= 0 &&
+        _currentUtteranceIndex < _currentUtterances.length) {
+      return _currentUtterances[_currentUtteranceIndex].verseNumber;
     }
-    return _currentStandaloneVerseNumber;
+    return null;
   }
 
   String? get detectedLanguage => _detectedLanguage;
   TtsProgressState? get progressState => _progressState;
+  TtsContentType? get currentContentType {
+    if (_currentUtteranceIndex >= 0 &&
+        _currentUtteranceIndex < _currentUtterances.length) {
+      return _currentUtterances[_currentUtteranceIndex].contentType;
+    }
+    return null;
+  }
+
   List<TtsVoice> get englishVoices =>
       List.unmodifiable(_voicesByLanguageFamily['en']!);
   List<TtsVoice> get hebrewVoices =>
@@ -82,8 +89,8 @@ class TtsService extends ChangeNotifier {
 
   /// Initialize the TTS engine with saved settings
   Future<void> initialize() async {
-    await _engine.setRate(_rate);
-    await _engine.setPitch(_pitch);
+    await _engine.setRate(_defaultRate);
+    await _engine.setPitch(_defaultPitch);
     await _engine.setVolume(_volume);
     await refreshAvailableVoices();
   }
@@ -93,131 +100,70 @@ class TtsService extends ChangeNotifier {
     String text, {
     int? verseNumber,
     String? transliteration,
+    TtsContentType contentType = TtsContentType.translation,
+    String? progressKey,
     bool showNotification = false,
   }) async {
-    if (text.isEmpty) return;
-
-    debugPrint('🔊 TTS speak called with text length: ${text.length}');
-    debugPrint(
-        '🔊 Text preview: ${text.substring(0, text.length > 50 ? 50 : text.length)}');
-
-    final languageCode = LanguageDetector.detect(text);
-    _detectedLanguage = languageCode;
-
-    debugPrint('🔊 Detected language: $languageCode');
-
-    await _engine.stop();
-    _stopRequested = false;
-    _isSequencePlayback = false;
-    _currentVerses = [];
-    _currentVerseIndex = 0;
-    _currentStandaloneVerseNumber = verseNumber;
-    _currentUtterancePrefixLength = 0;
-    _progressState = null;
-
-    // For Hebrew/Greek, check if voice is actually available before trying
-    bool shouldTryNativeVoice = true;
-    final selectedVoice = _voiceForLanguageCode(languageCode);
-    if (languageCode == 'he-IL' || languageCode == 'el-GR') {
-      final availableVoices = getAvailableVoicesForLanguage(languageCode);
-      final hasVoice = availableVoices.isNotEmpty;
-
-      debugPrint('🔊 Native voice available for $languageCode: $hasVoice');
-
-      if (!hasVoice && transliteration != null) {
-        // No native voice available, use transliteration directly
-        shouldTryNativeVoice = false;
-        debugPrint('🔊 No native voice found, using transliteration directly');
-        _detectedLanguage = 'en-US (transliterated from $languageCode)';
-
-        final langName = languageCode == 'he-IL' ? 'Hebrew' : 'Greek';
-        onShowNotification?.call(
-            'No $langName voice found. Reading transliteration instead.\n'
-            'Install $langName language pack in your system settings for native pronunciation.');
-
-        await _engine.speak(
-          transliteration,
-          languageCode: 'en-US',
-          voice: _voiceForLanguageCode('en-US'),
-        );
-      } else if (!hasVoice) {
-        // No native voice and no transliteration
-        final langName = LanguageDetector.getLanguageName(languageCode);
-        onShowNotification?.call(
-          'No $langName voice available. Please install language packs in your system settings.',
-        );
-        return;
-      }
-    }
-
-    // Try speaking in the detected language if we should
-    if (shouldTryNativeVoice) {
-      final success = await _engine.speak(
-        text,
-        languageCode: languageCode,
-        voice: selectedVoice,
-      );
-
-      if (!success) {
-        // This should rarely happen now, but handle it just in case
-        debugPrint('⚠️ speak() returned false unexpectedly');
-        if (transliteration != null &&
-            (languageCode == 'he-IL' || languageCode == 'el-GR')) {
-          _detectedLanguage = 'en-US (transliterated from $languageCode)';
-          await _engine.speak(
-            transliteration,
-            languageCode: 'en-US',
-            voice: _voiceForLanguageCode('en-US'),
-          );
-        }
-      }
-    }
-
-    _isPlaying = true;
-    _isPaused = false;
-    notifyListeners();
+    await readUtterances([
+      TtsUtterance(
+        text: text,
+        verseNumber: verseNumber,
+        contentType: contentType,
+        progressKey: progressKey,
+        transliteration: transliteration,
+      ),
+    ]);
   }
 
   /// Read a list of verses sequentially
   Future<void> readVerses(List<Verse> verses, {int startIndex = 0}) async {
     if (verses.isEmpty) return;
 
-    await _engine.stop();
-    _currentVerses = verses;
-    _currentVerseIndex = startIndex;
-    _currentStandaloneVerseNumber = null;
-    _stopRequested = false;
-    _isSequencePlayback = true;
-    _progressState = null;
+    final utterances = <TtsUtterance>[];
+    for (final verse in verses.skip(startIndex)) {
+      utterances.add(
+        TtsUtterance(
+          text: 'Verse ${verse.number}.',
+          verseNumber: verse.number,
+          contentType: TtsContentType.verseNumber,
+          languageCode: 'en-US',
+        ),
+      );
+      utterances.add(
+        TtsUtterance(
+          text: verse.text,
+          verseNumber: verse.number,
+          contentType: TtsContentType.translation,
+        ),
+      );
+    }
 
-    await _readCurrentVerse();
+    await readUtterances(utterances);
   }
 
-  /// Read the current verse in the sequence
-  Future<void> _readCurrentVerse() async {
-    if (_stopRequested || _currentVerseIndex >= _currentVerses.length) {
-      // Finished reading all verses
+  Future<void> readUtterances(List<TtsUtterance> utterances) async {
+    if (utterances.isEmpty) {
+      return;
+    }
+
+    await _engine.stop();
+    _currentUtterances = utterances;
+    _currentUtteranceIndex = 0;
+    _stopRequested = false;
+    _progressState = null;
+
+    await _readCurrentUtterance();
+  }
+
+  /// Read the current utterance in the sequence
+  Future<void> _readCurrentUtterance() async {
+    if (_stopRequested || _currentUtteranceIndex >= _currentUtterances.length) {
       await stop();
       return;
     }
 
-    final verse = _currentVerses[_currentVerseIndex];
-    final text = '${verse.number}. ${verse.text}';
-    _currentUtterancePrefixLength = '${verse.number}. '.length;
-    _progressState = null;
-
-    final languageCode = LanguageDetector.detect(verse.text);
-    _detectedLanguage = languageCode;
-
-    await _engine.speak(
-      text,
-      languageCode: languageCode,
-      voice: _voiceForLanguageCode(languageCode),
-    );
-
-    _isPlaying = true;
-    _isPaused = false;
-    notifyListeners();
+    final utterance = _currentUtterances[_currentUtteranceIndex];
+    await _speakUtterance(utterance);
   }
 
   /// Called when TTS completes speaking
@@ -226,20 +172,16 @@ class TtsService extends ChangeNotifier {
       return;
     }
 
-    if (!_isSequencePlayback || _currentVerses.isEmpty) {
+    if (_currentUtterances.isEmpty) {
       _finishPlaybackState();
       return;
     }
 
-    // Move to next verse
-    _currentVerseIndex++;
+    _currentUtteranceIndex++;
 
-    if (_currentVerseIndex < _currentVerses.length) {
-      // Continue with next verse
-      _readCurrentVerse();
+    if (_currentUtteranceIndex < _currentUtterances.length) {
+      _readCurrentUtterance();
     } else {
-      // All verses completed. Clear UI state immediately so the overlay hides
-      // even if the platform stop call lags behind the completion callback.
       _finishPlaybackState();
     }
   }
@@ -248,11 +190,9 @@ class TtsService extends ChangeNotifier {
     _stopRequested = true;
     _isPlaying = false;
     _isPaused = false;
-    _isSequencePlayback = false;
-    _currentVerses = [];
-    _currentVerseIndex = 0;
-    _currentStandaloneVerseNumber = null;
-    _currentUtterancePrefixLength = 0;
+    _currentUtterances = [];
+    _currentUtteranceIndex = 0;
+    _currentProfileKey = null;
     _detectedLanguage = null;
     _progressState = null;
     notifyListeners();
@@ -263,25 +203,26 @@ class TtsService extends ChangeNotifier {
       return;
     }
 
-    final verseNumber = currentVerseNumber;
-    final fullText = _isSequencePlayback &&
-            _currentVerseIndex >= 0 &&
-            _currentVerseIndex < _currentVerses.length
-        ? _currentVerses[_currentVerseIndex].text
-        : text;
+    if (_currentUtteranceIndex < 0 ||
+        _currentUtteranceIndex >= _currentUtterances.length) {
+      return;
+    }
 
-    final normalizedStart =
-        (start - _currentUtterancePrefixLength).clamp(0, fullText.length);
-    final normalizedEnd =
-        (end - _currentUtterancePrefixLength).clamp(0, fullText.length);
+    final utterance = _currentUtterances[_currentUtteranceIndex];
+    final fullText = utterance.progressText ?? utterance.text;
+
+    final normalizedStart = start.clamp(0, fullText.length);
+    final normalizedEnd = end.clamp(0, fullText.length);
 
     if (normalizedEnd <= 0 || normalizedStart >= normalizedEnd) {
       return;
     }
 
     final nextState = TtsProgressState(
-      verseNumber: verseNumber,
+      verseNumber: utterance.verseNumber,
       text: fullText,
+      contentType: utterance.contentType,
+      progressKey: utterance.progressKey,
       startOffset: normalizedStart,
       endOffset: normalizedEnd,
       word: word,
@@ -297,7 +238,7 @@ class TtsService extends ChangeNotifier {
 
   /// Stop reading
   Future<void> stop() async {
-    final wasActive = _isPlaying || _isPaused || _currentVerses.isNotEmpty;
+    final wasActive = _isPlaying || _isPaused || _currentUtterances.isNotEmpty;
     _finishPlaybackState();
     await _engine.stop();
     if (!wasActive) {
@@ -317,23 +258,133 @@ class TtsService extends ChangeNotifier {
   Future<void> togglePlayPause() async {
     if (_isPlaying) {
       await pause();
-    } else if (_isPaused && _currentVerses.isNotEmpty) {
-      // Resume reading from current position
-      await _readCurrentVerse();
+    } else if (_isPaused && _currentUtterances.isNotEmpty) {
+      await _readCurrentUtterance();
     }
+  }
+
+  Future<void> _speakUtterance(TtsUtterance utterance) async {
+    if (utterance.text.isEmpty) {
+      _onSpeechComplete();
+      return;
+    }
+
+    debugPrint(
+      '🔊 TTS speak called with text length: ${utterance.text.length}',
+    );
+    debugPrint(
+      '🔊 Text preview: ${utterance.text.substring(0, utterance.text.length > 50 ? 50 : utterance.text.length)}',
+    );
+
+    final languageCode =
+        utterance.languageCode ?? LanguageDetector.detect(utterance.text);
+    _detectedLanguage = languageCode;
+    _currentProfileKey = _profileKeyForUtterance(utterance, languageCode);
+
+    await _engine.setRate(_rateForProfileKey(_currentProfileKey!));
+    await _engine.setPitch(_pitchForProfileKey(_currentProfileKey!));
+
+    debugPrint('🔊 Detected language: $languageCode');
+
+    _progressState = null;
+
+    bool shouldTryNativeVoice = true;
+    final selectedVoice = _voiceForLanguageCode(languageCode);
+    if (languageCode == 'he-IL' || languageCode == 'el-GR') {
+      final availableVoices = getAvailableVoicesForLanguage(languageCode);
+      final hasVoice = availableVoices.isNotEmpty;
+
+      debugPrint('🔊 Native voice available for $languageCode: $hasVoice');
+
+      if (!hasVoice && utterance.transliteration != null) {
+        shouldTryNativeVoice = false;
+        debugPrint('🔊 No native voice found, using transliteration directly');
+        _detectedLanguage = 'en-US (transliterated from $languageCode)';
+
+        final langName = languageCode == 'he-IL' ? 'Hebrew' : 'Greek';
+        onShowNotification?.call(
+          'No $langName voice found. Reading transliteration instead.\n'
+          'Install $langName language pack in your system settings for native pronunciation.',
+        );
+
+        await _engine.speak(
+          utterance.transliteration!,
+          languageCode: 'en-US',
+          voice: _voiceForLanguageCode('en-US'),
+        );
+      } else if (!hasVoice) {
+        final langName = LanguageDetector.getLanguageName(languageCode);
+        onShowNotification?.call(
+          'No $langName voice available. Please install language packs in your system settings.',
+        );
+        _onSpeechComplete();
+        return;
+      }
+    }
+
+    if (shouldTryNativeVoice) {
+      final success = await _engine.speak(
+        utterance.text,
+        languageCode: languageCode,
+        voice: selectedVoice,
+      );
+
+      if (!success) {
+        debugPrint('⚠️ speak() returned false unexpectedly');
+        if (utterance.transliteration != null &&
+            (languageCode == 'he-IL' || languageCode == 'el-GR')) {
+          _detectedLanguage = 'en-US (transliterated from $languageCode)';
+          await _engine.speak(
+            utterance.transliteration!,
+            languageCode: 'en-US',
+            voice: _voiceForLanguageCode('en-US'),
+          );
+        }
+      }
+    }
+
+    _isPlaying = true;
+    _isPaused = false;
+    notifyListeners();
   }
 
   /// Set speech rate (0.0 to 1.0)
   Future<void> setRate(double rate) async {
-    _rate = rate.clamp(0.0, 1.0);
-    await _engine.setRate(_rate);
-    notifyListeners();
+    await setRateForLanguage('en-US', rate);
   }
 
   /// Set speech pitch (0.5 to 2.0)
   Future<void> setPitch(double pitch) async {
-    _pitch = pitch.clamp(0.5, 2.0);
-    await _engine.setPitch(_pitch);
+    await setPitchForLanguage('en-US', pitch);
+  }
+
+  double rateForLanguage(String languageCode) {
+    return _rateForProfileKey(_profileKeyForLanguage(languageCode));
+  }
+
+  double pitchForLanguage(String languageCode) {
+    return _pitchForProfileKey(_profileKeyForLanguage(languageCode));
+  }
+
+  Future<void> setRateForLanguage(String languageCode, double rate) async {
+    final profileKey = _profileKeyForLanguage(languageCode);
+    final normalizedRate = rate.clamp(0.0, 1.0);
+    _ratesByProfile[profileKey] = normalizedRate;
+    await PreferencesService.instance.setTtsRate(profileKey, normalizedRate);
+    if (_currentProfileKey == profileKey) {
+      await _engine.setRate(normalizedRate);
+    }
+    notifyListeners();
+  }
+
+  Future<void> setPitchForLanguage(String languageCode, double pitch) async {
+    final profileKey = _profileKeyForLanguage(languageCode);
+    final normalizedPitch = pitch.clamp(0.5, 2.0);
+    _pitchesByProfile[profileKey] = normalizedPitch;
+    await PreferencesService.instance.setTtsPitch(profileKey, normalizedPitch);
+    if (_currentProfileKey == profileKey) {
+      await _engine.setPitch(normalizedPitch);
+    }
     notifyListeners();
   }
 
@@ -371,7 +422,8 @@ class TtsService extends ChangeNotifier {
 
   List<TtsVoice> getAvailableVoicesForLanguage(String languageCode) {
     return List.unmodifiable(
-        _voicesByLanguageFamily[_languageFamilyFor(languageCode)] ?? const []);
+      _voicesByLanguageFamily[_languageFamilyFor(languageCode)] ?? const [],
+    );
   }
 
   TtsVoice? getSelectedVoiceForLanguage(String languageCode) {
@@ -379,7 +431,9 @@ class TtsService extends ChangeNotifier {
   }
 
   Future<void> selectVoiceForLanguage(
-      String languageCode, TtsVoice? voice) async {
+    String languageCode,
+    TtsVoice? voice,
+  ) async {
     final languageFamily = _languageFamilyFor(languageCode);
     _selectedVoices[languageFamily] = voice;
     await PreferencesService.instance
@@ -425,11 +479,43 @@ class TtsService extends ChangeNotifier {
   TtsVoice? _voiceForLanguageCode(String languageCode) {
     return _selectedVoices[_languageFamilyFor(languageCode)];
   }
+
+  String _profileKeyForUtterance(TtsUtterance utterance, String languageCode) {
+    if (utterance.profileKey != null && utterance.profileKey!.isNotEmpty) {
+      return utterance.profileKey!;
+    }
+    return _profileKeyForLanguage(languageCode);
+  }
+
+  String _profileKeyForLanguage(String languageCode) {
+    final family = _languageFamilyFor(languageCode);
+    final voice = _selectedVoices[family];
+    if (voice != null) {
+      return 'voice:${voice.id}';
+    }
+    return 'auto:$family';
+  }
+
+  double _rateForProfileKey(String profileKey) {
+    return _ratesByProfile.putIfAbsent(
+      profileKey,
+      () => PreferencesService.instance.getTtsRate(profileKey) ?? _defaultRate,
+    );
+  }
+
+  double _pitchForProfileKey(String profileKey) {
+    return _pitchesByProfile.putIfAbsent(
+      profileKey,
+      () => PreferencesService.instance.getTtsPitch(profileKey) ?? _defaultPitch,
+    );
+  }
 }
 
 class TtsProgressState {
   final int? verseNumber;
   final String text;
+  final TtsContentType contentType;
+  final String? progressKey;
   final int startOffset;
   final int endOffset;
   final String word;
@@ -437,6 +523,8 @@ class TtsProgressState {
   const TtsProgressState({
     required this.verseNumber,
     required this.text,
+    required this.contentType,
+    this.progressKey,
     required this.startOffset,
     required this.endOffset,
     required this.word,
@@ -447,6 +535,8 @@ class TtsProgressState {
     return other is TtsProgressState &&
         other.verseNumber == verseNumber &&
         other.text == text &&
+        other.contentType == contentType &&
+        other.progressKey == progressKey &&
         other.startOffset == startOffset &&
         other.endOffset == endOffset &&
         other.word == word;
@@ -456,8 +546,39 @@ class TtsProgressState {
   int get hashCode => Object.hash(
         verseNumber,
         text,
+        contentType,
+        progressKey,
         startOffset,
         endOffset,
         word,
       );
+}
+
+enum TtsContentType {
+  verseNumber,
+  originalLanguage,
+  translation,
+  gloss,
+}
+
+class TtsUtterance {
+  final String text;
+  final int? verseNumber;
+  final TtsContentType contentType;
+  final String? profileKey;
+  final String? progressKey;
+  final String? languageCode;
+  final String? transliteration;
+  final String? progressText;
+
+  const TtsUtterance({
+    required this.text,
+    this.verseNumber,
+    required this.contentType,
+    this.profileKey,
+    this.progressKey,
+    this.languageCode,
+    this.transliteration,
+    this.progressText,
+  });
 }

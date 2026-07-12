@@ -17,6 +17,8 @@ class PreferencesService {
       'selected_tts_voice_english';
   static const String _selectedTtsVoiceHebrewKey = 'selected_tts_voice_hebrew';
   static const String _selectedTtsVoiceGreekKey = 'selected_tts_voice_greek';
+  static const String _ttsRatePrefixKey = 'tts_rate_';
+  static const String _ttsPitchPrefixKey = 'tts_pitch_';
 
   static PreferencesService? _instance;
   static PreferencesService get instance {
@@ -188,6 +190,26 @@ class PreferencesService {
     }
 
     await _prefs!.setString(key, voiceId);
+  }
+
+  double? getTtsRate(String profileKey) {
+    if (_prefs == null) return null;
+    return _prefs!.getDouble('$_ttsRatePrefixKey$profileKey');
+  }
+
+  Future<void> setTtsRate(String profileKey, double rate) async {
+    if (_prefs == null) return;
+    await _prefs!.setDouble('$_ttsRatePrefixKey$profileKey', rate);
+  }
+
+  double? getTtsPitch(String profileKey) {
+    if (_prefs == null) return null;
+    return _prefs!.getDouble('$_ttsPitchPrefixKey$profileKey');
+  }
+
+  Future<void> setTtsPitch(String profileKey, double pitch) async {
+    if (_prefs == null) return;
+    await _prefs!.setDouble('$_ttsPitchPrefixKey$profileKey', pitch);
   }
 
   String _ttsVoiceKeyFor(String languageFamily) {

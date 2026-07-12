@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'package:flutter/services.dart' show rootBundle;
 
+import 'gloss_text.dart';
+
 /// Word data from TAHOT (Translators Amalgamated Hebrew OT)
 class TAHOTWord {
   final String hebrew;        // Vocalized Hebrew text (בְּ/רֵאשִׁ֖ית)
@@ -21,7 +23,7 @@ class TAHOTWord {
     return TAHOTWord(
       hebrew: json['hebrew'] as String,
       translit: json['translit'] as String,
-      gloss: json['gloss'] as String,
+      gloss: normalizeGlossToken(json['gloss'] as String),
       strongs: json['strongs'] as String?,
       morphology: json['morphology'] as String,
     );

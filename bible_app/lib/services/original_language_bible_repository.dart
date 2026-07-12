@@ -2,6 +2,7 @@ import 'package:bible_app/platform/storage/flutter_asset_data_source.dart';
 import 'package:bible_core/data/repository.dart';
 import 'package:bible_core/data/sources/tagnt_repository.dart';
 import 'package:bible_core/data/sources/tahot_repository.dart';
+import 'package:bible_core/data/sources/gloss_text.dart';
 import 'package:bible_core/data/sources/usfm_lazy_repository.dart';
 import 'package:bible_core/models/book.dart';
 import 'package:bible_core/models/passage_reference.dart';
@@ -112,18 +113,7 @@ class OriginalLanguageBibleRepository implements BibleRepository {
   }
 
   String _composeGloss(Iterable<String> glosses) {
-    final buffer = StringBuffer();
-    for (final gloss in glosses) {
-      final normalized = gloss.trim();
-      if (normalized.isEmpty) {
-        continue;
-      }
-      if (buffer.isNotEmpty && !_isPunctuation(normalized)) {
-        buffer.write(' ');
-      }
-      buffer.write(normalized);
-    }
-    return buffer.toString();
+    return composeGlossText(glosses);
   }
 
   String _composeOriginal(Iterable<String> originals) {
@@ -131,11 +121,5 @@ class OriginalLanguageBibleRepository implements BibleRepository {
         .map((word) => word.replaceAll('/', '').replaceAll('\\', '').trim())
         .where((word) => word.isNotEmpty)
         .join(' ');
-  }
-
-  bool _isPunctuation(String token) {
-    return const {
-      '.', ',', ';', ':', '!', '?', ')', ']', '}',
-    }.contains(token);
   }
 }
