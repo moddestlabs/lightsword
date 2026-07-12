@@ -163,6 +163,11 @@ class PwaService {
         defaultPackStatus: _parseOfflinePackStatus(_getProperty(diagnosticsObj, 'defaultPack')),
         optionalPacks: optionalPacks,
         launchProbes: _parseLaunchProbes(_getProperty(diagnosticsObj, 'launchProbes')),
+        bootStatus: (_getProperty(diagnosticsObj, 'bootStatus') as JSString?)?.toDart,
+        bootLastDetail: (_getProperty(diagnosticsObj, 'bootLastDetail') as JSString?)?.toDart,
+        bootLastUpdated: (_getProperty(diagnosticsObj, 'bootLastUpdated') as JSString?)?.toDart,
+        bootLastFailure: _parseBootFailure(_getProperty(diagnosticsObj, 'bootLastFailure')),
+        bootEvents: _toStringList(_getProperty(diagnosticsObj, 'bootEvents')),
         errors: _toStringList(_getProperty(diagnosticsObj, 'errors')),
       );
     } catch (e) {
@@ -497,6 +502,18 @@ class PwaService {
     }
   }
 
+  PwaBootFailure? _parseBootFailure(JSAny? rawFailure) {
+    if (rawFailure == null) {
+      return null;
+    }
+
+    return PwaBootFailure(
+      step: (_getProperty(rawFailure, 'step') as JSString?)?.toDart ?? 'unknown',
+      detail: (_getProperty(rawFailure, 'detail') as JSString?)?.toDart,
+      at: (_getProperty(rawFailure, 'at') as JSString?)?.toDart,
+    );
+  }
+
   static const Map<OfflinePackId, String> _optionalPackNames = {
     OfflinePackId.originalLanguageOt: 'original-language-ot',
   };
@@ -580,6 +597,11 @@ class PwaDiagnostics {
     required this.defaultPackStatus,
     required this.optionalPacks,
     required this.launchProbes,
+    required this.bootStatus,
+    required this.bootLastDetail,
+    required this.bootLastUpdated,
+    required this.bootLastFailure,
+    required this.bootEvents,
     required this.errors,
   });
 
@@ -606,6 +628,11 @@ class PwaDiagnostics {
   final OfflinePackStatus? defaultPackStatus;
   final Map<String, OfflinePackStatus> optionalPacks;
   final List<PwaLaunchProbe> launchProbes;
+  final String? bootStatus;
+  final String? bootLastDetail;
+  final String? bootLastUpdated;
+  final PwaBootFailure? bootLastFailure;
+  final List<String> bootEvents;
   final List<String> errors;
 
   String toDebugReport() {
@@ -628,8 +655,15 @@ class PwaDiagnostics {
       ..writeln('registrationInstallingScriptUrl: ${serviceWorkerRegistrationInstallingScriptUrl ?? 'none'}')
       ..writeln('registrationWaitingScriptUrl: ${serviceWorkerRegistrationWaitingScriptUrl ?? 'none'}')
       ..writeln('registrationActiveState: ${serviceWorkerRegistrationActiveState ?? 'none'}')
+      ..writeln('bootStatus: ${bootStatus ?? 'unknown'}')
+      ..writeln('bootLastDetail: ${bootLastDetail ?? 'none'}')
+      ..writeln('bootLastUpdated: ${bootLastUpdated ?? 'none'}')
       ..writeln('shellStatus: ${shellStatus?.summary ?? 'none'}')
       ..writeln('defaultPackStatus: ${defaultPackStatus?.summary ?? 'none'}');
+
+    if (bootLastFailure != null) {
+      buffer.writeln('bootLastFailure: ${bootLastFailure!.summary}');
+    }
 
     for (final entry in optionalPacks.entries) {
       buffer.writeln('${entry.key}: ${entry.value.summary}');
@@ -639,6 +673,10 @@ class PwaDiagnostics {
       buffer.writeln(
         'launchProbe: ${probe.url} | shellCache=${probe.shellCache} | anyCache=${probe.anyCache}',
       );
+    }
+
+    for (final event in bootEvents) {
+      buffer.writeln('bootEvent: $event');
     }
 
     buffer.writeln('cacheKeys: ${cacheKeys.join(', ')}');
@@ -662,6 +700,20 @@ class PwaLaunchProbe {
   final String url;
   final bool anyCache;
   final bool shellCache;
+}
+
+class PwaBootFailure {
+  const PwaBootFailure({
+    required this.step,
+    required this.detail,
+    required this.at,
+  });
+
+  final String step;
+  final String? detail;
+  final String? at;
+
+  String get summary => '$step${detail == null || detail!.isEmpty ? '' : ' (${detail!})'}${at == null || at!.isEmpty ? '' : ' @ $at'}';
 }
 
 const List<OfflinePackDefinition> offlinePackDefinitions = [

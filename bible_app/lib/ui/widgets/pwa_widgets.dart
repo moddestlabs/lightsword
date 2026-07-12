@@ -564,6 +564,13 @@ class _PwaDiagnosticsCardState extends State<PwaDiagnosticsCard> {
               _buildValue(context, 'Controller Script', diagnostics.serviceWorkerControllerScriptUrl),
               _buildValue(context, 'Active Script', diagnostics.serviceWorkerRegistrationActiveScriptUrl),
               _buildValue(context, 'Active State', diagnostics.serviceWorkerRegistrationActiveState),
+              _buildValue(context, 'Boot Status', diagnostics.bootStatus),
+              _buildValue(context, 'Boot Detail', diagnostics.bootLastDetail),
+              _buildValue(
+                context,
+                'Last Boot Failure',
+                diagnostics.bootLastFailure?.summary,
+              ),
               _buildValue(context, 'Shell Cache', diagnostics.shellStatus?.summary),
               _buildValue(context, 'Default Pack Cache', diagnostics.defaultPackStatus?.summary),
               for (final entry in diagnostics.optionalPacks.entries)
@@ -575,6 +582,8 @@ class _PwaDiagnosticsCardState extends State<PwaDiagnosticsCard> {
               ),
               if (diagnostics.errors.isNotEmpty)
                 _buildValue(context, 'Errors', diagnostics.errors.join(' | ')),
+              if (diagnostics.bootEvents.isNotEmpty)
+                _buildValue(context, 'Boot Events', diagnostics.bootEvents.join(' | ')),
               const SizedBox(height: 12),
               OutlinedButton.icon(
                 onPressed: () => _copyDiagnostics(diagnostics),

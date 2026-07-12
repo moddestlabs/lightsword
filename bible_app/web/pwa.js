@@ -6,6 +6,21 @@
   let deferredInstallPrompt = null;
   let isStandalone = false;
 
+  function getBootStateSnapshot() {
+    try {
+      if (window.__lightswordBoot && typeof window.__lightswordBoot.snapshot === 'function') {
+        return window.__lightswordBoot.snapshot();
+      }
+    } catch (_) {}
+
+    try {
+      const raw = window.localStorage.getItem('lightsword_boot_state_v1');
+      return raw ? JSON.parse(raw) : null;
+    } catch (_) {
+      return null;
+    }
+  }
+
   // Check if running as installed PWA
   function checkStandalone() {
     isStandalone = window.matchMedia('(display-mode: standalone)').matches ||
@@ -148,8 +163,29 @@
       defaultPack: null,
       optionalPacks: {},
       launchProbes: [],
+      bootStatus: null,
+      bootLastDetail: null,
+      bootLastUpdated: null,
+      bootLastFailure: null,
+      bootEvents: [],
       errors: []
     };
+
+    const bootState = getBootStateSnapshot();
+    if (bootState) {
+      diagnostics.bootStatus = bootState.status || null;
+      diagnostics.bootLastDetail = bootState.lastDetail || null;
+      diagnostics.bootLastUpdated = bootState.lastUpdated || null;
+      diagnostics.bootLastFailure = bootState.lastFailure || null;
+      diagnostics.bootEvents = Array.isArray(bootState.events)
+        ? bootState.events.map((event) => {
+            const step = event?.step || 'unknown';
+            const detail = event?.detail ? ` (${event.detail})` : '';
+            const at = event?.at ? ` @ ${event.at}` : '';
+            return `${step}${detail}${at}`;
+          })
+        : [];
+    }
 
     let registrationScope = null;
 

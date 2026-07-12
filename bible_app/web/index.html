@@ -21,11 +21,210 @@
   <title>LIGHTSWORD - Bible Study</title>
   <link rel="icon" type="image/x-icon" href="favicon.ico">
   <link rel="manifest" href="manifest.json">
+
+  <style>
+    html, body {
+      margin: 0;
+      min-height: 100%;
+      background: #fffef8;
+    }
+
+    body {
+      font-family: Georgia, serif;
+      color: #2f2419;
+    }
+
+    #lightsword-startup-shell {
+      position: fixed;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      background:
+        radial-gradient(circle at top, rgba(139, 69, 19, 0.10), transparent 40%),
+        linear-gradient(180deg, #fffef8 0%, #f5efe4 100%);
+      z-index: 9999;
+      transition: opacity 180ms ease;
+    }
+
+    #lightsword-startup-shell[data-state="startup-stalled"],
+    #lightsword-startup-shell[data-state="boot-failed"],
+    #lightsword-startup-shell[data-state="window-error"],
+    #lightsword-startup-shell[data-state="promise-rejection"] {
+      inset: auto 16px 16px 16px;
+      align-items: flex-end;
+      justify-content: center;
+      padding: 0;
+      background: transparent;
+      pointer-events: none;
+    }
+
+    #lightsword-startup-shell[data-hidden="true"] {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .lightsword-startup-card {
+      width: min(100%, 28rem);
+      padding: 24px 22px;
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.92);
+      box-shadow: 0 12px 40px rgba(85, 53, 25, 0.14);
+      border: 1px solid rgba(139, 69, 19, 0.10);
+    }
+
+    #lightsword-startup-shell[data-state="startup-stalled"] .lightsword-startup-card,
+    #lightsword-startup-shell[data-state="boot-failed"] .lightsword-startup-card,
+    #lightsword-startup-shell[data-state="window-error"] .lightsword-startup-card,
+    #lightsword-startup-shell[data-state="promise-rejection"] .lightsword-startup-card {
+      width: min(100%, 34rem);
+      padding: 16px 18px;
+      background: rgba(255, 252, 245, 0.96);
+      box-shadow: 0 8px 24px rgba(85, 53, 25, 0.10);
+    }
+
+    .lightsword-startup-title {
+      margin: 0 0 8px;
+      font-size: 1.35rem;
+      letter-spacing: 0.08em;
+    }
+
+    .lightsword-startup-text {
+      margin: 0;
+      line-height: 1.45;
+      color: #4d3a28;
+    }
+
+    .lightsword-startup-meta {
+      margin-top: 12px;
+      font-size: 0.92rem;
+      color: #72563c;
+    }
+  </style>
+
+  <script>
+    (function() {
+      const storageKey = 'lightsword_boot_state_v1';
+      const state = {
+        sessionId: String(Date.now()),
+        status: 'html-loaded',
+        lastDetail: null,
+        lastUpdated: new Date().toISOString(),
+        events: [],
+        lastFailure: null,
+      };
+
+      function save() {
+        try {
+          window.localStorage.setItem(storageKey, JSON.stringify(state));
+        } catch (_) {}
+      }
+
+      function shellElements() {
+        const root = document.getElementById('lightsword-startup-shell');
+        if (!root) {
+          return null;
+        }
+        return {
+          root,
+          status: root.querySelector('[data-startup-status]'),
+          meta: root.querySelector('[data-startup-meta]'),
+        };
+      }
+
+      function render() {
+        const elements = shellElements();
+        if (!elements) {
+          return;
+        }
+
+        const shouldHide = state.status === 'app-running';
+        elements.root.dataset.hidden = shouldHide ? 'true' : 'false';
+        elements.root.dataset.state = state.status;
+        if (elements.status) {
+          elements.status.textContent =
+            state.status === 'startup-stalled'
+              ? 'LIGHTSWORD could not finish starting.'
+              : state.status === 'boot-failed'
+                ? 'LIGHTSWORD hit a startup error.'
+                : 'Starting LIGHTSWORD…';
+        }
+        if (elements.meta) {
+          const detail = state.lastDetail || 'Preparing the reader shell.';
+          elements.meta.textContent = shouldHide ? '' : detail;
+        }
+      }
+
+      function mark(step, detail) {
+        state.status = step;
+        state.lastDetail = detail || null;
+        state.lastUpdated = new Date().toISOString();
+        state.events.push({ step, detail: detail || null, at: state.lastUpdated });
+        if (state.events.length > 20) {
+          state.events = state.events.slice(-20);
+        }
+        if (step === 'startup-stalled' || step === 'boot-failed') {
+          state.lastFailure = {
+            step,
+            detail: detail || null,
+            at: state.lastUpdated,
+          };
+        }
+        save();
+        render();
+      }
+
+      window.__lightswordBoot = {
+        mark,
+        complete() {
+          mark('app-running', 'Flutter app mounted successfully.');
+        },
+        fail(detail) {
+          mark('boot-failed', detail);
+        },
+        snapshot() {
+          return JSON.parse(JSON.stringify(state));
+        },
+      };
+
+      window.addEventListener('error', (event) => {
+        mark('window-error', event.message || 'Unknown window error');
+      });
+
+      window.addEventListener('unhandledrejection', (event) => {
+        const reason = event.reason == null ? 'Unknown rejection' : String(event.reason);
+        mark('promise-rejection', reason);
+      });
+
+      mark('html-loaded', navigator.onLine
+        ? 'HTML shell loaded. Waiting for Flutter bootstrap.'
+        : 'HTML shell loaded offline. Waiting for Flutter bootstrap.');
+
+      window.setTimeout(() => {
+        if (state.status !== 'app-running') {
+          mark(
+            'startup-stalled',
+            navigator.onLine
+              ? 'Flutter did not finish starting in time.'
+              : 'Flutter did not finish starting while offline.',
+          );
+        }
+      }, 20000);
+    })();
+  </script>
   
   <!-- PWA helpers -->
   <script src="pwa.js"></script>
 </head>
 <body>
+  <div id="lightsword-startup-shell" data-hidden="false">
+    <div class="lightsword-startup-card">
+      <h1 class="lightsword-startup-title">LIGHTSWORD</h1>
+      <p class="lightsword-startup-text" data-startup-status>Starting LIGHTSWORD…</p>
+      <p class="lightsword-startup-meta" data-startup-meta>Preparing the reader shell.</p>
+    </div>
+  </div>
   <script src="flutter_bootstrap.js" async></script>
 </body>
 </html>
