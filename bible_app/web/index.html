@@ -123,12 +123,14 @@
       const state = {
         sessionId: String(Date.now()),
         status: 'html-loaded',
+        hasCompletedStartup: false,
         lastDetail: null,
         lastUpdated: new Date().toISOString(),
         events: [],
         lastFailure: null,
         previousSession,
       };
+      let startupTimeoutId = null;
 
       function save() {
         try {
@@ -154,7 +156,7 @@
           return;
         }
 
-        const shouldHide = state.status === 'app-running';
+        const shouldHide = state.hasCompletedStartup;
         elements.root.dataset.hidden = shouldHide ? 'true' : 'false';
         elements.root.dataset.state = state.status;
         if (elements.status) {
@@ -172,7 +174,25 @@
       }
 
       function mark(step, detail) {
+        const startupAlreadyCompleted = state.hasCompletedStartup;
+        if (startupAlreadyCompleted && step !== 'app-running') {
+          state.lastUpdated = new Date().toISOString();
+          state.events.push({ step, detail: detail || null, at: state.lastUpdated });
+          if (state.events.length > 20) {
+            state.events = state.events.slice(-20);
+          }
+          save();
+          return;
+        }
+
         state.status = step;
+        if (step === 'app-running') {
+          state.hasCompletedStartup = true;
+          if (startupTimeoutId !== null) {
+            window.clearTimeout(startupTimeoutId);
+            startupTimeoutId = null;
+          }
+        }
         state.lastDetail = detail || null;
         state.lastUpdated = new Date().toISOString();
         state.events.push({ step, detail: detail || null, at: state.lastUpdated });
@@ -216,7 +236,7 @@
         ? 'HTML shell loaded. Waiting for Flutter bootstrap.'
         : 'HTML shell loaded offline. Waiting for Flutter bootstrap.');
 
-      window.setTimeout(() => {
+      startupTimeoutId = window.setTimeout(() => {
         if (state.status !== 'app-running') {
           mark(
             'startup-stalled',
