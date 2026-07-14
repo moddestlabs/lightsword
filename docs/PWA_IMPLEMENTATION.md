@@ -2,7 +2,7 @@
 
 ## Overview
 
-LIGHTSWORD is implemented as a Progressive Web App (PWA) with full offline support and installability on mobile devices. This document describes the PWA features and how they work.
+LightSword is implemented as a Progressive Web App (PWA) with full offline support and installability on mobile devices. This document describes the PWA features and how they work.
 
 ## Features Implemented
 
@@ -126,7 +126,7 @@ void main() async {
     await PwaService.instance.initialize();
   }
   
-  runApp(const LightswordApp());
+   runApp(const LightSwordApp());
 }
 ```
 

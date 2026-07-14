@@ -1,6 +1,6 @@
 # Deep Linking Guide
 
-LIGHTSWORD supports deep linking to specific Bible passages and view modes via URL parameters on web and custom schemes on native platforms.
+LightSword supports deep linking to specific Bible passages and view modes via URL parameters on web and custom schemes on native platforms.
 
 ## URL Format
 

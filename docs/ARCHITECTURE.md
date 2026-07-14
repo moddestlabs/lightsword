@@ -1,8 +1,8 @@
-# LIGHTSWORD Architecture
+# LightSword Architecture
 
 ## Overview
 
-LIGHTSWORD is structured as a **Dart monorepo** with two packages:
+LightSword is structured as a **Dart monorepo** with two packages:
 
 1. **bible_core** — Pure Dart package with no Flutter dependency
 2. **bible_app** — Flutter UI consuming bible_core

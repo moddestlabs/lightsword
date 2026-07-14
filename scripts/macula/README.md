@@ -1,7 +1,7 @@
 # Macula Conversion
 
 This directory contains helpers for converting Macula datasets into the compact
-LIGHTSWORD syntax JSON format used by `SyntaxRepository`.
+LightSword syntax JSON format used by `SyntaxRepository`.
 
 ## Greek Lowfat Conversion
 

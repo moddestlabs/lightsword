@@ -1,6 +1,6 @@
 {
-    "name": "LIGHTSWORD - Bible Study",
-    "short_name": "LIGHTSWORD",
+    "name": "LightSword - Bible Study",
+    "short_name": "LightSword",
     "start_url": "./index.html",
     "display": "standalone",
     "background_color": "#FFFEF8",

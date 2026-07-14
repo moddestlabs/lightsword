@@ -1,6 +1,6 @@
-# LIGHTSWORD Bible App
+# LightSword Bible App
 
-Flutter UI for the LIGHTSWORD Bible study application.
+Flutter UI for the LightSword Bible study application.
 
 ## Dependencies
 

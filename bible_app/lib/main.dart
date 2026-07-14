@@ -29,11 +29,11 @@ void main() async {
   // Initialize deep linking service
   await DeepLinkingService.instance.initialize();
   
-  runApp(const LightswordApp());
+  runApp(const LightSwordApp());
 }
 
-class LightswordApp extends StatelessWidget {
-  const LightswordApp({super.key});
+class LightSwordApp extends StatelessWidget {
+  const LightSwordApp({super.key});
 
   ThemeData _buildTheme({
     required ThemeProvider themeProvider,
@@ -73,7 +73,7 @@ class LightswordApp extends StatelessWidget {
       child: Consumer<ThemeProvider>(
         builder: (context, themeProvider, child) {
           return MaterialApp(
-            title: 'LIGHTSWORD',
+            title: 'LightSword',
             debugShowCheckedModeBanner: false,
             themeMode: themeProvider.themeMode,
             theme: _buildTheme(

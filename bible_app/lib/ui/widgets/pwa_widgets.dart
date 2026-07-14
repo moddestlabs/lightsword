@@ -91,7 +91,7 @@ class _PwaBannerState extends State<PwaBanner> {
           const SizedBox(width: 12),
           Expanded(
             child: Text(
-              'You\'re offline. LIGHTSWORD works offline with cached content.',
+              'You\'re offline. LightSword works offline with cached content.',
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                 color: Colors.white,
               ),
@@ -131,7 +131,7 @@ class _PwaBannerState extends State<PwaBanner> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
-                  'Install LIGHTSWORD',
+                  'Install LightSword',
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
                     color: Theme.of(context).colorScheme.onPrimaryContainer,
                     fontWeight: FontWeight.bold,

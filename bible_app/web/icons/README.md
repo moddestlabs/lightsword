@@ -8,7 +8,7 @@ The following icon files are referenced in `manifest.json` but need to be create
 - **Size:** 192×192 pixels
 - **Format:** PNG with transparency
 - **Purpose:** Standard app icon, shown in install prompts
-- **Design:** Center the LIGHTSWORD logo with padding (~20-30px from edges)
+- **Design:** Center the LightSword logo with padding (~20-30px from edges)
 
 ### Icon-512.png
 - **Size:** 512×512 pixels  
@@ -19,7 +19,7 @@ The following icon files are referenced in `manifest.json` but need to be create
 ## Design Guidelines
 
 ### Logo Concept
-The name "LIGHTSWORD" represents the Word of God as both light and sword. Icon should reflect:
+The name "LightSword" represents the Word of God as both light and sword. Icon should reflect:
 - Biblical/scholarly theme
 - Clean, modern aesthetic
 - Readable at small sizes

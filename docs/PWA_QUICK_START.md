@@ -2,7 +2,7 @@
 
 ## What Was Implemented
 
-Your LIGHTSWORD Bible app now has full Progressive Web App (PWA) functionality:
+Your LightSword Bible app now has full Progressive Web App (PWA) functionality:
 
 ### ✅ Core Features
 
@@ -88,7 +88,7 @@ After deployment:
 
 ### Android/Chrome
 1. User visits site
-2. Banner appears: "Install LIGHTSWORD"
+2. Banner appears: "Install LightSword"
 3. Tap "Install" → App installs
 4. Opens as standalone app
 5. Works offline immediately

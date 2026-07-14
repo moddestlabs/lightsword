@@ -1,4 +1,4 @@
-# LIGHTSWORD
+# LightSword
 
 Cross-platform and fully offline-capable Bible study application built on advanced language functionality but focused on usability. The goal is to provide an extremely easy and intuitive but powerful study tool with markup, cross-reference and language capabilities.
 
@@ -8,13 +8,13 @@ See it live: https://moddestlabs.github.io/lightsword/
 
 ## Design
 
-LIGHTSWORD is inspired by Bible Bento, eSword, and the SWORD Project, but built with modern cross-platform technology. Bible Bento served as the main inspiration behind the UI/UX while the longstanding SWORD Project and eSword help inform the more complex features. We want to provide the easiest possible entry point and still pave way for advanced language study meanwhile ensuring it's all totally usable on mobile.
+LightSword is inspired by Bible Bento, eSword, and the SWORD Project, but built with modern cross-platform technology. Bible Bento served as the main inspiration behind the UI/UX while the longstanding SWORD Project and eSword help inform the more complex features. We want to provide the easiest possible entry point and still pave way for advanced language study meanwhile ensuring it's all totally usable on mobile.
 
 See [PLAN.md](PLAN.md) for full product vision and roadmap.
 
 ### Features
 
-LIGHTSWORD features:
+LightSword features:
 - **Advanced Hebrew and Greek**: Interlinear display, morphological parsing, Strong's numbers, lexicon lookups.
 - **Text-to-speech**: Read any displayed text aloud, including Hebrew and Greek.
 - **Open data first**: All core Bible texts and lexicons from freely redistributable sources.
@@ -23,7 +23,7 @@ LIGHTSWORD features:
 
 ### Views
 
-LIGHTSWORD is built around the concept of customizable Views to Bible content.
+LightSword is built around the concept of customizable Views to Bible content.
 
 We start with just 2 core Views:
 - Paragraph: language gloss or translation in typical, paragraph form.

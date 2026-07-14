@@ -704,7 +704,7 @@ class PwaDiagnostics {
 
   String toDebugReport() {
     final buffer = StringBuffer()
-      ..writeln('LIGHTSWORD PWA Diagnostics')
+      ..writeln('LightSword PWA Diagnostics')
       ..writeln('timestamp: ${timestamp ?? 'unknown'}')
       ..writeln('online: $online')
       ..writeln('standalone: $standalone')

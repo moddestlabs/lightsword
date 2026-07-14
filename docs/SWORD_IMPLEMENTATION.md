@@ -2,7 +2,7 @@
 
 ## Overview
 
-SWORD (Standard Works of Reference Data) is the industry-standard format for Bible modules, maintained by CrossWire Bible Society. Supporting SWORD modules gives LIGHTSWORD access to hundreds of open-source Bible translations, lexicons, and dictionaries.
+SWORD (Standard Works of Reference Data) is the industry-standard format for Bible modules, maintained by CrossWire Bible Society. Supporting SWORD modules gives LightSword access to hundreds of open-source Bible translations, lexicons, and dictionaries.
 
 ## SWORD Module Format
 

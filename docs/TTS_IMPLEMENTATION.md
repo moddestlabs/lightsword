@@ -2,7 +2,7 @@
 
 ## Overview
 
-LIGHTSWORD now includes full Text-to-Speech support with automatic language detection for **Hebrew**, **Greek**, and **English**. The TTS system can read Bible verses aloud using the native TTS engines on each platform.
+LightSword now includes full Text-to-Speech support with automatic language detection for **Hebrew**, **Greek**, and **English**. The TTS system can read Bible verses aloud using the native TTS engines on each platform.
 
 ## Features
 

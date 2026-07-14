@@ -11,14 +11,14 @@
   <!-- iOS meta tags & icons -->
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="apple-mobile-web-app-title" content="LIGHTSWORD">
+  <meta name="apple-mobile-web-app-title" content="LightSword">
   <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 
   <!-- Android/Chrome -->
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="theme-color" content="#8B4513">
 
-  <title>LIGHTSWORD - Bible Study</title>
+  <title>LightSword - Bible Study</title>
   <link rel="icon" type="image/x-icon" href="favicon.ico">
   <link rel="manifest" href="manifest.json">
 
@@ -162,10 +162,10 @@
         if (elements.status) {
           elements.status.textContent =
             state.status === 'startup-stalled'
-              ? 'LIGHTSWORD could not finish starting.'
+              ? 'LightSword could not finish starting.'
               : state.status === 'boot-failed'
-                ? 'LIGHTSWORD hit a startup error.'
-                : 'Starting LIGHTSWORD…';
+                ? 'LightSword hit a startup error.'
+                : 'Starting LightSword…';
         }
         if (elements.meta) {
           const detail = state.lastDetail || 'Preparing the reader shell.';
@@ -255,8 +255,8 @@
 <body>
   <div id="lightsword-startup-shell" data-hidden="false">
     <div class="lightsword-startup-card">
-      <h1 class="lightsword-startup-title">LIGHTSWORD</h1>
-      <p class="lightsword-startup-text" data-startup-status>Starting LIGHTSWORD…</p>
+      <h1 class="lightsword-startup-title">LightSword</h1>
+      <p class="lightsword-startup-text" data-startup-status>Starting LightSword…</p>
       <p class="lightsword-startup-meta" data-startup-meta>Preparing the reader shell.</p>
     </div>
   </div>

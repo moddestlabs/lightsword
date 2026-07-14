@@ -2,7 +2,7 @@
 
 ## Overview
 
-The study mode feature adds powerful annotation capabilities to Lightsword, including:
+The study mode feature adds powerful annotation capabilities to LightSword, including:
 - **Three reading modes**: Verse-by-verse, Interlinear, and Study
 - **Highlights**: Color-coded text highlighting with 8 predefined colors
 - **Arcs**: Syntactic/semantic relationship diagrams connecting words

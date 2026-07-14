@@ -198,7 +198,7 @@ def convert_lowfat(root: ET.Element) -> dict[str, dict[str, dict[str, object]]]:
 
 def main() -> None:
     parser = argparse.ArgumentParser(
-        description='Convert Macula Greek lowfat XML into compact LIGHTSWORD syntax JSON.',
+        description='Convert Macula Greek lowfat XML into compact LightSword syntax JSON.',
     )
     parser.add_argument('input', type=Path, help='Path to Macula lowfat XML file')
     parser.add_argument('output', type=Path, help='Path to output JSON file')

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Script to build and serve the LIGHTSWORD web app
+# Script to build and serve the LightSword web app
 # Usage: ./build.sh [--clean] [--port PORT]
 
 set -e  # Exit on error
@@ -39,7 +39,7 @@ fi
 # Change to the bible_app directory
 cd "$(dirname "$0")/bible_app"
 
-echo "🔨 Building LIGHTSWORD web app..."
+echo "🔨 Building LightSword web app..."
 
 # Clean if requested
 if [ "$CLEAN" = true ]; then
