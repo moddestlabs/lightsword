@@ -1,0 +1,1677 @@
+{
+  "1": {
+    "2": {
+      "words": [
+        {
+          "wordIndex": 0,
+          "tokenId": "n63001001001",
+          "tokenText": "Ὁ"
+        },
+        {
+          "wordIndex": 1,
+          "tokenId": "n63001001002",
+          "tokenText": "πρεσβύτερος"
+        },
+        {
+          "wordIndex": 2,
+          "tokenId": "n63001001003",
+          "tokenText": "ἐκλεκτῇ"
+        },
+        {
+          "wordIndex": 3,
+          "tokenId": "n63001001004",
+          "tokenText": "κυρίᾳ"
+        },
+        {
+          "wordIndex": 4,
+          "tokenId": "n63001001005",
+          "tokenText": "καὶ"
+        },
+        {
+          "wordIndex": 5,
+          "tokenId": "n63001001006",
+          "tokenText": "τοῖς"
+        },
+        {
+          "wordIndex": 6,
+          "tokenId": "n63001001007",
+          "tokenText": "τέκνοις"
+        },
+        {
+          "wordIndex": 7,
+          "tokenId": "n63001001008",
+          "tokenText": "αὐτῆς",
+          "referentWordIndex": 3
+        },
+        {
+          "wordIndex": 8,
+          "tokenId": "n63001001009",
+          "tokenText": "οὓς",
+          "role": "o",
+          "referentWordIndex": 3,
+          "referentSpanStartWordIndex": 0,
+          "referentSpanEndWordIndex": 7
+        },
+        {
+          "wordIndex": 9,
+          "tokenId": "n63001001011",
+          "tokenText": "ἀγαπῶ",
+          "role": "v"
+        },
+        {
+          "wordIndex": 10,
+          "tokenId": "n63001001012",
+          "tokenText": "ἐν"
+        },
+        {
+          "wordIndex": 11,
+          "tokenId": "n63001001013",
+          "tokenText": "ἀληθείᾳ"
+        },
+        {
+          "wordIndex": 12,
+          "tokenId": "n63001001010",
+          "tokenText": "ἐγὼ",
+          "referentWordIndex": 1,
+          "referentSpanStartWordIndex": 0,
+          "referentSpanEndWordIndex": 7
+        },
+        {
+          "wordIndex": 13,
+          "tokenId": "n63001001014",
+          "tokenText": "καὶ"
+        },
+        {
+          "wordIndex": 14,
+          "tokenId": "n63001001015",
+          "tokenText": "οὐκ"
+        },
+        {
+          "wordIndex": 15,
+          "tokenId": "n63001001016",
+          "tokenText": "ἐγὼ",
+          "referentWordIndex": 1,
+          "referentSpanStartWordIndex": 0,
+          "referentSpanEndWordIndex": 7
+        },
+        {
+          "wordIndex": 16,
+          "tokenId": "n63001001017",
+          "tokenText": "μόνος"
+        },
+        {
+          "wordIndex": 17,
+          "tokenId": "n63001001018",
+          "tokenText": "ἀλλὰ"
+        },
+        {
+          "wordIndex": 18,
+          "tokenId": "n63001001019",
+          "tokenText": "καὶ"
+        },
+        {
+          "wordIndex": 19,
+          "tokenId": "n63001001020",
+          "tokenText": "πάντες"
+        },
+        {
+          "wordIndex": 20,
+          "tokenId": "n63001001021",
+          "tokenText": "οἱ"
+        },
+        {
+          "wordIndex": 21,
+          "tokenId": "n63001001022",
+          "tokenText": "ἐγνωκότες",
+          "role": "v"
+        },
+        {
+          "wordIndex": 22,
+          "tokenId": "n63001001023",
+          "tokenText": "τὴν"
+        },
+        {
+          "wordIndex": 23,
+          "tokenId": "n63001001024",
+          "tokenText": "ἀλήθειαν"
+        },
+        {
+          "wordIndex": 24,
+          "tokenId": "n63001002001",
+          "tokenText": "διὰ"
+        },
+        {
+          "wordIndex": 25,
+          "tokenId": "n63001002002",
+          "tokenText": "τὴν"
+        },
+        {
+          "wordIndex": 26,
+          "tokenId": "n63001002003",
+          "tokenText": "ἀλήθειαν"
+        },
+        {
+          "wordIndex": 27,
+          "tokenId": "n63001002004",
+          "tokenText": "τὴν"
+        },
+        {
+          "wordIndex": 28,
+          "tokenId": "n63001002005",
+          "tokenText": "μένουσαν",
+          "role": "v",
+          "headWordIndex": 26
+        },
+        {
+          "wordIndex": 29,
+          "tokenId": "n63001002006",
+          "tokenText": "ἐν"
+        },
+        {
+          "wordIndex": 30,
+          "tokenId": "n63001002007",
+          "tokenText": "ἡμῖν",
+          "referentWordIndex": 1,
+          "referentSpanStartWordIndex": 0,
+          "referentSpanEndWordIndex": 7
+        },
+        {
+          "wordIndex": 31,
+          "tokenId": "n63001002008",
+          "tokenText": "καὶ"
+        },
+        {
+          "wordIndex": 32,
+          "tokenId": "n63001002009",
+          "tokenText": "μεθ"
+        },
+        {
+          "wordIndex": 33,
+          "tokenId": "n63001002010",
+          "tokenText": "ἡμῶν",
+          "referentWordIndex": 1,
+          "referentSpanStartWordIndex": 0,
+          "referentSpanEndWordIndex": 7
+        },
+        {
+          "wordIndex": 34,
+          "tokenId": "n63001002011",
+          "tokenText": "ἔσται",
+          "role": "vc",
+          "headWordIndex": 26
+        },
+        {
+          "wordIndex": 35,
+          "tokenId": "n63001002012",
+          "tokenText": "εἰς"
+        },
+        {
+          "wordIndex": 36,
+          "tokenId": "n63001002013",
+          "tokenText": "τὸν"
+        },
+        {
+          "wordIndex": 37,
+          "tokenId": "n63001002014",
+          "tokenText": "αἰῶνα"
+        }
+      ],
+      "arcs": [
+        {
+          "fromWordIndex": 7,
+          "toWordIndex": 3,
+          "kind": "referent",
+          "label": "referent"
+        },
+        {
+          "fromWordIndex": 8,
+          "toWordIndex": 3,
+          "kind": "referent",
+          "label": "referent"
+        },
+        {
+          "fromWordIndex": 12,
+          "toWordIndex": 1,
+          "kind": "referent",
+          "label": "referent"
+        },
+        {
+          "fromWordIndex": 15,
+          "toWordIndex": 1,
+          "kind": "referent",
+          "label": "referent"
+        },
+        {
+          "fromWordIndex": 26,
+          "toWordIndex": 28,
+          "kind": "subject",
+          "label": "subject"
+        },
+        {
+          "fromWordIndex": 30,
+          "toWordIndex": 1,
+          "kind": "referent",
+          "label": "referent"
+        },
+        {
+          "fromWordIndex": 33,
+          "toWordIndex": 1,
+          "kind": "referent",
+          "label": "referent"
+        },
+        {
+          "fromWordIndex": 26,
+          "toWordIndex": 34,
+          "kind": "subject",
+          "label": "subject"
+        }
+      ],
+      "spans": [
+        {
+          "fromWordIndex": 8,
+          "startWordIndex": 0,
+          "endWordIndex": 7,
+          "kind": "referent",
+          "label": "referent clause"
+        },
+        {
+          "fromWordIndex": 12,
+          "startWordIndex": 0,
+          "endWordIndex": 7,
+          "kind": "referent",
+          "label": "referent clause"
+        },
+        {
+          "fromWordIndex": 15,
+          "startWordIndex": 0,
+          "endWordIndex": 7,
+          "kind": "referent",
+          "label": "referent clause"
+        },
+        {
+          "fromWordIndex": 30,
+          "startWordIndex": 0,
+          "endWordIndex": 7,
+          "kind": "referent",
+          "label": "referent clause"
+        },
+        {
+          "fromWordIndex": 33,
+          "startWordIndex": 0,
+          "endWordIndex": 7,
+          "kind": "referent",
+          "label": "referent clause"
+        }
+      ]
+    },
+    "3": {
+      "words": [
+        {
+          "wordIndex": 0,
+          "tokenId": "n63001003001",
+          "tokenText": "ἔσται",
+          "role": "vc"
+        },
+        {
+          "wordIndex": 1,
+          "tokenId": "n63001003002",
+          "tokenText": "μεθ"
+        },
+        {
+          "wordIndex": 2,
+          "tokenId": "n63001003003",
+          "tokenText": "ἡμῶν"
+        },
+        {
+          "wordIndex": 3,
+          "tokenId": "n63001003004",
+          "tokenText": "χάρις"
+        },
+        {
+          "wordIndex": 4,
+          "tokenId": "n63001003005",
+          "tokenText": "ἔλεος"
+        },
+        {
+          "wordIndex": 5,
+          "tokenId": "n63001003006",
+          "tokenText": "εἰρήνη"
+        },
+        {
+          "wordIndex": 6,
+          "tokenId": "n63001003007",
+          "tokenText": "παρὰ"
+        },
+        {
+          "wordIndex": 7,
+          "tokenId": "n63001003008",
+          "tokenText": "Θεοῦ"
+        },
+        {
+          "wordIndex": 8,
+          "tokenId": "n63001003009",
+          "tokenText": "Πατρός"
+        },
+        {
+          "wordIndex": 9,
+          "tokenId": "n63001003010",
+          "tokenText": "καὶ"
+        },
+        {
+          "wordIndex": 10,
+          "tokenId": "n63001003011",
+          "tokenText": "παρὰ"
+        },
+        {
+          "wordIndex": 11,
+          "tokenId": "n63001003012",
+          "tokenText": "Ἰησοῦ"
+        },
+        {
+          "wordIndex": 12,
+          "tokenId": "n63001003013",
+          "tokenText": "Χριστοῦ"
+        },
+        {
+          "wordIndex": 13,
+          "tokenId": "n63001003014",
+          "tokenText": "τοῦ"
+        },
+        {
+          "wordIndex": 14,
+          "tokenId": "n63001003015",
+          "tokenText": "Υἱοῦ"
+        },
+        {
+          "wordIndex": 15,
+          "tokenId": "n63001003016",
+          "tokenText": "τοῦ"
+        },
+        {
+          "wordIndex": 16,
+          "tokenId": "n63001003017",
+          "tokenText": "Πατρός"
+        },
+        {
+          "wordIndex": 17,
+          "tokenId": "n63001003018",
+          "tokenText": "ἐν"
+        },
+        {
+          "wordIndex": 18,
+          "tokenId": "n63001003019",
+          "tokenText": "ἀληθείᾳ"
+        },
+        {
+          "wordIndex": 19,
+          "tokenId": "n63001003020",
+          "tokenText": "καὶ"
+        },
+        {
+          "wordIndex": 20,
+          "tokenId": "n63001003021",
+          "tokenText": "ἀγάπῃ"
+        }
+      ],
+      "arcs": [],
+      "spans": []
+    },
+    "4": {
+      "words": [
+        {
+          "wordIndex": 0,
+          "tokenId": "n63001004001",
+          "tokenText": "Ἐχάρην",
+          "role": "v"
+        },
+        {
+          "wordIndex": 1,
+          "tokenId": "n63001004002",
+          "tokenText": "λίαν",
+          "role": "adv"
+        },
+        {
+          "wordIndex": 2,
+          "tokenId": "n63001004003",
+          "tokenText": "ὅτι"
+        },
+        {
+          "wordIndex": 3,
+          "tokenId": "n63001004004",
+          "tokenText": "εὕρηκα",
+          "role": "v"
+        },
+        {
+          "wordIndex": 4,
+          "tokenId": "n63001004005",
+          "tokenText": "ἐκ"
+        },
+        {
+          "wordIndex": 5,
+          "tokenId": "n63001004006",
+          "tokenText": "τῶν"
+        },
+        {
+          "wordIndex": 6,
+          "tokenId": "n63001004007",
+          "tokenText": "τέκνων"
+        },
+        {
+          "wordIndex": 7,
+          "tokenId": "n63001004008",
+          "tokenText": "σου"
+        },
+        {
+          "wordIndex": 8,
+          "tokenId": "n63001004009",
+          "tokenText": "περιπατοῦντας",
+          "role": "v"
+        },
+        {
+          "wordIndex": 9,
+          "tokenId": "n63001004010",
+          "tokenText": "ἐν"
+        },
+        {
+          "wordIndex": 10,
+          "tokenId": "n63001004011",
+          "tokenText": "ἀληθείᾳ"
+        },
+        {
+          "wordIndex": 11,
+          "tokenId": "n63001004012",
+          "tokenText": "καθὼς"
+        },
+        {
+          "wordIndex": 12,
+          "tokenId": "n63001004013",
+          "tokenText": "ἐντολὴν",
+          "role": "o"
+        },
+        {
+          "wordIndex": 13,
+          "tokenId": "n63001004014",
+          "tokenText": "ἐλάβομεν",
+          "role": "v"
+        },
+        {
+          "wordIndex": 14,
+          "tokenId": "n63001004015",
+          "tokenText": "παρὰ"
+        },
+        {
+          "wordIndex": 15,
+          "tokenId": "n63001004016",
+          "tokenText": "τοῦ"
+        },
+        {
+          "wordIndex": 16,
+          "tokenId": "n63001004017",
+          "tokenText": "Πατρός"
+        }
+      ],
+      "arcs": [],
+      "spans": []
+    },
+    "5": {
+      "words": [
+        {
+          "wordIndex": 0,
+          "tokenId": "n63001005001",
+          "tokenText": "καὶ"
+        },
+        {
+          "wordIndex": 1,
+          "tokenId": "n63001005005",
+          "tokenText": "κυρία",
+          "role": "aux"
+        },
+        {
+          "wordIndex": 2,
+          "tokenId": "n63001005002",
+          "tokenText": "νῦν",
+          "role": "adv"
+        },
+        {
+          "wordIndex": 3,
+          "tokenId": "n63001005003",
+          "tokenText": "ἐρωτῶ",
+          "role": "v"
+        },
+        {
+          "wordIndex": 4,
+          "tokenId": "n63001005004",
+          "tokenText": "σε",
+          "role": "o",
+          "referentWordIndex": 1
+        },
+        {
+          "wordIndex": 5,
+          "tokenId": "n63001005009",
+          "tokenText": "γράφων",
+          "role": "v"
+        },
+        {
+          "wordIndex": 6,
+          "tokenId": "n63001005010",
+          "tokenText": "σοι",
+          "role": "io",
+          "referentWordIndex": 1,
+          "referentSpanStartWordIndex": 1,
+          "referentSpanEndWordIndex": 4
+        },
+        {
+          "wordIndex": 7,
+          "tokenId": "n63001005006",
+          "tokenText": "οὐχ"
+        },
+        {
+          "wordIndex": 8,
+          "tokenId": "n63001005007",
+          "tokenText": "ὡς"
+        },
+        {
+          "wordIndex": 9,
+          "tokenId": "n63001005008",
+          "tokenText": "ἐντολὴν"
+        },
+        {
+          "wordIndex": 10,
+          "tokenId": "n63001005011",
+          "tokenText": "καινὴν"
+        },
+        {
+          "wordIndex": 11,
+          "tokenId": "n63001005012",
+          "tokenText": "ἀλλὰ"
+        },
+        {
+          "wordIndex": 12,
+          "tokenId": "n63001005013",
+          "tokenText": "ἣν",
+          "role": "o"
+        },
+        {
+          "wordIndex": 13,
+          "tokenId": "n63001005014",
+          "tokenText": "εἴχαμεν",
+          "role": "v",
+          "headWordIndex": 1
+        },
+        {
+          "wordIndex": 14,
+          "tokenId": "n63001005015",
+          "tokenText": "ἀπ"
+        },
+        {
+          "wordIndex": 15,
+          "tokenId": "n63001005016",
+          "tokenText": "ἀρχῆς"
+        },
+        {
+          "wordIndex": 16,
+          "tokenId": "n63001005017",
+          "tokenText": "ἵνα"
+        },
+        {
+          "wordIndex": 17,
+          "tokenId": "n63001005018",
+          "tokenText": "ἀγαπῶμεν",
+          "role": "v",
+          "headWordIndex": 1
+        },
+        {
+          "wordIndex": 18,
+          "tokenId": "n63001005019",
+          "tokenText": "ἀλλήλους",
+          "role": "o",
+          "referentWordIndex": 1,
+          "referentSpanStartWordIndex": 1,
+          "referentSpanEndWordIndex": 4
+        }
+      ],
+      "arcs": [
+        {
+          "fromWordIndex": 4,
+          "toWordIndex": 1,
+          "kind": "referent",
+          "label": "referent"
+        },
+        {
+          "fromWordIndex": 6,
+          "toWordIndex": 1,
+          "kind": "referent",
+          "label": "referent"
+        },
+        {
+          "fromWordIndex": 1,
+          "toWordIndex": 13,
+          "kind": "subject",
+          "label": "subject"
+        },
+        {
+          "fromWordIndex": 1,
+          "toWordIndex": 17,
+          "kind": "subject",
+          "label": "subject"
+        },
+        {
+          "fromWordIndex": 18,
+          "toWordIndex": 1,
+          "kind": "referent",
+          "label": "referent"
+        }
+      ],
+      "spans": [
+        {
+          "fromWordIndex": 6,
+          "startWordIndex": 1,
+          "endWordIndex": 4,
+          "kind": "referent",
+          "label": "referent clause"
+        },
+        {
+          "fromWordIndex": 18,
+          "startWordIndex": 1,
+          "endWordIndex": 4,
+          "kind": "referent",
+          "label": "referent clause"
+        }
+      ]
+    },
+    "6": {
+      "words": [
+        {
+          "wordIndex": 0,
+          "tokenId": "n63001006001",
+          "tokenText": "καὶ"
+        },
+        {
+          "wordIndex": 1,
+          "tokenId": "n63001006002",
+          "tokenText": "αὕτη",
+          "role": "p",
+          "referentWordIndex": 6,
+          "referentSpanStartWordIndex": 6,
+          "referentSpanEndWordIndex": 10
+        },
+        {
+          "wordIndex": 2,
+          "tokenId": "n63001006003",
+          "tokenText": "ἐστὶν",
+          "role": "vc"
+        },
+        {
+          "wordIndex": 3,
+          "tokenId": "n63001006004",
+          "tokenText": "ἡ"
+        },
+        {
+          "wordIndex": 4,
+          "tokenId": "n63001006005",
+          "tokenText": "ἀγάπη"
+        },
+        {
+          "wordIndex": 5,
+          "tokenId": "n63001006006",
+          "tokenText": "ἵνα"
+        },
+        {
+          "wordIndex": 6,
+          "tokenId": "n63001006007",
+          "tokenText": "περιπατῶμεν",
+          "role": "v"
+        },
+        {
+          "wordIndex": 7,
+          "tokenId": "n63001006008",
+          "tokenText": "κατὰ"
+        },
+        {
+          "wordIndex": 8,
+          "tokenId": "n63001006009",
+          "tokenText": "τὰς"
+        },
+        {
+          "wordIndex": 9,
+          "tokenId": "n63001006010",
+          "tokenText": "ἐντολὰς"
+        },
+        {
+          "wordIndex": 10,
+          "tokenId": "n63001006011",
+          "tokenText": "αὐτοῦ"
+        },
+        {
+          "wordIndex": 11,
+          "tokenId": "n63001006012",
+          "tokenText": "αὕτη",
+          "role": "p",
+          "referentWordIndex": 22,
+          "referentSpanStartWordIndex": 20,
+          "referentSpanEndWordIndex": 22
+        },
+        {
+          "wordIndex": 12,
+          "tokenId": "n63001006013",
+          "tokenText": "ἡ"
+        },
+        {
+          "wordIndex": 13,
+          "tokenId": "n63001006014",
+          "tokenText": "ἐντολή"
+        },
+        {
+          "wordIndex": 14,
+          "tokenId": "n63001006015",
+          "tokenText": "ἐστιν",
+          "role": "vc"
+        },
+        {
+          "wordIndex": 15,
+          "tokenId": "n63001006016",
+          "tokenText": "καθὼς"
+        },
+        {
+          "wordIndex": 16,
+          "tokenId": "n63001006017",
+          "tokenText": "ἠκούσατε",
+          "role": "v"
+        },
+        {
+          "wordIndex": 17,
+          "tokenId": "n63001006018",
+          "tokenText": "ἀπ"
+        },
+        {
+          "wordIndex": 18,
+          "tokenId": "n63001006019",
+          "tokenText": "ἀρχῆς"
+        },
+        {
+          "wordIndex": 19,
+          "tokenId": "n63001006020",
+          "tokenText": "ἵνα"
+        },
+        {
+          "wordIndex": 20,
+          "tokenId": "n63001006021",
+          "tokenText": "ἐν"
+        },
+        {
+          "wordIndex": 21,
+          "tokenId": "n63001006022",
+          "tokenText": "αὐτῇ",
+          "referentWordIndex": 4,
+          "referentSpanStartWordIndex": 1,
+          "referentSpanEndWordIndex": 4
+        },
+        {
+          "wordIndex": 22,
+          "tokenId": "n63001006023",
+          "tokenText": "περιπατῆτε",
+          "role": "v"
+        }
+      ],
+      "arcs": [
+        {
+          "fromWordIndex": 1,
+          "toWordIndex": 6,
+          "kind": "referent",
+          "label": "referent"
+        },
+        {
+          "fromWordIndex": 11,
+          "toWordIndex": 22,
+          "kind": "referent",
+          "label": "referent"
+        },
+        {
+          "fromWordIndex": 21,
+          "toWordIndex": 4,
+          "kind": "referent",
+          "label": "referent"
+        }
+      ],
+      "spans": [
+        {
+          "fromWordIndex": 1,
+          "startWordIndex": 6,
+          "endWordIndex": 10,
+          "kind": "referent",
+          "label": "referent clause"
+        },
+        {
+          "fromWordIndex": 11,
+          "startWordIndex": 20,
+          "endWordIndex": 22,
+          "kind": "referent",
+          "label": "referent clause"
+        },
+        {
+          "fromWordIndex": 21,
+          "startWordIndex": 1,
+          "endWordIndex": 4,
+          "kind": "referent",
+          "label": "referent clause"
+        }
+      ]
+    },
+    "7": {
+      "words": [
+        {
+          "wordIndex": 0,
+          "tokenId": "n63001007001",
+          "tokenText": "ὅτι"
+        },
+        {
+          "wordIndex": 1,
+          "tokenId": "n63001007004",
+          "tokenText": "ἐξῆλθον",
+          "role": "v"
+        },
+        {
+          "wordIndex": 2,
+          "tokenId": "n63001007005",
+          "tokenText": "εἰς"
+        },
+        {
+          "wordIndex": 3,
+          "tokenId": "n63001007006",
+          "tokenText": "τὸν"
+        },
+        {
+          "wordIndex": 4,
+          "tokenId": "n63001007007",
+          "tokenText": "κόσμον"
+        },
+        {
+          "wordIndex": 5,
+          "tokenId": "n63001007002",
+          "tokenText": "πολλοὶ"
+        },
+        {
+          "wordIndex": 6,
+          "tokenId": "n63001007003",
+          "tokenText": "πλάνοι"
+        },
+        {
+          "wordIndex": 7,
+          "tokenId": "n63001007008",
+          "tokenText": "οἱ"
+        },
+        {
+          "wordIndex": 8,
+          "tokenId": "n63001007009",
+          "tokenText": "μὴ",
+          "role": "adv"
+        },
+        {
+          "wordIndex": 9,
+          "tokenId": "n63001007010",
+          "tokenText": "ὁμολογοῦντες",
+          "role": "v",
+          "headWordIndex": 6
+        },
+        {
+          "wordIndex": 10,
+          "tokenId": "n63001007011",
+          "tokenText": "Ἰησοῦν"
+        },
+        {
+          "wordIndex": 11,
+          "tokenId": "n63001007012",
+          "tokenText": "Χριστὸν"
+        },
+        {
+          "wordIndex": 12,
+          "tokenId": "n63001007013",
+          "tokenText": "ἐρχόμενον",
+          "role": "v"
+        },
+        {
+          "wordIndex": 13,
+          "tokenId": "n63001007014",
+          "tokenText": "ἐν"
+        },
+        {
+          "wordIndex": 14,
+          "tokenId": "n63001007015",
+          "tokenText": "σαρκί"
+        },
+        {
+          "wordIndex": 15,
+          "tokenId": "n63001007016",
+          "tokenText": "οὗτός",
+          "role": "s",
+          "referentWordIndex": 6,
+          "referentSpanStartWordIndex": 1,
+          "referentSpanEndWordIndex": 6
+        },
+        {
+          "wordIndex": 16,
+          "tokenId": "n63001007017",
+          "tokenText": "ἐστιν",
+          "role": "vc"
+        },
+        {
+          "wordIndex": 17,
+          "tokenId": "n63001007018",
+          "tokenText": "ὁ"
+        },
+        {
+          "wordIndex": 18,
+          "tokenId": "n63001007019",
+          "tokenText": "πλάνος"
+        },
+        {
+          "wordIndex": 19,
+          "tokenId": "n63001007020",
+          "tokenText": "καὶ"
+        },
+        {
+          "wordIndex": 20,
+          "tokenId": "n63001007021",
+          "tokenText": "ὁ"
+        },
+        {
+          "wordIndex": 21,
+          "tokenId": "n63001007022",
+          "tokenText": "ἀντίχριστος"
+        }
+      ],
+      "arcs": [
+        {
+          "fromWordIndex": 6,
+          "toWordIndex": 9,
+          "kind": "subject",
+          "label": "subject"
+        },
+        {
+          "fromWordIndex": 15,
+          "toWordIndex": 6,
+          "kind": "referent",
+          "label": "referent"
+        }
+      ],
+      "spans": [
+        {
+          "fromWordIndex": 15,
+          "startWordIndex": 1,
+          "endWordIndex": 6,
+          "kind": "referent",
+          "label": "referent clause"
+        }
+      ]
+    },
+    "8": {
+      "words": [
+        {
+          "wordIndex": 0,
+          "tokenId": "n63001008001",
+          "tokenText": "βλέπετε",
+          "role": "v"
+        },
+        {
+          "wordIndex": 1,
+          "tokenId": "n63001008002",
+          "tokenText": "ἑαυτούς",
+          "role": "o"
+        },
+        {
+          "wordIndex": 2,
+          "tokenId": "n63001008003",
+          "tokenText": "ἵνα"
+        },
+        {
+          "wordIndex": 3,
+          "tokenId": "n63001008004",
+          "tokenText": "μὴ"
+        },
+        {
+          "wordIndex": 4,
+          "tokenId": "n63001008005",
+          "tokenText": "ἀπολέσητε",
+          "role": "v"
+        },
+        {
+          "wordIndex": 5,
+          "tokenId": "n63001008006",
+          "tokenText": "ἃ",
+          "role": "o"
+        },
+        {
+          "wordIndex": 6,
+          "tokenId": "n63001008007",
+          "tokenText": "ἠργασάμεθα",
+          "role": "v"
+        },
+        {
+          "wordIndex": 7,
+          "tokenId": "n63001008008",
+          "tokenText": "ἀλλὰ"
+        },
+        {
+          "wordIndex": 8,
+          "tokenId": "n63001008009",
+          "tokenText": "μισθὸν"
+        },
+        {
+          "wordIndex": 9,
+          "tokenId": "n63001008010",
+          "tokenText": "πλήρη"
+        },
+        {
+          "wordIndex": 10,
+          "tokenId": "n63001008011",
+          "tokenText": "ἀπολάβητε",
+          "role": "v"
+        }
+      ],
+      "arcs": [],
+      "spans": []
+    },
+    "9": {
+      "words": [
+        {
+          "wordIndex": 0,
+          "tokenId": "n63001009001",
+          "tokenText": "πᾶς"
+        },
+        {
+          "wordIndex": 1,
+          "tokenId": "n63001009002",
+          "tokenText": "ὁ"
+        },
+        {
+          "wordIndex": 2,
+          "tokenId": "n63001009003",
+          "tokenText": "προάγων",
+          "role": "v"
+        },
+        {
+          "wordIndex": 3,
+          "tokenId": "n63001009004",
+          "tokenText": "καὶ"
+        },
+        {
+          "wordIndex": 4,
+          "tokenId": "n63001009005",
+          "tokenText": "μὴ",
+          "role": "adv"
+        },
+        {
+          "wordIndex": 5,
+          "tokenId": "n63001009006",
+          "tokenText": "μένων",
+          "role": "v"
+        },
+        {
+          "wordIndex": 6,
+          "tokenId": "n63001009007",
+          "tokenText": "ἐν"
+        },
+        {
+          "wordIndex": 7,
+          "tokenId": "n63001009008",
+          "tokenText": "τῇ"
+        },
+        {
+          "wordIndex": 8,
+          "tokenId": "n63001009009",
+          "tokenText": "διδαχῇ"
+        },
+        {
+          "wordIndex": 9,
+          "tokenId": "n63001009010",
+          "tokenText": "τοῦ"
+        },
+        {
+          "wordIndex": 10,
+          "tokenId": "n63001009011",
+          "tokenText": "Χριστοῦ"
+        },
+        {
+          "wordIndex": 11,
+          "tokenId": "n63001009012",
+          "tokenText": "Θεὸν",
+          "role": "o"
+        },
+        {
+          "wordIndex": 12,
+          "tokenId": "n63001009013",
+          "tokenText": "οὐκ",
+          "role": "adv"
+        },
+        {
+          "wordIndex": 13,
+          "tokenId": "n63001009014",
+          "tokenText": "ἔχει",
+          "role": "v"
+        },
+        {
+          "wordIndex": 14,
+          "tokenId": "n63001009015",
+          "tokenText": "ὁ"
+        },
+        {
+          "wordIndex": 15,
+          "tokenId": "n63001009016",
+          "tokenText": "μένων",
+          "role": "v"
+        },
+        {
+          "wordIndex": 16,
+          "tokenId": "n63001009017",
+          "tokenText": "ἐν"
+        },
+        {
+          "wordIndex": 17,
+          "tokenId": "n63001009018",
+          "tokenText": "τῇ"
+        },
+        {
+          "wordIndex": 18,
+          "tokenId": "n63001009019",
+          "tokenText": "διδαχῇ"
+        },
+        {
+          "wordIndex": 19,
+          "tokenId": "n63001009020",
+          "tokenText": "οὗτος",
+          "role": "s",
+          "referentWordIndex": 15,
+          "referentSpanStartWordIndex": 15,
+          "referentSpanEndWordIndex": 18
+        },
+        {
+          "wordIndex": 20,
+          "tokenId": "n63001009021",
+          "tokenText": "καὶ"
+        },
+        {
+          "wordIndex": 21,
+          "tokenId": "n63001009022",
+          "tokenText": "τὸν"
+        },
+        {
+          "wordIndex": 22,
+          "tokenId": "n63001009023",
+          "tokenText": "Πατέρα"
+        },
+        {
+          "wordIndex": 23,
+          "tokenId": "n63001009024",
+          "tokenText": "καὶ"
+        },
+        {
+          "wordIndex": 24,
+          "tokenId": "n63001009025",
+          "tokenText": "τὸν"
+        },
+        {
+          "wordIndex": 25,
+          "tokenId": "n63001009026",
+          "tokenText": "Υἱὸν"
+        },
+        {
+          "wordIndex": 26,
+          "tokenId": "n63001009027",
+          "tokenText": "ἔχει",
+          "role": "v"
+        }
+      ],
+      "arcs": [
+        {
+          "fromWordIndex": 19,
+          "toWordIndex": 15,
+          "kind": "referent",
+          "label": "referent"
+        }
+      ],
+      "spans": [
+        {
+          "fromWordIndex": 19,
+          "startWordIndex": 15,
+          "endWordIndex": 18,
+          "kind": "referent",
+          "label": "referent clause"
+        }
+      ]
+    },
+    "10": {
+      "words": [
+        {
+          "wordIndex": 0,
+          "tokenId": "n63001010001",
+          "tokenText": "εἴ"
+        },
+        {
+          "wordIndex": 1,
+          "tokenId": "n63001010002",
+          "tokenText": "τις",
+          "role": "s"
+        },
+        {
+          "wordIndex": 2,
+          "tokenId": "n63001010003",
+          "tokenText": "ἔρχεται",
+          "role": "v"
+        },
+        {
+          "wordIndex": 3,
+          "tokenId": "n63001010004",
+          "tokenText": "πρὸς"
+        },
+        {
+          "wordIndex": 4,
+          "tokenId": "n63001010005",
+          "tokenText": "ὑμᾶς"
+        },
+        {
+          "wordIndex": 5,
+          "tokenId": "n63001010006",
+          "tokenText": "καὶ"
+        },
+        {
+          "wordIndex": 6,
+          "tokenId": "n63001010007",
+          "tokenText": "ταύτην"
+        },
+        {
+          "wordIndex": 7,
+          "tokenId": "n63001010008",
+          "tokenText": "τὴν"
+        },
+        {
+          "wordIndex": 8,
+          "tokenId": "n63001010009",
+          "tokenText": "διδαχὴν"
+        },
+        {
+          "wordIndex": 9,
+          "tokenId": "n63001010010",
+          "tokenText": "οὐ",
+          "role": "adv"
+        },
+        {
+          "wordIndex": 10,
+          "tokenId": "n63001010011",
+          "tokenText": "φέρει",
+          "role": "v",
+          "headWordIndex": 1
+        },
+        {
+          "wordIndex": 11,
+          "tokenId": "n63001010012",
+          "tokenText": "μὴ",
+          "role": "adv"
+        },
+        {
+          "wordIndex": 12,
+          "tokenId": "n63001010013",
+          "tokenText": "λαμβάνετε",
+          "role": "v"
+        },
+        {
+          "wordIndex": 13,
+          "tokenId": "n63001010014",
+          "tokenText": "αὐτὸν",
+          "role": "o",
+          "referentWordIndex": 1,
+          "referentSpanStartWordIndex": 1,
+          "referentSpanEndWordIndex": 4
+        },
+        {
+          "wordIndex": 14,
+          "tokenId": "n63001010015",
+          "tokenText": "εἰς"
+        },
+        {
+          "wordIndex": 15,
+          "tokenId": "n63001010016",
+          "tokenText": "οἰκίαν"
+        },
+        {
+          "wordIndex": 16,
+          "tokenId": "n63001010017",
+          "tokenText": "καὶ"
+        },
+        {
+          "wordIndex": 17,
+          "tokenId": "n63001010018",
+          "tokenText": "χαίρειν",
+          "role": "v"
+        },
+        {
+          "wordIndex": 18,
+          "tokenId": "n63001010019",
+          "tokenText": "αὐτῷ",
+          "role": "io",
+          "referentWordIndex": 1,
+          "referentSpanStartWordIndex": 1,
+          "referentSpanEndWordIndex": 4
+        },
+        {
+          "wordIndex": 19,
+          "tokenId": "n63001010020",
+          "tokenText": "μὴ",
+          "role": "adv"
+        },
+        {
+          "wordIndex": 20,
+          "tokenId": "n63001010021",
+          "tokenText": "λέγετε",
+          "role": "v"
+        }
+      ],
+      "arcs": [
+        {
+          "fromWordIndex": 1,
+          "toWordIndex": 10,
+          "kind": "subject",
+          "label": "subject"
+        },
+        {
+          "fromWordIndex": 13,
+          "toWordIndex": 1,
+          "kind": "referent",
+          "label": "referent"
+        },
+        {
+          "fromWordIndex": 18,
+          "toWordIndex": 1,
+          "kind": "referent",
+          "label": "referent"
+        }
+      ],
+      "spans": [
+        {
+          "fromWordIndex": 13,
+          "startWordIndex": 1,
+          "endWordIndex": 4,
+          "kind": "referent",
+          "label": "referent clause"
+        },
+        {
+          "fromWordIndex": 18,
+          "startWordIndex": 1,
+          "endWordIndex": 4,
+          "kind": "referent",
+          "label": "referent clause"
+        }
+      ]
+    },
+    "11": {
+      "words": [
+        {
+          "wordIndex": 0,
+          "tokenId": "n63001011003",
+          "tokenText": "γὰρ"
+        },
+        {
+          "wordIndex": 1,
+          "tokenId": "n63001011001",
+          "tokenText": "ὁ"
+        },
+        {
+          "wordIndex": 2,
+          "tokenId": "n63001011002",
+          "tokenText": "λέγων",
+          "role": "v"
+        },
+        {
+          "wordIndex": 3,
+          "tokenId": "n63001011004",
+          "tokenText": "αὐτῷ",
+          "role": "io"
+        },
+        {
+          "wordIndex": 4,
+          "tokenId": "n63001011005",
+          "tokenText": "χαίρειν",
+          "role": "v",
+          "headWordIndex": 2
+        },
+        {
+          "wordIndex": 5,
+          "tokenId": "n63001011006",
+          "tokenText": "κοινωνεῖ",
+          "role": "v"
+        },
+        {
+          "wordIndex": 6,
+          "tokenId": "n63001011007",
+          "tokenText": "τοῖς"
+        },
+        {
+          "wordIndex": 7,
+          "tokenId": "n63001011008",
+          "tokenText": "ἔργοις"
+        },
+        {
+          "wordIndex": 8,
+          "tokenId": "n63001011009",
+          "tokenText": "αὐτοῦ"
+        },
+        {
+          "wordIndex": 9,
+          "tokenId": "n63001011010",
+          "tokenText": "τοῖς"
+        },
+        {
+          "wordIndex": 10,
+          "tokenId": "n63001011011",
+          "tokenText": "πονηροῖς"
+        }
+      ],
+      "arcs": [
+        {
+          "fromWordIndex": 2,
+          "toWordIndex": 4,
+          "kind": "subject",
+          "label": "subject"
+        }
+      ],
+      "spans": []
+    },
+    "12": {
+      "words": [
+        {
+          "wordIndex": 0,
+          "tokenId": "n63001012002",
+          "tokenText": "ἔχων",
+          "role": "v"
+        },
+        {
+          "wordIndex": 1,
+          "tokenId": "n63001012001",
+          "tokenText": "Πολλὰ",
+          "role": "o"
+        },
+        {
+          "wordIndex": 2,
+          "tokenId": "n63001012003",
+          "tokenText": "ὑμῖν",
+          "role": "io"
+        },
+        {
+          "wordIndex": 3,
+          "tokenId": "n63001012004",
+          "tokenText": "γράφειν",
+          "role": "v"
+        },
+        {
+          "wordIndex": 4,
+          "tokenId": "n63001012005",
+          "tokenText": "οὐκ",
+          "role": "adv"
+        },
+        {
+          "wordIndex": 5,
+          "tokenId": "n63001012006",
+          "tokenText": "ἐβουλήθην",
+          "role": "v"
+        },
+        {
+          "wordIndex": 6,
+          "tokenId": "n63001012007",
+          "tokenText": "διὰ"
+        },
+        {
+          "wordIndex": 7,
+          "tokenId": "n63001012008",
+          "tokenText": "χάρτου"
+        },
+        {
+          "wordIndex": 8,
+          "tokenId": "n63001012009",
+          "tokenText": "καὶ"
+        },
+        {
+          "wordIndex": 9,
+          "tokenId": "n63001012010",
+          "tokenText": "μέλανος"
+        },
+        {
+          "wordIndex": 10,
+          "tokenId": "n63001012011",
+          "tokenText": "ἀλλὰ"
+        },
+        {
+          "wordIndex": 11,
+          "tokenId": "n63001012012",
+          "tokenText": "ἐλπίζω",
+          "role": "v"
+        },
+        {
+          "wordIndex": 12,
+          "tokenId": "n63001012013",
+          "tokenText": "γενέσθαι",
+          "role": "vc"
+        },
+        {
+          "wordIndex": 13,
+          "tokenId": "n63001012014",
+          "tokenText": "πρὸς"
+        },
+        {
+          "wordIndex": 14,
+          "tokenId": "n63001012015",
+          "tokenText": "ὑμᾶς"
+        },
+        {
+          "wordIndex": 15,
+          "tokenId": "n63001012016",
+          "tokenText": "καὶ"
+        },
+        {
+          "wordIndex": 16,
+          "tokenId": "n63001012017",
+          "tokenText": "στόμα"
+        },
+        {
+          "wordIndex": 17,
+          "tokenId": "n63001012018",
+          "tokenText": "πρὸς"
+        },
+        {
+          "wordIndex": 18,
+          "tokenId": "n63001012019",
+          "tokenText": "στόμα"
+        },
+        {
+          "wordIndex": 19,
+          "tokenId": "n63001012020",
+          "tokenText": "λαλῆσαι",
+          "role": "v"
+        },
+        {
+          "wordIndex": 20,
+          "tokenId": "n63001012021",
+          "tokenText": "ἵνα"
+        },
+        {
+          "wordIndex": 21,
+          "tokenId": "n63001012022",
+          "tokenText": "ἡ"
+        },
+        {
+          "wordIndex": 22,
+          "tokenId": "n63001012023",
+          "tokenText": "χαρὰ"
+        },
+        {
+          "wordIndex": 23,
+          "tokenId": "n63001012024",
+          "tokenText": "ἡμῶν"
+        },
+        {
+          "wordIndex": 24,
+          "tokenId": "n63001012025",
+          "tokenText": "πεπληρωμένη"
+        },
+        {
+          "wordIndex": 25,
+          "tokenId": "n63001012026",
+          "tokenText": "ᾖ"
+        }
+      ],
+      "arcs": [],
+      "spans": []
+    },
+    "13": {
+      "words": [
+        {
+          "wordIndex": 0,
+          "tokenId": "n63001013001",
+          "tokenText": "Ἀσπάζεταί",
+          "role": "v"
+        },
+        {
+          "wordIndex": 1,
+          "tokenId": "n63001013002",
+          "tokenText": "σε",
+          "role": "o"
+        },
+        {
+          "wordIndex": 2,
+          "tokenId": "n63001013003",
+          "tokenText": "τὰ"
+        },
+        {
+          "wordIndex": 3,
+          "tokenId": "n63001013004",
+          "tokenText": "τέκνα"
+        },
+        {
+          "wordIndex": 4,
+          "tokenId": "n63001013005",
+          "tokenText": "τῆς"
+        },
+        {
+          "wordIndex": 5,
+          "tokenId": "n63001013006",
+          "tokenText": "ἀδελφῆς"
+        },
+        {
+          "wordIndex": 6,
+          "tokenId": "n63001013007",
+          "tokenText": "σου"
+        },
+        {
+          "wordIndex": 7,
+          "tokenId": "n63001013008",
+          "tokenText": "τῆς"
+        },
+        {
+          "wordIndex": 8,
+          "tokenId": "n63001013009",
+          "tokenText": "ἐκλεκτῆς"
+        }
+      ],
+      "arcs": [],
+      "spans": []
+    }
+  }
+}

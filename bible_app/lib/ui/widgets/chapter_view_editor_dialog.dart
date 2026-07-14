@@ -33,6 +33,11 @@ class ChapterViewEditorDialog extends StatelessWidget {
     var showVerseNumbers = initialView.showVerseNumbers;
     var lineByLine = initialView.lineByLine;
     var showOriginalLanguage = initialView.showOriginalLanguage;
+    var showMorphology = initialView.showMorphology;
+    var useCompactMorphologyLabels = initialView.useCompactMorphologyLabels;
+    var colorOriginalLanguageByGender =
+      initialView.colorOriginalLanguageByGender;
+    var showSyntaxLinks = initialView.showSyntaxLinks;
     var showTranslation = initialView.showTranslation;
     var showGloss = initialView.showGloss;
     var textDirection = initialView.originalLanguageTextDirection;
@@ -106,6 +111,52 @@ class ChapterViewEditorDialog extends StatelessWidget {
                 ),
                 if (showOriginalLanguage) ...[
                   const SizedBox(height: 12),
+                  SwitchListTile(
+                    contentPadding: EdgeInsets.zero,
+                    title: const Text('Show morphology tags'),
+                    subtitle: const Text('Display parsed word tags below Hebrew/Greek'),
+                    value: showMorphology,
+                    onChanged: (value) {
+                      setDialogState(() {
+                        showMorphology = value;
+                      });
+                    },
+                  ),
+                  if (showMorphology)
+                    SwitchListTile(
+                      contentPadding: EdgeInsets.zero,
+                      title: const Text('Use compact morphology labels'),
+                      subtitle: const Text('Show short labels like Noun Fem Sg Abs'),
+                      value: useCompactMorphologyLabels,
+                      onChanged: (value) {
+                        setDialogState(() {
+                          useCompactMorphologyLabels = value;
+                        });
+                      },
+                    ),
+                  SwitchListTile(
+                    contentPadding: EdgeInsets.zero,
+                    title: const Text('Color by grammatical gender'),
+                    subtitle: const Text('Masculine blue, feminine pink, neuter gray'),
+                    value: colorOriginalLanguageByGender,
+                    onChanged: (value) {
+                      setDialogState(() {
+                        colorOriginalLanguageByGender = value;
+                      });
+                    },
+                  ),
+                  SwitchListTile(
+                    contentPadding: EdgeInsets.zero,
+                    title: const Text('Show syntax links'),
+                    subtitle: const Text('Enable Macula-derived referents and syntax connections when available'),
+                    value: showSyntaxLinks,
+                    onChanged: (value) {
+                      setDialogState(() {
+                        showSyntaxLinks = value;
+                      });
+                    },
+                  ),
+                  const SizedBox(height: 8),
                   DropdownButtonFormField<ChapterViewTextDirection>(
                     initialValue: textDirection,
                     decoration: const InputDecoration(
@@ -164,6 +215,11 @@ class ChapterViewEditorDialog extends StatelessWidget {
                     showVerseNumbers: showVerseNumbers,
                     lineByLine: lineByLine,
                     showOriginalLanguage: showOriginalLanguage,
+                    showMorphology: showMorphology,
+                    useCompactMorphologyLabels: useCompactMorphologyLabels,
+                    colorOriginalLanguageByGender:
+                      colorOriginalLanguageByGender,
+                    showSyntaxLinks: showSyntaxLinks,
                     showTranslation: showTranslation,
                     showGloss: showGloss,
                     originalLanguageTextDirection: textDirection,

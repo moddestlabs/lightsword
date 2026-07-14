@@ -1,3 +1,4 @@
+import 'package:bible_core/bible_core.dart' show MorphologyParser, MorphologyTag;
 import 'package:bible_core/data/sources/tahot_repository.dart';
 import 'package:bible_core/data/sources/tagnt_repository.dart';
 
@@ -21,6 +22,41 @@ class InterlinearWord {
 
   String get displayOriginalText {
     return originalText.replaceAll('/', '').replaceAll('\\', '');
+  }
+
+  bool get hasMorphology => morphology.trim().isNotEmpty;
+
+  MorphologyTag? get parsedMorphology {
+    if (!hasMorphology) {
+      return null;
+    }
+    return MorphologyParser.parse(morphology);
+  }
+
+  String? get grammaticalGender => parsedMorphology?.gender;
+
+  String get morphologyTooltip {
+    final parsed = parsedMorphology;
+    if (parsed == null) {
+      return morphology;
+    }
+    return MorphologyParser.describe(parsed);
+  }
+
+  String get morphologyLabel {
+    final parsed = parsedMorphology;
+    if (parsed == null) {
+      return morphology;
+    }
+    return MorphologyParser.describeCompact(parsed);
+  }
+
+  String get morphologyFullLabel {
+    final parsed = parsedMorphology;
+    if (parsed == null) {
+      return morphology;
+    }
+    return MorphologyParser.describe(parsed);
   }
 
   factory InterlinearWord.fromTAHOT(TAHOTWord word) {

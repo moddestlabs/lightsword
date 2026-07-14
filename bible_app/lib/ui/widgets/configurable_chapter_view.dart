@@ -4,6 +4,7 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:bible_core/bible_core.dart';
 import 'package:bible_core/services/bookmark_service.dart';
 import 'package:bible_app/services/local_bookmark_service.dart';
+import 'package:bible_app/services/original_language_data_service.dart';
 import 'package:bible_app/services/tts_service.dart';
 import 'package:bible_app/ui/models/chapter_view_definition.dart';
 import 'package:bible_app/ui/models/interlinear_word.dart';
@@ -37,7 +38,8 @@ class ConfigurableChapterView extends StatefulWidget {
             )
           : const <InterlinearWord>[];
       utterances.addAll(
-          _buildVerseUtterances(view: view, verse: verse, words: words));
+        _buildVerseUtterances(view: view, verse: verse, words: words),
+      );
     }
 
     return utterances;
@@ -133,25 +135,12 @@ class ConfigurableChapterView extends StatefulWidget {
     int chapter,
     int verseNumber,
   ) async {
-    final tahot = await TAHOTRepository.instance.getVerse(
+    final verseContent = await OriginalLanguageDataService.instance.loadVerse(
       bookId,
       chapter,
       verseNumber,
     );
-    if (tahot != null) {
-      return tahot.map(InterlinearWord.fromTAHOT).toList();
-    }
-
-    final tagnt = await TAGNTRepository.instance.getVerse(
-      bookId,
-      chapter,
-      verseNumber,
-    );
-    if (tagnt != null) {
-      return tagnt.map(InterlinearWord.fromTAGNT).toList();
-    }
-
-    return const [];
+    return verseContent.words;
   }
 
   @override
@@ -242,6 +231,7 @@ class _ConfigurableChapterViewState extends State<ConfigurableChapterView> {
       chapter: widget.chapter.number,
       verseNumber: verse.number,
       verse: verse,
+      view: widget.view,
     );
   }
 
@@ -649,6 +639,16 @@ class _ConfigurableChapterViewState extends State<ConfigurableChapterView> {
       color: Theme.of(context).colorScheme.primary,
     );
 
+    if (widget.view.showMorphology || widget.view.colorOriginalLanguageByGender) {
+      return _buildAnnotatedOriginalLanguageBlock(
+        context,
+        verseNumber,
+        words,
+        direction,
+        baseStyle,
+      );
+    }
+
     return Text.rich(
       TextSpan(
         style: baseStyle,
@@ -662,6 +662,112 @@ class _ConfigurableChapterViewState extends State<ConfigurableChapterView> {
       ),
       textDirection: direction,
     );
+  }
+
+  Widget _buildAnnotatedOriginalLanguageBlock(
+    BuildContext context,
+    int verseNumber,
+    List<InterlinearWord> words,
+    TextDirection direction,
+    TextStyle baseStyle,
+  ) {
+    final theme = Theme.of(context);
+    final progress = _ttsService.progressState;
+    final isActiveVerse = _ttsService.currentVerseNumber == verseNumber &&
+        progress != null &&
+        progress.contentType == TtsContentType.originalLanguage &&
+        progress.verseNumber == verseNumber;
+    final crossAxisAlignment = direction == TextDirection.rtl
+        ? CrossAxisAlignment.end
+        : CrossAxisAlignment.start;
+
+    var charOffset = 0;
+    final children = <Widget>[];
+
+    for (final word in words) {
+      final displayText = word.displayOriginalText.trim();
+      if (displayText.isEmpty) {
+        continue;
+      }
+
+      final tokenStart = charOffset;
+      final tokenEnd = tokenStart + displayText.length;
+      charOffset = tokenEnd + 1;
+
+      final hasTtsHighlight = isActiveVerse &&
+          progress.startOffset < tokenEnd &&
+          progress.endOffset > tokenStart;
+      final wordColor = widget.view.colorOriginalLanguageByGender
+          ? _genderColor(word.grammaticalGender, theme)
+          : baseStyle.color;
+      final wordStyle = baseStyle.copyWith(
+        color: wordColor,
+        fontWeight: widget.view.colorOriginalLanguageByGender &&
+                word.grammaticalGender != null
+            ? FontWeight.w600
+            : baseStyle.fontWeight,
+        backgroundColor: hasTtsHighlight
+            ? theme.colorScheme.tertiaryContainer
+            : null,
+      );
+
+      Widget child = Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: crossAxisAlignment,
+        children: [
+          Text(
+            displayText,
+            style: wordStyle,
+            textDirection: direction,
+          ),
+          if (widget.view.showMorphology && word.hasMorphology) ...[
+            const SizedBox(height: 2),
+            Text(
+              widget.view.useCompactMorphologyLabels
+                  ? word.morphologyLabel
+                  : word.morphologyFullLabel,
+              style: TextStyle(
+                fontSize: 11,
+                height: 1.2,
+                color: theme.colorScheme.onSurfaceVariant,
+              ),
+              textDirection: TextDirection.ltr,
+            ),
+          ],
+        ],
+      );
+
+      if (word.hasMorphology) {
+        child = Tooltip(
+          message: word.morphologyTooltip,
+          child: child,
+        );
+      }
+
+      children.add(child);
+    }
+
+    return Wrap(
+      spacing: widget.view.showMorphology ? 10 : 6,
+      runSpacing: widget.view.showMorphology ? 8 : 4,
+      textDirection: direction,
+      children: children,
+    );
+  }
+
+  Color _genderColor(String? gender, ThemeData theme) {
+    switch (gender) {
+      case 'Masculine':
+        return Colors.blue.shade600;
+      case 'Feminine':
+        return Colors.pink.shade400;
+      case 'Neuter':
+      case 'Common':
+      case 'Both':
+        return Colors.grey.shade600;
+      default:
+        return theme.colorScheme.primary;
+    }
   }
 
   Widget _buildGlossBlock(
@@ -769,12 +875,13 @@ class _ConfigurableChapterViewState extends State<ConfigurableChapterView> {
     final spans = <InlineSpan>[];
     if (highlightStart > 0) {
       spans.add(
-          TextSpan(text: text.substring(0, highlightStart), style: baseStyle));
+        TextSpan(text: text.substring(0, highlightStart), style: baseStyle),
+      );
     }
     spans.add(TextSpan(
       text: text.substring(highlightStart, highlightEnd),
       style: highlightStyle,
-    ));
+    ),);
     if (highlightEnd < text.length) {
       spans.add(TextSpan(text: text.substring(highlightEnd), style: baseStyle));
     }

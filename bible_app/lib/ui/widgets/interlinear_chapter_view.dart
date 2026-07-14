@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:bible_core/models/verse.dart';
-import 'package:bible_core/data/sources/tahot_repository.dart';
-import 'package:bible_core/data/sources/tagnt_repository.dart';
+import 'package:bible_app/services/original_language_data_service.dart';
 import 'package:bible_app/ui/models/interlinear_word.dart';
 
 /// Displays multiple verses in interlinear format for chapter reading
@@ -54,33 +53,16 @@ class _InterlinearChapterViewState extends State<InterlinearChapterView> {
       });
 
       try {
-        List<InterlinearWord>? words;
-        
-        // Try loading from TAHOT (Hebrew OT) first
-        final tahot = await TAHOTRepository.instance.getVerse(
+        final verseContent = await OriginalLanguageDataService.instance.loadVerse(
           widget.bookId,
           widget.chapter,
           verse.number,
         );
-        
-        if (tahot != null) {
-          words = tahot.map((w) => InterlinearWord.fromTAHOT(w)).toList();
-        } else {
-          // If not in TAHOT, try TAGNT (Greek NT)
-          final tagnt = await TAGNTRepository.instance.getVerse(
-            widget.bookId,
-            widget.chapter,
-            verse.number,
-          );
-          
-          if (tagnt != null) {
-            words = tagnt.map((w) => InterlinearWord.fromTAGNT(w)).toList();
-          }
-        }
-        
-        if (mounted && words != null) {
+        final words = verseContent.words;
+
+        if (mounted && words.isNotEmpty) {
           setState(() {
-            _verseData[verse.number] = words!;  // Safe to use ! here since we checked above
+            _verseData[verse.number] = words;
             _loading[verse.number] = false;
           });
         } else if (mounted) {

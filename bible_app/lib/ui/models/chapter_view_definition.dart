@@ -38,6 +38,10 @@ class ChapterViewDefinition {
   final bool showVerseNumbers;
   final bool lineByLine;
   final bool showOriginalLanguage;
+  final bool showMorphology;
+  final bool useCompactMorphologyLabels;
+  final bool colorOriginalLanguageByGender;
+  final bool showSyntaxLinks;
   final bool showTranslation;
   final bool showGloss;
   final ChapterViewTextDirection originalLanguageTextDirection;
@@ -49,6 +53,10 @@ class ChapterViewDefinition {
     this.showVerseNumbers = true,
     this.lineByLine = true,
     this.showOriginalLanguage = false,
+    this.showMorphology = false,
+    this.useCompactMorphologyLabels = true,
+    this.colorOriginalLanguageByGender = false,
+    this.showSyntaxLinks = false,
     this.showTranslation = true,
     this.showGloss = false,
     this.originalLanguageTextDirection = ChapterViewTextDirection.auto,
@@ -72,6 +80,10 @@ class ChapterViewDefinition {
     showVerseNumbers: true,
     lineByLine: true,
     showOriginalLanguage: true,
+    showMorphology: false,
+    useCompactMorphologyLabels: true,
+    colorOriginalLanguageByGender: false,
+    showSyntaxLinks: false,
     showTranslation: true,
     showGloss: false,
   );
@@ -83,6 +95,10 @@ class ChapterViewDefinition {
     showVerseNumbers: true,
     lineByLine: true,
     showOriginalLanguage: true,
+    showMorphology: true,
+    useCompactMorphologyLabels: true,
+    colorOriginalLanguageByGender: true,
+    showSyntaxLinks: true,
     showTranslation: false,
     showGloss: true,
     originalLanguageTextDirection: ChapterViewTextDirection.auto,
@@ -101,6 +117,10 @@ class ChapterViewDefinition {
     bool? showVerseNumbers,
     bool? lineByLine,
     bool? showOriginalLanguage,
+    bool? showMorphology,
+    bool? useCompactMorphologyLabels,
+    bool? colorOriginalLanguageByGender,
+    bool? showSyntaxLinks,
     bool? showTranslation,
     bool? showGloss,
     ChapterViewTextDirection? originalLanguageTextDirection,
@@ -112,6 +132,12 @@ class ChapterViewDefinition {
       showVerseNumbers: showVerseNumbers ?? this.showVerseNumbers,
       lineByLine: lineByLine ?? this.lineByLine,
       showOriginalLanguage: showOriginalLanguage ?? this.showOriginalLanguage,
+        showMorphology: showMorphology ?? this.showMorphology,
+        useCompactMorphologyLabels:
+          useCompactMorphologyLabels ?? this.useCompactMorphologyLabels,
+        colorOriginalLanguageByGender:
+          colorOriginalLanguageByGender ?? this.colorOriginalLanguageByGender,
+          showSyntaxLinks: showSyntaxLinks ?? this.showSyntaxLinks,
       showTranslation: showTranslation ?? this.showTranslation,
       showGloss: showGloss ?? this.showGloss,
       originalLanguageTextDirection:
@@ -127,6 +153,10 @@ class ChapterViewDefinition {
       'showVerseNumbers': showVerseNumbers,
       'lineByLine': lineByLine,
       'showOriginalLanguage': showOriginalLanguage,
+      'showMorphology': showMorphology,
+      'useCompactMorphologyLabels': useCompactMorphologyLabels,
+      'colorOriginalLanguageByGender': colorOriginalLanguageByGender,
+      'showSyntaxLinks': showSyntaxLinks,
       'showTranslation': showTranslation,
       'showGloss': showGloss,
       'originalLanguageTextDirection': originalLanguageTextDirection.jsonValue,
@@ -141,6 +171,12 @@ class ChapterViewDefinition {
       showVerseNumbers: json['showVerseNumbers'] as bool? ?? true,
       lineByLine: json['lineByLine'] as bool? ?? true,
       showOriginalLanguage: json['showOriginalLanguage'] as bool? ?? false,
+        showMorphology: json['showMorphology'] as bool? ?? false,
+        useCompactMorphologyLabels:
+          json['useCompactMorphologyLabels'] as bool? ?? true,
+        colorOriginalLanguageByGender:
+          json['colorOriginalLanguageByGender'] as bool? ?? false,
+          showSyntaxLinks: json['showSyntaxLinks'] as bool? ?? false,
       showTranslation: json['showTranslation'] as bool? ?? true,
       showGloss: json['showGloss'] as bool? ?? false,
       originalLanguageTextDirection:

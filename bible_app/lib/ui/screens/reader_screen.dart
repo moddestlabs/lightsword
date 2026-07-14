@@ -81,8 +81,8 @@ class ReaderScreenState extends State<ReaderScreen> {
         PreferencesService.instance.getCustomChapterViews();
     final savedViewId = PreferencesService.instance.getSelectedChapterViewId();
     final matchingView = [
-      ...ChapterViewDefinition.defaults,
       ...savedCustomViews,
+      ...ChapterViewDefinition.defaults,
     ].where((view) => view.id == savedViewId).firstOrNull;
 
     setState(() {
@@ -306,12 +306,7 @@ class ReaderScreenState extends State<ReaderScreen> {
       _endVerse = reference.endVerse;
       if (viewMode != null) {
         _viewMode = ReadingMode.verse;
-        _selectedView = switch (viewMode) {
-          old_view.ViewMode.interlinear =>
-            ChapterViewDefinition.interlinearView,
-          old_view.ViewMode.paragraph => ChapterViewDefinition.paragraphView,
-          old_view.ViewMode.standard => ChapterViewDefinition.lineByLineView,
-        };
+        _selectedView = _resolveViewForLegacyMode(viewMode);
       }
     });
     _loadBook();
@@ -628,6 +623,36 @@ class ReaderScreenState extends State<ReaderScreen> {
     _updateUrl();
   }
 
+  ChapterViewDefinition _resolveViewForLegacyMode(old_view.ViewMode viewMode) {
+    bool matchesRequestedMode(ChapterViewDefinition view) {
+      switch (viewMode) {
+        case old_view.ViewMode.interlinear:
+          return view.showOriginalLanguage || view.showGloss;
+        case old_view.ViewMode.paragraph:
+          return !view.lineByLine;
+        case old_view.ViewMode.standard:
+          return view.lineByLine &&
+              !view.showOriginalLanguage &&
+              !view.showGloss;
+      }
+    }
+
+    if (matchesRequestedMode(_selectedView)) {
+      return _selectedView;
+    }
+
+    final matchingCustomView = _customViews.where(matchesRequestedMode).firstOrNull;
+    if (matchingCustomView != null) {
+      return matchingCustomView;
+    }
+
+    return switch (viewMode) {
+      old_view.ViewMode.interlinear => ChapterViewDefinition.interlinearView,
+      old_view.ViewMode.paragraph => ChapterViewDefinition.paragraphView,
+      old_view.ViewMode.standard => ChapterViewDefinition.lineByLineView,
+    };
+  }
+
   String _newViewId() {
     return 'view_${DateTime.now().microsecondsSinceEpoch}';
   }
@@ -637,6 +662,19 @@ class ReaderScreenState extends State<ReaderScreen> {
     final layers = <String>[];
     if (view.showOriginalLanguage) {
       layers.add('Hebrew/Greek');
+      if (view.showMorphology) {
+        layers.add(
+          view.useCompactMorphologyLabels
+              ? 'Morphology (compact)'
+              : 'Morphology (full)',
+        );
+      }
+      if (view.colorOriginalLanguageByGender) {
+        layers.add('Gender colors');
+      }
+      if (view.showSyntaxLinks) {
+        layers.add('Syntax links');
+      }
     }
     if (view.showTranslation) {
       layers.add('Primary text');

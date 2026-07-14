@@ -1,13 +1,24 @@
 import 'package:flutter/material.dart';
-import 'package:bible_core/data/sources/tagnt_repository.dart';
-import 'package:bible_core/data/sources/tahot_repository.dart';
+import 'package:bible_core/bible_core.dart'
+  show
+    Arc,
+    ArcStyle,
+    ArcType,
+    PassageReference,
+    SyntaxArcData,
+    SyntaxRelationKind,
+    SyntaxSpanData,
+    SyntaxVerseData;
 import 'package:bible_core/lexicon/strongs.dart';
 import 'package:bible_core/models/strongs_entry.dart';
 import 'package:bible_core/models/verse.dart';
 import 'package:bible_core/models/word.dart';
 import 'package:bible_app/services/bible_service.dart';
+import 'package:bible_app/services/original_language_data_service.dart';
 import 'package:bible_app/services/tts_service.dart';
+import 'package:bible_app/ui/models/chapter_view_definition.dart';
 import 'package:bible_app/ui/models/interlinear_word.dart';
+import 'package:bible_app/ui/widgets/arc_painter.dart';
 import 'package:bible_app/ui/widgets/tts_control_widget.dart';
 
 /// Widget to display a single fallback word when full interlinear data is unavailable.
@@ -211,9 +222,11 @@ class _InterlinearWordCard extends StatefulWidget {
   final InterlinearWord word;
   final int? verseNumber;
   final String? progressKey;
+  final ChapterViewDefinition view;
 
   const _InterlinearWordCard({
     required this.word,
+    required this.view,
     this.verseNumber,
     this.progressKey,
   });
@@ -254,11 +267,17 @@ class __InterlinearWordCardState extends State<_InterlinearWordCard> {
     final progress = TtsService.instance.progressState;
     final isActiveWord = widget.progressKey != null &&
         progress?.progressKey == widget.progressKey;
+    final genderColor = widget.view.colorOriginalLanguageByGender
+      ? _genderColor(widget.word.grammaticalGender, Theme.of(context))
+      : Theme.of(context).colorScheme.primary;
 
     final originalStyle = TextStyle(
       fontSize: 28,
-      color: Theme.of(context).colorScheme.primary,
-      fontWeight: FontWeight.w400,
+      color: genderColor,
+      fontWeight: widget.view.colorOriginalLanguageByGender &&
+          widget.word.grammaticalGender != null
+        ? FontWeight.w600
+        : FontWeight.w400,
       height: 1.4,
       backgroundColor:
           isActiveWord ? Theme.of(context).colorScheme.tertiaryContainer : null,
@@ -299,10 +318,13 @@ class __InterlinearWordCardState extends State<_InterlinearWordCard> {
             ),
           ),
           const SizedBox(height: 8),
-          Text(
-            widget.word.displayOriginalText,
-            style: originalStyle,
-            textDirection: isHebrew ? TextDirection.rtl : TextDirection.ltr,
+          Tooltip(
+            message: widget.word.morphologyTooltip,
+            child: Text(
+              widget.word.displayOriginalText,
+              style: originalStyle,
+              textDirection: isHebrew ? TextDirection.rtl : TextDirection.ltr,
+            ),
           ),
           const SizedBox(height: 8),
           Text(
@@ -374,14 +396,15 @@ class __InterlinearWordCardState extends State<_InterlinearWordCard> {
               child: CircularProgressIndicator(strokeWidth: 2),
             ),
           ],
-          if (widget.word.morphology.isNotEmpty) ...[
+          if (widget.view.showMorphology && widget.word.morphology.isNotEmpty) ...[
             const SizedBox(height: 8),
             Text(
-              widget.word.morphology,
+              widget.view.useCompactMorphologyLabels
+                  ? widget.word.morphologyLabel
+                  : widget.word.morphologyFullLabel,
               style: TextStyle(
                 fontSize: 11,
                 color: Theme.of(context).colorScheme.onSurfaceVariant,
-                fontFamily: 'monospace',
               ),
             ),
           ],
@@ -391,12 +414,28 @@ class __InterlinearWordCardState extends State<_InterlinearWordCard> {
   }
 }
 
+Color _genderColor(String? gender, ThemeData theme) {
+  switch (gender) {
+    case 'Masculine':
+      return Colors.blue.shade600;
+    case 'Feminine':
+      return Colors.pink.shade400;
+    case 'Neuter':
+    case 'Common':
+    case 'Both':
+      return Colors.grey.shade600;
+    default:
+      return theme.colorScheme.primary;
+  }
+}
+
 class InterlinearReaderPage extends StatefulWidget {
   final String bookName;
   final String bookId;
   final int chapter;
   final int verseNumber;
   final Verse verse;
+  final ChapterViewDefinition view;
 
   const InterlinearReaderPage({
     super.key,
@@ -405,6 +444,7 @@ class InterlinearReaderPage extends StatefulWidget {
     required this.chapter,
     required this.verseNumber,
     required this.verse,
+    required this.view,
   });
 
   @override
@@ -417,6 +457,7 @@ class InterlinearReaderPage extends StatefulWidget {
     required int chapter,
     required int verseNumber,
     required Verse verse,
+    required ChapterViewDefinition view,
   }) {
     return Navigator.of(context).push(
       MaterialPageRoute(
@@ -426,6 +467,7 @@ class InterlinearReaderPage extends StatefulWidget {
           chapter: chapter,
           verseNumber: verseNumber,
           verse: verse,
+          view: view,
         ),
       ),
     );
@@ -436,7 +478,10 @@ class _InterlinearReaderPageState extends State<InterlinearReaderPage> {
   final TtsService _ttsService = TtsService.instance;
 
   List<InterlinearWord>? _interlinearWords;
+  SyntaxVerseData? _syntaxData;
   bool _loadingInterlinear = true;
+  int? _activeSyntaxFocusWordIndex;
+  bool _pinnedSyntaxFocus = false;
 
   String get _translationProgressKey =>
       'detail:${widget.bookId}:${widget.chapter}:${widget.verseNumber}:translation';
@@ -482,30 +527,17 @@ class _InterlinearReaderPageState extends State<InterlinearReaderPage> {
   }
 
   Future<void> _loadInterlinearData() async {
-    List<InterlinearWord>? words;
-
-    final tahot = await TAHOTRepository.instance.getVerse(
+    final verseContent = await OriginalLanguageDataService.instance.loadVerse(
       widget.bookId,
       widget.chapter,
       widget.verseNumber,
+      includeSyntax: widget.view.showSyntaxLinks,
     );
-
-    if (tahot != null) {
-      words = tahot.map(InterlinearWord.fromTAHOT).toList();
-    } else {
-      final tagnt = await TAGNTRepository.instance.getVerse(
-        widget.bookId,
-        widget.chapter,
-        widget.verseNumber,
-      );
-      if (tagnt != null) {
-        words = tagnt.map(InterlinearWord.fromTAGNT).toList();
-      }
-    }
 
     if (mounted) {
       setState(() {
-        _interlinearWords = words;
+        _interlinearWords = verseContent.words;
+        _syntaxData = verseContent.syntax;
         _loadingInterlinear = false;
       });
     }
@@ -586,6 +618,27 @@ class _InterlinearReaderPageState extends State<InterlinearReaderPage> {
                 ),
                 if (hasInterlinear) ...[
                   _buildOriginalLanguageVerseTile(_interlinearWords!),
+                  if (widget.view.showGloss)
+                    _buildGlossVerseTile(_interlinearWords!),
+                  if (widget.view.showSyntaxLinks && _syntaxData != null)
+                    _buildSyntaxDiagramTile(
+                      _interlinearWords!,
+                      _syntaxData!,
+                      title: 'Syntax Diagram',
+                      labelBuilder: _originalSyntaxLabel,
+                      useWordColors: true,
+                    ),
+                  if (widget.view.showGloss &&
+                      widget.view.showSyntaxLinks &&
+                      _syntaxData != null)
+                    _buildSyntaxDiagramTile(
+                      _interlinearWords!,
+                      _syntaxData!,
+                      title: 'Gloss Syntax Diagram',
+                      labelBuilder: _glossSyntaxLabel,
+                    ),
+                  if (widget.view.showSyntaxLinks && _syntaxData != null)
+                    _buildSyntaxLinksTile(_interlinearWords!, _syntaxData!),
                 ] else if (_loadingInterlinear) ...[
                   Container(
                     padding: const EdgeInsets.all(16),
@@ -672,6 +725,7 @@ class _InterlinearReaderPageState extends State<InterlinearReaderPage> {
   Widget _buildInterlinearWordCard(InterlinearWord word, int index) {
     return _InterlinearWordCard(
       word: word,
+      view: widget.view,
       verseNumber: widget.verseNumber,
       progressKey: _wordProgressKey(index),
     );
@@ -758,16 +812,664 @@ class _InterlinearReaderPageState extends State<InterlinearReaderPage> {
           ),
           const SizedBox(width: 16),
           Expanded(
-            child: Text.rich(
-              TextSpan(
-                style: textStyle,
-                children: _buildProgressSpans(
-                  originalText,
-                  textStyle,
-                  _originalProgressKey,
+            child: widget.view.showMorphology ||
+                    widget.view.colorOriginalLanguageByGender
+                ? Wrap(
+                    spacing: widget.view.showMorphology ? 10 : 6,
+                    runSpacing: widget.view.showMorphology ? 8 : 4,
+                    textDirection:
+                        isHebrew ? TextDirection.rtl : TextDirection.ltr,
+                    children: words.asMap().entries.map((entry) {
+                      final wordIndex = entry.key;
+                      final word = entry.value;
+                      final isFocused = wordIndex == _activeSyntaxFocusWordIndex;
+                      final style = textStyle.copyWith(
+                        color: widget.view.colorOriginalLanguageByGender
+                            ? _genderColor(
+                                word.grammaticalGender,
+                                Theme.of(context),
+                              )
+                            : textStyle.color,
+                        fontWeight: widget.view.colorOriginalLanguageByGender &&
+                                word.grammaticalGender != null
+                            ? FontWeight.w600
+                            : textStyle.fontWeight,
+                      );
+                      return MouseRegion(
+                        onEnter: (_) => _setSyntaxFocus(wordIndex),
+                        onExit: (_) => _clearHoveredSyntaxFocus(wordIndex),
+                        child: GestureDetector(
+                          behavior: HitTestBehavior.opaque,
+                          onTap: () => _togglePinnedSyntaxFocus(wordIndex),
+                          child: Tooltip(
+                            message: word.morphologyTooltip,
+                            child: DecoratedBox(
+                              decoration: BoxDecoration(
+                                color: isFocused
+                                    ? Theme.of(context)
+                                        .colorScheme
+                                        .tertiaryContainer
+                                        .withValues(alpha: 0.45)
+                                    : Colors.transparent,
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 4,
+                                  vertical: 2,
+                                ),
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  crossAxisAlignment: isHebrew
+                                      ? CrossAxisAlignment.end
+                                      : CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      word.displayOriginalText,
+                                      style: style,
+                                      textDirection: isHebrew
+                                          ? TextDirection.rtl
+                                          : TextDirection.ltr,
+                                    ),
+                                    if (widget.view.showMorphology && word.hasMorphology) ...[
+                                      const SizedBox(height: 2),
+                                      Text(
+                                        widget.view.useCompactMorphologyLabels
+                                            ? word.morphologyLabel
+                                            : word.morphologyFullLabel,
+                                        style: TextStyle(
+                                          fontSize: 11,
+                                          height: 1.2,
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .onSurfaceVariant,
+                                        ),
+                                        textDirection: TextDirection.ltr,
+                                      ),
+                                    ],
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      );
+                    }).toList(),
+                  )
+                : Text.rich(
+                    TextSpan(
+                      style: textStyle,
+                      children: _buildProgressSpans(
+                        originalText,
+                        textStyle,
+                        _originalProgressKey,
+                      ),
+                    ),
+                    textDirection: isHebrew ? TextDirection.rtl : TextDirection.ltr,
+                  ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildGlossVerseTile(List<InterlinearWord> words) {
+    final colorScheme = Theme.of(context).colorScheme;
+
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: colorScheme.surface,
+        border: Border(
+          bottom: BorderSide(
+            color: colorScheme.outlineVariant,
+            width: 0.5,
+          ),
+        ),
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const SizedBox(width: 52),
+          Text(
+            'Gloss',
+            style: TextStyle(
+              color: colorScheme.primary,
+              fontSize: 16,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+          const SizedBox(width: 16),
+          Expanded(
+            child: Wrap(
+              spacing: 8,
+              runSpacing: 8,
+              children: words.asMap().entries.map((entry) {
+                final wordIndex = entry.key;
+                final word = entry.value;
+                final isFocused = wordIndex == _activeSyntaxFocusWordIndex;
+                return MouseRegion(
+                  onEnter: (_) => _setSyntaxFocus(wordIndex),
+                  onExit: (_) => _clearHoveredSyntaxFocus(wordIndex),
+                  child: GestureDetector(
+                    behavior: HitTestBehavior.opaque,
+                    onTap: () => _togglePinnedSyntaxFocus(wordIndex),
+                    child: DecoratedBox(
+                      decoration: BoxDecoration(
+                        color: isFocused
+                            ? colorScheme.tertiaryContainer.withValues(alpha: 0.45)
+                            : Colors.transparent,
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 4,
+                          vertical: 2,
+                        ),
+                        child: Text(
+                          _glossSyntaxLabel(word),
+                          style: TextStyle(
+                            fontSize: 15,
+                            height: 1.35,
+                            color: colorScheme.onSurfaceVariant,
+                            fontWeight: isFocused ? FontWeight.w600 : FontWeight.w400,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                );
+              }).toList(growable: false),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildSyntaxDiagramTile(
+    List<InterlinearWord> words,
+    SyntaxVerseData syntaxData, {
+    required String title,
+    required String Function(InterlinearWord word) labelBuilder,
+    bool useWordColors = false,
+  }
+  ) {
+    final relations = _collectSyntaxRelations(syntaxData);
+    final spans = _collectSyntaxSpans(syntaxData);
+    if ((relations.isEmpty && spans.isEmpty) || words.isEmpty) {
+      return const SizedBox.shrink();
+    }
+
+    final colorScheme = Theme.of(context).colorScheme;
+    final isHebrew = useWordColors && words.isNotEmpty && words.first.isHebrew;
+    const chipWidth = 84.0;
+    const chipHeight = 40.0;
+    const chipSpacing = 12.0;
+    const horizontalPadding = 16.0;
+    const baselineY = 92.0;
+    final hasSpanRelations = spans.isNotEmpty;
+    final totalHeight = hasSpanRelations ? 208.0 : 150.0;
+    final contentWidth = horizontalPadding * 2 +
+        (words.length * chipWidth) +
+        (words.length > 1 ? (words.length - 1) * chipSpacing : 0.0);
+    final reference = PassageReference(
+      bookId: widget.bookId,
+      chapter: widget.chapter,
+      startVerse: widget.verseNumber,
+      endVerse: widget.verseNumber,
+    );
+    final arcs = relations
+        .map(
+          (relation) => Arc.create(
+            reference: reference,
+            fromWordIndex: relation.fromWordIndex,
+            toWordIndex: relation.toWordIndex,
+            type: _arcTypeForSyntaxKind(relation.kind),
+            color: _arcColorForSyntaxKind(relation.kind, colorScheme),
+            label: relation.label?.trim().isNotEmpty == true
+                ? relation.label!.trim()
+                : relation.kind.name,
+            style: ArcStyle.above,
+          ),
+        )
+        .toList(growable: false);
+    final geometry = <int, ArcGeometry>{};
+    final spanVisuals = <_SyntaxSpanVisual>[];
+
+    for (final entry in relations.asMap().entries) {
+      final relation = entry.value;
+      final fromX = horizontalPadding +
+          (relation.fromWordIndex * (chipWidth + chipSpacing)) +
+          (chipWidth / 2);
+      final toX = horizontalPadding +
+          (relation.toWordIndex * (chipWidth + chipSpacing)) +
+          (chipWidth / 2);
+      geometry[entry.key] = ArcGeometry(
+        start: Offset(fromX, baselineY),
+        end: Offset(toX, baselineY),
+        height: _arcHeightForRelation(relation),
+      );
+    }
+
+    for (final entry in spans.asMap().entries) {
+      final span = entry.value;
+      final startX = horizontalPadding +
+          (span.startWordIndex * (chipWidth + chipSpacing)) +
+          (chipWidth / 2);
+      final endX = horizontalPadding +
+          (span.endWordIndex * (chipWidth + chipSpacing)) +
+          (chipWidth / 2);
+      final sourceX = horizontalPadding +
+          (span.fromWordIndex * (chipWidth + chipSpacing)) +
+          (chipWidth / 2);
+      final isFocused = span.fromWordIndex == _activeSyntaxFocusWordIndex;
+      spanVisuals.add(
+        _SyntaxSpanVisual(
+          sourceX: sourceX,
+          startX: startX,
+          endX: endX,
+          sourceY: baselineY + chipHeight + 8,
+          spanY: baselineY + 72 + (entry.key * 16),
+          color: _spanColorForSyntaxKind(span.kind, colorScheme),
+          label: span.label?.trim().isNotEmpty == true
+              ? span.label!.trim()
+              : span.kind.name,
+          isFocused: isFocused,
+        ),
+      );
+    }
+
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.fromLTRB(16, 12, 16, 16),
+      decoration: BoxDecoration(
+        color: colorScheme.surface,
+        border: Border(
+          bottom: BorderSide(
+            color: colorScheme.outlineVariant,
+            width: 0.5,
+          ),
+        ),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            title,
+            style: TextStyle(
+              fontSize: 15,
+              fontWeight: FontWeight.w600,
+              color: colorScheme.onSurface,
+            ),
+          ),
+          const SizedBox(height: 8),
+          SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: SizedBox(
+              width: contentWidth,
+              height: totalHeight,
+              child: Stack(
+                children: [
+                  Positioned.fill(
+                    child: CustomPaint(
+                      painter: ArcPainter(
+                        arcs: arcs,
+                        arcGeometry: geometry,
+                      ),
+                    ),
+                  ),
+                  if (spanVisuals.isNotEmpty)
+                    Positioned.fill(
+                      child: IgnorePointer(
+                        child: CustomPaint(
+                          painter: _SyntaxSpanPainter(
+                            spans: spanVisuals,
+                          ),
+                        ),
+                      ),
+                    ),
+                  Positioned(
+                    left: horizontalPadding,
+                    top: baselineY + 8,
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: words.asMap().entries.map((entry) {
+                        final wordIndex = entry.key;
+                        final word = entry.value;
+                        final color = useWordColors && widget.view.colorOriginalLanguageByGender
+                            ? _genderColor(
+                                word.grammaticalGender,
+                                Theme.of(context),
+                              )
+                          : (useWordColors
+                            ? colorScheme.primary
+                            : colorScheme.onSurfaceVariant);
+                        final isFocused =
+                            wordIndex == _activeSyntaxFocusWordIndex;
+                        return Padding(
+                          padding: const EdgeInsets.only(right: chipSpacing),
+                          child: MouseRegion(
+                            onEnter: (_) => _setSyntaxFocus(wordIndex),
+                            onExit: (_) => _clearHoveredSyntaxFocus(wordIndex),
+                            child: GestureDetector(
+                              behavior: HitTestBehavior.opaque,
+                              onTap: () => _togglePinnedSyntaxFocus(wordIndex),
+                              child: Container(
+                                width: chipWidth,
+                                height: chipHeight,
+                                alignment: Alignment.center,
+                                padding: const EdgeInsets.symmetric(horizontal: 6),
+                                decoration: BoxDecoration(
+                                  color: isFocused
+                                      ? colorScheme.tertiaryContainer
+                                      : colorScheme.surfaceContainerHighest,
+                                  borderRadius: BorderRadius.circular(10),
+                                  border: Border.all(
+                                    color: isFocused
+                                        ? colorScheme.tertiary
+                                        : colorScheme.outlineVariant,
+                                    width: isFocused ? 1.5 : 1,
+                                  ),
+                                ),
+                                child: Text(
+                                  labelBuilder(word),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextStyle(
+                                    color: color,
+                                    fontSize: useWordColors ? 18 : 14,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                  textDirection: isHebrew
+                                      ? TextDirection.rtl
+                                      : TextDirection.ltr,
+                                ),
+                              ),
+                            ),
+                          ),
+                        );
+                      }).toList(growable: false),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _setSyntaxFocus(int wordIndex) {
+    if (!widget.view.showSyntaxLinks) {
+      return;
+    }
+    if (_activeSyntaxFocusWordIndex == wordIndex && !_pinnedSyntaxFocus) {
+      return;
+    }
+    setState(() {
+      _activeSyntaxFocusWordIndex = wordIndex;
+      _pinnedSyntaxFocus = false;
+    });
+  }
+
+  void _clearHoveredSyntaxFocus(int wordIndex) {
+    if (_pinnedSyntaxFocus || _activeSyntaxFocusWordIndex != wordIndex) {
+      return;
+    }
+    setState(() {
+      _activeSyntaxFocusWordIndex = null;
+    });
+  }
+
+  void _togglePinnedSyntaxFocus(int wordIndex) {
+    if (!widget.view.showSyntaxLinks) {
+      return;
+    }
+    setState(() {
+      if (_pinnedSyntaxFocus && _activeSyntaxFocusWordIndex == wordIndex) {
+        _activeSyntaxFocusWordIndex = null;
+        _pinnedSyntaxFocus = false;
+      } else {
+        _activeSyntaxFocusWordIndex = wordIndex;
+        _pinnedSyntaxFocus = true;
+      }
+    });
+  }
+
+  List<SyntaxArcData> _collectSyntaxRelations(SyntaxVerseData syntaxData) {
+    final relations = <SyntaxArcData>[];
+    final seen = <String>{};
+
+    for (final word in syntaxData.words) {
+      if (word.referentWordIndex == null) {
+        continue;
+      }
+      final key = '${word.wordIndex}:${word.referentWordIndex}:referent';
+      if (!seen.add(key)) {
+        continue;
+      }
+      relations.add(
+        SyntaxArcData(
+          fromWordIndex: word.wordIndex,
+          toWordIndex: word.referentWordIndex!,
+          kind: SyntaxRelationKind.referent,
+          label: 'referent',
+        ),
+      );
+    }
+
+    for (final arc in syntaxData.arcs) {
+      final label = arc.label?.trim().isNotEmpty == true
+          ? arc.label!.trim()
+          : arc.kind.name;
+      final key = '${arc.fromWordIndex}:${arc.toWordIndex}:$label';
+      if (!seen.add(key)) {
+        continue;
+      }
+      relations.add(arc);
+    }
+
+    relations.sort((left, right) {
+      final leftSpan = (left.fromWordIndex - left.toWordIndex).abs();
+      final rightSpan = (right.fromWordIndex - right.toWordIndex).abs();
+      return leftSpan.compareTo(rightSpan);
+    });
+
+    return relations;
+  }
+
+  List<SyntaxSpanData> _collectSyntaxSpans(SyntaxVerseData syntaxData) {
+    final spans = <SyntaxSpanData>[];
+    final seen = <String>{};
+
+    for (final word in syntaxData.words) {
+      if (word.referentSpanStartWordIndex == null ||
+          word.referentSpanEndWordIndex == null) {
+        continue;
+      }
+      final key = '${word.wordIndex}:${word.referentSpanStartWordIndex}:${word.referentSpanEndWordIndex}:referent';
+      if (!seen.add(key)) {
+        continue;
+      }
+      spans.add(
+        SyntaxSpanData(
+          fromWordIndex: word.wordIndex,
+          startWordIndex: word.referentSpanStartWordIndex!,
+          endWordIndex: word.referentSpanEndWordIndex!,
+          kind: SyntaxRelationKind.referent,
+          label: 'referent clause',
+        ),
+      );
+    }
+
+    for (final span in syntaxData.spans) {
+      final label = span.label?.trim().isNotEmpty == true
+          ? span.label!.trim()
+          : span.kind.name;
+      final key = '${span.fromWordIndex}:${span.startWordIndex}:${span.endWordIndex}:$label';
+      if (!seen.add(key)) {
+        continue;
+      }
+      spans.add(span);
+    }
+
+    spans.sort((left, right) {
+      final leftSpan = left.endWordIndex - left.startWordIndex;
+      final rightSpan = right.endWordIndex - right.startWordIndex;
+      return rightSpan.compareTo(leftSpan);
+    });
+    return spans;
+  }
+
+  double _arcHeightForRelation(SyntaxArcData relation) {
+    final span = (relation.fromWordIndex - relation.toWordIndex).abs();
+    final clampedSpan = span < 1 ? 1 : span > 8 ? 8 : span;
+    return 24 + (clampedSpan * 8).toDouble();
+  }
+
+  ArcType _arcTypeForSyntaxKind(SyntaxRelationKind kind) {
+    switch (kind) {
+      case SyntaxRelationKind.subject:
+        return ArcType.subject;
+      case SyntaxRelationKind.predicate:
+        return ArcType.verb;
+      case SyntaxRelationKind.object:
+        return ArcType.directObject;
+      case SyntaxRelationKind.modifier:
+        return ArcType.modifier;
+      case SyntaxRelationKind.clause:
+        return ArcType.clause;
+      default:
+        return ArcType.custom;
+    }
+  }
+
+  Color _arcColorForSyntaxKind(
+    SyntaxRelationKind kind,
+    ColorScheme colorScheme,
+  ) {
+    switch (kind) {
+      case SyntaxRelationKind.referent:
+        return colorScheme.tertiary;
+      case SyntaxRelationKind.subject:
+        return colorScheme.primary;
+      case SyntaxRelationKind.predicate:
+        return colorScheme.secondary;
+      case SyntaxRelationKind.object:
+        return colorScheme.error;
+      case SyntaxRelationKind.modifier:
+        return colorScheme.primary.withValues(alpha: 0.75);
+      default:
+        return colorScheme.outline;
+    }
+  }
+
+  Color _spanColorForSyntaxKind(
+    SyntaxRelationKind kind,
+    ColorScheme colorScheme,
+  ) {
+    switch (kind) {
+      case SyntaxRelationKind.referent:
+        return colorScheme.tertiary;
+      case SyntaxRelationKind.subject:
+        return colorScheme.primary;
+      default:
+        return colorScheme.secondary;
+    }
+  }
+
+  String _originalSyntaxLabel(InterlinearWord word) {
+    return word.displayOriginalText;
+  }
+
+  String _glossSyntaxLabel(InterlinearWord word) {
+    final gloss = word.gloss.trim();
+    return gloss.isEmpty ? word.displayOriginalText : gloss;
+  }
+
+  String _syntaxWordText(List<InterlinearWord> words, int index) {
+    if (index < 0 || index >= words.length) {
+      return '#$index';
+    }
+    final text = words[index].displayOriginalText.trim();
+    return text.isEmpty ? '#$index' : text;
+  }
+
+  Widget _buildSyntaxLinksTile(
+    List<InterlinearWord> words,
+    SyntaxVerseData syntaxData,
+  ) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final spans = _collectSyntaxSpans(syntaxData);
+    if (syntaxData.arcs.isEmpty && syntaxData.words.isEmpty && spans.isEmpty) {
+      return const SizedBox.shrink();
+    }
+
+    final arcRows = syntaxData.arcs.map((arc) {
+      final label = arc.label?.trim();
+      final relation = arc.kind.name;
+      return '${_syntaxWordText(words, arc.fromWordIndex)} -> ${_syntaxWordText(words, arc.toWordIndex)}'
+          '${label != null && label.isNotEmpty ? ' ($label)' : ' ($relation)'}';
+    }).toList(growable: false);
+
+    final referentRows = syntaxData.words
+        .where((word) => word.referentWordIndex != null)
+        .map(
+          (word) => '${_syntaxWordText(words, word.wordIndex)} -> '
+              '${_syntaxWordText(words, word.referentWordIndex!)} (referent)',
+        )
+        .toList(growable: false);
+
+      final spanRows = spans
+        .map(
+          (span) => '${_syntaxWordText(words, span.fromWordIndex)} -> '
+            '[${words.sublist(span.startWordIndex, span.endWordIndex + 1).map((word) => word.displayOriginalText).join(' ')}] '
+            '(${span.label?.trim().isNotEmpty == true ? span.label!.trim() : span.kind.name})',
+        )
+        .toList(growable: false);
+
+      final rows = <String>{...spanRows, ...referentRows, ...arcRows}.toList(growable: false);
+    if (rows.isEmpty) {
+      return const SizedBox.shrink();
+    }
+
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.fromLTRB(16, 12, 16, 16),
+      decoration: BoxDecoration(
+        color: colorScheme.surface,
+        border: Border(
+          bottom: BorderSide(
+            color: colorScheme.outlineVariant,
+            width: 0.5,
+          ),
+        ),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Syntax Links',
+            style: TextStyle(
+              fontSize: 15,
+              fontWeight: FontWeight.w600,
+              color: colorScheme.onSurface,
+            ),
+          ),
+          const SizedBox(height: 8),
+          ...rows.map(
+            (row) => Padding(
+              padding: const EdgeInsets.only(bottom: 6),
+              child: Text(
+                row,
+                style: TextStyle(
+                  fontSize: 13,
+                  height: 1.35,
+                  color: colorScheme.onSurfaceVariant,
                 ),
               ),
-              textDirection: isHebrew ? TextDirection.rtl : TextDirection.ltr,
             ),
           ),
         ],
@@ -840,5 +1542,98 @@ class _InterlinearReaderPageState extends State<InterlinearReaderPage> {
         ],
       ),
     );
+  }
+}
+
+class _SyntaxSpanVisual {
+  final double sourceX;
+  final double startX;
+  final double endX;
+  final double sourceY;
+  final double spanY;
+  final Color color;
+  final String label;
+  final bool isFocused;
+
+  const _SyntaxSpanVisual({
+    required this.sourceX,
+    required this.startX,
+    required this.endX,
+    required this.sourceY,
+    required this.spanY,
+    required this.color,
+    required this.label,
+    required this.isFocused,
+  });
+}
+
+class _SyntaxSpanPainter extends CustomPainter {
+  final List<_SyntaxSpanVisual> spans;
+
+  const _SyntaxSpanPainter({
+    required this.spans,
+  });
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    for (final span in spans) {
+      final strokePaint = Paint()
+        ..color = span.isFocused ? span.color : span.color.withValues(alpha: 0.78)
+        ..strokeWidth = span.isFocused ? 3 : 2
+        ..style = PaintingStyle.stroke
+        ..strokeCap = StrokeCap.round;
+
+      final underlineY = span.spanY;
+      final targetMidX = (span.startX + span.endX) / 2;
+
+      canvas.drawLine(
+        Offset(span.startX - 22, underlineY),
+        Offset(span.endX + 22, underlineY),
+        strokePaint,
+      );
+
+      final connectorPath = Path()
+        ..moveTo(span.sourceX, span.sourceY)
+        ..lineTo(span.sourceX, underlineY - 12)
+        ..lineTo(targetMidX, underlineY - 12)
+        ..lineTo(targetMidX, underlineY - 2);
+      canvas.drawPath(connectorPath, strokePaint);
+
+      final arrowPaint = Paint()
+        ..color = strokePaint.color
+        ..style = PaintingStyle.fill;
+      final arrowPath = Path()
+        ..moveTo(targetMidX, underlineY + 4)
+        ..lineTo(targetMidX - 5, underlineY - 4)
+        ..lineTo(targetMidX + 5, underlineY - 4)
+        ..close();
+      canvas.drawPath(arrowPath, arrowPaint);
+
+      final textPainter = TextPainter(
+        text: TextSpan(
+          text: span.label,
+          style: TextStyle(
+            color: strokePaint.color,
+            fontSize: 11,
+            fontWeight: span.isFocused ? FontWeight.w700 : FontWeight.w600,
+            backgroundColor: Colors.white,
+          ),
+        ),
+        textDirection: TextDirection.ltr,
+      )..layout();
+
+      textPainter.paint(
+        canvas,
+        Offset(
+          targetMidX - (textPainter.width / 2),
+          underlineY + 8,
+        ),
+      );
+    }
+  }
+
+  @override
+  bool shouldRepaint(_SyntaxSpanPainter oldDelegate) {
+    return spans != oldDelegate.spans;
   }
 }
