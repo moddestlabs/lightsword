@@ -1,0 +1,7345 @@
+{
+  "1": {
+    "1": {
+      "words": [
+        {
+          "wordIndex": 0,
+          "tokenId": "o390010010011",
+          "tokenText": "מַשָּׂ֥א"
+        },
+        {
+          "wordIndex": 1,
+          "tokenId": "o390010010021",
+          "tokenText": "דְבַר"
+        },
+        {
+          "wordIndex": 2,
+          "tokenId": "o390010010031",
+          "tokenText": "יְהוָ֖ה"
+        },
+        {
+          "wordIndex": 3,
+          "tokenId": "o390010010041",
+          "tokenText": "אֶל"
+        },
+        {
+          "wordIndex": 4,
+          "tokenId": "o390010010051",
+          "tokenText": "יִשְׂרָאֵ֑ל"
+        },
+        {
+          "wordIndex": 5,
+          "tokenId": "o390010010061",
+          "tokenText": "בְּ"
+        },
+        {
+          "wordIndex": 6,
+          "tokenId": "o390010010062",
+          "tokenText": "יַ֖ד"
+        },
+        {
+          "wordIndex": 7,
+          "tokenId": "o390010010071",
+          "tokenText": "מַלְאָכִֽי"
+        }
+      ],
+      "arcs": [],
+      "spans": []
+    },
+    "2": {
+      "words": [
+        {
+          "wordIndex": 0,
+          "tokenId": "o390010020011",
+          "tokenText": "אָהַ֤בְתִּי",
+          "role": "v"
+        },
+        {
+          "wordIndex": 1,
+          "tokenId": "o390010020021",
+          "tokenText": "אֶתְ"
+        },
+        {
+          "wordIndex": 2,
+          "tokenId": "o390010020022",
+          "tokenText": "כֶם֙"
+        },
+        {
+          "wordIndex": 3,
+          "tokenId": "o390010020031",
+          "tokenText": "אָמַ֣ר",
+          "role": "v"
+        },
+        {
+          "wordIndex": 4,
+          "tokenId": "o390010020041",
+          "tokenText": "יְהוָ֔ה",
+          "role": "s"
+        },
+        {
+          "wordIndex": 5,
+          "tokenId": "o390010020051",
+          "tokenText": "וַ"
+        },
+        {
+          "wordIndex": 6,
+          "tokenId": "o390010020052",
+          "tokenText": "אֲמַרְתֶּ֖ם",
+          "role": "v"
+        },
+        {
+          "wordIndex": 7,
+          "tokenId": "o390010020061",
+          "tokenText": "בַּ"
+        },
+        {
+          "wordIndex": 8,
+          "tokenId": "o390010020062",
+          "tokenText": "מָּ֣ה"
+        },
+        {
+          "wordIndex": 9,
+          "tokenId": "o390010020071",
+          "tokenText": "אֲהַבְתָּ֑",
+          "role": "v"
+        },
+        {
+          "wordIndex": 10,
+          "tokenId": "o390010020072",
+          "tokenText": "נוּ",
+          "role": "o"
+        },
+        {
+          "wordIndex": 11,
+          "tokenId": "o390010020081",
+          "tokenText": "הֲ"
+        },
+        {
+          "wordIndex": 12,
+          "tokenId": "o390010020082",
+          "tokenText": "לוֹא",
+          "role": "adv"
+        },
+        {
+          "wordIndex": 13,
+          "tokenId": "o390010020091",
+          "tokenText": "אָ֨ח",
+          "role": "p"
+        },
+        {
+          "wordIndex": 14,
+          "tokenId": "o390010020101",
+          "tokenText": "עֵשָׂ֤ו",
+          "role": "s"
+        },
+        {
+          "wordIndex": 15,
+          "tokenId": "o390010020111",
+          "tokenText": "לְ"
+        },
+        {
+          "wordIndex": 16,
+          "tokenId": "o390010020112",
+          "tokenText": "יַֽעֲקֹב֙"
+        },
+        {
+          "wordIndex": 17,
+          "tokenId": "o390010020121",
+          "tokenText": "נְאֻם"
+        },
+        {
+          "wordIndex": 18,
+          "tokenId": "o390010020131",
+          "tokenText": "יְהוָ֔ה"
+        },
+        {
+          "wordIndex": 19,
+          "tokenId": "o390010020141",
+          "tokenText": "וָ"
+        },
+        {
+          "wordIndex": 20,
+          "tokenId": "o390010020142",
+          "tokenText": "אֹהַ֖ב",
+          "role": "v"
+        },
+        {
+          "wordIndex": 21,
+          "tokenId": "o390010020151",
+          "tokenText": "אֶֽת"
+        },
+        {
+          "wordIndex": 22,
+          "tokenId": "o390010020161",
+          "tokenText": "יַעֲקֹֽב"
+        }
+      ],
+      "arcs": [],
+      "spans": []
+    },
+    "3": {
+      "words": [
+        {
+          "wordIndex": 0,
+          "tokenId": "o390010030011",
+          "tokenText": "וְ"
+        },
+        {
+          "wordIndex": 1,
+          "tokenId": "o390010030012",
+          "tokenText": "אֶת"
+        },
+        {
+          "wordIndex": 2,
+          "tokenId": "o390010030021",
+          "tokenText": "עֵשָׂ֖ו"
+        },
+        {
+          "wordIndex": 3,
+          "tokenId": "o390010030031",
+          "tokenText": "שָׂנֵ֑אתִי",
+          "role": "v"
+        },
+        {
+          "wordIndex": 4,
+          "tokenId": "o390010030041",
+          "tokenText": "וָ"
+        },
+        {
+          "wordIndex": 5,
+          "tokenId": "o390010030042",
+          "tokenText": "אָשִׂ֤ים",
+          "role": "v"
+        },
+        {
+          "wordIndex": 6,
+          "tokenId": "o390010030051",
+          "tokenText": "אֶת"
+        },
+        {
+          "wordIndex": 7,
+          "tokenId": "o390010030061",
+          "tokenText": "הָרָי"
+        },
+        {
+          "wordIndex": 8,
+          "tokenId": "o390010030062",
+          "tokenText": "ו֙"
+        },
+        {
+          "wordIndex": 9,
+          "tokenId": "o390010030071",
+          "tokenText": "שְׁמָמָ֔ה",
+          "role": "o2"
+        },
+        {
+          "wordIndex": 10,
+          "tokenId": "o390010030081",
+          "tokenText": "וְ"
+        },
+        {
+          "wordIndex": 11,
+          "tokenId": "o390010030082",
+          "tokenText": "אֶת"
+        },
+        {
+          "wordIndex": 12,
+          "tokenId": "o390010030091",
+          "tokenText": "נַחֲלָת֖"
+        },
+        {
+          "wordIndex": 13,
+          "tokenId": "o390010030092",
+          "tokenText": "וֹ"
+        },
+        {
+          "wordIndex": 14,
+          "tokenId": "o390010030101",
+          "tokenText": "לְ"
+        },
+        {
+          "wordIndex": 15,
+          "tokenId": "o390010030102",
+          "tokenText": "תַנּ֥וֹת"
+        },
+        {
+          "wordIndex": 16,
+          "tokenId": "o390010030111",
+          "tokenText": "מִדְבָּֽר"
+        }
+      ],
+      "arcs": [],
+      "spans": []
+    },
+    "4": {
+      "words": [
+        {
+          "wordIndex": 0,
+          "tokenId": "o390010040011",
+          "tokenText": "כִּֽי"
+        },
+        {
+          "wordIndex": 1,
+          "tokenId": "o390010040021",
+          "tokenText": "תֹאמַ֨ר",
+          "role": "v"
+        },
+        {
+          "wordIndex": 2,
+          "tokenId": "o390010040031",
+          "tokenText": "אֱד֜וֹם",
+          "role": "s"
+        },
+        {
+          "wordIndex": 3,
+          "tokenId": "o390010040041",
+          "tokenText": "רֻשַּׁ֗שְׁנוּ",
+          "role": "v"
+        },
+        {
+          "wordIndex": 4,
+          "tokenId": "o390010040051",
+          "tokenText": "וְ"
+        },
+        {
+          "wordIndex": 5,
+          "tokenId": "o390010040052",
+          "tokenText": "נָשׁוּב֙",
+          "role": "v"
+        },
+        {
+          "wordIndex": 6,
+          "tokenId": "o390010040061",
+          "tokenText": "וְ"
+        },
+        {
+          "wordIndex": 7,
+          "tokenId": "o390010040062",
+          "tokenText": "נִבְנֶ֣ה",
+          "role": "v"
+        },
+        {
+          "wordIndex": 8,
+          "tokenId": "o390010040071",
+          "tokenText": "חֳרָב֔וֹת",
+          "role": "o"
+        },
+        {
+          "wordIndex": 9,
+          "tokenId": "o390010040081",
+          "tokenText": "כֹּ֤ה",
+          "role": "adv"
+        },
+        {
+          "wordIndex": 10,
+          "tokenId": "o390010040091",
+          "tokenText": "אָמַר֙",
+          "role": "v"
+        },
+        {
+          "wordIndex": 11,
+          "tokenId": "o390010040101",
+          "tokenText": "יְהוָ֣ה"
+        },
+        {
+          "wordIndex": 12,
+          "tokenId": "o390010040111",
+          "tokenText": "צְבָא֔וֹת"
+        },
+        {
+          "wordIndex": 13,
+          "tokenId": "o390010040121",
+          "tokenText": "הֵ֥מָּה",
+          "role": "s"
+        },
+        {
+          "wordIndex": 14,
+          "tokenId": "o390010040131",
+          "tokenText": "יִבְנ֖וּ",
+          "role": "v"
+        },
+        {
+          "wordIndex": 15,
+          "tokenId": "o390010040141",
+          "tokenText": "וַ"
+        },
+        {
+          "wordIndex": 16,
+          "tokenId": "o390010040142",
+          "tokenText": "אֲנִ֣י",
+          "role": "s"
+        },
+        {
+          "wordIndex": 17,
+          "tokenId": "o390010040151",
+          "tokenText": "אֶהֱר֑וֹס",
+          "role": "v"
+        },
+        {
+          "wordIndex": 18,
+          "tokenId": "o390010040161",
+          "tokenText": "וְ"
+        },
+        {
+          "wordIndex": 19,
+          "tokenId": "o390010040162",
+          "tokenText": "קָרְא֤וּ",
+          "role": "v"
+        },
+        {
+          "wordIndex": 20,
+          "tokenId": "o390010040171",
+          "tokenText": "לָ"
+        },
+        {
+          "wordIndex": 21,
+          "tokenId": "o390010040172",
+          "tokenText": "הֶם֙"
+        },
+        {
+          "wordIndex": 22,
+          "tokenId": "o390010040181",
+          "tokenText": "גְּב֣וּל"
+        },
+        {
+          "wordIndex": 23,
+          "tokenId": "o390010040191",
+          "tokenText": "רִשְׁעָ֔ה"
+        },
+        {
+          "wordIndex": 24,
+          "tokenId": "o390010040201",
+          "tokenText": "וְ"
+        },
+        {
+          "wordIndex": 25,
+          "tokenId": "o390010040202",
+          "tokenText": "הָ"
+        },
+        {
+          "wordIndex": 26,
+          "tokenId": "o390010040203",
+          "tokenText": "עָ֛ם"
+        },
+        {
+          "wordIndex": 27,
+          "tokenId": "o390010040211",
+          "tokenText": "אֲשֶׁר"
+        },
+        {
+          "wordIndex": 28,
+          "tokenId": "o390010040221",
+          "tokenText": "זָעַ֥ם",
+          "role": "v"
+        },
+        {
+          "wordIndex": 29,
+          "tokenId": "o390010040231",
+          "tokenText": "יְהוָ֖ה",
+          "role": "s"
+        },
+        {
+          "wordIndex": 30,
+          "tokenId": "o390010040241",
+          "tokenText": "עַד"
+        },
+        {
+          "wordIndex": 31,
+          "tokenId": "o390010040251",
+          "tokenText": "עוֹלָֽם"
+        }
+      ],
+      "arcs": [],
+      "spans": []
+    },
+    "5": {
+      "words": [
+        {
+          "wordIndex": 0,
+          "tokenId": "o390010050011",
+          "tokenText": "וְ"
+        },
+        {
+          "wordIndex": 1,
+          "tokenId": "o390010050012",
+          "tokenText": "עֵינֵי"
+        },
+        {
+          "wordIndex": 2,
+          "tokenId": "o390010050013",
+          "tokenText": "כֶ֖ם"
+        },
+        {
+          "wordIndex": 3,
+          "tokenId": "o390010050021",
+          "tokenText": "תִּרְאֶ֑ינָה",
+          "role": "v"
+        },
+        {
+          "wordIndex": 4,
+          "tokenId": "o390010050031",
+          "tokenText": "וְ"
+        },
+        {
+          "wordIndex": 5,
+          "tokenId": "o390010050032",
+          "tokenText": "אַתֶּ֤ם",
+          "role": "s"
+        },
+        {
+          "wordIndex": 6,
+          "tokenId": "o390010050041",
+          "tokenText": "תֹּֽאמְרוּ֙",
+          "role": "v"
+        },
+        {
+          "wordIndex": 7,
+          "tokenId": "o390010050051",
+          "tokenText": "יִגְדַּ֣ל",
+          "role": "v"
+        },
+        {
+          "wordIndex": 8,
+          "tokenId": "o390010050061",
+          "tokenText": "יְהוָ֔ה",
+          "role": "s"
+        },
+        {
+          "wordIndex": 9,
+          "tokenId": "o390010050071",
+          "tokenText": "מֵ"
+        },
+        {
+          "wordIndex": 10,
+          "tokenId": "o390010050072",
+          "tokenText": "עַ֖ל"
+        },
+        {
+          "wordIndex": 11,
+          "tokenId": "o390010050081",
+          "tokenText": "לִ"
+        },
+        {
+          "wordIndex": 12,
+          "tokenId": "o390010050082",
+          "tokenText": "גְב֥וּל"
+        },
+        {
+          "wordIndex": 13,
+          "tokenId": "o390010050091",
+          "tokenText": "יִשְׂרָאֵֽל"
+        }
+      ],
+      "arcs": [],
+      "spans": []
+    },
+    "6": {
+      "words": [
+        {
+          "wordIndex": 0,
+          "tokenId": "o390010060011",
+          "tokenText": "בֵּ֛ן",
+          "role": "s"
+        },
+        {
+          "wordIndex": 1,
+          "tokenId": "o390010060021",
+          "tokenText": "יְכַבֵּ֥ד",
+          "role": "v"
+        },
+        {
+          "wordIndex": 2,
+          "tokenId": "o390010060031",
+          "tokenText": "אָ֖ב",
+          "role": "o"
+        },
+        {
+          "wordIndex": 3,
+          "tokenId": "o390010060041",
+          "tokenText": "וְ"
+        },
+        {
+          "wordIndex": 4,
+          "tokenId": "o390010060042",
+          "tokenText": "עֶ֣בֶד",
+          "role": "s"
+        },
+        {
+          "wordIndex": 5,
+          "tokenId": "o390010060051",
+          "tokenText": "אֲדֹנָ֑י"
+        },
+        {
+          "wordIndex": 6,
+          "tokenId": "o390010060052",
+          "tokenText": "ו"
+        },
+        {
+          "wordIndex": 7,
+          "tokenId": "o390010060061",
+          "tokenText": "וְ"
+        },
+        {
+          "wordIndex": 8,
+          "tokenId": "o390010060062",
+          "tokenText": "אִם"
+        },
+        {
+          "wordIndex": 9,
+          "tokenId": "o390010060071",
+          "tokenText": "אָ֣ב",
+          "role": "p"
+        },
+        {
+          "wordIndex": 10,
+          "tokenId": "o390010060081",
+          "tokenText": "אָ֣נִי",
+          "role": "s"
+        },
+        {
+          "wordIndex": 11,
+          "tokenId": "o390010060091",
+          "tokenText": "אַיֵּ֣ה",
+          "role": "p"
+        },
+        {
+          "wordIndex": 12,
+          "tokenId": "o390010060101",
+          "tokenText": "כְבוֹדִ֡"
+        },
+        {
+          "wordIndex": 13,
+          "tokenId": "o390010060102",
+          "tokenText": "י"
+        },
+        {
+          "wordIndex": 14,
+          "tokenId": "o390010060111",
+          "tokenText": "וְ"
+        },
+        {
+          "wordIndex": 15,
+          "tokenId": "o390010060112",
+          "tokenText": "אִם"
+        },
+        {
+          "wordIndex": 16,
+          "tokenId": "o390010060121",
+          "tokenText": "אֲדוֹנִ֣ים",
+          "role": "p"
+        },
+        {
+          "wordIndex": 17,
+          "tokenId": "o390010060131",
+          "tokenText": "אָנִי֩",
+          "role": "s"
+        },
+        {
+          "wordIndex": 18,
+          "tokenId": "o390010060141",
+          "tokenText": "אַיֵּ֨ה",
+          "role": "p"
+        },
+        {
+          "wordIndex": 19,
+          "tokenId": "o390010060151",
+          "tokenText": "מוֹרָאִ֜"
+        },
+        {
+          "wordIndex": 20,
+          "tokenId": "o390010060152",
+          "tokenText": "י"
+        },
+        {
+          "wordIndex": 21,
+          "tokenId": "o390010060161",
+          "tokenText": "אָמַ֣ר",
+          "role": "v"
+        },
+        {
+          "wordIndex": 22,
+          "tokenId": "o390010060171",
+          "tokenText": "יְהוָ֣ה"
+        },
+        {
+          "wordIndex": 23,
+          "tokenId": "o390010060181",
+          "tokenText": "צְבָא֗וֹת"
+        },
+        {
+          "wordIndex": 24,
+          "tokenId": "o390010060191",
+          "tokenText": "לָ"
+        },
+        {
+          "wordIndex": 25,
+          "tokenId": "o390010060192",
+          "tokenText": "כֶם֙"
+        },
+        {
+          "wordIndex": 26,
+          "tokenId": "o390010060201",
+          "tokenText": "הַ"
+        },
+        {
+          "wordIndex": 27,
+          "tokenId": "o390010060202",
+          "tokenText": "כֹּֽהֲנִים֙"
+        },
+        {
+          "wordIndex": 28,
+          "tokenId": "o390010060211",
+          "tokenText": "בּוֹזֵ֣י"
+        },
+        {
+          "wordIndex": 29,
+          "tokenId": "o390010060221",
+          "tokenText": "שְׁמִ֔"
+        },
+        {
+          "wordIndex": 30,
+          "tokenId": "o390010060222",
+          "tokenText": "י"
+        },
+        {
+          "wordIndex": 31,
+          "tokenId": "o390010060231",
+          "tokenText": "וַ"
+        },
+        {
+          "wordIndex": 32,
+          "tokenId": "o390010060232",
+          "tokenText": "אֲמַרְתֶּ֕ם",
+          "role": "v"
+        },
+        {
+          "wordIndex": 33,
+          "tokenId": "o390010060241",
+          "tokenText": "בַּ"
+        },
+        {
+          "wordIndex": 34,
+          "tokenId": "o390010060242",
+          "tokenText": "מֶּ֥ה"
+        },
+        {
+          "wordIndex": 35,
+          "tokenId": "o390010060251",
+          "tokenText": "בָזִ֖ינוּ",
+          "role": "v"
+        },
+        {
+          "wordIndex": 36,
+          "tokenId": "o390010060261",
+          "tokenText": "אֶת"
+        },
+        {
+          "wordIndex": 37,
+          "tokenId": "o390010060271",
+          "tokenText": "שְׁמֶֽ"
+        },
+        {
+          "wordIndex": 38,
+          "tokenId": "o390010060272",
+          "tokenText": "ךָ"
+        }
+      ],
+      "arcs": [],
+      "spans": []
+    },
+    "7": {
+      "words": [
+        {
+          "wordIndex": 0,
+          "tokenId": "o390010070011",
+          "tokenText": "מַגִּישִׁ֤ים",
+          "role": "v"
+        },
+        {
+          "wordIndex": 1,
+          "tokenId": "o390010070021",
+          "tokenText": "עַֽל"
+        },
+        {
+          "wordIndex": 2,
+          "tokenId": "o390010070031",
+          "tokenText": "מִזְבְּחִ"
+        },
+        {
+          "wordIndex": 3,
+          "tokenId": "o390010070032",
+          "tokenText": "י֙"
+        },
+        {
+          "wordIndex": 4,
+          "tokenId": "o390010070041",
+          "tokenText": "לֶ֣חֶם"
+        },
+        {
+          "wordIndex": 5,
+          "tokenId": "o390010070051",
+          "tokenText": "מְגֹאָ֔ל"
+        },
+        {
+          "wordIndex": 6,
+          "tokenId": "o390010070061",
+          "tokenText": "וַ"
+        },
+        {
+          "wordIndex": 7,
+          "tokenId": "o390010070062",
+          "tokenText": "אֲמַרְתֶּ֖ם",
+          "role": "v"
+        },
+        {
+          "wordIndex": 8,
+          "tokenId": "o390010070071",
+          "tokenText": "בַּ"
+        },
+        {
+          "wordIndex": 9,
+          "tokenId": "o390010070072",
+          "tokenText": "מֶּ֣ה"
+        },
+        {
+          "wordIndex": 10,
+          "tokenId": "o390010070081",
+          "tokenText": "גֵֽאַלְנ֑וּ",
+          "role": "v"
+        },
+        {
+          "wordIndex": 11,
+          "tokenId": "o390010070082",
+          "tokenText": "ךָ",
+          "role": "o"
+        },
+        {
+          "wordIndex": 12,
+          "tokenId": "o390010070091",
+          "tokenText": "בֶּ"
+        },
+        {
+          "wordIndex": 13,
+          "tokenId": "o390010070092",
+          "tokenText": "אֱמָרְ",
+          "role": "v"
+        },
+        {
+          "wordIndex": 14,
+          "tokenId": "o390010070093",
+          "tokenText": "כֶ֕ם",
+          "role": "s"
+        },
+        {
+          "wordIndex": 15,
+          "tokenId": "o390010070101",
+          "tokenText": "שֻׁלְחַ֥ן"
+        },
+        {
+          "wordIndex": 16,
+          "tokenId": "o390010070111",
+          "tokenText": "יְהוָ֖ה"
+        },
+        {
+          "wordIndex": 17,
+          "tokenId": "o390010070121",
+          "tokenText": "נִבְזֶ֥ה",
+          "role": "v"
+        },
+        {
+          "wordIndex": 18,
+          "tokenId": "o390010070131",
+          "tokenText": "הֽוּא",
+          "role": "s"
+        }
+      ],
+      "arcs": [],
+      "spans": []
+    },
+    "8": {
+      "words": [
+        {
+          "wordIndex": 0,
+          "tokenId": "o390010080011",
+          "tokenText": "וְ"
+        },
+        {
+          "wordIndex": 1,
+          "tokenId": "o390010080012",
+          "tokenText": "כִֽי"
+        },
+        {
+          "wordIndex": 2,
+          "tokenId": "o390010080021",
+          "tokenText": "תַגִּשׁ֨וּ"
+        },
+        {
+          "wordIndex": 3,
+          "tokenId": "o390010080022",
+          "tokenText": "ן"
+        },
+        {
+          "wordIndex": 4,
+          "tokenId": "o390010080031",
+          "tokenText": "עִוֵּ֤ר",
+          "role": "o"
+        },
+        {
+          "wordIndex": 5,
+          "tokenId": "o390010080041",
+          "tokenText": "לִ"
+        },
+        {
+          "wordIndex": 6,
+          "tokenId": "o390010080042",
+          "tokenText": "זְבֹּ֨חַ֙",
+          "role": "v"
+        },
+        {
+          "wordIndex": 7,
+          "tokenId": "o390010080051",
+          "tokenText": "אֵ֣ין",
+          "role": "p"
+        },
+        {
+          "wordIndex": 8,
+          "tokenId": "o390010080061",
+          "tokenText": "רָ֔ע",
+          "role": "s"
+        },
+        {
+          "wordIndex": 9,
+          "tokenId": "o390010080071",
+          "tokenText": "וְ"
+        },
+        {
+          "wordIndex": 10,
+          "tokenId": "o390010080072",
+          "tokenText": "כִ֥י"
+        },
+        {
+          "wordIndex": 11,
+          "tokenId": "o390010080081",
+          "tokenText": "תַגִּ֛ישׁוּ",
+          "role": "v"
+        },
+        {
+          "wordIndex": 12,
+          "tokenId": "o390010080091",
+          "tokenText": "פִּסֵּ֥חַ"
+        },
+        {
+          "wordIndex": 13,
+          "tokenId": "o390010080101",
+          "tokenText": "וְ"
+        },
+        {
+          "wordIndex": 14,
+          "tokenId": "o390010080102",
+          "tokenText": "חֹלֶ֖ה"
+        },
+        {
+          "wordIndex": 15,
+          "tokenId": "o390010080111",
+          "tokenText": "אֵ֣ין",
+          "role": "p"
+        },
+        {
+          "wordIndex": 16,
+          "tokenId": "o390010080121",
+          "tokenText": "רָ֑ע",
+          "role": "s"
+        },
+        {
+          "wordIndex": 17,
+          "tokenId": "o390010080131",
+          "tokenText": "הַקְרִיבֵ֨",
+          "role": "v"
+        },
+        {
+          "wordIndex": 18,
+          "tokenId": "o390010080132",
+          "tokenText": "הוּ",
+          "role": "o"
+        },
+        {
+          "wordIndex": 19,
+          "tokenId": "o390010080141",
+          "tokenText": "נָ֜א",
+          "role": "adv"
+        },
+        {
+          "wordIndex": 20,
+          "tokenId": "o390010080151",
+          "tokenText": "לְ"
+        },
+        {
+          "wordIndex": 21,
+          "tokenId": "o390010080152",
+          "tokenText": "פֶחָתֶ֗"
+        },
+        {
+          "wordIndex": 22,
+          "tokenId": "o390010080153",
+          "tokenText": "ךָ"
+        },
+        {
+          "wordIndex": 23,
+          "tokenId": "o390010080161",
+          "tokenText": "הֲ"
+        },
+        {
+          "wordIndex": 24,
+          "tokenId": "o390010080162",
+          "tokenText": "יִּרְצְ",
+          "role": "v"
+        },
+        {
+          "wordIndex": 25,
+          "tokenId": "o390010080163",
+          "tokenText": "ךָ֙",
+          "role": "o"
+        },
+        {
+          "wordIndex": 26,
+          "tokenId": "o390010080171",
+          "tokenText": "א֚וֹ"
+        },
+        {
+          "wordIndex": 27,
+          "tokenId": "o390010080181",
+          "tokenText": "הֲ"
+        },
+        {
+          "wordIndex": 28,
+          "tokenId": "o390010080182",
+          "tokenText": "יִשָּׂ֣א",
+          "role": "v"
+        },
+        {
+          "wordIndex": 29,
+          "tokenId": "o390010080191",
+          "tokenText": "פָנֶ֔י"
+        },
+        {
+          "wordIndex": 30,
+          "tokenId": "o390010080192",
+          "tokenText": "ךָ"
+        },
+        {
+          "wordIndex": 31,
+          "tokenId": "o390010080201",
+          "tokenText": "אָמַ֖ר",
+          "role": "v"
+        },
+        {
+          "wordIndex": 32,
+          "tokenId": "o390010080211",
+          "tokenText": "יְהוָ֥ה"
+        },
+        {
+          "wordIndex": 33,
+          "tokenId": "o390010080221",
+          "tokenText": "צְבָאֽוֹת"
+        }
+      ],
+      "arcs": [],
+      "spans": []
+    },
+    "9": {
+      "words": [
+        {
+          "wordIndex": 0,
+          "tokenId": "o390010090011",
+          "tokenText": "וְ"
+        },
+        {
+          "wordIndex": 1,
+          "tokenId": "o390010090012",
+          "tokenText": "עַתָּ֛ה"
+        },
+        {
+          "wordIndex": 2,
+          "tokenId": "o390010090021",
+          "tokenText": "חַלּוּ",
+          "role": "v"
+        },
+        {
+          "wordIndex": 3,
+          "tokenId": "o390010090031",
+          "tokenText": "נָ֥א",
+          "role": "adv"
+        },
+        {
+          "wordIndex": 4,
+          "tokenId": "o390010090041",
+          "tokenText": "פְנֵי"
+        },
+        {
+          "wordIndex": 5,
+          "tokenId": "o390010090051",
+          "tokenText": "אֵ֖ל"
+        },
+        {
+          "wordIndex": 6,
+          "tokenId": "o390010090061",
+          "tokenText": "וִֽ"
+        },
+        {
+          "wordIndex": 7,
+          "tokenId": "o390010090062",
+          "tokenText": "יחָנֵ֑",
+          "role": "v"
+        },
+        {
+          "wordIndex": 8,
+          "tokenId": "o390010090063",
+          "tokenText": "נוּ",
+          "role": "o"
+        },
+        {
+          "wordIndex": 9,
+          "tokenId": "o390010090071",
+          "tokenText": "מִ"
+        },
+        {
+          "wordIndex": 10,
+          "tokenId": "o390010090072",
+          "tokenText": "יֶּדְ"
+        },
+        {
+          "wordIndex": 11,
+          "tokenId": "o390010090073",
+          "tokenText": "כֶם֙"
+        },
+        {
+          "wordIndex": 12,
+          "tokenId": "o390010090081",
+          "tokenText": "הָ֣יְתָה",
+          "role": "v"
+        },
+        {
+          "wordIndex": 13,
+          "tokenId": "o390010090091",
+          "tokenText": "זֹּ֔את",
+          "role": "s"
+        },
+        {
+          "wordIndex": 14,
+          "tokenId": "o390010090101",
+          "tokenText": "הֲ"
+        },
+        {
+          "wordIndex": 15,
+          "tokenId": "o390010090102",
+          "tokenText": "יִשָּׂ֤א",
+          "role": "v"
+        },
+        {
+          "wordIndex": 16,
+          "tokenId": "o390010090111",
+          "tokenText": "מִ"
+        },
+        {
+          "wordIndex": 17,
+          "tokenId": "o390010090112",
+          "tokenText": "כֶּם֙"
+        },
+        {
+          "wordIndex": 18,
+          "tokenId": "o390010090121",
+          "tokenText": "פָּנִ֔ים",
+          "role": "o"
+        },
+        {
+          "wordIndex": 19,
+          "tokenId": "o390010090131",
+          "tokenText": "אָמַ֖ר",
+          "role": "v"
+        },
+        {
+          "wordIndex": 20,
+          "tokenId": "o390010090141",
+          "tokenText": "יְהוָ֥ה"
+        },
+        {
+          "wordIndex": 21,
+          "tokenId": "o390010090151",
+          "tokenText": "צְבָאֽוֹת"
+        }
+      ],
+      "arcs": [],
+      "spans": []
+    },
+    "10": {
+      "words": [
+        {
+          "wordIndex": 0,
+          "tokenId": "o390010100011",
+          "tokenText": "מִ֤י",
+          "role": "s"
+        },
+        {
+          "wordIndex": 1,
+          "tokenId": "o390010100021",
+          "tokenText": "גַם"
+        },
+        {
+          "wordIndex": 2,
+          "tokenId": "o390010100031",
+          "tokenText": "בָּ"
+        },
+        {
+          "wordIndex": 3,
+          "tokenId": "o390010100032",
+          "tokenText": "כֶם֙"
+        },
+        {
+          "wordIndex": 4,
+          "tokenId": "o390010100041",
+          "tokenText": "וְ"
+        },
+        {
+          "wordIndex": 5,
+          "tokenId": "o390010100042",
+          "tokenText": "יִסְגֹּ֣ר",
+          "role": "v"
+        },
+        {
+          "wordIndex": 6,
+          "tokenId": "o390010100051",
+          "tokenText": "דְּלָתַ֔יִם",
+          "role": "o"
+        },
+        {
+          "wordIndex": 7,
+          "tokenId": "o390010100061",
+          "tokenText": "וְ"
+        },
+        {
+          "wordIndex": 8,
+          "tokenId": "o390010100062",
+          "tokenText": "לֹֽא",
+          "role": "adv"
+        },
+        {
+          "wordIndex": 9,
+          "tokenId": "o390010100071",
+          "tokenText": "תָאִ֥ירוּ",
+          "role": "v"
+        },
+        {
+          "wordIndex": 10,
+          "tokenId": "o390010100081",
+          "tokenText": "מִזְבְּחִ֖"
+        },
+        {
+          "wordIndex": 11,
+          "tokenId": "o390010100082",
+          "tokenText": "י"
+        },
+        {
+          "wordIndex": 12,
+          "tokenId": "o390010100091",
+          "tokenText": "חִנָּ֑ם",
+          "role": "adv"
+        },
+        {
+          "wordIndex": 13,
+          "tokenId": "o390010100101",
+          "tokenText": "אֵֽין",
+          "role": "p"
+        },
+        {
+          "wordIndex": 14,
+          "tokenId": "o390010100111",
+          "tokenText": "לִ֨"
+        },
+        {
+          "wordIndex": 15,
+          "tokenId": "o390010100112",
+          "tokenText": "י"
+        },
+        {
+          "wordIndex": 16,
+          "tokenId": "o390010100121",
+          "tokenText": "חֵ֜פֶץ",
+          "role": "s"
+        },
+        {
+          "wordIndex": 17,
+          "tokenId": "o390010100131",
+          "tokenText": "בָּ"
+        },
+        {
+          "wordIndex": 18,
+          "tokenId": "o390010100132",
+          "tokenText": "כֶ֗ם"
+        },
+        {
+          "wordIndex": 19,
+          "tokenId": "o390010100141",
+          "tokenText": "אָמַר֙",
+          "role": "v"
+        },
+        {
+          "wordIndex": 20,
+          "tokenId": "o390010100151",
+          "tokenText": "יְהוָ֣ה"
+        },
+        {
+          "wordIndex": 21,
+          "tokenId": "o390010100161",
+          "tokenText": "צְבָא֔וֹת"
+        },
+        {
+          "wordIndex": 22,
+          "tokenId": "o390010100171",
+          "tokenText": "וּ"
+        },
+        {
+          "wordIndex": 23,
+          "tokenId": "o390010100172",
+          "tokenText": "מִנְחָ֖ה",
+          "role": "o"
+        },
+        {
+          "wordIndex": 24,
+          "tokenId": "o390010100181",
+          "tokenText": "לֹֽא",
+          "role": "adv"
+        },
+        {
+          "wordIndex": 25,
+          "tokenId": "o390010100191",
+          "tokenText": "אֶרְצֶ֥ה",
+          "role": "v"
+        },
+        {
+          "wordIndex": 26,
+          "tokenId": "o390010100201",
+          "tokenText": "מִ"
+        },
+        {
+          "wordIndex": 27,
+          "tokenId": "o390010100202",
+          "tokenText": "יֶּדְ"
+        },
+        {
+          "wordIndex": 28,
+          "tokenId": "o390010100203",
+          "tokenText": "כֶֽם"
+        }
+      ],
+      "arcs": [],
+      "spans": []
+    },
+    "11": {
+      "words": [
+        {
+          "wordIndex": 0,
+          "tokenId": "o390010110011",
+          "tokenText": "כִּ֣י"
+        },
+        {
+          "wordIndex": 1,
+          "tokenId": "o390010110021",
+          "tokenText": "מִ"
+        },
+        {
+          "wordIndex": 2,
+          "tokenId": "o390010110022",
+          "tokenText": "מִּזְרַח"
+        },
+        {
+          "wordIndex": 3,
+          "tokenId": "o390010110031",
+          "tokenText": "שֶׁ֜מֶשׁ"
+        },
+        {
+          "wordIndex": 4,
+          "tokenId": "o390010110041",
+          "tokenText": "וְ"
+        },
+        {
+          "wordIndex": 5,
+          "tokenId": "o390010110042",
+          "tokenText": "עַד"
+        },
+        {
+          "wordIndex": 6,
+          "tokenId": "o390010110051",
+          "tokenText": "מְבוֹא֗"
+        },
+        {
+          "wordIndex": 7,
+          "tokenId": "o390010110052",
+          "tokenText": "וֹ"
+        },
+        {
+          "wordIndex": 8,
+          "tokenId": "o390010110061",
+          "tokenText": "גָּד֤וֹל",
+          "role": "p"
+        },
+        {
+          "wordIndex": 9,
+          "tokenId": "o390010110071",
+          "tokenText": "שְׁמִ"
+        },
+        {
+          "wordIndex": 10,
+          "tokenId": "o390010110072",
+          "tokenText": "י֙"
+        },
+        {
+          "wordIndex": 11,
+          "tokenId": "o390010110081",
+          "tokenText": "בַּ"
+        },
+        {
+          "wordIndex": 12,
+          "tokenId": "o390010110081ה",
+          "tokenText": ""
+        },
+        {
+          "wordIndex": 13,
+          "tokenId": "o390010110082",
+          "tokenText": "גּוֹיִ֔ם"
+        },
+        {
+          "wordIndex": 14,
+          "tokenId": "o390010110091",
+          "tokenText": "וּ"
+        },
+        {
+          "wordIndex": 15,
+          "tokenId": "o390010110092",
+          "tokenText": "בְ"
+        },
+        {
+          "wordIndex": 16,
+          "tokenId": "o390010110093",
+          "tokenText": "כָל"
+        },
+        {
+          "wordIndex": 17,
+          "tokenId": "o390010110101",
+          "tokenText": "מָק֗וֹם"
+        },
+        {
+          "wordIndex": 18,
+          "tokenId": "o390010110121",
+          "tokenText": "מֻגָּ֛שׁ",
+          "role": "v"
+        },
+        {
+          "wordIndex": 19,
+          "tokenId": "o390010110131",
+          "tokenText": "לִ"
+        },
+        {
+          "wordIndex": 20,
+          "tokenId": "o390010110132",
+          "tokenText": "שְׁמִ֖"
+        },
+        {
+          "wordIndex": 21,
+          "tokenId": "o390010110133",
+          "tokenText": "י"
+        },
+        {
+          "wordIndex": 22,
+          "tokenId": "o390010110111",
+          "tokenText": "מֻקְטָ֥ר"
+        },
+        {
+          "wordIndex": 23,
+          "tokenId": "o390010110141",
+          "tokenText": "וּ"
+        },
+        {
+          "wordIndex": 24,
+          "tokenId": "o390010110142",
+          "tokenText": "מִנְחָ֣ה"
+        },
+        {
+          "wordIndex": 25,
+          "tokenId": "o390010110151",
+          "tokenText": "טְהוֹרָ֑ה"
+        },
+        {
+          "wordIndex": 26,
+          "tokenId": "o390010110161",
+          "tokenText": "כִּֽי"
+        },
+        {
+          "wordIndex": 27,
+          "tokenId": "o390010110171",
+          "tokenText": "גָד֤וֹל",
+          "role": "p"
+        },
+        {
+          "wordIndex": 28,
+          "tokenId": "o390010110181",
+          "tokenText": "שְׁמִ"
+        },
+        {
+          "wordIndex": 29,
+          "tokenId": "o390010110182",
+          "tokenText": "י֙"
+        },
+        {
+          "wordIndex": 30,
+          "tokenId": "o390010110191",
+          "tokenText": "בַּ"
+        },
+        {
+          "wordIndex": 31,
+          "tokenId": "o390010110191ה",
+          "tokenText": ""
+        },
+        {
+          "wordIndex": 32,
+          "tokenId": "o390010110192",
+          "tokenText": "גּוֹיִ֔ם"
+        },
+        {
+          "wordIndex": 33,
+          "tokenId": "o390010110201",
+          "tokenText": "אָמַ֖ר",
+          "role": "v"
+        },
+        {
+          "wordIndex": 34,
+          "tokenId": "o390010110211",
+          "tokenText": "יְהוָ֥ה"
+        },
+        {
+          "wordIndex": 35,
+          "tokenId": "o390010110221",
+          "tokenText": "צְבָאֽוֹת"
+        }
+      ],
+      "arcs": [],
+      "spans": []
+    },
+    "12": {
+      "words": [
+        {
+          "wordIndex": 0,
+          "tokenId": "o390010120011",
+          "tokenText": "וְ"
+        },
+        {
+          "wordIndex": 1,
+          "tokenId": "o390010120012",
+          "tokenText": "אַתֶּ֖ם",
+          "role": "s"
+        },
+        {
+          "wordIndex": 2,
+          "tokenId": "o390010120021",
+          "tokenText": "מְחַלְּלִ֣ים",
+          "role": "v"
+        },
+        {
+          "wordIndex": 3,
+          "tokenId": "o390010120031",
+          "tokenText": "אוֹת֑"
+        },
+        {
+          "wordIndex": 4,
+          "tokenId": "o390010120032",
+          "tokenText": "וֹ"
+        },
+        {
+          "wordIndex": 5,
+          "tokenId": "o390010120041",
+          "tokenText": "בֶּ"
+        },
+        {
+          "wordIndex": 6,
+          "tokenId": "o390010120042",
+          "tokenText": "אֱמָרְ",
+          "role": "v"
+        },
+        {
+          "wordIndex": 7,
+          "tokenId": "o390010120043",
+          "tokenText": "כֶ֗ם",
+          "role": "s"
+        },
+        {
+          "wordIndex": 8,
+          "tokenId": "o390010120051",
+          "tokenText": "שֻׁלְחַ֤ן"
+        },
+        {
+          "wordIndex": 9,
+          "tokenId": "o390010120061",
+          "tokenText": "אֲדֹנָ"
+        },
+        {
+          "wordIndex": 10,
+          "tokenId": "o390010120062",
+          "tokenText": "י֙"
+        },
+        {
+          "wordIndex": 11,
+          "tokenId": "o390010120071",
+          "tokenText": "מְגֹאָ֣ל",
+          "role": "v"
+        },
+        {
+          "wordIndex": 12,
+          "tokenId": "o390010120081",
+          "tokenText": "ה֔וּא",
+          "role": "s"
+        },
+        {
+          "wordIndex": 13,
+          "tokenId": "o390010120091",
+          "tokenText": "וְ"
+        },
+        {
+          "wordIndex": 14,
+          "tokenId": "o390010120092",
+          "tokenText": "נִיב֖"
+        },
+        {
+          "wordIndex": 15,
+          "tokenId": "o390010120093",
+          "tokenText": "וֹ"
+        },
+        {
+          "wordIndex": 16,
+          "tokenId": "o390010120111",
+          "tokenText": "אָכְלֽ"
+        },
+        {
+          "wordIndex": 17,
+          "tokenId": "o390010120112",
+          "tokenText": "וֹ"
+        },
+        {
+          "wordIndex": 18,
+          "tokenId": "o390010120101",
+          "tokenText": "נִבְזֶ֥ה",
+          "role": "v"
+        }
+      ],
+      "arcs": [],
+      "spans": []
+    },
+    "13": {
+      "words": [
+        {
+          "wordIndex": 0,
+          "tokenId": "o390010130011",
+          "tokenText": "וַ"
+        },
+        {
+          "wordIndex": 1,
+          "tokenId": "o390010130012",
+          "tokenText": "אֲמַרְתֶּם֩",
+          "role": "v"
+        },
+        {
+          "wordIndex": 2,
+          "tokenId": "o390010130021",
+          "tokenText": "הִנֵּ֨ה"
+        },
+        {
+          "wordIndex": 3,
+          "tokenId": "o390010130031",
+          "tokenText": "מַ",
+          "role": "p"
+        },
+        {
+          "wordIndex": 4,
+          "tokenId": "o390010130032",
+          "tokenText": "תְּלָאָ֜ה",
+          "role": "s"
+        },
+        {
+          "wordIndex": 5,
+          "tokenId": "o390010130041",
+          "tokenText": "וְ"
+        },
+        {
+          "wordIndex": 6,
+          "tokenId": "o390010130042",
+          "tokenText": "הִפַּחְתֶּ֣ם",
+          "role": "v"
+        },
+        {
+          "wordIndex": 7,
+          "tokenId": "o390010130051",
+          "tokenText": "אוֹת֗"
+        },
+        {
+          "wordIndex": 8,
+          "tokenId": "o390010130052",
+          "tokenText": "וֹ"
+        },
+        {
+          "wordIndex": 9,
+          "tokenId": "o390010130061",
+          "tokenText": "אָמַר֙",
+          "role": "v"
+        },
+        {
+          "wordIndex": 10,
+          "tokenId": "o390010130071",
+          "tokenText": "יְהוָ֣ה"
+        },
+        {
+          "wordIndex": 11,
+          "tokenId": "o390010130081",
+          "tokenText": "צְבָא֔וֹת"
+        },
+        {
+          "wordIndex": 12,
+          "tokenId": "o390010130091",
+          "tokenText": "וַ"
+        },
+        {
+          "wordIndex": 13,
+          "tokenId": "o390010130092",
+          "tokenText": "הֲבֵאתֶ֣ם",
+          "role": "v"
+        },
+        {
+          "wordIndex": 14,
+          "tokenId": "o390010130101",
+          "tokenText": "גָּז֗וּל"
+        },
+        {
+          "wordIndex": 15,
+          "tokenId": "o390010130111",
+          "tokenText": "וְ"
+        },
+        {
+          "wordIndex": 16,
+          "tokenId": "o390010130112",
+          "tokenText": "אֶת"
+        },
+        {
+          "wordIndex": 17,
+          "tokenId": "o390010130121",
+          "tokenText": "הַ"
+        },
+        {
+          "wordIndex": 18,
+          "tokenId": "o390010130122",
+          "tokenText": "פִּסֵּ֨חַ֙"
+        },
+        {
+          "wordIndex": 19,
+          "tokenId": "o390010130131",
+          "tokenText": "וְ"
+        },
+        {
+          "wordIndex": 20,
+          "tokenId": "o390010130132",
+          "tokenText": "אֶת"
+        },
+        {
+          "wordIndex": 21,
+          "tokenId": "o390010130141",
+          "tokenText": "הַ֣"
+        },
+        {
+          "wordIndex": 22,
+          "tokenId": "o390010130142",
+          "tokenText": "חוֹלֶ֔ה"
+        },
+        {
+          "wordIndex": 23,
+          "tokenId": "o390010130151",
+          "tokenText": "וַ"
+        },
+        {
+          "wordIndex": 24,
+          "tokenId": "o390010130152",
+          "tokenText": "הֲבֵאתֶ֖ם",
+          "role": "v"
+        },
+        {
+          "wordIndex": 25,
+          "tokenId": "o390010130161",
+          "tokenText": "אֶת"
+        },
+        {
+          "wordIndex": 26,
+          "tokenId": "o390010130171",
+          "tokenText": "הַ"
+        },
+        {
+          "wordIndex": 27,
+          "tokenId": "o390010130172",
+          "tokenText": "מִּנְחָ֑ה"
+        },
+        {
+          "wordIndex": 28,
+          "tokenId": "o390010130181",
+          "tokenText": "הַ"
+        },
+        {
+          "wordIndex": 29,
+          "tokenId": "o390010130182",
+          "tokenText": "אֶרְצֶ֥ה",
+          "role": "v"
+        },
+        {
+          "wordIndex": 30,
+          "tokenId": "o390010130191",
+          "tokenText": "אוֹתָ֛"
+        },
+        {
+          "wordIndex": 31,
+          "tokenId": "o390010130192",
+          "tokenText": "הּ"
+        },
+        {
+          "wordIndex": 32,
+          "tokenId": "o390010130201",
+          "tokenText": "מִ"
+        },
+        {
+          "wordIndex": 33,
+          "tokenId": "o390010130202",
+          "tokenText": "יֶּדְ"
+        },
+        {
+          "wordIndex": 34,
+          "tokenId": "o390010130203",
+          "tokenText": "כֶ֖ם"
+        },
+        {
+          "wordIndex": 35,
+          "tokenId": "o390010130211",
+          "tokenText": "אָמַ֥ר",
+          "role": "v"
+        },
+        {
+          "wordIndex": 36,
+          "tokenId": "o390010130221",
+          "tokenText": "יְהוָֽה",
+          "role": "s"
+        }
+      ],
+      "arcs": [],
+      "spans": []
+    },
+    "14": {
+      "words": [
+        {
+          "wordIndex": 0,
+          "tokenId": "o390010140011",
+          "tokenText": "וְ"
+        },
+        {
+          "wordIndex": 1,
+          "tokenId": "o390010140012",
+          "tokenText": "אָר֣וּר",
+          "role": "v"
+        },
+        {
+          "wordIndex": 2,
+          "tokenId": "o390010140021",
+          "tokenText": "נוֹכֵ֗ל",
+          "role": "s"
+        },
+        {
+          "wordIndex": 3,
+          "tokenId": "o390010140031",
+          "tokenText": "וְ"
+        },
+        {
+          "wordIndex": 4,
+          "tokenId": "o390010140032",
+          "tokenText": "יֵ֤שׁ",
+          "role": "p"
+        },
+        {
+          "wordIndex": 5,
+          "tokenId": "o390010140041",
+          "tokenText": "בְּ"
+        },
+        {
+          "wordIndex": 6,
+          "tokenId": "o390010140042",
+          "tokenText": "עֶדְר"
+        },
+        {
+          "wordIndex": 7,
+          "tokenId": "o390010140043",
+          "tokenText": "וֹ֙"
+        },
+        {
+          "wordIndex": 8,
+          "tokenId": "o390010140051",
+          "tokenText": "זָכָ֔ר",
+          "role": "s"
+        },
+        {
+          "wordIndex": 9,
+          "tokenId": "o390010140061",
+          "tokenText": "וְ"
+        },
+        {
+          "wordIndex": 10,
+          "tokenId": "o390010140062",
+          "tokenText": "נֹדֵ֛ר",
+          "role": "v"
+        },
+        {
+          "wordIndex": 11,
+          "tokenId": "o390010140071",
+          "tokenText": "וְ"
+        },
+        {
+          "wordIndex": 12,
+          "tokenId": "o390010140072",
+          "tokenText": "זֹבֵ֥חַ",
+          "role": "v"
+        },
+        {
+          "wordIndex": 13,
+          "tokenId": "o390010140081",
+          "tokenText": "מָשְׁחָ֖ת",
+          "role": "o"
+        },
+        {
+          "wordIndex": 14,
+          "tokenId": "o390010140091",
+          "tokenText": "לַֽ"
+        },
+        {
+          "wordIndex": 15,
+          "tokenId": "o390010140092",
+          "tokenText": "אדֹנָ֑"
+        },
+        {
+          "wordIndex": 16,
+          "tokenId": "o390010140093",
+          "tokenText": "י"
+        },
+        {
+          "wordIndex": 17,
+          "tokenId": "o390010140101",
+          "tokenText": "כִּי֩"
+        },
+        {
+          "wordIndex": 18,
+          "tokenId": "o390010140111",
+          "tokenText": "מֶ֨לֶךְ"
+        },
+        {
+          "wordIndex": 19,
+          "tokenId": "o390010140121",
+          "tokenText": "גָּד֜וֹל"
+        },
+        {
+          "wordIndex": 20,
+          "tokenId": "o390010140131",
+          "tokenText": "אָ֗נִי",
+          "role": "s"
+        },
+        {
+          "wordIndex": 21,
+          "tokenId": "o390010140141",
+          "tokenText": "אָמַר֙",
+          "role": "v"
+        },
+        {
+          "wordIndex": 22,
+          "tokenId": "o390010140151",
+          "tokenText": "יְהוָ֣ה"
+        },
+        {
+          "wordIndex": 23,
+          "tokenId": "o390010140161",
+          "tokenText": "צְבָא֔וֹת"
+        },
+        {
+          "wordIndex": 24,
+          "tokenId": "o390010140171",
+          "tokenText": "וּ"
+        },
+        {
+          "wordIndex": 25,
+          "tokenId": "o390010140172",
+          "tokenText": "שְׁמִ֖"
+        },
+        {
+          "wordIndex": 26,
+          "tokenId": "o390010140173",
+          "tokenText": "י"
+        },
+        {
+          "wordIndex": 27,
+          "tokenId": "o390010140181",
+          "tokenText": "נוֹרָ֥א",
+          "role": "v"
+        },
+        {
+          "wordIndex": 28,
+          "tokenId": "o390010140191",
+          "tokenText": "בַ"
+        },
+        {
+          "wordIndex": 29,
+          "tokenId": "o390010140191ה",
+          "tokenText": ""
+        },
+        {
+          "wordIndex": 30,
+          "tokenId": "o390010140192",
+          "tokenText": "גּוֹיִֽם"
+        }
+      ],
+      "arcs": [],
+      "spans": []
+    }
+  },
+  "2": {
+    "1": {
+      "words": [
+        {
+          "wordIndex": 0,
+          "tokenId": "o390020010011",
+          "tokenText": "וְ"
+        },
+        {
+          "wordIndex": 1,
+          "tokenId": "o390020010012",
+          "tokenText": "עַתָּ֗ה"
+        },
+        {
+          "wordIndex": 2,
+          "tokenId": "o390020010021",
+          "tokenText": "אֲלֵי"
+        },
+        {
+          "wordIndex": 3,
+          "tokenId": "o390020010022",
+          "tokenText": "כֶ֛ם"
+        },
+        {
+          "wordIndex": 4,
+          "tokenId": "o390020010031",
+          "tokenText": "הַ"
+        },
+        {
+          "wordIndex": 5,
+          "tokenId": "o390020010032",
+          "tokenText": "מִּצְוָ֥ה"
+        },
+        {
+          "wordIndex": 6,
+          "tokenId": "o390020010041",
+          "tokenText": "הַ"
+        },
+        {
+          "wordIndex": 7,
+          "tokenId": "o390020010042",
+          "tokenText": "זֹּ֖את"
+        },
+        {
+          "wordIndex": 8,
+          "tokenId": "o390020010051",
+          "tokenText": "הַ"
+        },
+        {
+          "wordIndex": 9,
+          "tokenId": "o390020010052",
+          "tokenText": "כֹּהֲנִֽים"
+        }
+      ],
+      "arcs": [],
+      "spans": []
+    },
+    "2": {
+      "words": [
+        {
+          "wordIndex": 0,
+          "tokenId": "o390020020011",
+          "tokenText": "אִם"
+        },
+        {
+          "wordIndex": 1,
+          "tokenId": "o390020020021",
+          "tokenText": "לֹ֣א",
+          "role": "adv"
+        },
+        {
+          "wordIndex": 2,
+          "tokenId": "o390020020031",
+          "tokenText": "תִשְׁמְע֡וּ",
+          "role": "v"
+        },
+        {
+          "wordIndex": 3,
+          "tokenId": "o390020020041",
+          "tokenText": "וְ"
+        },
+        {
+          "wordIndex": 4,
+          "tokenId": "o390020020042",
+          "tokenText": "אִם"
+        },
+        {
+          "wordIndex": 5,
+          "tokenId": "o390020020051",
+          "tokenText": "לֹא֩",
+          "role": "adv"
+        },
+        {
+          "wordIndex": 6,
+          "tokenId": "o390020020061",
+          "tokenText": "תָשִׂ֨ימוּ",
+          "role": "v"
+        },
+        {
+          "wordIndex": 7,
+          "tokenId": "o390020020071",
+          "tokenText": "עַל"
+        },
+        {
+          "wordIndex": 8,
+          "tokenId": "o390020020081",
+          "tokenText": "לֵ֜ב"
+        },
+        {
+          "wordIndex": 9,
+          "tokenId": "o390020020091",
+          "tokenText": "לָ"
+        },
+        {
+          "wordIndex": 10,
+          "tokenId": "o390020020092",
+          "tokenText": "תֵ֧ת",
+          "role": "v"
+        },
+        {
+          "wordIndex": 11,
+          "tokenId": "o390020020101",
+          "tokenText": "כָּב֣וֹד",
+          "role": "o"
+        },
+        {
+          "wordIndex": 12,
+          "tokenId": "o390020020111",
+          "tokenText": "לִ"
+        },
+        {
+          "wordIndex": 13,
+          "tokenId": "o390020020112",
+          "tokenText": "שְׁמִ֗"
+        },
+        {
+          "wordIndex": 14,
+          "tokenId": "o390020020113",
+          "tokenText": "י"
+        },
+        {
+          "wordIndex": 15,
+          "tokenId": "o390020020121",
+          "tokenText": "אָמַר֙",
+          "role": "v"
+        },
+        {
+          "wordIndex": 16,
+          "tokenId": "o390020020131",
+          "tokenText": "יְהוָ֣ה"
+        },
+        {
+          "wordIndex": 17,
+          "tokenId": "o390020020141",
+          "tokenText": "צְבָא֔וֹת"
+        },
+        {
+          "wordIndex": 18,
+          "tokenId": "o390020020151",
+          "tokenText": "וְ"
+        },
+        {
+          "wordIndex": 19,
+          "tokenId": "o390020020152",
+          "tokenText": "שִׁלַּחְתִּ֤י",
+          "role": "v"
+        },
+        {
+          "wordIndex": 20,
+          "tokenId": "o390020020161",
+          "tokenText": "בָ"
+        },
+        {
+          "wordIndex": 21,
+          "tokenId": "o390020020162",
+          "tokenText": "כֶם֙"
+        },
+        {
+          "wordIndex": 22,
+          "tokenId": "o390020020171",
+          "tokenText": "אֶת"
+        },
+        {
+          "wordIndex": 23,
+          "tokenId": "o390020020181",
+          "tokenText": "הַ"
+        },
+        {
+          "wordIndex": 24,
+          "tokenId": "o390020020182",
+          "tokenText": "מְּאֵרָ֔ה"
+        },
+        {
+          "wordIndex": 25,
+          "tokenId": "o390020020191",
+          "tokenText": "וְ"
+        },
+        {
+          "wordIndex": 26,
+          "tokenId": "o390020020192",
+          "tokenText": "אָרוֹתִ֖י",
+          "role": "v"
+        },
+        {
+          "wordIndex": 27,
+          "tokenId": "o390020020201",
+          "tokenText": "אֶת"
+        },
+        {
+          "wordIndex": 28,
+          "tokenId": "o390020020211",
+          "tokenText": "בִּרְכֽוֹתֵי"
+        },
+        {
+          "wordIndex": 29,
+          "tokenId": "o390020020212",
+          "tokenText": "כֶ֑ם"
+        },
+        {
+          "wordIndex": 30,
+          "tokenId": "o390020020221",
+          "tokenText": "וְ"
+        },
+        {
+          "wordIndex": 31,
+          "tokenId": "o390020020222",
+          "tokenText": "גַם֙"
+        },
+        {
+          "wordIndex": 32,
+          "tokenId": "o390020020231",
+          "tokenText": "אָרוֹתִ֔י",
+          "role": "v"
+        },
+        {
+          "wordIndex": 33,
+          "tokenId": "o390020020232",
+          "tokenText": "הָ",
+          "role": "o"
+        },
+        {
+          "wordIndex": 34,
+          "tokenId": "o390020020241",
+          "tokenText": "כִּ֥י"
+        },
+        {
+          "wordIndex": 35,
+          "tokenId": "o390020020251",
+          "tokenText": "אֵינְ",
+          "role": "adv"
+        },
+        {
+          "wordIndex": 36,
+          "tokenId": "o390020020252",
+          "tokenText": "כֶ֖ם",
+          "role": "s"
+        },
+        {
+          "wordIndex": 37,
+          "tokenId": "o390020020261",
+          "tokenText": "שָׂמִ֥ים",
+          "role": "v"
+        },
+        {
+          "wordIndex": 38,
+          "tokenId": "o390020020271",
+          "tokenText": "עַל"
+        },
+        {
+          "wordIndex": 39,
+          "tokenId": "o390020020281",
+          "tokenText": "לֵֽב"
+        }
+      ],
+      "arcs": [],
+      "spans": []
+    },
+    "3": {
+      "words": [
+        {
+          "wordIndex": 0,
+          "tokenId": "o390020030011",
+          "tokenText": "הִנְ",
+          "role": "p"
+        },
+        {
+          "wordIndex": 1,
+          "tokenId": "o390020030012",
+          "tokenText": "נִ֨י",
+          "role": "s"
+        },
+        {
+          "wordIndex": 2,
+          "tokenId": "o390020030021",
+          "tokenText": "גֹעֵ֤ר",
+          "role": "v"
+        },
+        {
+          "wordIndex": 3,
+          "tokenId": "o390020030031",
+          "tokenText": "לָ"
+        },
+        {
+          "wordIndex": 4,
+          "tokenId": "o390020030032",
+          "tokenText": "כֶם֙"
+        },
+        {
+          "wordIndex": 5,
+          "tokenId": "o390020030041",
+          "tokenText": "אֶת"
+        },
+        {
+          "wordIndex": 6,
+          "tokenId": "o390020030051",
+          "tokenText": "הַ"
+        },
+        {
+          "wordIndex": 7,
+          "tokenId": "o390020030052",
+          "tokenText": "זֶּ֔רַע"
+        },
+        {
+          "wordIndex": 8,
+          "tokenId": "o390020030061",
+          "tokenText": "וְ"
+        },
+        {
+          "wordIndex": 9,
+          "tokenId": "o390020030062",
+          "tokenText": "זֵרִ֤יתִי",
+          "role": "v"
+        },
+        {
+          "wordIndex": 10,
+          "tokenId": "o390020030081",
+          "tokenText": "עַל"
+        },
+        {
+          "wordIndex": 11,
+          "tokenId": "o390020030091",
+          "tokenText": "פְּנֵי"
+        },
+        {
+          "wordIndex": 12,
+          "tokenId": "o390020030092",
+          "tokenText": "כֶ֔ם"
+        },
+        {
+          "wordIndex": 13,
+          "tokenId": "o390020030071",
+          "tokenText": "פֶ֨רֶשׁ֙"
+        },
+        {
+          "wordIndex": 14,
+          "tokenId": "o390020030101",
+          "tokenText": "פֶּ֖רֶשׁ"
+        },
+        {
+          "wordIndex": 15,
+          "tokenId": "o390020030111",
+          "tokenText": "חַגֵּי"
+        },
+        {
+          "wordIndex": 16,
+          "tokenId": "o390020030112",
+          "tokenText": "כֶ֑ם"
+        },
+        {
+          "wordIndex": 17,
+          "tokenId": "o390020030121",
+          "tokenText": "וְ"
+        },
+        {
+          "wordIndex": 18,
+          "tokenId": "o390020030122",
+          "tokenText": "נָשָׂ֥א",
+          "role": "v"
+        },
+        {
+          "wordIndex": 19,
+          "tokenId": "o390020030131",
+          "tokenText": "אֶתְ"
+        },
+        {
+          "wordIndex": 20,
+          "tokenId": "o390020030132",
+          "tokenText": "כֶ֖ם"
+        },
+        {
+          "wordIndex": 21,
+          "tokenId": "o390020030141",
+          "tokenText": "אֵלָֽי"
+        },
+        {
+          "wordIndex": 22,
+          "tokenId": "o390020030142",
+          "tokenText": "ו"
+        }
+      ],
+      "arcs": [],
+      "spans": []
+    },
+    "4": {
+      "words": [
+        {
+          "wordIndex": 0,
+          "tokenId": "o390020040011",
+          "tokenText": "וִֽ"
+        },
+        {
+          "wordIndex": 1,
+          "tokenId": "o390020040012",
+          "tokenText": "ידַעְתֶּ֕ם",
+          "role": "v"
+        },
+        {
+          "wordIndex": 2,
+          "tokenId": "o390020040021",
+          "tokenText": "כִּ֚י"
+        },
+        {
+          "wordIndex": 3,
+          "tokenId": "o390020040031",
+          "tokenText": "שִׁלַּ֣חְתִּי",
+          "role": "v"
+        },
+        {
+          "wordIndex": 4,
+          "tokenId": "o390020040041",
+          "tokenText": "אֲלֵי"
+        },
+        {
+          "wordIndex": 5,
+          "tokenId": "o390020040042",
+          "tokenText": "כֶ֔ם"
+        },
+        {
+          "wordIndex": 6,
+          "tokenId": "o390020040051",
+          "tokenText": "אֵ֖ת"
+        },
+        {
+          "wordIndex": 7,
+          "tokenId": "o390020040061",
+          "tokenText": "הַ"
+        },
+        {
+          "wordIndex": 8,
+          "tokenId": "o390020040062",
+          "tokenText": "מִּצְוָ֣ה"
+        },
+        {
+          "wordIndex": 9,
+          "tokenId": "o390020040071",
+          "tokenText": "הַ"
+        },
+        {
+          "wordIndex": 10,
+          "tokenId": "o390020040072",
+          "tokenText": "זֹּ֑את"
+        },
+        {
+          "wordIndex": 11,
+          "tokenId": "o390020040081",
+          "tokenText": "לִֽ"
+        },
+        {
+          "wordIndex": 12,
+          "tokenId": "o390020040082",
+          "tokenText": "הְי֤וֹת",
+          "role": "v"
+        },
+        {
+          "wordIndex": 13,
+          "tokenId": "o390020040091",
+          "tokenText": "בְּרִיתִ"
+        },
+        {
+          "wordIndex": 14,
+          "tokenId": "o390020040092",
+          "tokenText": "י֙"
+        },
+        {
+          "wordIndex": 15,
+          "tokenId": "o390020040101",
+          "tokenText": "אֶת"
+        },
+        {
+          "wordIndex": 16,
+          "tokenId": "o390020040111",
+          "tokenText": "לֵוִ֔י"
+        },
+        {
+          "wordIndex": 17,
+          "tokenId": "o390020040121",
+          "tokenText": "אָמַ֖ר",
+          "role": "v"
+        },
+        {
+          "wordIndex": 18,
+          "tokenId": "o390020040131",
+          "tokenText": "יְהוָ֥ה"
+        },
+        {
+          "wordIndex": 19,
+          "tokenId": "o390020040141",
+          "tokenText": "צְבָאֽוֹת"
+        }
+      ],
+      "arcs": [],
+      "spans": []
+    },
+    "5": {
+      "words": [
+        {
+          "wordIndex": 0,
+          "tokenId": "o390020050011",
+          "tokenText": "בְּרִיתִ֣"
+        },
+        {
+          "wordIndex": 1,
+          "tokenId": "o390020050012",
+          "tokenText": "י"
+        },
+        {
+          "wordIndex": 2,
+          "tokenId": "o390020050021",
+          "tokenText": "הָיְתָ֣ה",
+          "role": "v"
+        },
+        {
+          "wordIndex": 3,
+          "tokenId": "o390020050031",
+          "tokenText": "אִתּ֗"
+        },
+        {
+          "wordIndex": 4,
+          "tokenId": "o390020050032",
+          "tokenText": "וֹ"
+        },
+        {
+          "wordIndex": 5,
+          "tokenId": "o390020050041",
+          "tokenText": "הַֽ"
+        },
+        {
+          "wordIndex": 6,
+          "tokenId": "o390020050042",
+          "tokenText": "חַיִּים֙"
+        },
+        {
+          "wordIndex": 7,
+          "tokenId": "o390020050051",
+          "tokenText": "וְ"
+        },
+        {
+          "wordIndex": 8,
+          "tokenId": "o390020050052",
+          "tokenText": "הַ֨"
+        },
+        {
+          "wordIndex": 9,
+          "tokenId": "o390020050053",
+          "tokenText": "שָּׁל֔וֹם"
+        },
+        {
+          "wordIndex": 10,
+          "tokenId": "o390020050061",
+          "tokenText": "וָ"
+        },
+        {
+          "wordIndex": 11,
+          "tokenId": "o390020050062",
+          "tokenText": "אֶתְּנֵֽ",
+          "role": "v"
+        },
+        {
+          "wordIndex": 12,
+          "tokenId": "o390020050063",
+          "tokenText": "ם",
+          "role": "o"
+        },
+        {
+          "wordIndex": 13,
+          "tokenId": "o390020050071",
+          "tokenText": "ל֥"
+        },
+        {
+          "wordIndex": 14,
+          "tokenId": "o390020050072",
+          "tokenText": "וֹ"
+        },
+        {
+          "wordIndex": 15,
+          "tokenId": "o390020050081",
+          "tokenText": "מוֹרָ֖א",
+          "role": "o"
+        },
+        {
+          "wordIndex": 16,
+          "tokenId": "o390020050091",
+          "tokenText": "וַ"
+        },
+        {
+          "wordIndex": 17,
+          "tokenId": "o390020050092",
+          "tokenText": "יִּֽירָאֵ֑",
+          "role": "v"
+        },
+        {
+          "wordIndex": 18,
+          "tokenId": "o390020050093",
+          "tokenText": "נִי",
+          "role": "o"
+        },
+        {
+          "wordIndex": 19,
+          "tokenId": "o390020050101",
+          "tokenText": "וּ"
+        },
+        {
+          "wordIndex": 20,
+          "tokenId": "o390020050102",
+          "tokenText": "מִ"
+        },
+        {
+          "wordIndex": 21,
+          "tokenId": "o390020050103",
+          "tokenText": "פְּנֵ֥י"
+        },
+        {
+          "wordIndex": 22,
+          "tokenId": "o390020050111",
+          "tokenText": "שְׁמִ֖"
+        },
+        {
+          "wordIndex": 23,
+          "tokenId": "o390020050112",
+          "tokenText": "י"
+        },
+        {
+          "wordIndex": 24,
+          "tokenId": "o390020050121",
+          "tokenText": "נִחַ֥ת",
+          "role": "v"
+        },
+        {
+          "wordIndex": 25,
+          "tokenId": "o390020050131",
+          "tokenText": "הֽוּא",
+          "role": "s"
+        }
+      ],
+      "arcs": [],
+      "spans": []
+    },
+    "6": {
+      "words": [
+        {
+          "wordIndex": 0,
+          "tokenId": "o390020060011",
+          "tokenText": "תּוֹרַ֤ת"
+        },
+        {
+          "wordIndex": 1,
+          "tokenId": "o390020060021",
+          "tokenText": "אֱמֶת֙"
+        },
+        {
+          "wordIndex": 2,
+          "tokenId": "o390020060031",
+          "tokenText": "הָיְתָ֣ה",
+          "role": "v"
+        },
+        {
+          "wordIndex": 3,
+          "tokenId": "o390020060041",
+          "tokenText": "בְּ"
+        },
+        {
+          "wordIndex": 4,
+          "tokenId": "o390020060042",
+          "tokenText": "פִ֔י"
+        },
+        {
+          "wordIndex": 5,
+          "tokenId": "o390020060043",
+          "tokenText": "הוּ"
+        },
+        {
+          "wordIndex": 6,
+          "tokenId": "o390020060051",
+          "tokenText": "וְ"
+        },
+        {
+          "wordIndex": 7,
+          "tokenId": "o390020060052",
+          "tokenText": "עַוְלָ֖ה",
+          "role": "s"
+        },
+        {
+          "wordIndex": 8,
+          "tokenId": "o390020060061",
+          "tokenText": "לֹא",
+          "role": "adv"
+        },
+        {
+          "wordIndex": 9,
+          "tokenId": "o390020060071",
+          "tokenText": "נִמְצָ֣א",
+          "role": "v"
+        },
+        {
+          "wordIndex": 10,
+          "tokenId": "o390020060081",
+          "tokenText": "בִ"
+        },
+        {
+          "wordIndex": 11,
+          "tokenId": "o390020060082",
+          "tokenText": "שְׂפָתָ֑י"
+        },
+        {
+          "wordIndex": 12,
+          "tokenId": "o390020060083",
+          "tokenText": "ו"
+        },
+        {
+          "wordIndex": 13,
+          "tokenId": "o390020060091",
+          "tokenText": "בְּ"
+        },
+        {
+          "wordIndex": 14,
+          "tokenId": "o390020060092",
+          "tokenText": "שָׁל֤וֹם"
+        },
+        {
+          "wordIndex": 15,
+          "tokenId": "o390020060101",
+          "tokenText": "וּ"
+        },
+        {
+          "wordIndex": 16,
+          "tokenId": "o390020060102",
+          "tokenText": "בְ"
+        },
+        {
+          "wordIndex": 17,
+          "tokenId": "o390020060103",
+          "tokenText": "מִישׁוֹר֙"
+        },
+        {
+          "wordIndex": 18,
+          "tokenId": "o390020060111",
+          "tokenText": "הָלַ֣ךְ",
+          "role": "v"
+        },
+        {
+          "wordIndex": 19,
+          "tokenId": "o390020060121",
+          "tokenText": "אִתִּ֔"
+        },
+        {
+          "wordIndex": 20,
+          "tokenId": "o390020060122",
+          "tokenText": "י"
+        },
+        {
+          "wordIndex": 21,
+          "tokenId": "o390020060131",
+          "tokenText": "וְ"
+        },
+        {
+          "wordIndex": 22,
+          "tokenId": "o390020060132",
+          "tokenText": "רַבִּ֖ים",
+          "role": "o"
+        },
+        {
+          "wordIndex": 23,
+          "tokenId": "o390020060141",
+          "tokenText": "הֵשִׁ֥יב",
+          "role": "v"
+        },
+        {
+          "wordIndex": 24,
+          "tokenId": "o390020060151",
+          "tokenText": "מֵ"
+        },
+        {
+          "wordIndex": 25,
+          "tokenId": "o390020060152",
+          "tokenText": "עָוֺֽן"
+        }
+      ],
+      "arcs": [],
+      "spans": []
+    },
+    "7": {
+      "words": [
+        {
+          "wordIndex": 0,
+          "tokenId": "o390020070011",
+          "tokenText": "כִּֽי"
+        },
+        {
+          "wordIndex": 1,
+          "tokenId": "o390020070021",
+          "tokenText": "שִׂפְתֵ֤י"
+        },
+        {
+          "wordIndex": 2,
+          "tokenId": "o390020070031",
+          "tokenText": "כֹהֵן֙"
+        },
+        {
+          "wordIndex": 3,
+          "tokenId": "o390020070041",
+          "tokenText": "יִשְׁמְרוּ",
+          "role": "v"
+        },
+        {
+          "wordIndex": 4,
+          "tokenId": "o390020070051",
+          "tokenText": "דַ֔עַת",
+          "role": "o"
+        },
+        {
+          "wordIndex": 5,
+          "tokenId": "o390020070061",
+          "tokenText": "וְ"
+        },
+        {
+          "wordIndex": 6,
+          "tokenId": "o390020070062",
+          "tokenText": "תוֹרָ֖ה",
+          "role": "o"
+        },
+        {
+          "wordIndex": 7,
+          "tokenId": "o390020070071",
+          "tokenText": "יְבַקְשׁ֣וּ",
+          "role": "v"
+        },
+        {
+          "wordIndex": 8,
+          "tokenId": "o390020070081",
+          "tokenText": "מִ"
+        },
+        {
+          "wordIndex": 9,
+          "tokenId": "o390020070082",
+          "tokenText": "פִּ֑י"
+        },
+        {
+          "wordIndex": 10,
+          "tokenId": "o390020070083",
+          "tokenText": "הוּ"
+        },
+        {
+          "wordIndex": 11,
+          "tokenId": "o390020070091",
+          "tokenText": "כִּ֛י"
+        },
+        {
+          "wordIndex": 12,
+          "tokenId": "o390020070101",
+          "tokenText": "מַלְאַ֥ךְ"
+        },
+        {
+          "wordIndex": 13,
+          "tokenId": "o390020070111",
+          "tokenText": "יְהוָֽה"
+        },
+        {
+          "wordIndex": 14,
+          "tokenId": "o390020070121",
+          "tokenText": "צְבָא֖וֹת"
+        },
+        {
+          "wordIndex": 15,
+          "tokenId": "o390020070131",
+          "tokenText": "הֽוּא",
+          "role": "s"
+        }
+      ],
+      "arcs": [],
+      "spans": []
+    },
+    "8": {
+      "words": [
+        {
+          "wordIndex": 0,
+          "tokenId": "o390020080011",
+          "tokenText": "וְ"
+        },
+        {
+          "wordIndex": 1,
+          "tokenId": "o390020080012",
+          "tokenText": "אַתֶּם֙",
+          "role": "s"
+        },
+        {
+          "wordIndex": 2,
+          "tokenId": "o390020080021",
+          "tokenText": "סַרְתֶּ֣ם",
+          "role": "v"
+        },
+        {
+          "wordIndex": 3,
+          "tokenId": "o390020080031",
+          "tokenText": "מִן"
+        },
+        {
+          "wordIndex": 4,
+          "tokenId": "o390020080041",
+          "tokenText": "הַ"
+        },
+        {
+          "wordIndex": 5,
+          "tokenId": "o390020080042",
+          "tokenText": "דֶּ֔רֶךְ"
+        },
+        {
+          "wordIndex": 6,
+          "tokenId": "o390020080051",
+          "tokenText": "הִכְשַׁלְתֶּ֥ם",
+          "role": "v"
+        },
+        {
+          "wordIndex": 7,
+          "tokenId": "o390020080061",
+          "tokenText": "רַבִּ֖ים",
+          "role": "o"
+        },
+        {
+          "wordIndex": 8,
+          "tokenId": "o390020080071",
+          "tokenText": "בַּ"
+        },
+        {
+          "wordIndex": 9,
+          "tokenId": "o390020080071ה",
+          "tokenText": ""
+        },
+        {
+          "wordIndex": 10,
+          "tokenId": "o390020080072",
+          "tokenText": "תּוֹרָ֑ה"
+        },
+        {
+          "wordIndex": 11,
+          "tokenId": "o390020080081",
+          "tokenText": "שִֽׁחַתֶּם֙",
+          "role": "v"
+        },
+        {
+          "wordIndex": 12,
+          "tokenId": "o390020080091",
+          "tokenText": "בְּרִ֣ית"
+        },
+        {
+          "wordIndex": 13,
+          "tokenId": "o390020080101",
+          "tokenText": "הַ"
+        },
+        {
+          "wordIndex": 14,
+          "tokenId": "o390020080102",
+          "tokenText": "לֵּוִ֔י"
+        },
+        {
+          "wordIndex": 15,
+          "tokenId": "o390020080111",
+          "tokenText": "אָמַ֖ר",
+          "role": "v"
+        },
+        {
+          "wordIndex": 16,
+          "tokenId": "o390020080121",
+          "tokenText": "יְהוָ֥ה"
+        },
+        {
+          "wordIndex": 17,
+          "tokenId": "o390020080131",
+          "tokenText": "צְבָאֽוֹת"
+        }
+      ],
+      "arcs": [],
+      "spans": []
+    },
+    "9": {
+      "words": [
+        {
+          "wordIndex": 0,
+          "tokenId": "o390020090011",
+          "tokenText": "וְ"
+        },
+        {
+          "wordIndex": 1,
+          "tokenId": "o390020090012",
+          "tokenText": "גַם"
+        },
+        {
+          "wordIndex": 2,
+          "tokenId": "o390020090021",
+          "tokenText": "אֲנִ֞י",
+          "role": "s"
+        },
+        {
+          "wordIndex": 3,
+          "tokenId": "o390020090031",
+          "tokenText": "נָתַ֧תִּי",
+          "role": "v"
+        },
+        {
+          "wordIndex": 4,
+          "tokenId": "o390020090041",
+          "tokenText": "אֶתְ"
+        },
+        {
+          "wordIndex": 5,
+          "tokenId": "o390020090042",
+          "tokenText": "כֶ֛ם"
+        },
+        {
+          "wordIndex": 6,
+          "tokenId": "o390020090051",
+          "tokenText": "נִבְזִ֥ים"
+        },
+        {
+          "wordIndex": 7,
+          "tokenId": "o390020090061",
+          "tokenText": "וּ"
+        },
+        {
+          "wordIndex": 8,
+          "tokenId": "o390020090062",
+          "tokenText": "שְׁפָלִ֖ים"
+        },
+        {
+          "wordIndex": 9,
+          "tokenId": "o390020090071",
+          "tokenText": "לְ"
+        },
+        {
+          "wordIndex": 10,
+          "tokenId": "o390020090072",
+          "tokenText": "כָל"
+        },
+        {
+          "wordIndex": 11,
+          "tokenId": "o390020090081",
+          "tokenText": "הָ"
+        },
+        {
+          "wordIndex": 12,
+          "tokenId": "o390020090082",
+          "tokenText": "עָ֑ם"
+        },
+        {
+          "wordIndex": 13,
+          "tokenId": "o390020090091",
+          "tokenText": "כְּ"
+        },
+        {
+          "wordIndex": 14,
+          "tokenId": "o390020090092",
+          "tokenText": "פִ֗י"
+        },
+        {
+          "wordIndex": 15,
+          "tokenId": "o390020090101",
+          "tokenText": "אֲשֶׁ֤ר"
+        },
+        {
+          "wordIndex": 16,
+          "tokenId": "o390020090111",
+          "tokenText": "אֵֽינְ",
+          "role": "adv"
+        },
+        {
+          "wordIndex": 17,
+          "tokenId": "o390020090112",
+          "tokenText": "כֶם֙",
+          "role": "s"
+        },
+        {
+          "wordIndex": 18,
+          "tokenId": "o390020090121",
+          "tokenText": "שֹׁמְרִ֣ים",
+          "role": "v"
+        },
+        {
+          "wordIndex": 19,
+          "tokenId": "o390020090131",
+          "tokenText": "אֶת"
+        },
+        {
+          "wordIndex": 20,
+          "tokenId": "o390020090141",
+          "tokenText": "דְּרָכַ֔"
+        },
+        {
+          "wordIndex": 21,
+          "tokenId": "o390020090142",
+          "tokenText": "י"
+        },
+        {
+          "wordIndex": 22,
+          "tokenId": "o390020090151",
+          "tokenText": "וְ"
+        },
+        {
+          "wordIndex": 23,
+          "tokenId": "o390020090152",
+          "tokenText": "נֹשְׂאִ֥ים",
+          "role": "v"
+        },
+        {
+          "wordIndex": 24,
+          "tokenId": "o390020090161",
+          "tokenText": "פָּנִ֖ים",
+          "role": "o"
+        },
+        {
+          "wordIndex": 25,
+          "tokenId": "o390020090171",
+          "tokenText": "בַּ"
+        },
+        {
+          "wordIndex": 26,
+          "tokenId": "o390020090171ה",
+          "tokenText": ""
+        },
+        {
+          "wordIndex": 27,
+          "tokenId": "o390020090172",
+          "tokenText": "תּוֹרָֽה"
+        }
+      ],
+      "arcs": [],
+      "spans": []
+    },
+    "10": {
+      "words": [
+        {
+          "wordIndex": 0,
+          "tokenId": "o390020100011",
+          "tokenText": "הֲ"
+        },
+        {
+          "wordIndex": 1,
+          "tokenId": "o390020100012",
+          "tokenText": "ל֨וֹא",
+          "role": "adv"
+        },
+        {
+          "wordIndex": 2,
+          "tokenId": "o390020100021",
+          "tokenText": "אָ֤ב"
+        },
+        {
+          "wordIndex": 3,
+          "tokenId": "o390020100031",
+          "tokenText": "אֶחָד֙"
+        },
+        {
+          "wordIndex": 4,
+          "tokenId": "o390020100041",
+          "tokenText": "לְ"
+        },
+        {
+          "wordIndex": 5,
+          "tokenId": "o390020100042",
+          "tokenText": "כֻלָּ֔"
+        },
+        {
+          "wordIndex": 6,
+          "tokenId": "o390020100043",
+          "tokenText": "נוּ"
+        },
+        {
+          "wordIndex": 7,
+          "tokenId": "o390020100051",
+          "tokenText": "הֲ"
+        },
+        {
+          "wordIndex": 8,
+          "tokenId": "o390020100052",
+          "tokenText": "ל֛וֹא",
+          "role": "adv"
+        },
+        {
+          "wordIndex": 9,
+          "tokenId": "o390020100061",
+          "tokenText": "אֵ֥ל"
+        },
+        {
+          "wordIndex": 10,
+          "tokenId": "o390020100071",
+          "tokenText": "אֶֽחָ֖ד"
+        },
+        {
+          "wordIndex": 11,
+          "tokenId": "o390020100081",
+          "tokenText": "בְּרָאָ֑",
+          "role": "v"
+        },
+        {
+          "wordIndex": 12,
+          "tokenId": "o390020100082",
+          "tokenText": "נוּ",
+          "role": "o"
+        },
+        {
+          "wordIndex": 13,
+          "tokenId": "o390020100091",
+          "tokenText": "מַדּ֗וּעַ",
+          "role": "adv"
+        },
+        {
+          "wordIndex": 14,
+          "tokenId": "o390020100101",
+          "tokenText": "נִבְגַּד֙",
+          "role": "v"
+        },
+        {
+          "wordIndex": 15,
+          "tokenId": "o390020100111",
+          "tokenText": "אִ֣ישׁ"
+        },
+        {
+          "wordIndex": 16,
+          "tokenId": "o390020100121",
+          "tokenText": "בְּ"
+        },
+        {
+          "wordIndex": 17,
+          "tokenId": "o390020100122",
+          "tokenText": "אָחִ֔י"
+        },
+        {
+          "wordIndex": 18,
+          "tokenId": "o390020100123",
+          "tokenText": "ו"
+        },
+        {
+          "wordIndex": 19,
+          "tokenId": "o390020100131",
+          "tokenText": "לְ"
+        },
+        {
+          "wordIndex": 20,
+          "tokenId": "o390020100132",
+          "tokenText": "חַלֵּ֖ל",
+          "role": "v"
+        },
+        {
+          "wordIndex": 21,
+          "tokenId": "o390020100141",
+          "tokenText": "בְּרִ֥ית"
+        },
+        {
+          "wordIndex": 22,
+          "tokenId": "o390020100151",
+          "tokenText": "אֲבֹתֵֽי"
+        },
+        {
+          "wordIndex": 23,
+          "tokenId": "o390020100152",
+          "tokenText": "נוּ"
+        }
+      ],
+      "arcs": [],
+      "spans": []
+    },
+    "11": {
+      "words": [
+        {
+          "wordIndex": 0,
+          "tokenId": "o390020110011",
+          "tokenText": "בָּגְדָ֣ה",
+          "role": "v"
+        },
+        {
+          "wordIndex": 1,
+          "tokenId": "o390020110021",
+          "tokenText": "יְהוּדָ֔ה",
+          "role": "s"
+        },
+        {
+          "wordIndex": 2,
+          "tokenId": "o390020110031",
+          "tokenText": "וְ"
+        },
+        {
+          "wordIndex": 3,
+          "tokenId": "o390020110032",
+          "tokenText": "תוֹעֵבָ֛ה",
+          "role": "s"
+        },
+        {
+          "wordIndex": 4,
+          "tokenId": "o390020110041",
+          "tokenText": "נֶעֶשְׂתָ֥ה",
+          "role": "v"
+        },
+        {
+          "wordIndex": 5,
+          "tokenId": "o390020110051",
+          "tokenText": "בְ"
+        },
+        {
+          "wordIndex": 6,
+          "tokenId": "o390020110052",
+          "tokenText": "יִשְׂרָאֵ֖ל"
+        },
+        {
+          "wordIndex": 7,
+          "tokenId": "o390020110061",
+          "tokenText": "וּ"
+        },
+        {
+          "wordIndex": 8,
+          "tokenId": "o390020110062",
+          "tokenText": "בִ"
+        },
+        {
+          "wordIndex": 9,
+          "tokenId": "o390020110063",
+          "tokenText": "ירֽוּשָׁלִָ֑ם"
+        },
+        {
+          "wordIndex": 10,
+          "tokenId": "o390020110071",
+          "tokenText": "כִּ֣י"
+        },
+        {
+          "wordIndex": 11,
+          "tokenId": "o390020110081",
+          "tokenText": "חִלֵּ֣ל",
+          "role": "v"
+        },
+        {
+          "wordIndex": 12,
+          "tokenId": "o390020110091",
+          "tokenText": "יְהוּדָ֗ה",
+          "role": "s"
+        },
+        {
+          "wordIndex": 13,
+          "tokenId": "o390020110101",
+          "tokenText": "קֹ֤דֶשׁ"
+        },
+        {
+          "wordIndex": 14,
+          "tokenId": "o390020110111",
+          "tokenText": "יְהוָה֙"
+        },
+        {
+          "wordIndex": 15,
+          "tokenId": "o390020110121",
+          "tokenText": "אֲשֶׁ֣ר"
+        },
+        {
+          "wordIndex": 16,
+          "tokenId": "o390020110131",
+          "tokenText": "אָהֵ֔ב",
+          "role": "v"
+        },
+        {
+          "wordIndex": 17,
+          "tokenId": "o390020110141",
+          "tokenText": "וּ"
+        },
+        {
+          "wordIndex": 18,
+          "tokenId": "o390020110142",
+          "tokenText": "בָעַ֖ל",
+          "role": "v"
+        },
+        {
+          "wordIndex": 19,
+          "tokenId": "o390020110151",
+          "tokenText": "בַּת"
+        },
+        {
+          "wordIndex": 20,
+          "tokenId": "o390020110161",
+          "tokenText": "אֵ֥ל"
+        },
+        {
+          "wordIndex": 21,
+          "tokenId": "o390020110171",
+          "tokenText": "נֵכָֽר"
+        }
+      ],
+      "arcs": [],
+      "spans": []
+    },
+    "12": {
+      "words": [
+        {
+          "wordIndex": 0,
+          "tokenId": "o390020120011",
+          "tokenText": "יַכְרֵ֨ת",
+          "role": "v"
+        },
+        {
+          "wordIndex": 1,
+          "tokenId": "o390020120021",
+          "tokenText": "יְהוָ֜ה",
+          "role": "s"
+        },
+        {
+          "wordIndex": 2,
+          "tokenId": "o390020120031",
+          "tokenText": "לָ"
+        },
+        {
+          "wordIndex": 3,
+          "tokenId": "o390020120031ה",
+          "tokenText": ""
+        },
+        {
+          "wordIndex": 4,
+          "tokenId": "o390020120032",
+          "tokenText": "אִ֨ישׁ"
+        },
+        {
+          "wordIndex": 5,
+          "tokenId": "o390020120041",
+          "tokenText": "אֲשֶׁ֤ר"
+        },
+        {
+          "wordIndex": 6,
+          "tokenId": "o390020120051",
+          "tokenText": "יַעֲשֶׂ֨",
+          "role": "v"
+        },
+        {
+          "wordIndex": 7,
+          "tokenId": "o390020120052",
+          "tokenText": "נָּה֙",
+          "role": "o"
+        },
+        {
+          "wordIndex": 8,
+          "tokenId": "o390020120061",
+          "tokenText": "עֵ֣ר"
+        },
+        {
+          "wordIndex": 9,
+          "tokenId": "o390020120071",
+          "tokenText": "וְ"
+        },
+        {
+          "wordIndex": 10,
+          "tokenId": "o390020120072",
+          "tokenText": "עֹנֶ֔ה"
+        },
+        {
+          "wordIndex": 11,
+          "tokenId": "o390020120101",
+          "tokenText": "וּ"
+        },
+        {
+          "wordIndex": 12,
+          "tokenId": "o390020120102",
+          "tokenText": "מַגִּ֣ישׁ",
+          "role": "v"
+        },
+        {
+          "wordIndex": 13,
+          "tokenId": "o390020120111",
+          "tokenText": "מִנְחָ֔ה",
+          "role": "o"
+        },
+        {
+          "wordIndex": 14,
+          "tokenId": "o390020120121",
+          "tokenText": "לַֽ"
+        },
+        {
+          "wordIndex": 15,
+          "tokenId": "o390020120122",
+          "tokenText": "יהוָ֖ה"
+        },
+        {
+          "wordIndex": 16,
+          "tokenId": "o390020120131",
+          "tokenText": "צְבָאֽוֹת"
+        },
+        {
+          "wordIndex": 17,
+          "tokenId": "o390020120081",
+          "tokenText": "מֵ"
+        },
+        {
+          "wordIndex": 18,
+          "tokenId": "o390020120082",
+          "tokenText": "אָהֳלֵ֖י"
+        },
+        {
+          "wordIndex": 19,
+          "tokenId": "o390020120091",
+          "tokenText": "יַֽעֲקֹ֑ב"
+        }
+      ],
+      "arcs": [],
+      "spans": []
+    },
+    "13": {
+      "words": [
+        {
+          "wordIndex": 0,
+          "tokenId": "o390020130011",
+          "tokenText": "וְ"
+        },
+        {
+          "wordIndex": 1,
+          "tokenId": "o390020130012",
+          "tokenText": "זֹאת֙",
+          "role": "o"
+        },
+        {
+          "wordIndex": 2,
+          "tokenId": "o390020130021",
+          "tokenText": "שֵׁנִ֣ית",
+          "role": "adv"
+        },
+        {
+          "wordIndex": 3,
+          "tokenId": "o390020130031",
+          "tokenText": "תַּֽעֲשׂ֔וּ",
+          "role": "v"
+        },
+        {
+          "wordIndex": 4,
+          "tokenId": "o390020130041",
+          "tokenText": "כַּסּ֤וֹת",
+          "role": "v"
+        },
+        {
+          "wordIndex": 5,
+          "tokenId": "o390020130051",
+          "tokenText": "דִּמְעָה֙",
+          "role": "adv"
+        },
+        {
+          "wordIndex": 6,
+          "tokenId": "o390020130061",
+          "tokenText": "אֶת"
+        },
+        {
+          "wordIndex": 7,
+          "tokenId": "o390020130071",
+          "tokenText": "מִזְבַּ֣ח"
+        },
+        {
+          "wordIndex": 8,
+          "tokenId": "o390020130081",
+          "tokenText": "יְהוָ֔ה"
+        },
+        {
+          "wordIndex": 9,
+          "tokenId": "o390020130091",
+          "tokenText": "בְּכִ֖י"
+        },
+        {
+          "wordIndex": 10,
+          "tokenId": "o390020130101",
+          "tokenText": "וַֽ"
+        },
+        {
+          "wordIndex": 11,
+          "tokenId": "o390020130102",
+          "tokenText": "אֲנָקָ֑ה"
+        },
+        {
+          "wordIndex": 12,
+          "tokenId": "o390020130111",
+          "tokenText": "מֵ"
+        },
+        {
+          "wordIndex": 13,
+          "tokenId": "o390020130112",
+          "tokenText": "אֵ֣ין",
+          "role": "p"
+        },
+        {
+          "wordIndex": 14,
+          "tokenId": "o390020130121",
+          "tokenText": "ע֗וֹד",
+          "role": "adv"
+        },
+        {
+          "wordIndex": 15,
+          "tokenId": "o390020130131",
+          "tokenText": "פְּנוֹת֙",
+          "role": "v"
+        },
+        {
+          "wordIndex": 16,
+          "tokenId": "o390020130141",
+          "tokenText": "אֶל"
+        },
+        {
+          "wordIndex": 17,
+          "tokenId": "o390020130151",
+          "tokenText": "הַ"
+        },
+        {
+          "wordIndex": 18,
+          "tokenId": "o390020130152",
+          "tokenText": "מִּנְחָ֔ה"
+        },
+        {
+          "wordIndex": 19,
+          "tokenId": "o390020130161",
+          "tokenText": "וְ"
+        },
+        {
+          "wordIndex": 20,
+          "tokenId": "o390020130162",
+          "tokenText": "לָ"
+        },
+        {
+          "wordIndex": 21,
+          "tokenId": "o390020130163",
+          "tokenText": "קַ֥חַת",
+          "role": "v"
+        },
+        {
+          "wordIndex": 22,
+          "tokenId": "o390020130171",
+          "tokenText": "רָצ֖וֹן",
+          "role": "o"
+        },
+        {
+          "wordIndex": 23,
+          "tokenId": "o390020130181",
+          "tokenText": "מִ"
+        },
+        {
+          "wordIndex": 24,
+          "tokenId": "o390020130182",
+          "tokenText": "יֶּדְ"
+        },
+        {
+          "wordIndex": 25,
+          "tokenId": "o390020130183",
+          "tokenText": "כֶֽם"
+        }
+      ],
+      "arcs": [],
+      "spans": []
+    },
+    "14": {
+      "words": [
+        {
+          "wordIndex": 0,
+          "tokenId": "o390020140011",
+          "tokenText": "וַ"
+        },
+        {
+          "wordIndex": 1,
+          "tokenId": "o390020140012",
+          "tokenText": "אֲמַרְתֶּ֖ם",
+          "role": "v"
+        },
+        {
+          "wordIndex": 2,
+          "tokenId": "o390020140021",
+          "tokenText": "עַל"
+        },
+        {
+          "wordIndex": 3,
+          "tokenId": "o390020140031",
+          "tokenText": "מָ֑ה"
+        },
+        {
+          "wordIndex": 4,
+          "tokenId": "o390020140041",
+          "tokenText": "עַ֡ל"
+        },
+        {
+          "wordIndex": 5,
+          "tokenId": "o390020140051",
+          "tokenText": "כִּי"
+        },
+        {
+          "wordIndex": 6,
+          "tokenId": "o390020140061",
+          "tokenText": "יְהוָה֩",
+          "role": "s"
+        },
+        {
+          "wordIndex": 7,
+          "tokenId": "o390020140071",
+          "tokenText": "הֵעִ֨יד",
+          "role": "v"
+        },
+        {
+          "wordIndex": 8,
+          "tokenId": "o390020140081",
+          "tokenText": "בֵּינְ"
+        },
+        {
+          "wordIndex": 9,
+          "tokenId": "o390020140082",
+          "tokenText": "ךָ֜"
+        },
+        {
+          "wordIndex": 10,
+          "tokenId": "o390020140091",
+          "tokenText": "וּ"
+        },
+        {
+          "wordIndex": 11,
+          "tokenId": "o390020140092",
+          "tokenText": "בֵ֣ין"
+        },
+        {
+          "wordIndex": 12,
+          "tokenId": "o390020140101",
+          "tokenText": "אֵ֣שֶׁת"
+        },
+        {
+          "wordIndex": 13,
+          "tokenId": "o390020140111",
+          "tokenText": "נְעוּרֶ֗י"
+        },
+        {
+          "wordIndex": 14,
+          "tokenId": "o390020140112",
+          "tokenText": "ךָ"
+        },
+        {
+          "wordIndex": 15,
+          "tokenId": "o390020140121",
+          "tokenText": "אֲשֶׁ֤ר"
+        },
+        {
+          "wordIndex": 16,
+          "tokenId": "o390020140131",
+          "tokenText": "אַתָּה֙",
+          "role": "s"
+        },
+        {
+          "wordIndex": 17,
+          "tokenId": "o390020140141",
+          "tokenText": "בָּגַ֣דְתָּה",
+          "role": "v"
+        },
+        {
+          "wordIndex": 18,
+          "tokenId": "o390020140151",
+          "tokenText": "בָּ֔"
+        },
+        {
+          "wordIndex": 19,
+          "tokenId": "o390020140152",
+          "tokenText": "הּ"
+        },
+        {
+          "wordIndex": 20,
+          "tokenId": "o390020140161",
+          "tokenText": "וְ"
+        },
+        {
+          "wordIndex": 21,
+          "tokenId": "o390020140162",
+          "tokenText": "הִ֥יא",
+          "role": "s"
+        },
+        {
+          "wordIndex": 22,
+          "tokenId": "o390020140171",
+          "tokenText": "חֲבֶרְתְּ"
+        },
+        {
+          "wordIndex": 23,
+          "tokenId": "o390020140172",
+          "tokenText": "ךָ֖"
+        },
+        {
+          "wordIndex": 24,
+          "tokenId": "o390020140181",
+          "tokenText": "וְ"
+        },
+        {
+          "wordIndex": 25,
+          "tokenId": "o390020140182",
+          "tokenText": "אֵ֥שֶׁת"
+        },
+        {
+          "wordIndex": 26,
+          "tokenId": "o390020140191",
+          "tokenText": "בְּרִיתֶֽ"
+        },
+        {
+          "wordIndex": 27,
+          "tokenId": "o390020140192",
+          "tokenText": "ךָ"
+        }
+      ],
+      "arcs": [],
+      "spans": []
+    },
+    "15": {
+      "words": [
+        {
+          "wordIndex": 0,
+          "tokenId": "o390020150011",
+          "tokenText": "וְ"
+        },
+        {
+          "wordIndex": 1,
+          "tokenId": "o390020150012",
+          "tokenText": "לֹא",
+          "role": "adv"
+        },
+        {
+          "wordIndex": 2,
+          "tokenId": "o390020150021",
+          "tokenText": "אֶחָ֣ד",
+          "role": "o"
+        },
+        {
+          "wordIndex": 3,
+          "tokenId": "o390020150031",
+          "tokenText": "עָשָׂ֗ה",
+          "role": "v"
+        },
+        {
+          "wordIndex": 4,
+          "tokenId": "o390020150041",
+          "tokenText": "וּ"
+        },
+        {
+          "wordIndex": 5,
+          "tokenId": "o390020150042",
+          "tokenText": "שְׁאָ֥ר"
+        },
+        {
+          "wordIndex": 6,
+          "tokenId": "o390020150051",
+          "tokenText": "ר֨וּחַ֙"
+        },
+        {
+          "wordIndex": 7,
+          "tokenId": "o390020150061",
+          "tokenText": "ל֔"
+        },
+        {
+          "wordIndex": 8,
+          "tokenId": "o390020150062",
+          "tokenText": "וֹ"
+        },
+        {
+          "wordIndex": 9,
+          "tokenId": "o390020150071",
+          "tokenText": "וּ"
+        },
+        {
+          "wordIndex": 10,
+          "tokenId": "o390020150072",
+          "tokenText": "מָה֙",
+          "role": "p"
+        },
+        {
+          "wordIndex": 11,
+          "tokenId": "o390020150081",
+          "tokenText": "הָֽ"
+        },
+        {
+          "wordIndex": 12,
+          "tokenId": "o390020150082",
+          "tokenText": "אֶחָ֔ד"
+        },
+        {
+          "wordIndex": 13,
+          "tokenId": "o390020150091",
+          "tokenText": "מְבַקֵּ֖שׁ",
+          "role": "v"
+        },
+        {
+          "wordIndex": 14,
+          "tokenId": "o390020150101",
+          "tokenText": "זֶ֣רַע"
+        },
+        {
+          "wordIndex": 15,
+          "tokenId": "o390020150111",
+          "tokenText": "אֱלֹהִ֑ים"
+        },
+        {
+          "wordIndex": 16,
+          "tokenId": "o390020150121",
+          "tokenText": "וְ"
+        },
+        {
+          "wordIndex": 17,
+          "tokenId": "o390020150122",
+          "tokenText": "נִשְׁמַרְתֶּם֙",
+          "role": "v"
+        },
+        {
+          "wordIndex": 18,
+          "tokenId": "o390020150131",
+          "tokenText": "בְּ"
+        },
+        {
+          "wordIndex": 19,
+          "tokenId": "o390020150132",
+          "tokenText": "ר֣וּחֲ"
+        },
+        {
+          "wordIndex": 20,
+          "tokenId": "o390020150133",
+          "tokenText": "כֶ֔ם"
+        },
+        {
+          "wordIndex": 21,
+          "tokenId": "o390020150141",
+          "tokenText": "וּ"
+        },
+        {
+          "wordIndex": 22,
+          "tokenId": "o390020150142",
+          "tokenText": "בְ"
+        },
+        {
+          "wordIndex": 23,
+          "tokenId": "o390020150143",
+          "tokenText": "אֵ֥שֶׁת"
+        },
+        {
+          "wordIndex": 24,
+          "tokenId": "o390020150151",
+          "tokenText": "נְעוּרֶ֖י"
+        },
+        {
+          "wordIndex": 25,
+          "tokenId": "o390020150152",
+          "tokenText": "ךָ"
+        },
+        {
+          "wordIndex": 26,
+          "tokenId": "o390020150161",
+          "tokenText": "אַל",
+          "role": "adv"
+        },
+        {
+          "wordIndex": 27,
+          "tokenId": "o390020150171",
+          "tokenText": "יִבְגֹּֽד",
+          "role": "v"
+        }
+      ],
+      "arcs": [],
+      "spans": []
+    },
+    "16": {
+      "words": [
+        {
+          "wordIndex": 0,
+          "tokenId": "o390020160011",
+          "tokenText": "כִּֽי"
+        },
+        {
+          "wordIndex": 1,
+          "tokenId": "o390020160021",
+          "tokenText": "שָׂנֵ֣א",
+          "role": "v"
+        },
+        {
+          "wordIndex": 2,
+          "tokenId": "o390020160031",
+          "tokenText": "שַׁלַּ֗ח",
+          "role": "o"
+        },
+        {
+          "wordIndex": 3,
+          "tokenId": "o390020160041",
+          "tokenText": "אָמַ֤ר",
+          "role": "v"
+        },
+        {
+          "wordIndex": 4,
+          "tokenId": "o390020160051",
+          "tokenText": "יְהוָה֙"
+        },
+        {
+          "wordIndex": 5,
+          "tokenId": "o390020160061",
+          "tokenText": "אֱלֹהֵ֣י"
+        },
+        {
+          "wordIndex": 6,
+          "tokenId": "o390020160071",
+          "tokenText": "יִשְׂרָאֵ֔ל"
+        },
+        {
+          "wordIndex": 7,
+          "tokenId": "o390020160081",
+          "tokenText": "וְ"
+        },
+        {
+          "wordIndex": 8,
+          "tokenId": "o390020160082",
+          "tokenText": "כִסָּ֤ה",
+          "role": "v"
+        },
+        {
+          "wordIndex": 9,
+          "tokenId": "o390020160091",
+          "tokenText": "חָמָס֙",
+          "role": "o"
+        },
+        {
+          "wordIndex": 10,
+          "tokenId": "o390020160101",
+          "tokenText": "עַל"
+        },
+        {
+          "wordIndex": 11,
+          "tokenId": "o390020160111",
+          "tokenText": "לְבוּשׁ֔"
+        },
+        {
+          "wordIndex": 12,
+          "tokenId": "o390020160112",
+          "tokenText": "וֹ"
+        },
+        {
+          "wordIndex": 13,
+          "tokenId": "o390020160121",
+          "tokenText": "אָמַ֖ר",
+          "role": "v"
+        },
+        {
+          "wordIndex": 14,
+          "tokenId": "o390020160131",
+          "tokenText": "יְהוָ֣ה"
+        },
+        {
+          "wordIndex": 15,
+          "tokenId": "o390020160141",
+          "tokenText": "צְבָא֑וֹת"
+        },
+        {
+          "wordIndex": 16,
+          "tokenId": "o390020160151",
+          "tokenText": "וְ"
+        },
+        {
+          "wordIndex": 17,
+          "tokenId": "o390020160152",
+          "tokenText": "נִשְׁמַרְתֶּ֥ם",
+          "role": "v"
+        },
+        {
+          "wordIndex": 18,
+          "tokenId": "o390020160161",
+          "tokenText": "בְּ"
+        },
+        {
+          "wordIndex": 19,
+          "tokenId": "o390020160162",
+          "tokenText": "רוּחֲ"
+        },
+        {
+          "wordIndex": 20,
+          "tokenId": "o390020160163",
+          "tokenText": "כֶ֖ם"
+        },
+        {
+          "wordIndex": 21,
+          "tokenId": "o390020160171",
+          "tokenText": "וְ"
+        },
+        {
+          "wordIndex": 22,
+          "tokenId": "o390020160172",
+          "tokenText": "לֹ֥א",
+          "role": "adv"
+        },
+        {
+          "wordIndex": 23,
+          "tokenId": "o390020160181",
+          "tokenText": "תִבְגֹּֽדוּ",
+          "role": "v"
+        }
+      ],
+      "arcs": [],
+      "spans": []
+    },
+    "17": {
+      "words": [
+        {
+          "wordIndex": 0,
+          "tokenId": "o390020170011",
+          "tokenText": "הוֹגַעְתֶּ֤ם",
+          "role": "v"
+        },
+        {
+          "wordIndex": 1,
+          "tokenId": "o390020170021",
+          "tokenText": "יְהוָה֙",
+          "role": "o"
+        },
+        {
+          "wordIndex": 2,
+          "tokenId": "o390020170031",
+          "tokenText": "בְּ"
+        },
+        {
+          "wordIndex": 3,
+          "tokenId": "o390020170032",
+          "tokenText": "דִבְרֵי"
+        },
+        {
+          "wordIndex": 4,
+          "tokenId": "o390020170033",
+          "tokenText": "כֶ֔ם"
+        },
+        {
+          "wordIndex": 5,
+          "tokenId": "o390020170041",
+          "tokenText": "וַ"
+        },
+        {
+          "wordIndex": 6,
+          "tokenId": "o390020170042",
+          "tokenText": "אֲמַרְתֶּ֖ם",
+          "role": "v"
+        },
+        {
+          "wordIndex": 7,
+          "tokenId": "o390020170051",
+          "tokenText": "בַּ"
+        },
+        {
+          "wordIndex": 8,
+          "tokenId": "o390020170052",
+          "tokenText": "מָּ֣ה"
+        },
+        {
+          "wordIndex": 9,
+          "tokenId": "o390020170061",
+          "tokenText": "הוֹגָ֑עְנוּ",
+          "role": "v"
+        },
+        {
+          "wordIndex": 10,
+          "tokenId": "o390020170071",
+          "tokenText": "בֶּ"
+        },
+        {
+          "wordIndex": 11,
+          "tokenId": "o390020170072",
+          "tokenText": "אֱמָרְ",
+          "role": "v"
+        },
+        {
+          "wordIndex": 12,
+          "tokenId": "o390020170073",
+          "tokenText": "כֶ֗ם",
+          "role": "s"
+        },
+        {
+          "wordIndex": 13,
+          "tokenId": "o390020170081",
+          "tokenText": "כָּל"
+        },
+        {
+          "wordIndex": 14,
+          "tokenId": "o390020170091",
+          "tokenText": "עֹ֨שֵׂה"
+        },
+        {
+          "wordIndex": 15,
+          "tokenId": "o390020170101",
+          "tokenText": "רָ֜ע"
+        },
+        {
+          "wordIndex": 16,
+          "tokenId": "o390020170111",
+          "tokenText": "ט֣וֹב",
+          "role": "p"
+        },
+        {
+          "wordIndex": 17,
+          "tokenId": "o390020170121",
+          "tokenText": "בְּ"
+        },
+        {
+          "wordIndex": 18,
+          "tokenId": "o390020170122",
+          "tokenText": "עֵינֵ֣י"
+        },
+        {
+          "wordIndex": 19,
+          "tokenId": "o390020170131",
+          "tokenText": "יְהוָ֗ה"
+        },
+        {
+          "wordIndex": 20,
+          "tokenId": "o390020170141",
+          "tokenText": "וּ"
+        },
+        {
+          "wordIndex": 21,
+          "tokenId": "o390020170142",
+          "tokenText": "בָ"
+        },
+        {
+          "wordIndex": 22,
+          "tokenId": "o390020170143",
+          "tokenText": "הֶם֙"
+        },
+        {
+          "wordIndex": 23,
+          "tokenId": "o390020170151",
+          "tokenText": "ה֣וּא",
+          "role": "s"
+        },
+        {
+          "wordIndex": 24,
+          "tokenId": "o390020170161",
+          "tokenText": "חָפֵ֔ץ",
+          "role": "v"
+        },
+        {
+          "wordIndex": 25,
+          "tokenId": "o390020170171",
+          "tokenText": "א֥וֹ"
+        },
+        {
+          "wordIndex": 26,
+          "tokenId": "o390020170181",
+          "tokenText": "אַיֵּ֖ה",
+          "role": "p"
+        },
+        {
+          "wordIndex": 27,
+          "tokenId": "o390020170191",
+          "tokenText": "אֱלֹהֵ֥י"
+        },
+        {
+          "wordIndex": 28,
+          "tokenId": "o390020170201",
+          "tokenText": "הַ"
+        },
+        {
+          "wordIndex": 29,
+          "tokenId": "o390020170202",
+          "tokenText": "מִּשְׁפָּֽט"
+        }
+      ],
+      "arcs": [],
+      "spans": []
+    }
+  },
+  "3": {
+    "1": {
+      "words": [
+        {
+          "wordIndex": 0,
+          "tokenId": "o390030010011",
+          "tokenText": "הִנְ",
+          "role": "p"
+        },
+        {
+          "wordIndex": 1,
+          "tokenId": "o390030010012",
+          "tokenText": "נִ֤י",
+          "role": "s"
+        },
+        {
+          "wordIndex": 2,
+          "tokenId": "o390030010021",
+          "tokenText": "שֹׁלֵחַ֙",
+          "role": "v"
+        },
+        {
+          "wordIndex": 3,
+          "tokenId": "o390030010031",
+          "tokenText": "מַלְאָכִ֔"
+        },
+        {
+          "wordIndex": 4,
+          "tokenId": "o390030010032",
+          "tokenText": "י"
+        },
+        {
+          "wordIndex": 5,
+          "tokenId": "o390030010041",
+          "tokenText": "וּ"
+        },
+        {
+          "wordIndex": 6,
+          "tokenId": "o390030010042",
+          "tokenText": "פִנָּה",
+          "role": "v"
+        },
+        {
+          "wordIndex": 7,
+          "tokenId": "o390030010051",
+          "tokenText": "דֶ֖רֶךְ",
+          "role": "o"
+        },
+        {
+          "wordIndex": 8,
+          "tokenId": "o390030010061",
+          "tokenText": "לְ"
+        },
+        {
+          "wordIndex": 9,
+          "tokenId": "o390030010062",
+          "tokenText": "פָנָ֑"
+        },
+        {
+          "wordIndex": 10,
+          "tokenId": "o390030010063",
+          "tokenText": "י"
+        },
+        {
+          "wordIndex": 11,
+          "tokenId": "o390030010071",
+          "tokenText": "וּ"
+        },
+        {
+          "wordIndex": 12,
+          "tokenId": "o390030010072",
+          "tokenText": "פִתְאֹם֩",
+          "role": "adv"
+        },
+        {
+          "wordIndex": 13,
+          "tokenId": "o390030010081",
+          "tokenText": "יָב֨וֹא",
+          "role": "v"
+        },
+        {
+          "wordIndex": 14,
+          "tokenId": "o390030010091",
+          "tokenText": "אֶל"
+        },
+        {
+          "wordIndex": 15,
+          "tokenId": "o390030010101",
+          "tokenText": "הֵיכָל֜"
+        },
+        {
+          "wordIndex": 16,
+          "tokenId": "o390030010102",
+          "tokenText": "וֹ"
+        },
+        {
+          "wordIndex": 17,
+          "tokenId": "o390030010111",
+          "tokenText": "הָ"
+        },
+        {
+          "wordIndex": 18,
+          "tokenId": "o390030010112",
+          "tokenText": "אָד֣וֹן"
+        },
+        {
+          "wordIndex": 19,
+          "tokenId": "o390030010121",
+          "tokenText": "אֲשֶׁר"
+        },
+        {
+          "wordIndex": 20,
+          "tokenId": "o390030010131",
+          "tokenText": "אַתֶּ֣ם",
+          "role": "s"
+        },
+        {
+          "wordIndex": 21,
+          "tokenId": "o390030010141",
+          "tokenText": "מְבַקְשִׁ֗ים",
+          "role": "v"
+        },
+        {
+          "wordIndex": 22,
+          "tokenId": "o390030010151",
+          "tokenText": "וּ"
+        },
+        {
+          "wordIndex": 23,
+          "tokenId": "o390030010152",
+          "tokenText": "מַלְאַ֨ךְ"
+        },
+        {
+          "wordIndex": 24,
+          "tokenId": "o390030010161",
+          "tokenText": "הַ"
+        },
+        {
+          "wordIndex": 25,
+          "tokenId": "o390030010162",
+          "tokenText": "בְּרִ֜ית"
+        },
+        {
+          "wordIndex": 26,
+          "tokenId": "o390030010171",
+          "tokenText": "אֲשֶׁר"
+        },
+        {
+          "wordIndex": 27,
+          "tokenId": "o390030010181",
+          "tokenText": "אַתֶּ֤ם",
+          "role": "s"
+        },
+        {
+          "wordIndex": 28,
+          "tokenId": "o390030010191",
+          "tokenText": "חֲפֵצִים֙",
+          "role": "v"
+        },
+        {
+          "wordIndex": 29,
+          "tokenId": "o390030010201",
+          "tokenText": "הִנֵּה"
+        },
+        {
+          "wordIndex": 30,
+          "tokenId": "o390030010211",
+          "tokenText": "בָ֔א",
+          "role": "v"
+        },
+        {
+          "wordIndex": 31,
+          "tokenId": "o390030010221",
+          "tokenText": "אָמַ֖ר",
+          "role": "v"
+        },
+        {
+          "wordIndex": 32,
+          "tokenId": "o390030010231",
+          "tokenText": "יְהוָ֥ה"
+        },
+        {
+          "wordIndex": 33,
+          "tokenId": "o390030010241",
+          "tokenText": "צְבָאֽוֹת"
+        }
+      ],
+      "arcs": [],
+      "spans": []
+    },
+    "2": {
+      "words": [
+        {
+          "wordIndex": 0,
+          "tokenId": "o390030020011",
+          "tokenText": "וּ"
+        },
+        {
+          "wordIndex": 1,
+          "tokenId": "o390030020012",
+          "tokenText": "מִ֤י",
+          "role": "s"
+        },
+        {
+          "wordIndex": 2,
+          "tokenId": "o390030020021",
+          "tokenText": "מְכַלְכֵּל֙",
+          "role": "v"
+        },
+        {
+          "wordIndex": 3,
+          "tokenId": "o390030020031",
+          "tokenText": "אֶת"
+        },
+        {
+          "wordIndex": 4,
+          "tokenId": "o390030020041",
+          "tokenText": "י֣וֹם"
+        },
+        {
+          "wordIndex": 5,
+          "tokenId": "o390030020051",
+          "tokenText": "בּוֹא֔",
+          "role": "v"
+        },
+        {
+          "wordIndex": 6,
+          "tokenId": "o390030020052",
+          "tokenText": "וֹ",
+          "role": "s"
+        },
+        {
+          "wordIndex": 7,
+          "tokenId": "o390030020061",
+          "tokenText": "וּ"
+        },
+        {
+          "wordIndex": 8,
+          "tokenId": "o390030020062",
+          "tokenText": "מִ֥י",
+          "role": "s"
+        },
+        {
+          "wordIndex": 9,
+          "tokenId": "o390030020071",
+          "tokenText": "הָ"
+        },
+        {
+          "wordIndex": 10,
+          "tokenId": "o390030020072",
+          "tokenText": "עֹמֵ֖ד"
+        },
+        {
+          "wordIndex": 11,
+          "tokenId": "o390030020081",
+          "tokenText": "בְּ"
+        },
+        {
+          "wordIndex": 12,
+          "tokenId": "o390030020082",
+          "tokenText": "הֵרָֽאוֹת֑",
+          "role": "v"
+        },
+        {
+          "wordIndex": 13,
+          "tokenId": "o390030020083",
+          "tokenText": "וֹ",
+          "role": "s"
+        },
+        {
+          "wordIndex": 14,
+          "tokenId": "o390030020091",
+          "tokenText": "כִּֽי"
+        },
+        {
+          "wordIndex": 15,
+          "tokenId": "o390030020101",
+          "tokenText": "הוּא֙",
+          "role": "s"
+        },
+        {
+          "wordIndex": 16,
+          "tokenId": "o390030020111",
+          "tokenText": "כְּ"
+        },
+        {
+          "wordIndex": 17,
+          "tokenId": "o390030020112",
+          "tokenText": "אֵ֣שׁ"
+        },
+        {
+          "wordIndex": 18,
+          "tokenId": "o390030020121",
+          "tokenText": "מְצָרֵ֔ף"
+        },
+        {
+          "wordIndex": 19,
+          "tokenId": "o390030020131",
+          "tokenText": "וּ"
+        },
+        {
+          "wordIndex": 20,
+          "tokenId": "o390030020132",
+          "tokenText": "כְ"
+        },
+        {
+          "wordIndex": 21,
+          "tokenId": "o390030020133",
+          "tokenText": "בֹרִ֖ית"
+        },
+        {
+          "wordIndex": 22,
+          "tokenId": "o390030020141",
+          "tokenText": "מְכַבְּסִֽים"
+        }
+      ],
+      "arcs": [],
+      "spans": []
+    },
+    "3": {
+      "words": [
+        {
+          "wordIndex": 0,
+          "tokenId": "o390030030011",
+          "tokenText": "וְ"
+        },
+        {
+          "wordIndex": 1,
+          "tokenId": "o390030030012",
+          "tokenText": "יָשַׁ֨ב",
+          "role": "v"
+        },
+        {
+          "wordIndex": 2,
+          "tokenId": "o390030030021",
+          "tokenText": "מְצָרֵ֤ף"
+        },
+        {
+          "wordIndex": 3,
+          "tokenId": "o390030030031",
+          "tokenText": "וּ"
+        },
+        {
+          "wordIndex": 4,
+          "tokenId": "o390030030032",
+          "tokenText": "מְטַהֵר֙"
+        },
+        {
+          "wordIndex": 5,
+          "tokenId": "o390030030041",
+          "tokenText": "כֶּ֔סֶף",
+          "role": "o"
+        },
+        {
+          "wordIndex": 6,
+          "tokenId": "o390030030051",
+          "tokenText": "וְ"
+        },
+        {
+          "wordIndex": 7,
+          "tokenId": "o390030030052",
+          "tokenText": "טִהַ֤ר",
+          "role": "v"
+        },
+        {
+          "wordIndex": 8,
+          "tokenId": "o390030030061",
+          "tokenText": "אֶת"
+        },
+        {
+          "wordIndex": 9,
+          "tokenId": "o390030030071",
+          "tokenText": "בְּנֵֽי"
+        },
+        {
+          "wordIndex": 10,
+          "tokenId": "o390030030081",
+          "tokenText": "לֵוִי֙"
+        },
+        {
+          "wordIndex": 11,
+          "tokenId": "o390030030091",
+          "tokenText": "וְ"
+        },
+        {
+          "wordIndex": 12,
+          "tokenId": "o390030030092",
+          "tokenText": "זִקַּ֣ק",
+          "role": "v"
+        },
+        {
+          "wordIndex": 13,
+          "tokenId": "o390030030101",
+          "tokenText": "אֹתָ֔"
+        },
+        {
+          "wordIndex": 14,
+          "tokenId": "o390030030102",
+          "tokenText": "ם"
+        },
+        {
+          "wordIndex": 15,
+          "tokenId": "o390030030111",
+          "tokenText": "כַּ"
+        },
+        {
+          "wordIndex": 16,
+          "tokenId": "o390030030111ה",
+          "tokenText": ""
+        },
+        {
+          "wordIndex": 17,
+          "tokenId": "o390030030112",
+          "tokenText": "זָּהָ֖ב"
+        },
+        {
+          "wordIndex": 18,
+          "tokenId": "o390030030121",
+          "tokenText": "וְ"
+        },
+        {
+          "wordIndex": 19,
+          "tokenId": "o390030030122",
+          "tokenText": "כַ"
+        },
+        {
+          "wordIndex": 20,
+          "tokenId": "o390030030122ה",
+          "tokenText": ""
+        },
+        {
+          "wordIndex": 21,
+          "tokenId": "o390030030123",
+          "tokenText": "כָּ֑סֶף"
+        },
+        {
+          "wordIndex": 22,
+          "tokenId": "o390030030131",
+          "tokenText": "וְ"
+        },
+        {
+          "wordIndex": 23,
+          "tokenId": "o390030030132",
+          "tokenText": "הָיוּ֙",
+          "role": "v"
+        },
+        {
+          "wordIndex": 24,
+          "tokenId": "o390030030141",
+          "tokenText": "לַֽ"
+        },
+        {
+          "wordIndex": 25,
+          "tokenId": "o390030030142",
+          "tokenText": "יהוָ֔ה"
+        },
+        {
+          "wordIndex": 26,
+          "tokenId": "o390030030151",
+          "tokenText": "מַגִּישֵׁ֥י",
+          "role": "v"
+        },
+        {
+          "wordIndex": 27,
+          "tokenId": "o390030030161",
+          "tokenText": "מִנְחָ֖ה",
+          "role": "o"
+        },
+        {
+          "wordIndex": 28,
+          "tokenId": "o390030030171",
+          "tokenText": "בִּ"
+        },
+        {
+          "wordIndex": 29,
+          "tokenId": "o390030030172",
+          "tokenText": "צְדָקָֽה"
+        }
+      ],
+      "arcs": [],
+      "spans": []
+    },
+    "4": {
+      "words": [
+        {
+          "wordIndex": 0,
+          "tokenId": "o390030040011",
+          "tokenText": "וְ"
+        },
+        {
+          "wordIndex": 1,
+          "tokenId": "o390030040012",
+          "tokenText": "עָֽרְבָה֙",
+          "role": "v"
+        },
+        {
+          "wordIndex": 2,
+          "tokenId": "o390030040021",
+          "tokenText": "לַֽ"
+        },
+        {
+          "wordIndex": 3,
+          "tokenId": "o390030040022",
+          "tokenText": "יהוָ֔ה"
+        },
+        {
+          "wordIndex": 4,
+          "tokenId": "o390030040031",
+          "tokenText": "מִנְחַ֥ת"
+        },
+        {
+          "wordIndex": 5,
+          "tokenId": "o390030040041",
+          "tokenText": "יְהוּדָ֖ה"
+        },
+        {
+          "wordIndex": 6,
+          "tokenId": "o390030040051",
+          "tokenText": "וִ"
+        },
+        {
+          "wordIndex": 7,
+          "tokenId": "o390030040052",
+          "tokenText": "ירֽוּשָׁלִָ֑ם"
+        },
+        {
+          "wordIndex": 8,
+          "tokenId": "o390030040061",
+          "tokenText": "כִּ"
+        },
+        {
+          "wordIndex": 9,
+          "tokenId": "o390030040062",
+          "tokenText": "ימֵ֣י"
+        },
+        {
+          "wordIndex": 10,
+          "tokenId": "o390030040071",
+          "tokenText": "עוֹלָ֔ם"
+        },
+        {
+          "wordIndex": 11,
+          "tokenId": "o390030040081",
+          "tokenText": "וּ"
+        },
+        {
+          "wordIndex": 12,
+          "tokenId": "o390030040082",
+          "tokenText": "כְ"
+        },
+        {
+          "wordIndex": 13,
+          "tokenId": "o390030040083",
+          "tokenText": "שָׁנִ֖ים"
+        },
+        {
+          "wordIndex": 14,
+          "tokenId": "o390030040091",
+          "tokenText": "קַדְמֹנִיּֽוֹת"
+        }
+      ],
+      "arcs": [],
+      "spans": []
+    },
+    "5": {
+      "words": [
+        {
+          "wordIndex": 0,
+          "tokenId": "o390030050011",
+          "tokenText": "וְ"
+        },
+        {
+          "wordIndex": 1,
+          "tokenId": "o390030050012",
+          "tokenText": "קָרַבְתִּ֣י",
+          "role": "v"
+        },
+        {
+          "wordIndex": 2,
+          "tokenId": "o390030050021",
+          "tokenText": "אֲלֵי"
+        },
+        {
+          "wordIndex": 3,
+          "tokenId": "o390030050022",
+          "tokenText": "כֶם֮"
+        },
+        {
+          "wordIndex": 4,
+          "tokenId": "o390030050031",
+          "tokenText": "לַ"
+        },
+        {
+          "wordIndex": 5,
+          "tokenId": "o390030050031ה",
+          "tokenText": ""
+        },
+        {
+          "wordIndex": 6,
+          "tokenId": "o390030050032",
+          "tokenText": "מִּשְׁפָּט֒"
+        },
+        {
+          "wordIndex": 7,
+          "tokenId": "o390030050041",
+          "tokenText": "וְ"
+        },
+        {
+          "wordIndex": 8,
+          "tokenId": "o390030050042",
+          "tokenText": "הָיִ֣יתִי",
+          "role": "v"
+        },
+        {
+          "wordIndex": 9,
+          "tokenId": "o390030050051",
+          "tokenText": "עֵ֣ד"
+        },
+        {
+          "wordIndex": 10,
+          "tokenId": "o390030050061",
+          "tokenText": "מְמַהֵ֗ר"
+        },
+        {
+          "wordIndex": 11,
+          "tokenId": "o390030050071",
+          "tokenText": "בַּֽ"
+        },
+        {
+          "wordIndex": 12,
+          "tokenId": "o390030050071ה",
+          "tokenText": ""
+        },
+        {
+          "wordIndex": 13,
+          "tokenId": "o390030050072",
+          "tokenText": "מְכַשְּׁפִים֙"
+        },
+        {
+          "wordIndex": 14,
+          "tokenId": "o390030050081",
+          "tokenText": "וּ"
+        },
+        {
+          "wordIndex": 15,
+          "tokenId": "o390030050082",
+          "tokenText": "בַ"
+        },
+        {
+          "wordIndex": 16,
+          "tokenId": "o390030050082ה",
+          "tokenText": ""
+        },
+        {
+          "wordIndex": 17,
+          "tokenId": "o390030050083",
+          "tokenText": "מְנָ֣אֲפִ֔ים"
+        },
+        {
+          "wordIndex": 18,
+          "tokenId": "o390030050091",
+          "tokenText": "וּ"
+        },
+        {
+          "wordIndex": 19,
+          "tokenId": "o390030050092",
+          "tokenText": "בַ"
+        },
+        {
+          "wordIndex": 20,
+          "tokenId": "o390030050092ה",
+          "tokenText": ""
+        },
+        {
+          "wordIndex": 21,
+          "tokenId": "o390030050093",
+          "tokenText": "נִּשְׁבָּעִ֖ים",
+          "role": "v"
+        },
+        {
+          "wordIndex": 22,
+          "tokenId": "o390030050101",
+          "tokenText": "לַ"
+        },
+        {
+          "wordIndex": 23,
+          "tokenId": "o390030050101ה",
+          "tokenText": ""
+        },
+        {
+          "wordIndex": 24,
+          "tokenId": "o390030050102",
+          "tokenText": "שָּׁ֑קֶר"
+        },
+        {
+          "wordIndex": 25,
+          "tokenId": "o390030050111",
+          "tokenText": "וּ"
+        },
+        {
+          "wordIndex": 26,
+          "tokenId": "o390030050112",
+          "tokenText": "בְ"
+        },
+        {
+          "wordIndex": 27,
+          "tokenId": "o390030050113",
+          "tokenText": "עֹשְׁקֵ֣י"
+        },
+        {
+          "wordIndex": 28,
+          "tokenId": "o390030050121",
+          "tokenText": "שְׂכַר"
+        },
+        {
+          "wordIndex": 29,
+          "tokenId": "o390030050131",
+          "tokenText": "שָׂ֠כִיר"
+        },
+        {
+          "wordIndex": 30,
+          "tokenId": "o390030050141",
+          "tokenText": "אַלְמָנָ֨ה"
+        },
+        {
+          "wordIndex": 31,
+          "tokenId": "o390030050151",
+          "tokenText": "וְ"
+        },
+        {
+          "wordIndex": 32,
+          "tokenId": "o390030050152",
+          "tokenText": "יָת֤וֹם"
+        },
+        {
+          "wordIndex": 33,
+          "tokenId": "o390030050161",
+          "tokenText": "וּ"
+        },
+        {
+          "wordIndex": 34,
+          "tokenId": "o390030050162",
+          "tokenText": "מַטֵּי"
+        },
+        {
+          "wordIndex": 35,
+          "tokenId": "o390030050171",
+          "tokenText": "גֵר֙"
+        },
+        {
+          "wordIndex": 36,
+          "tokenId": "o390030050181",
+          "tokenText": "וְ"
+        },
+        {
+          "wordIndex": 37,
+          "tokenId": "o390030050182",
+          "tokenText": "לֹ֣א",
+          "role": "adv"
+        },
+        {
+          "wordIndex": 38,
+          "tokenId": "o390030050191",
+          "tokenText": "יְרֵא֔וּ",
+          "role": "v"
+        },
+        {
+          "wordIndex": 39,
+          "tokenId": "o390030050192",
+          "tokenText": "נִי",
+          "role": "o"
+        },
+        {
+          "wordIndex": 40,
+          "tokenId": "o390030050201",
+          "tokenText": "אָמַ֖ר",
+          "role": "v"
+        },
+        {
+          "wordIndex": 41,
+          "tokenId": "o390030050211",
+          "tokenText": "יְהוָ֥ה"
+        },
+        {
+          "wordIndex": 42,
+          "tokenId": "o390030050221",
+          "tokenText": "צְבָאֽוֹת"
+        }
+      ],
+      "arcs": [],
+      "spans": []
+    },
+    "6": {
+      "words": [
+        {
+          "wordIndex": 0,
+          "tokenId": "o390030060011",
+          "tokenText": "כִּ֛י"
+        },
+        {
+          "wordIndex": 1,
+          "tokenId": "o390030060021",
+          "tokenText": "אֲנִ֥י",
+          "role": "s"
+        },
+        {
+          "wordIndex": 2,
+          "tokenId": "o390030060031",
+          "tokenText": "יְהוָ֖ה",
+          "role": "p"
+        },
+        {
+          "wordIndex": 3,
+          "tokenId": "o390030060041",
+          "tokenText": "לֹ֣א",
+          "role": "adv"
+        },
+        {
+          "wordIndex": 4,
+          "tokenId": "o390030060051",
+          "tokenText": "שָׁנִ֑יתִי",
+          "role": "v"
+        },
+        {
+          "wordIndex": 5,
+          "tokenId": "o390030060061",
+          "tokenText": "וְ"
+        },
+        {
+          "wordIndex": 6,
+          "tokenId": "o390030060071",
+          "tokenText": "בְּנֵֽי"
+        },
+        {
+          "wordIndex": 7,
+          "tokenId": "o390030060081",
+          "tokenText": "יַעֲקֹ֖ב"
+        },
+        {
+          "wordIndex": 8,
+          "tokenId": "o390030060062",
+          "tokenText": "אַתֶּ֥ם",
+          "role": "s"
+        },
+        {
+          "wordIndex": 9,
+          "tokenId": "o390030060091",
+          "tokenText": "לֹ֥א",
+          "role": "adv"
+        },
+        {
+          "wordIndex": 10,
+          "tokenId": "o390030060101",
+          "tokenText": "כְלִיתֶֽם",
+          "role": "v"
+        }
+      ],
+      "arcs": [],
+      "spans": []
+    },
+    "7": {
+      "words": [
+        {
+          "wordIndex": 0,
+          "tokenId": "o390030070011",
+          "tokenText": "לְ"
+        },
+        {
+          "wordIndex": 1,
+          "tokenId": "o390030070012",
+          "tokenText": "מִ"
+        },
+        {
+          "wordIndex": 2,
+          "tokenId": "o390030070013",
+          "tokenText": "ימֵ֨י"
+        },
+        {
+          "wordIndex": 3,
+          "tokenId": "o390030070021",
+          "tokenText": "אֲבֹתֵי"
+        },
+        {
+          "wordIndex": 4,
+          "tokenId": "o390030070022",
+          "tokenText": "כֶ֜ם"
+        },
+        {
+          "wordIndex": 5,
+          "tokenId": "o390030070031",
+          "tokenText": "סַרְתֶּ֤ם",
+          "role": "v"
+        },
+        {
+          "wordIndex": 6,
+          "tokenId": "o390030070041",
+          "tokenText": "מֵֽ"
+        },
+        {
+          "wordIndex": 7,
+          "tokenId": "o390030070042",
+          "tokenText": "חֻקַּ"
+        },
+        {
+          "wordIndex": 8,
+          "tokenId": "o390030070043",
+          "tokenText": "י֙"
+        },
+        {
+          "wordIndex": 9,
+          "tokenId": "o390030070051",
+          "tokenText": "וְ"
+        },
+        {
+          "wordIndex": 10,
+          "tokenId": "o390030070052",
+          "tokenText": "לֹ֣א",
+          "role": "adv"
+        },
+        {
+          "wordIndex": 11,
+          "tokenId": "o390030070061",
+          "tokenText": "שְׁמַרְתֶּ֔ם",
+          "role": "v"
+        },
+        {
+          "wordIndex": 12,
+          "tokenId": "o390030070071",
+          "tokenText": "שׁ֤וּבוּ",
+          "role": "v"
+        },
+        {
+          "wordIndex": 13,
+          "tokenId": "o390030070081",
+          "tokenText": "אֵלַ"
+        },
+        {
+          "wordIndex": 14,
+          "tokenId": "o390030070082",
+          "tokenText": "י֙"
+        },
+        {
+          "wordIndex": 15,
+          "tokenId": "o390030070091",
+          "tokenText": "וְ"
+        },
+        {
+          "wordIndex": 16,
+          "tokenId": "o390030070092",
+          "tokenText": "אָשׁ֣וּבָה",
+          "role": "v"
+        },
+        {
+          "wordIndex": 17,
+          "tokenId": "o390030070101",
+          "tokenText": "אֲלֵי"
+        },
+        {
+          "wordIndex": 18,
+          "tokenId": "o390030070102",
+          "tokenText": "כֶ֔ם"
+        },
+        {
+          "wordIndex": 19,
+          "tokenId": "o390030070111",
+          "tokenText": "אָמַ֖ר",
+          "role": "v"
+        },
+        {
+          "wordIndex": 20,
+          "tokenId": "o390030070121",
+          "tokenText": "יְהוָ֣ה"
+        },
+        {
+          "wordIndex": 21,
+          "tokenId": "o390030070131",
+          "tokenText": "צְבָא֑וֹת"
+        },
+        {
+          "wordIndex": 22,
+          "tokenId": "o390030070141",
+          "tokenText": "וַ"
+        },
+        {
+          "wordIndex": 23,
+          "tokenId": "o390030070142",
+          "tokenText": "אֲמַרְתֶּ֖ם",
+          "role": "v"
+        },
+        {
+          "wordIndex": 24,
+          "tokenId": "o390030070151",
+          "tokenText": "בַּ"
+        },
+        {
+          "wordIndex": 25,
+          "tokenId": "o390030070152",
+          "tokenText": "מֶּ֥ה"
+        },
+        {
+          "wordIndex": 26,
+          "tokenId": "o390030070161",
+          "tokenText": "נָשֽׁוּב",
+          "role": "v"
+        }
+      ],
+      "arcs": [],
+      "spans": []
+    },
+    "8": {
+      "words": [
+        {
+          "wordIndex": 0,
+          "tokenId": "o390030080011",
+          "tokenText": "הֲ"
+        },
+        {
+          "wordIndex": 1,
+          "tokenId": "o390030080012",
+          "tokenText": "יִקְבַּ֨ע",
+          "role": "v"
+        },
+        {
+          "wordIndex": 2,
+          "tokenId": "o390030080021",
+          "tokenText": "אָדָ֜ם",
+          "role": "s"
+        },
+        {
+          "wordIndex": 3,
+          "tokenId": "o390030080031",
+          "tokenText": "אֱלֹהִ֗ים",
+          "role": "o"
+        },
+        {
+          "wordIndex": 4,
+          "tokenId": "o390030080041",
+          "tokenText": "כִּ֤י"
+        },
+        {
+          "wordIndex": 5,
+          "tokenId": "o390030080051",
+          "tokenText": "אַתֶּם֙",
+          "role": "s"
+        },
+        {
+          "wordIndex": 6,
+          "tokenId": "o390030080061",
+          "tokenText": "קֹבְעִ֣ים",
+          "role": "v"
+        },
+        {
+          "wordIndex": 7,
+          "tokenId": "o390030080071",
+          "tokenText": "אֹתִ֔"
+        },
+        {
+          "wordIndex": 8,
+          "tokenId": "o390030080072",
+          "tokenText": "י"
+        },
+        {
+          "wordIndex": 9,
+          "tokenId": "o390030080081",
+          "tokenText": "וַ"
+        },
+        {
+          "wordIndex": 10,
+          "tokenId": "o390030080082",
+          "tokenText": "אֲמַרְתֶּ֖ם",
+          "role": "v"
+        },
+        {
+          "wordIndex": 11,
+          "tokenId": "o390030080091",
+          "tokenText": "בַּ"
+        },
+        {
+          "wordIndex": 12,
+          "tokenId": "o390030080092",
+          "tokenText": "מֶּ֣ה"
+        },
+        {
+          "wordIndex": 13,
+          "tokenId": "o390030080101",
+          "tokenText": "קְבַעֲנ֑וּ",
+          "role": "v"
+        },
+        {
+          "wordIndex": 14,
+          "tokenId": "o390030080102",
+          "tokenText": "ךָ",
+          "role": "o"
+        },
+        {
+          "wordIndex": 15,
+          "tokenId": "o390030080111",
+          "tokenText": "הַֽ"
+        },
+        {
+          "wordIndex": 16,
+          "tokenId": "o390030080112",
+          "tokenText": "מַּעֲשֵׂ֖ר"
+        },
+        {
+          "wordIndex": 17,
+          "tokenId": "o390030080121",
+          "tokenText": "וְ"
+        },
+        {
+          "wordIndex": 18,
+          "tokenId": "o390030080122",
+          "tokenText": "הַ"
+        },
+        {
+          "wordIndex": 19,
+          "tokenId": "o390030080123",
+          "tokenText": "תְּרוּמָֽה"
+        }
+      ],
+      "arcs": [],
+      "spans": []
+    },
+    "9": {
+      "words": [
+        {
+          "wordIndex": 0,
+          "tokenId": "o390030090011",
+          "tokenText": "בַּ"
+        },
+        {
+          "wordIndex": 1,
+          "tokenId": "o390030090011ה",
+          "tokenText": ""
+        },
+        {
+          "wordIndex": 2,
+          "tokenId": "o390030090012",
+          "tokenText": "מְּאֵרָה֙"
+        },
+        {
+          "wordIndex": 3,
+          "tokenId": "o390030090021",
+          "tokenText": "אַתֶּ֣ם",
+          "role": "s"
+        },
+        {
+          "wordIndex": 4,
+          "tokenId": "o390030090031",
+          "tokenText": "נֵֽאָרִ֔ים",
+          "role": "v"
+        },
+        {
+          "wordIndex": 5,
+          "tokenId": "o390030090041",
+          "tokenText": "וְ"
+        },
+        {
+          "wordIndex": 6,
+          "tokenId": "o390030090042",
+          "tokenText": "אֹתִ֖"
+        },
+        {
+          "wordIndex": 7,
+          "tokenId": "o390030090043",
+          "tokenText": "י"
+        },
+        {
+          "wordIndex": 8,
+          "tokenId": "o390030090061",
+          "tokenText": "קֹבְעִ֑ים",
+          "role": "v"
+        },
+        {
+          "wordIndex": 9,
+          "tokenId": "o390030090051",
+          "tokenText": "אַתֶּ֣ם"
+        },
+        {
+          "wordIndex": 10,
+          "tokenId": "o390030090071",
+          "tokenText": "הַ"
+        },
+        {
+          "wordIndex": 11,
+          "tokenId": "o390030090072",
+          "tokenText": "גּ֖וֹי"
+        },
+        {
+          "wordIndex": 12,
+          "tokenId": "o390030090081",
+          "tokenText": "כֻּלּֽ"
+        },
+        {
+          "wordIndex": 13,
+          "tokenId": "o390030090082",
+          "tokenText": "וֹ"
+        }
+      ],
+      "arcs": [],
+      "spans": []
+    },
+    "10": {
+      "words": [
+        {
+          "wordIndex": 0,
+          "tokenId": "o390030100011",
+          "tokenText": "הָבִ֨יאוּ",
+          "role": "v"
+        },
+        {
+          "wordIndex": 1,
+          "tokenId": "o390030100021",
+          "tokenText": "אֶת"
+        },
+        {
+          "wordIndex": 2,
+          "tokenId": "o390030100031",
+          "tokenText": "כָּל"
+        },
+        {
+          "wordIndex": 3,
+          "tokenId": "o390030100041",
+          "tokenText": "הַֽ"
+        },
+        {
+          "wordIndex": 4,
+          "tokenId": "o390030100042",
+          "tokenText": "מַּעֲשֵׂ֜ר"
+        },
+        {
+          "wordIndex": 5,
+          "tokenId": "o390030100051",
+          "tokenText": "אֶל"
+        },
+        {
+          "wordIndex": 6,
+          "tokenId": "o390030100061",
+          "tokenText": "בֵּ֣ית"
+        },
+        {
+          "wordIndex": 7,
+          "tokenId": "o390030100071",
+          "tokenText": "הָ"
+        },
+        {
+          "wordIndex": 8,
+          "tokenId": "o390030100072",
+          "tokenText": "אוֹצָ֗ר"
+        },
+        {
+          "wordIndex": 9,
+          "tokenId": "o390030100081",
+          "tokenText": "וִ"
+        },
+        {
+          "wordIndex": 10,
+          "tokenId": "o390030100082",
+          "tokenText": "יהִ֥י",
+          "role": "v"
+        },
+        {
+          "wordIndex": 11,
+          "tokenId": "o390030100091",
+          "tokenText": "טֶ֨רֶף֙",
+          "role": "s"
+        },
+        {
+          "wordIndex": 12,
+          "tokenId": "o390030100101",
+          "tokenText": "בְּ"
+        },
+        {
+          "wordIndex": 13,
+          "tokenId": "o390030100102",
+          "tokenText": "בֵיתִ֔"
+        },
+        {
+          "wordIndex": 14,
+          "tokenId": "o390030100103",
+          "tokenText": "י"
+        },
+        {
+          "wordIndex": 15,
+          "tokenId": "o390030100111",
+          "tokenText": "וּ"
+        },
+        {
+          "wordIndex": 16,
+          "tokenId": "o390030100112",
+          "tokenText": "בְחָנ֤וּ",
+          "role": "v"
+        },
+        {
+          "wordIndex": 17,
+          "tokenId": "o390030100113",
+          "tokenText": "נִי",
+          "role": "o"
+        },
+        {
+          "wordIndex": 18,
+          "tokenId": "o390030100121",
+          "tokenText": "נָא֙",
+          "role": "adv"
+        },
+        {
+          "wordIndex": 19,
+          "tokenId": "o390030100131",
+          "tokenText": "בָּ"
+        },
+        {
+          "wordIndex": 20,
+          "tokenId": "o390030100132",
+          "tokenText": "זֹ֔את"
+        },
+        {
+          "wordIndex": 21,
+          "tokenId": "o390030100141",
+          "tokenText": "אָמַ֖ר",
+          "role": "v"
+        },
+        {
+          "wordIndex": 22,
+          "tokenId": "o390030100151",
+          "tokenText": "יְהוָ֣ה"
+        },
+        {
+          "wordIndex": 23,
+          "tokenId": "o390030100161",
+          "tokenText": "צְבָא֑וֹת"
+        },
+        {
+          "wordIndex": 24,
+          "tokenId": "o390030100171",
+          "tokenText": "אִם"
+        },
+        {
+          "wordIndex": 25,
+          "tokenId": "o390030100181",
+          "tokenText": "לֹ֧א"
+        },
+        {
+          "wordIndex": 26,
+          "tokenId": "o390030100191",
+          "tokenText": "אֶפְתַּ֣ח",
+          "role": "v"
+        },
+        {
+          "wordIndex": 27,
+          "tokenId": "o390030100201",
+          "tokenText": "לָ"
+        },
+        {
+          "wordIndex": 28,
+          "tokenId": "o390030100202",
+          "tokenText": "כֶ֗ם"
+        },
+        {
+          "wordIndex": 29,
+          "tokenId": "o390030100211",
+          "tokenText": "אֵ֚ת"
+        },
+        {
+          "wordIndex": 30,
+          "tokenId": "o390030100221",
+          "tokenText": "אֲרֻבּ֣וֹת"
+        },
+        {
+          "wordIndex": 31,
+          "tokenId": "o390030100231",
+          "tokenText": "הַ"
+        },
+        {
+          "wordIndex": 32,
+          "tokenId": "o390030100232",
+          "tokenText": "שָּׁמַ֔יִם"
+        },
+        {
+          "wordIndex": 33,
+          "tokenId": "o390030100241",
+          "tokenText": "וַ"
+        },
+        {
+          "wordIndex": 34,
+          "tokenId": "o390030100242",
+          "tokenText": "הֲרִיקֹתִ֥י",
+          "role": "v"
+        },
+        {
+          "wordIndex": 35,
+          "tokenId": "o390030100251",
+          "tokenText": "לָ"
+        },
+        {
+          "wordIndex": 36,
+          "tokenId": "o390030100252",
+          "tokenText": "כֶ֛ם"
+        },
+        {
+          "wordIndex": 37,
+          "tokenId": "o390030100261",
+          "tokenText": "בְּרָכָ֖ה",
+          "role": "o"
+        },
+        {
+          "wordIndex": 38,
+          "tokenId": "o390030100271",
+          "tokenText": "עַד"
+        },
+        {
+          "wordIndex": 39,
+          "tokenId": "o390030100281",
+          "tokenText": "בְּלִי"
+        },
+        {
+          "wordIndex": 40,
+          "tokenId": "o390030100291",
+          "tokenText": "דָֽי"
+        }
+      ],
+      "arcs": [],
+      "spans": []
+    },
+    "11": {
+      "words": [
+        {
+          "wordIndex": 0,
+          "tokenId": "o390030110011",
+          "tokenText": "וְ"
+        },
+        {
+          "wordIndex": 1,
+          "tokenId": "o390030110012",
+          "tokenText": "גָעַרְתִּ֤י",
+          "role": "v"
+        },
+        {
+          "wordIndex": 2,
+          "tokenId": "o390030110021",
+          "tokenText": "לָ"
+        },
+        {
+          "wordIndex": 3,
+          "tokenId": "o390030110022",
+          "tokenText": "כֶם֙"
+        },
+        {
+          "wordIndex": 4,
+          "tokenId": "o390030110031",
+          "tokenText": "בָּֽ"
+        },
+        {
+          "wordIndex": 5,
+          "tokenId": "o390030110031ה",
+          "tokenText": ""
+        },
+        {
+          "wordIndex": 6,
+          "tokenId": "o390030110032",
+          "tokenText": "אֹכֵ֔ל"
+        },
+        {
+          "wordIndex": 7,
+          "tokenId": "o390030110041",
+          "tokenText": "וְ"
+        },
+        {
+          "wordIndex": 8,
+          "tokenId": "o390030110042",
+          "tokenText": "לֹֽא",
+          "role": "adv"
+        },
+        {
+          "wordIndex": 9,
+          "tokenId": "o390030110051",
+          "tokenText": "יַשְׁחִ֥ת",
+          "role": "v"
+        },
+        {
+          "wordIndex": 10,
+          "tokenId": "o390030110061",
+          "tokenText": "לָ"
+        },
+        {
+          "wordIndex": 11,
+          "tokenId": "o390030110062",
+          "tokenText": "כֶ֖ם"
+        },
+        {
+          "wordIndex": 12,
+          "tokenId": "o390030110071",
+          "tokenText": "אֶת"
+        },
+        {
+          "wordIndex": 13,
+          "tokenId": "o390030110081",
+          "tokenText": "פְּרִ֣י"
+        },
+        {
+          "wordIndex": 14,
+          "tokenId": "o390030110091",
+          "tokenText": "הָ"
+        },
+        {
+          "wordIndex": 15,
+          "tokenId": "o390030110092",
+          "tokenText": "אֲדָמָ֑ה"
+        },
+        {
+          "wordIndex": 16,
+          "tokenId": "o390030110101",
+          "tokenText": "וְ"
+        },
+        {
+          "wordIndex": 17,
+          "tokenId": "o390030110102",
+          "tokenText": "לֹא",
+          "role": "adv"
+        },
+        {
+          "wordIndex": 18,
+          "tokenId": "o390030110111",
+          "tokenText": "תְשַׁכֵּ֨ל",
+          "role": "v"
+        },
+        {
+          "wordIndex": 19,
+          "tokenId": "o390030110121",
+          "tokenText": "לָ"
+        },
+        {
+          "wordIndex": 20,
+          "tokenId": "o390030110122",
+          "tokenText": "כֶ֤ם"
+        },
+        {
+          "wordIndex": 21,
+          "tokenId": "o390030110131",
+          "tokenText": "הַ"
+        },
+        {
+          "wordIndex": 22,
+          "tokenId": "o390030110132",
+          "tokenText": "גֶּ֨פֶן֙"
+        },
+        {
+          "wordIndex": 23,
+          "tokenId": "o390030110141",
+          "tokenText": "בַּ"
+        },
+        {
+          "wordIndex": 24,
+          "tokenId": "o390030110141ה",
+          "tokenText": ""
+        },
+        {
+          "wordIndex": 25,
+          "tokenId": "o390030110142",
+          "tokenText": "שָּׂדֶ֔ה"
+        },
+        {
+          "wordIndex": 26,
+          "tokenId": "o390030110151",
+          "tokenText": "אָמַ֖ר",
+          "role": "v"
+        },
+        {
+          "wordIndex": 27,
+          "tokenId": "o390030110161",
+          "tokenText": "יְהוָ֥ה"
+        },
+        {
+          "wordIndex": 28,
+          "tokenId": "o390030110171",
+          "tokenText": "צְבָאֽוֹת"
+        }
+      ],
+      "arcs": [],
+      "spans": []
+    },
+    "12": {
+      "words": [
+        {
+          "wordIndex": 0,
+          "tokenId": "o390030120011",
+          "tokenText": "וְ"
+        },
+        {
+          "wordIndex": 1,
+          "tokenId": "o390030120012",
+          "tokenText": "אִשְּׁר֥וּ",
+          "role": "v"
+        },
+        {
+          "wordIndex": 2,
+          "tokenId": "o390030120021",
+          "tokenText": "אֶתְ"
+        },
+        {
+          "wordIndex": 3,
+          "tokenId": "o390030120022",
+          "tokenText": "כֶ֖ם"
+        },
+        {
+          "wordIndex": 4,
+          "tokenId": "o390030120031",
+          "tokenText": "כָּל"
+        },
+        {
+          "wordIndex": 5,
+          "tokenId": "o390030120041",
+          "tokenText": "הַ"
+        },
+        {
+          "wordIndex": 6,
+          "tokenId": "o390030120042",
+          "tokenText": "גּוֹיִ֑ם"
+        },
+        {
+          "wordIndex": 7,
+          "tokenId": "o390030120051",
+          "tokenText": "כִּֽי"
+        },
+        {
+          "wordIndex": 8,
+          "tokenId": "o390030120061",
+          "tokenText": "תִהְי֤וּ",
+          "role": "v"
+        },
+        {
+          "wordIndex": 9,
+          "tokenId": "o390030120071",
+          "tokenText": "אַתֶּם֙",
+          "role": "s"
+        },
+        {
+          "wordIndex": 10,
+          "tokenId": "o390030120081",
+          "tokenText": "אֶ֣רֶץ"
+        },
+        {
+          "wordIndex": 11,
+          "tokenId": "o390030120091",
+          "tokenText": "חֵ֔פֶץ"
+        },
+        {
+          "wordIndex": 12,
+          "tokenId": "o390030120101",
+          "tokenText": "אָמַ֖ר",
+          "role": "v"
+        },
+        {
+          "wordIndex": 13,
+          "tokenId": "o390030120111",
+          "tokenText": "יְהוָ֥ה"
+        },
+        {
+          "wordIndex": 14,
+          "tokenId": "o390030120121",
+          "tokenText": "צְבָאֽוֹת"
+        }
+      ],
+      "arcs": [],
+      "spans": []
+    },
+    "13": {
+      "words": [
+        {
+          "wordIndex": 0,
+          "tokenId": "o390030130011",
+          "tokenText": "חָזְק֥וּ",
+          "role": "v"
+        },
+        {
+          "wordIndex": 1,
+          "tokenId": "o390030130021",
+          "tokenText": "עָלַ֛"
+        },
+        {
+          "wordIndex": 2,
+          "tokenId": "o390030130022",
+          "tokenText": "י"
+        },
+        {
+          "wordIndex": 3,
+          "tokenId": "o390030130031",
+          "tokenText": "דִּבְרֵי"
+        },
+        {
+          "wordIndex": 4,
+          "tokenId": "o390030130032",
+          "tokenText": "כֶ֖ם"
+        },
+        {
+          "wordIndex": 5,
+          "tokenId": "o390030130041",
+          "tokenText": "אָמַ֣ר",
+          "role": "v"
+        },
+        {
+          "wordIndex": 6,
+          "tokenId": "o390030130051",
+          "tokenText": "יְהוָ֑ה",
+          "role": "s"
+        },
+        {
+          "wordIndex": 7,
+          "tokenId": "o390030130061",
+          "tokenText": "וַ"
+        },
+        {
+          "wordIndex": 8,
+          "tokenId": "o390030130062",
+          "tokenText": "אֲמַרְתֶּ֕ם",
+          "role": "v"
+        },
+        {
+          "wordIndex": 9,
+          "tokenId": "o390030130071",
+          "tokenText": "מַה",
+          "role": "o"
+        },
+        {
+          "wordIndex": 10,
+          "tokenId": "o390030130081",
+          "tokenText": "נִּדְבַּ֖רְנוּ",
+          "role": "v"
+        },
+        {
+          "wordIndex": 11,
+          "tokenId": "o390030130091",
+          "tokenText": "עָלֶֽי"
+        },
+        {
+          "wordIndex": 12,
+          "tokenId": "o390030130092",
+          "tokenText": "ךָ"
+        }
+      ],
+      "arcs": [],
+      "spans": []
+    },
+    "14": {
+      "words": [
+        {
+          "wordIndex": 0,
+          "tokenId": "o390030140011",
+          "tokenText": "אֲמַרְתֶּ֕ם",
+          "role": "v"
+        },
+        {
+          "wordIndex": 1,
+          "tokenId": "o390030140021",
+          "tokenText": "שָׁ֖וְא",
+          "role": "p"
+        },
+        {
+          "wordIndex": 2,
+          "tokenId": "o390030140031",
+          "tokenText": "עֲבֹ֣ד",
+          "role": "v"
+        },
+        {
+          "wordIndex": 3,
+          "tokenId": "o390030140041",
+          "tokenText": "אֱלֹהִ֑ים",
+          "role": "o"
+        },
+        {
+          "wordIndex": 4,
+          "tokenId": "o390030140051",
+          "tokenText": "וּ"
+        },
+        {
+          "wordIndex": 5,
+          "tokenId": "o390030140052",
+          "tokenText": "מַה",
+          "role": "p"
+        },
+        {
+          "wordIndex": 6,
+          "tokenId": "o390030140061",
+          "tokenText": "בֶּ֗צַע",
+          "role": "s"
+        },
+        {
+          "wordIndex": 7,
+          "tokenId": "o390030140071",
+          "tokenText": "כִּ֤י"
+        },
+        {
+          "wordIndex": 8,
+          "tokenId": "o390030140081",
+          "tokenText": "שָׁמַ֨רְנוּ֙",
+          "role": "v"
+        },
+        {
+          "wordIndex": 9,
+          "tokenId": "o390030140091",
+          "tokenText": "מִשְׁמַרְתּ֔"
+        },
+        {
+          "wordIndex": 10,
+          "tokenId": "o390030140092",
+          "tokenText": "וֹ"
+        },
+        {
+          "wordIndex": 11,
+          "tokenId": "o390030140101",
+          "tokenText": "וְ"
+        },
+        {
+          "wordIndex": 12,
+          "tokenId": "o390030140102",
+          "tokenText": "כִ֤י"
+        },
+        {
+          "wordIndex": 13,
+          "tokenId": "o390030140111",
+          "tokenText": "הָלַ֨כְנוּ֙",
+          "role": "v"
+        },
+        {
+          "wordIndex": 14,
+          "tokenId": "o390030140121",
+          "tokenText": "קְדֹ֣רַנִּ֔ית",
+          "role": "adv"
+        },
+        {
+          "wordIndex": 15,
+          "tokenId": "o390030140131",
+          "tokenText": "מִ"
+        },
+        {
+          "wordIndex": 16,
+          "tokenId": "o390030140132",
+          "tokenText": "פְּנֵ֖י"
+        },
+        {
+          "wordIndex": 17,
+          "tokenId": "o390030140141",
+          "tokenText": "יְהוָ֥ה"
+        },
+        {
+          "wordIndex": 18,
+          "tokenId": "o390030140151",
+          "tokenText": "צְבָאֽוֹת"
+        }
+      ],
+      "arcs": [],
+      "spans": []
+    },
+    "15": {
+      "words": [
+        {
+          "wordIndex": 0,
+          "tokenId": "o390030150011",
+          "tokenText": "וְ"
+        },
+        {
+          "wordIndex": 1,
+          "tokenId": "o390030150012",
+          "tokenText": "עַתָּ֕ה"
+        },
+        {
+          "wordIndex": 2,
+          "tokenId": "o390030150021",
+          "tokenText": "אֲנַ֖חְנוּ",
+          "role": "s"
+        },
+        {
+          "wordIndex": 3,
+          "tokenId": "o390030150031",
+          "tokenText": "מְאַשְּׁרִ֣ים",
+          "role": "v"
+        },
+        {
+          "wordIndex": 4,
+          "tokenId": "o390030150041",
+          "tokenText": "זֵדִ֑ים",
+          "role": "o"
+        },
+        {
+          "wordIndex": 5,
+          "tokenId": "o390030150051",
+          "tokenText": "גַּם"
+        },
+        {
+          "wordIndex": 6,
+          "tokenId": "o390030150061",
+          "tokenText": "נִבְנוּ֙",
+          "role": "v"
+        },
+        {
+          "wordIndex": 7,
+          "tokenId": "o390030150071",
+          "tokenText": "עֹשֵׂ֣י"
+        },
+        {
+          "wordIndex": 8,
+          "tokenId": "o390030150081",
+          "tokenText": "רִשְׁעָ֔ה"
+        },
+        {
+          "wordIndex": 9,
+          "tokenId": "o390030150091",
+          "tokenText": "גַּ֧ם"
+        },
+        {
+          "wordIndex": 10,
+          "tokenId": "o390030150101",
+          "tokenText": "בָּחֲנ֛וּ",
+          "role": "v"
+        },
+        {
+          "wordIndex": 11,
+          "tokenId": "o390030150111",
+          "tokenText": "אֱלֹהִ֖ים",
+          "role": "o"
+        },
+        {
+          "wordIndex": 12,
+          "tokenId": "o390030150121",
+          "tokenText": "וַ"
+        },
+        {
+          "wordIndex": 13,
+          "tokenId": "o390030150122",
+          "tokenText": "יִּמָּלֵֽטוּ",
+          "role": "v"
+        }
+      ],
+      "arcs": [],
+      "spans": []
+    },
+    "16": {
+      "words": [
+        {
+          "wordIndex": 0,
+          "tokenId": "o390030160011",
+          "tokenText": "אָ֧ז",
+          "role": "adv"
+        },
+        {
+          "wordIndex": 1,
+          "tokenId": "o390030160021",
+          "tokenText": "נִדְבְּר֛וּ",
+          "role": "v"
+        },
+        {
+          "wordIndex": 2,
+          "tokenId": "o390030160031",
+          "tokenText": "יִרְאֵ֥י"
+        },
+        {
+          "wordIndex": 3,
+          "tokenId": "o390030160041",
+          "tokenText": "יְהוָ֖ה"
+        },
+        {
+          "wordIndex": 4,
+          "tokenId": "o390030160051",
+          "tokenText": "אִ֣ישׁ"
+        },
+        {
+          "wordIndex": 5,
+          "tokenId": "o390030160061",
+          "tokenText": "אֶת"
+        },
+        {
+          "wordIndex": 6,
+          "tokenId": "o390030160071",
+          "tokenText": "רֵעֵ֑"
+        },
+        {
+          "wordIndex": 7,
+          "tokenId": "o390030160072",
+          "tokenText": "הוּ"
+        },
+        {
+          "wordIndex": 8,
+          "tokenId": "o390030160081",
+          "tokenText": "וַ"
+        },
+        {
+          "wordIndex": 9,
+          "tokenId": "o390030160082",
+          "tokenText": "יַּקְשֵׁ֤ב",
+          "role": "v"
+        },
+        {
+          "wordIndex": 10,
+          "tokenId": "o390030160091",
+          "tokenText": "יְהוָה֙",
+          "role": "s"
+        },
+        {
+          "wordIndex": 11,
+          "tokenId": "o390030160101",
+          "tokenText": "וַ"
+        },
+        {
+          "wordIndex": 12,
+          "tokenId": "o390030160102",
+          "tokenText": "יִּשְׁמָ֔ע",
+          "role": "v"
+        },
+        {
+          "wordIndex": 13,
+          "tokenId": "o390030160111",
+          "tokenText": "וַ֠"
+        },
+        {
+          "wordIndex": 14,
+          "tokenId": "o390030160112",
+          "tokenText": "יִּכָּתֵב",
+          "role": "v"
+        },
+        {
+          "wordIndex": 15,
+          "tokenId": "o390030160121",
+          "tokenText": "סֵ֣פֶר"
+        },
+        {
+          "wordIndex": 16,
+          "tokenId": "o390030160131",
+          "tokenText": "זִכָּר֤וֹן"
+        },
+        {
+          "wordIndex": 17,
+          "tokenId": "o390030160141",
+          "tokenText": "לְ"
+        },
+        {
+          "wordIndex": 18,
+          "tokenId": "o390030160142",
+          "tokenText": "פָנָי"
+        },
+        {
+          "wordIndex": 19,
+          "tokenId": "o390030160143",
+          "tokenText": "ו֙"
+        },
+        {
+          "wordIndex": 20,
+          "tokenId": "o390030160151",
+          "tokenText": "לְ"
+        },
+        {
+          "wordIndex": 21,
+          "tokenId": "o390030160152",
+          "tokenText": "יִרְאֵ֣י"
+        },
+        {
+          "wordIndex": 22,
+          "tokenId": "o390030160161",
+          "tokenText": "יְהוָ֔ה"
+        },
+        {
+          "wordIndex": 23,
+          "tokenId": "o390030160171",
+          "tokenText": "וּ"
+        },
+        {
+          "wordIndex": 24,
+          "tokenId": "o390030160172",
+          "tokenText": "לְ"
+        },
+        {
+          "wordIndex": 25,
+          "tokenId": "o390030160173",
+          "tokenText": "חֹשְׁבֵ֖י"
+        },
+        {
+          "wordIndex": 26,
+          "tokenId": "o390030160181",
+          "tokenText": "שְׁמֽ"
+        },
+        {
+          "wordIndex": 27,
+          "tokenId": "o390030160182",
+          "tokenText": "וֹ"
+        }
+      ],
+      "arcs": [],
+      "spans": []
+    },
+    "17": {
+      "words": [
+        {
+          "wordIndex": 0,
+          "tokenId": "o390030170011",
+          "tokenText": "וְ"
+        },
+        {
+          "wordIndex": 1,
+          "tokenId": "o390030170031",
+          "tokenText": "אָמַר֙",
+          "role": "v"
+        },
+        {
+          "wordIndex": 2,
+          "tokenId": "o390030170041",
+          "tokenText": "יְהוָ֣ה"
+        },
+        {
+          "wordIndex": 3,
+          "tokenId": "o390030170051",
+          "tokenText": "צְבָא֔וֹת"
+        },
+        {
+          "wordIndex": 4,
+          "tokenId": "o390030170012",
+          "tokenText": "הָ֣יוּ",
+          "role": "v"
+        },
+        {
+          "wordIndex": 5,
+          "tokenId": "o390030170021",
+          "tokenText": "לִ֗"
+        },
+        {
+          "wordIndex": 6,
+          "tokenId": "o390030170022",
+          "tokenText": "י"
+        },
+        {
+          "wordIndex": 7,
+          "tokenId": "o390030170061",
+          "tokenText": "לַ"
+        },
+        {
+          "wordIndex": 8,
+          "tokenId": "o390030170061ה",
+          "tokenText": ""
+        },
+        {
+          "wordIndex": 9,
+          "tokenId": "o390030170062",
+          "tokenText": "יּ֕וֹם"
+        },
+        {
+          "wordIndex": 10,
+          "tokenId": "o390030170071",
+          "tokenText": "אֲשֶׁ֥ר"
+        },
+        {
+          "wordIndex": 11,
+          "tokenId": "o390030170081",
+          "tokenText": "אֲנִ֖י",
+          "role": "s"
+        },
+        {
+          "wordIndex": 12,
+          "tokenId": "o390030170091",
+          "tokenText": "עֹשֶׂ֣ה",
+          "role": "v"
+        },
+        {
+          "wordIndex": 13,
+          "tokenId": "o390030170101",
+          "tokenText": "סְגֻלָּ֑ה",
+          "role": "o"
+        },
+        {
+          "wordIndex": 14,
+          "tokenId": "o390030170111",
+          "tokenText": "וְ"
+        },
+        {
+          "wordIndex": 15,
+          "tokenId": "o390030170112",
+          "tokenText": "חָמַלְתִּ֣י",
+          "role": "v"
+        },
+        {
+          "wordIndex": 16,
+          "tokenId": "o390030170121",
+          "tokenText": "עֲלֵי"
+        },
+        {
+          "wordIndex": 17,
+          "tokenId": "o390030170122",
+          "tokenText": "הֶ֔ם"
+        },
+        {
+          "wordIndex": 18,
+          "tokenId": "o390030170131",
+          "tokenText": "כַּֽ"
+        },
+        {
+          "wordIndex": 19,
+          "tokenId": "o390030170132",
+          "tokenText": "אֲשֶׁר֙"
+        },
+        {
+          "wordIndex": 20,
+          "tokenId": "o390030170141",
+          "tokenText": "יַחְמֹ֣ל",
+          "role": "v"
+        },
+        {
+          "wordIndex": 21,
+          "tokenId": "o390030170151",
+          "tokenText": "אִ֔ישׁ",
+          "role": "s"
+        },
+        {
+          "wordIndex": 22,
+          "tokenId": "o390030170161",
+          "tokenText": "עַל"
+        },
+        {
+          "wordIndex": 23,
+          "tokenId": "o390030170171",
+          "tokenText": "בְּנ֖"
+        },
+        {
+          "wordIndex": 24,
+          "tokenId": "o390030170172",
+          "tokenText": "וֹ"
+        },
+        {
+          "wordIndex": 25,
+          "tokenId": "o390030170181",
+          "tokenText": "הָ"
+        },
+        {
+          "wordIndex": 26,
+          "tokenId": "o390030170182",
+          "tokenText": "עֹבֵ֥ד",
+          "role": "v"
+        },
+        {
+          "wordIndex": 27,
+          "tokenId": "o390030170191",
+          "tokenText": "אֹתֽ"
+        },
+        {
+          "wordIndex": 28,
+          "tokenId": "o390030170192",
+          "tokenText": "וֹ"
+        }
+      ],
+      "arcs": [],
+      "spans": []
+    },
+    "18": {
+      "words": [
+        {
+          "wordIndex": 0,
+          "tokenId": "o390030180011",
+          "tokenText": "וְ"
+        },
+        {
+          "wordIndex": 1,
+          "tokenId": "o390030180012",
+          "tokenText": "שַׁבְתֶּם֙",
+          "role": "v"
+        },
+        {
+          "wordIndex": 2,
+          "tokenId": "o390030180021",
+          "tokenText": "וּ"
+        },
+        {
+          "wordIndex": 3,
+          "tokenId": "o390030180022",
+          "tokenText": "רְאִיתֶ֔ם",
+          "role": "v"
+        },
+        {
+          "wordIndex": 4,
+          "tokenId": "o390030180031",
+          "tokenText": "בֵּ֥ין"
+        },
+        {
+          "wordIndex": 5,
+          "tokenId": "o390030180041",
+          "tokenText": "צַדִּ֖יק"
+        },
+        {
+          "wordIndex": 6,
+          "tokenId": "o390030180051",
+          "tokenText": "לְ"
+        },
+        {
+          "wordIndex": 7,
+          "tokenId": "o390030180052",
+          "tokenText": "רָשָׁ֑ע"
+        },
+        {
+          "wordIndex": 8,
+          "tokenId": "o390030180061",
+          "tokenText": "בֵּ֚ין"
+        },
+        {
+          "wordIndex": 9,
+          "tokenId": "o390030180071",
+          "tokenText": "עֹבֵ֣ד"
+        },
+        {
+          "wordIndex": 10,
+          "tokenId": "o390030180081",
+          "tokenText": "אֱלֹהִ֔ים"
+        },
+        {
+          "wordIndex": 11,
+          "tokenId": "o390030180091",
+          "tokenText": "לַ"
+        },
+        {
+          "wordIndex": 12,
+          "tokenId": "o390030180092",
+          "tokenText": "אֲשֶׁ֖ר"
+        },
+        {
+          "wordIndex": 13,
+          "tokenId": "o390030180101",
+          "tokenText": "לֹ֥א",
+          "role": "adv"
+        },
+        {
+          "wordIndex": 14,
+          "tokenId": "o390030180111",
+          "tokenText": "עֲבָדֽ",
+          "role": "v"
+        },
+        {
+          "wordIndex": 15,
+          "tokenId": "o390030180112",
+          "tokenText": "וֹ",
+          "role": "o"
+        }
+      ],
+      "arcs": [],
+      "spans": []
+    },
+    "19": {
+      "words": [
+        {
+          "wordIndex": 0,
+          "tokenId": "o390030190011",
+          "tokenText": "כִּֽי"
+        },
+        {
+          "wordIndex": 1,
+          "tokenId": "o390030190021",
+          "tokenText": "הִנֵּ֤ה"
+        },
+        {
+          "wordIndex": 2,
+          "tokenId": "o390030190031",
+          "tokenText": "הַ"
+        },
+        {
+          "wordIndex": 3,
+          "tokenId": "o390030190032",
+          "tokenText": "יּוֹם֙"
+        },
+        {
+          "wordIndex": 4,
+          "tokenId": "o390030190041",
+          "tokenText": "בָּ֔א",
+          "role": "v"
+        },
+        {
+          "wordIndex": 5,
+          "tokenId": "o390030190051",
+          "tokenText": "בֹּעֵ֖ר",
+          "role": "v"
+        },
+        {
+          "wordIndex": 6,
+          "tokenId": "o390030190061",
+          "tokenText": "כַּ"
+        },
+        {
+          "wordIndex": 7,
+          "tokenId": "o390030190061ה",
+          "tokenText": ""
+        },
+        {
+          "wordIndex": 8,
+          "tokenId": "o390030190062",
+          "tokenText": "תַּנּ֑וּר"
+        },
+        {
+          "wordIndex": 9,
+          "tokenId": "o390030190071",
+          "tokenText": "וְ"
+        },
+        {
+          "wordIndex": 10,
+          "tokenId": "o390030190072",
+          "tokenText": "הָי֨וּ",
+          "role": "v"
+        },
+        {
+          "wordIndex": 11,
+          "tokenId": "o390030190081",
+          "tokenText": "כָל"
+        },
+        {
+          "wordIndex": 12,
+          "tokenId": "o390030190091",
+          "tokenText": "זֵדִ֜ים"
+        },
+        {
+          "wordIndex": 13,
+          "tokenId": "o390030190101",
+          "tokenText": "וְ"
+        },
+        {
+          "wordIndex": 14,
+          "tokenId": "o390030190102",
+          "tokenText": "כָל"
+        },
+        {
+          "wordIndex": 15,
+          "tokenId": "o390030190111",
+          "tokenText": "עֹשֵׂ֤ה"
+        },
+        {
+          "wordIndex": 16,
+          "tokenId": "o390030190121",
+          "tokenText": "רִשְׁעָה֙"
+        },
+        {
+          "wordIndex": 17,
+          "tokenId": "o390030190131",
+          "tokenText": "קַ֔שׁ",
+          "role": "o"
+        },
+        {
+          "wordIndex": 18,
+          "tokenId": "o390030190141",
+          "tokenText": "וְ"
+        },
+        {
+          "wordIndex": 19,
+          "tokenId": "o390030190142",
+          "tokenText": "לִהַ֨ט",
+          "role": "v"
+        },
+        {
+          "wordIndex": 20,
+          "tokenId": "o390030190151",
+          "tokenText": "אֹתָ֜"
+        },
+        {
+          "wordIndex": 21,
+          "tokenId": "o390030190152",
+          "tokenText": "ם"
+        },
+        {
+          "wordIndex": 22,
+          "tokenId": "o390030190161",
+          "tokenText": "הַ"
+        },
+        {
+          "wordIndex": 23,
+          "tokenId": "o390030190162",
+          "tokenText": "יּ֣וֹם"
+        },
+        {
+          "wordIndex": 24,
+          "tokenId": "o390030190171",
+          "tokenText": "הַ"
+        },
+        {
+          "wordIndex": 25,
+          "tokenId": "o390030190172",
+          "tokenText": "בָּ֗א"
+        },
+        {
+          "wordIndex": 26,
+          "tokenId": "o390030190181",
+          "tokenText": "אָמַר֙",
+          "role": "v"
+        },
+        {
+          "wordIndex": 27,
+          "tokenId": "o390030190191",
+          "tokenText": "יְהוָ֣ה"
+        },
+        {
+          "wordIndex": 28,
+          "tokenId": "o390030190201",
+          "tokenText": "צְבָא֔וֹת"
+        },
+        {
+          "wordIndex": 29,
+          "tokenId": "o390030190211",
+          "tokenText": "אֲשֶׁ֛ר"
+        },
+        {
+          "wordIndex": 30,
+          "tokenId": "o390030190221",
+          "tokenText": "לֹא",
+          "role": "adv"
+        },
+        {
+          "wordIndex": 31,
+          "tokenId": "o390030190231",
+          "tokenText": "יַעֲזֹ֥ב",
+          "role": "v"
+        },
+        {
+          "wordIndex": 32,
+          "tokenId": "o390030190241",
+          "tokenText": "לָ"
+        },
+        {
+          "wordIndex": 33,
+          "tokenId": "o390030190242",
+          "tokenText": "הֶ֖ם"
+        },
+        {
+          "wordIndex": 34,
+          "tokenId": "o390030190251",
+          "tokenText": "שֹׁ֥רֶשׁ"
+        },
+        {
+          "wordIndex": 35,
+          "tokenId": "o390030190261",
+          "tokenText": "וְ"
+        },
+        {
+          "wordIndex": 36,
+          "tokenId": "o390030190262",
+          "tokenText": "עָנָֽף"
+        }
+      ],
+      "arcs": [],
+      "spans": []
+    },
+    "20": {
+      "words": [
+        {
+          "wordIndex": 0,
+          "tokenId": "o390030200011",
+          "tokenText": "וְ"
+        },
+        {
+          "wordIndex": 1,
+          "tokenId": "o390030200012",
+          "tokenText": "זָרְחָ֨ה",
+          "role": "v"
+        },
+        {
+          "wordIndex": 2,
+          "tokenId": "o390030200021",
+          "tokenText": "לָ"
+        },
+        {
+          "wordIndex": 3,
+          "tokenId": "o390030200022",
+          "tokenText": "כֶ֜ם"
+        },
+        {
+          "wordIndex": 4,
+          "tokenId": "o390030200031",
+          "tokenText": "יִרְאֵ֤י"
+        },
+        {
+          "wordIndex": 5,
+          "tokenId": "o390030200041",
+          "tokenText": "שְׁמִ"
+        },
+        {
+          "wordIndex": 6,
+          "tokenId": "o390030200042",
+          "tokenText": "י֙"
+        },
+        {
+          "wordIndex": 7,
+          "tokenId": "o390030200051",
+          "tokenText": "שֶׁ֣מֶשׁ"
+        },
+        {
+          "wordIndex": 8,
+          "tokenId": "o390030200061",
+          "tokenText": "צְדָקָ֔ה"
+        },
+        {
+          "wordIndex": 9,
+          "tokenId": "o390030200071",
+          "tokenText": "וּ"
+        },
+        {
+          "wordIndex": 10,
+          "tokenId": "o390030200072",
+          "tokenText": "מַרְפֵּ֖א",
+          "role": "s"
+        },
+        {
+          "wordIndex": 11,
+          "tokenId": "o390030200081",
+          "tokenText": "בִּ"
+        },
+        {
+          "wordIndex": 12,
+          "tokenId": "o390030200082",
+          "tokenText": "כְנָפֶ֑י"
+        },
+        {
+          "wordIndex": 13,
+          "tokenId": "o390030200083",
+          "tokenText": "הָ"
+        },
+        {
+          "wordIndex": 14,
+          "tokenId": "o390030200091",
+          "tokenText": "וִֽ"
+        },
+        {
+          "wordIndex": 15,
+          "tokenId": "o390030200092",
+          "tokenText": "יצָאתֶ֥ם",
+          "role": "v"
+        },
+        {
+          "wordIndex": 16,
+          "tokenId": "o390030200101",
+          "tokenText": "וּ"
+        },
+        {
+          "wordIndex": 17,
+          "tokenId": "o390030200102",
+          "tokenText": "פִשְׁתֶּ֖ם",
+          "role": "v"
+        },
+        {
+          "wordIndex": 18,
+          "tokenId": "o390030200111",
+          "tokenText": "כְּ"
+        },
+        {
+          "wordIndex": 19,
+          "tokenId": "o390030200112",
+          "tokenText": "עֶגְלֵ֥י"
+        },
+        {
+          "wordIndex": 20,
+          "tokenId": "o390030200121",
+          "tokenText": "מַרְבֵּֽק"
+        }
+      ],
+      "arcs": [],
+      "spans": []
+    },
+    "21": {
+      "words": [
+        {
+          "wordIndex": 0,
+          "tokenId": "o390030210011",
+          "tokenText": "וְ"
+        },
+        {
+          "wordIndex": 1,
+          "tokenId": "o390030210012",
+          "tokenText": "עַסּוֹתֶ֣ם",
+          "role": "v"
+        },
+        {
+          "wordIndex": 2,
+          "tokenId": "o390030210021",
+          "tokenText": "רְשָׁעִ֔ים",
+          "role": "o"
+        },
+        {
+          "wordIndex": 3,
+          "tokenId": "o390030210031",
+          "tokenText": "כִּֽי"
+        },
+        {
+          "wordIndex": 4,
+          "tokenId": "o390030210041",
+          "tokenText": "יִהְי֣וּ",
+          "role": "v"
+        },
+        {
+          "wordIndex": 5,
+          "tokenId": "o390030210051",
+          "tokenText": "אֵ֔פֶר",
+          "role": "o"
+        },
+        {
+          "wordIndex": 6,
+          "tokenId": "o390030210061",
+          "tokenText": "תַּ֖חַת"
+        },
+        {
+          "wordIndex": 7,
+          "tokenId": "o390030210071",
+          "tokenText": "כַּפּ֣וֹת"
+        },
+        {
+          "wordIndex": 8,
+          "tokenId": "o390030210081",
+          "tokenText": "רַגְלֵי"
+        },
+        {
+          "wordIndex": 9,
+          "tokenId": "o390030210082",
+          "tokenText": "כֶ֑ם"
+        },
+        {
+          "wordIndex": 10,
+          "tokenId": "o390030210091",
+          "tokenText": "בַּ"
+        },
+        {
+          "wordIndex": 11,
+          "tokenId": "o390030210091ה",
+          "tokenText": ""
+        },
+        {
+          "wordIndex": 12,
+          "tokenId": "o390030210092",
+          "tokenText": "יּוֹם֙"
+        },
+        {
+          "wordIndex": 13,
+          "tokenId": "o390030210101",
+          "tokenText": "אֲשֶׁ֣ר"
+        },
+        {
+          "wordIndex": 14,
+          "tokenId": "o390030210111",
+          "tokenText": "אֲנִ֣י",
+          "role": "s"
+        },
+        {
+          "wordIndex": 15,
+          "tokenId": "o390030210121",
+          "tokenText": "עֹשֶׂ֔ה",
+          "role": "v"
+        },
+        {
+          "wordIndex": 16,
+          "tokenId": "o390030210131",
+          "tokenText": "אָמַ֖ר",
+          "role": "v"
+        },
+        {
+          "wordIndex": 17,
+          "tokenId": "o390030210141",
+          "tokenText": "יְהוָ֥ה"
+        },
+        {
+          "wordIndex": 18,
+          "tokenId": "o390030210151",
+          "tokenText": "צְבָאֽוֹת"
+        }
+      ],
+      "arcs": [],
+      "spans": []
+    },
+    "22": {
+      "words": [
+        {
+          "wordIndex": 0,
+          "tokenId": "o390030220011",
+          "tokenText": "זִכְר֕וּ",
+          "role": "v"
+        },
+        {
+          "wordIndex": 1,
+          "tokenId": "o390030220021",
+          "tokenText": "תּוֹרַ֖ת"
+        },
+        {
+          "wordIndex": 2,
+          "tokenId": "o390030220031",
+          "tokenText": "מֹשֶׁ֣ה"
+        },
+        {
+          "wordIndex": 3,
+          "tokenId": "o390030220041",
+          "tokenText": "עַבְדִּ֑"
+        },
+        {
+          "wordIndex": 4,
+          "tokenId": "o390030220042",
+          "tokenText": "י"
+        },
+        {
+          "wordIndex": 5,
+          "tokenId": "o390030220051",
+          "tokenText": "אֲשֶׁר֩"
+        },
+        {
+          "wordIndex": 6,
+          "tokenId": "o390030220061",
+          "tokenText": "צִוִּ֨יתִי",
+          "role": "v"
+        },
+        {
+          "wordIndex": 7,
+          "tokenId": "o390030220071",
+          "tokenText": "אוֹת֤"
+        },
+        {
+          "wordIndex": 8,
+          "tokenId": "o390030220072",
+          "tokenText": "וֹ"
+        },
+        {
+          "wordIndex": 9,
+          "tokenId": "o390030220081",
+          "tokenText": "בְ"
+        },
+        {
+          "wordIndex": 10,
+          "tokenId": "o390030220082",
+          "tokenText": "חֹרֵב֙"
+        },
+        {
+          "wordIndex": 11,
+          "tokenId": "o390030220091",
+          "tokenText": "עַל"
+        },
+        {
+          "wordIndex": 12,
+          "tokenId": "o390030220101",
+          "tokenText": "כָּל"
+        },
+        {
+          "wordIndex": 13,
+          "tokenId": "o390030220111",
+          "tokenText": "יִשְׂרָאֵ֔ל"
+        },
+        {
+          "wordIndex": 14,
+          "tokenId": "o390030220121",
+          "tokenText": "חֻקִּ֖ים"
+        },
+        {
+          "wordIndex": 15,
+          "tokenId": "o390030220131",
+          "tokenText": "וּ"
+        },
+        {
+          "wordIndex": 16,
+          "tokenId": "o390030220132",
+          "tokenText": "מִשְׁפָּטִֽים"
+        }
+      ],
+      "arcs": [],
+      "spans": []
+    },
+    "23": {
+      "words": [
+        {
+          "wordIndex": 0,
+          "tokenId": "o390030230011",
+          "tokenText": "הִנֵּ֤ה"
+        },
+        {
+          "wordIndex": 1,
+          "tokenId": "o390030230021",
+          "tokenText": "אָֽנֹכִי֙",
+          "role": "s"
+        },
+        {
+          "wordIndex": 2,
+          "tokenId": "o390030230031",
+          "tokenText": "שֹׁלֵ֣חַ",
+          "role": "v"
+        },
+        {
+          "wordIndex": 3,
+          "tokenId": "o390030230041",
+          "tokenText": "לָ"
+        },
+        {
+          "wordIndex": 4,
+          "tokenId": "o390030230042",
+          "tokenText": "כֶ֔ם"
+        },
+        {
+          "wordIndex": 5,
+          "tokenId": "o390030230051",
+          "tokenText": "אֵ֖ת"
+        },
+        {
+          "wordIndex": 6,
+          "tokenId": "o390030230061",
+          "tokenText": "אֵלִיָּ֣ה"
+        },
+        {
+          "wordIndex": 7,
+          "tokenId": "o390030230071",
+          "tokenText": "הַ"
+        },
+        {
+          "wordIndex": 8,
+          "tokenId": "o390030230072",
+          "tokenText": "נָּבִ֑יא"
+        },
+        {
+          "wordIndex": 9,
+          "tokenId": "o390030230081",
+          "tokenText": "לִ"
+        },
+        {
+          "wordIndex": 10,
+          "tokenId": "o390030230082",
+          "tokenText": "פְנֵ֗י"
+        },
+        {
+          "wordIndex": 11,
+          "tokenId": "o390030230091",
+          "tokenText": "בּ֚וֹא",
+          "role": "v"
+        },
+        {
+          "wordIndex": 12,
+          "tokenId": "o390030230101",
+          "tokenText": "י֣וֹם"
+        },
+        {
+          "wordIndex": 13,
+          "tokenId": "o390030230111",
+          "tokenText": "יְהוָ֔ה"
+        },
+        {
+          "wordIndex": 14,
+          "tokenId": "o390030230121",
+          "tokenText": "הַ"
+        },
+        {
+          "wordIndex": 15,
+          "tokenId": "o390030230122",
+          "tokenText": "גָּד֖וֹל"
+        },
+        {
+          "wordIndex": 16,
+          "tokenId": "o390030230131",
+          "tokenText": "וְ"
+        },
+        {
+          "wordIndex": 17,
+          "tokenId": "o390030230132",
+          "tokenText": "הַ"
+        },
+        {
+          "wordIndex": 18,
+          "tokenId": "o390030230133",
+          "tokenText": "נּוֹרָֽא"
+        }
+      ],
+      "arcs": [],
+      "spans": []
+    },
+    "24": {
+      "words": [
+        {
+          "wordIndex": 0,
+          "tokenId": "o390030240011",
+          "tokenText": "וְ"
+        },
+        {
+          "wordIndex": 1,
+          "tokenId": "o390030240012",
+          "tokenText": "הֵשִׁ֤יב",
+          "role": "v"
+        },
+        {
+          "wordIndex": 2,
+          "tokenId": "o390030240021",
+          "tokenText": "לֵב"
+        },
+        {
+          "wordIndex": 3,
+          "tokenId": "o390030240031",
+          "tokenText": "אָבוֹת֙"
+        },
+        {
+          "wordIndex": 4,
+          "tokenId": "o390030240041",
+          "tokenText": "עַל"
+        },
+        {
+          "wordIndex": 5,
+          "tokenId": "o390030240051",
+          "tokenText": "בָּנִ֔ים"
+        },
+        {
+          "wordIndex": 6,
+          "tokenId": "o390030240061",
+          "tokenText": "וְ"
+        },
+        {
+          "wordIndex": 7,
+          "tokenId": "o390030240062",
+          "tokenText": "לֵ֥ב"
+        },
+        {
+          "wordIndex": 8,
+          "tokenId": "o390030240071",
+          "tokenText": "בָּנִ֖ים"
+        },
+        {
+          "wordIndex": 9,
+          "tokenId": "o390030240081",
+          "tokenText": "עַל"
+        },
+        {
+          "wordIndex": 10,
+          "tokenId": "o390030240091",
+          "tokenText": "אֲבוֹתָ֑"
+        },
+        {
+          "wordIndex": 11,
+          "tokenId": "o390030240092",
+          "tokenText": "ם"
+        },
+        {
+          "wordIndex": 12,
+          "tokenId": "o390030240101",
+          "tokenText": "פֶּן"
+        },
+        {
+          "wordIndex": 13,
+          "tokenId": "o390030240111",
+          "tokenText": "אָב֕וֹא",
+          "role": "v"
+        },
+        {
+          "wordIndex": 14,
+          "tokenId": "o390030240121",
+          "tokenText": "וְ"
+        },
+        {
+          "wordIndex": 15,
+          "tokenId": "o390030240122",
+          "tokenText": "הִכֵּיתִ֥י",
+          "role": "v"
+        },
+        {
+          "wordIndex": 16,
+          "tokenId": "o390030240131",
+          "tokenText": "אֶת"
+        },
+        {
+          "wordIndex": 17,
+          "tokenId": "o390030240141",
+          "tokenText": "הָ"
+        },
+        {
+          "wordIndex": 18,
+          "tokenId": "o390030240142",
+          "tokenText": "אָ֖רֶץ"
+        },
+        {
+          "wordIndex": 19,
+          "tokenId": "o390030240151",
+          "tokenText": "חֵֽרֶם",
+          "role": "adv"
+        }
+      ],
+      "arcs": [],
+      "spans": []
+    }
+  }
+}

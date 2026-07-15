@@ -143,12 +143,6 @@ class _InterlinearChapterViewState extends State<InterlinearChapterView> {
               color: Theme.of(context).colorScheme.onSurface,
             ),
           ),
-
-          // Word glosses (compact format for chapter view)
-          if (hasData) ...[
-            const SizedBox(height: 8),
-            _buildCompactGlosses(words),
-          ],
         ],
       ),
     );
@@ -161,46 +155,40 @@ class _InterlinearChapterViewState extends State<InterlinearChapterView> {
     return Wrap(
       direction: Axis.horizontal,
       textDirection: isHebrew ? TextDirection.rtl : TextDirection.ltr,
-      spacing: 8,
-      runSpacing: 4,
+      spacing: 10,
+      runSpacing: 8,
       children: words.map((word) {
         final displayText = word.originalText.isNotEmpty 
             ? word.displayOriginalText
             : word.translit;
             
-        return Text(
-          displayText,
-          style: TextStyle(
-            fontSize: 20,
-            color: Theme.of(context).colorScheme.primary,
-            fontWeight: FontWeight.w400,
-            height: 1.4,
-          ),
-          textDirection: isHebrew ? TextDirection.rtl : TextDirection.ltr,
-        );
-      }).toList(),
-    );
-  }
-
-  Widget _buildCompactGlosses(List<InterlinearWord> words) {
-    return Wrap(
-      spacing: 6,
-      runSpacing: 4,
-      children: words.where((w) => w.gloss.isNotEmpty).map((word) {
-        return Container(
-          padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-          decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.surfaceContainerHighest,
-            borderRadius: BorderRadius.circular(3),
-          ),
-          child: Text(
-            word.gloss,
-            style: TextStyle(
-              fontSize: 11,
-              color: Theme.of(context).colorScheme.onSurfaceVariant,
-              fontWeight: FontWeight.w500,
+        return Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment:
+              isHebrew ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+          children: [
+            Text(
+              displayText,
+              style: TextStyle(
+                fontSize: 20,
+                color: Theme.of(context).colorScheme.primary,
+                fontWeight: FontWeight.w400,
+                height: 1.4,
+              ),
+              textDirection: isHebrew ? TextDirection.rtl : TextDirection.ltr,
             ),
-          ),
+            if (word.gloss.trim().isNotEmpty)
+              Text(
+                word.gloss.trim(),
+                style: TextStyle(
+                  fontSize: 12,
+                  color: Theme.of(context).colorScheme.onSurfaceVariant,
+                  fontStyle: FontStyle.italic,
+                  height: 1.2,
+                ),
+                textDirection: TextDirection.ltr,
+              ),
+          ],
         );
       }).toList(),
     );

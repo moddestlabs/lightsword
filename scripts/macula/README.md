@@ -3,12 +3,16 @@
 This directory contains helpers for converting Macula datasets into the compact
 LightSword syntax JSON format used by `SyntaxRepository`.
 
-## Greek Lowfat Conversion
+## Lowfat Conversion
 
-The first converter targets Macula Greek lowfat XML:
+The lowfat converter currently used by the build scripts accepts both Macula
+Greek and Macula Hebrew lowfat XML and emits the compact syntax JSON consumed by
+`SyntaxRepository`.
+
+Example conversion:
 
 ```bash
-python3 scripts/macula/convert_macula_greek.py \
+python3 scripts/macula/convert_macula_lowfat.py \
   /path/to/10-ephesians.xml \
   bible_core/assets/data/syntax/EPH_syntax.json
 ```
@@ -32,6 +36,21 @@ Optional subset build:
 
 ```bash
 python3 scripts/macula/build_macula_greek_syntax.py --books ephesians romans john
+```
+
+## Batch OT Build
+
+To build the supported Macula Hebrew OT books directly from the upstream
+repository into app assets:
+
+```bash
+python3 scripts/macula/build_macula_hebrew_syntax.py
+```
+
+Optional subset build:
+
+```bash
+python3 scripts/macula/build_macula_hebrew_syntax.py --books Gen Exod Ps
 ```
 
 This is intentionally a first-pass transform for UI integration. It does not yet

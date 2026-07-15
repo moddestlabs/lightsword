@@ -134,7 +134,7 @@ After creating icons:
 
 ### SVG Source
 
-- `lightsword_app_icon.svg` - Source vector icon with a cross-and-sword mark in the app's sepia palette
+- `lightsword_app_icon.svg` - Source vector icon with a cross-and-sword mark in the app's neutral default palette
 - Export this SVG to create `Icon-192.png`, `Icon-512.png`, and `apple-touch-icon.png`
 
 Next steps:

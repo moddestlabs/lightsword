@@ -44,6 +44,7 @@ class ChapterViewDefinition {
   final bool showSyntaxLinks;
   final bool showTranslation;
   final bool showGloss;
+  final bool showWordGlosses;
   final ChapterViewTextDirection originalLanguageTextDirection;
 
   const ChapterViewDefinition({
@@ -59,12 +60,13 @@ class ChapterViewDefinition {
     this.showSyntaxLinks = false,
     this.showTranslation = true,
     this.showGloss = false,
+    this.showWordGlosses = false,
     this.originalLanguageTextDirection = ChapterViewTextDirection.auto,
   });
 
   static const ChapterViewDefinition paragraphView = ChapterViewDefinition(
     id: 'paragraph',
-    name: 'Gloss Paragraph',
+    name: 'Paragraph',
     isBuiltIn: true,
     showVerseNumbers: true,
     lineByLine: false,
@@ -75,7 +77,7 @@ class ChapterViewDefinition {
 
   static const ChapterViewDefinition lineByLineView = ChapterViewDefinition(
     id: 'line_by_line',
-    name: 'Original + Gloss',
+    name: 'Original + Translation',
     isBuiltIn: true,
     showVerseNumbers: true,
     lineByLine: true,
@@ -100,7 +102,8 @@ class ChapterViewDefinition {
     colorOriginalLanguageByGender: true,
     showSyntaxLinks: true,
     showTranslation: false,
-    showGloss: true,
+    showGloss: false,
+    showWordGlosses: true,
     originalLanguageTextDirection: ChapterViewTextDirection.auto,
   );
 
@@ -123,6 +126,7 @@ class ChapterViewDefinition {
     bool? showSyntaxLinks,
     bool? showTranslation,
     bool? showGloss,
+    bool? showWordGlosses,
     ChapterViewTextDirection? originalLanguageTextDirection,
   }) {
     return ChapterViewDefinition(
@@ -140,6 +144,7 @@ class ChapterViewDefinition {
           showSyntaxLinks: showSyntaxLinks ?? this.showSyntaxLinks,
       showTranslation: showTranslation ?? this.showTranslation,
       showGloss: showGloss ?? this.showGloss,
+          showWordGlosses: showWordGlosses ?? this.showWordGlosses,
       originalLanguageTextDirection:
           originalLanguageTextDirection ?? this.originalLanguageTextDirection,
     );
@@ -159,6 +164,7 @@ class ChapterViewDefinition {
       'showSyntaxLinks': showSyntaxLinks,
       'showTranslation': showTranslation,
       'showGloss': showGloss,
+      'showWordGlosses': showWordGlosses,
       'originalLanguageTextDirection': originalLanguageTextDirection.jsonValue,
     };
   }
@@ -179,6 +185,7 @@ class ChapterViewDefinition {
           showSyntaxLinks: json['showSyntaxLinks'] as bool? ?? false,
       showTranslation: json['showTranslation'] as bool? ?? true,
       showGloss: json['showGloss'] as bool? ?? false,
+          showWordGlosses: json['showWordGlosses'] as bool? ?? false,
       originalLanguageTextDirection:
           ChapterViewTextDirectionJson.fromJsonValue(
         json['originalLanguageTextDirection'] as String?,

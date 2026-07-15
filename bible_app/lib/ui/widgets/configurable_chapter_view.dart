@@ -14,20 +14,28 @@ class ConfigurableChapterView extends StatefulWidget {
   final Chapter chapter;
   final String? bookName;
   final ChapterViewDefinition view;
+  final Map<int, String> secondaryVerseTexts;
+  final String? secondaryTextLabel;
 
   const ConfigurableChapterView({
     super.key,
     required this.chapter,
     this.bookName,
     required this.view,
+    this.secondaryVerseTexts = const {},
+    this.secondaryTextLabel,
   });
 
   static Future<List<TtsUtterance>> buildTtsUtterances({
     required Chapter chapter,
     required ChapterViewDefinition view,
+    Map<int, String> secondaryVerseTexts = const {},
   }) async {
     final utterances = <TtsUtterance>[];
-    final needsInterlinearData = view.showOriginalLanguage || view.showGloss;
+    final needsInterlinearData =
+        view.showOriginalLanguage ||
+        view.showWordGlosses ||
+        (view.showGloss && secondaryVerseTexts.isEmpty);
 
     for (final verse in chapter.verses) {
       final words = needsInterlinearData
@@ -38,7 +46,12 @@ class ConfigurableChapterView extends StatefulWidget {
             )
           : const <InterlinearWord>[];
       utterances.addAll(
-        _buildVerseUtterances(view: view, verse: verse, words: words),
+        _buildVerseUtterances(
+          view: view,
+          verse: verse,
+          words: words,
+          secondaryVerseText: secondaryVerseTexts[verse.number],
+        ),
       );
     }
 
@@ -49,21 +62,32 @@ class ConfigurableChapterView extends StatefulWidget {
     required Chapter chapter,
     required ChapterViewDefinition view,
     required Verse verse,
+    String? secondaryVerseText,
   }) async {
-    final words = (view.showOriginalLanguage || view.showGloss)
+    final words =
+        (view.showOriginalLanguage ||
+                view.showWordGlosses ||
+                (view.showGloss &&
+                    (secondaryVerseText == null || secondaryVerseText.isEmpty)))
         ? await _loadVerseWordsForChapter(
             chapter.bookId,
             chapter.number,
             verse.number,
           )
         : const <InterlinearWord>[];
-    return _buildVerseUtterances(view: view, verse: verse, words: words);
+    return _buildVerseUtterances(
+      view: view,
+      verse: verse,
+      words: words,
+      secondaryVerseText: secondaryVerseText,
+    );
   }
 
   static List<TtsUtterance> _buildVerseUtterances({
     required ChapterViewDefinition view,
     required Verse verse,
     required List<InterlinearWord> words,
+    String? secondaryVerseText,
   }) {
     final utterances = <TtsUtterance>[];
 
@@ -111,10 +135,12 @@ class ConfigurableChapterView extends StatefulWidget {
     }
 
     if (view.showGloss) {
-      final glossText = words
-          .map((word) => word.gloss.trim())
-          .where((gloss) => gloss.isNotEmpty)
-          .join(' ');
+      final glossText = (secondaryVerseText ?? '').trim().isNotEmpty
+          ? secondaryVerseText!.trim()
+          : words
+              .map((word) => word.gloss.trim())
+              .where((gloss) => gloss.isNotEmpty)
+              .join(' ');
       if (glossText.isNotEmpty) {
         utterances.add(
           TtsUtterance(
@@ -156,7 +182,9 @@ class _ConfigurableChapterViewState extends State<ConfigurableChapterView> {
   int? _selectedVerseNumber;
 
   bool get _needsInterlinearData {
-    return widget.view.showOriginalLanguage || widget.view.showGloss;
+    return widget.view.showOriginalLanguage ||
+      widget.view.showWordGlosses ||
+      (widget.view.showGloss && widget.secondaryVerseTexts.isEmpty);
   }
 
   @override
@@ -181,7 +209,8 @@ class _ConfigurableChapterViewState extends State<ConfigurableChapterView> {
         oldWidget.chapter.verses.length != widget.chapter.verses.length;
     final dataRequirementsChanged = oldWidget.view.showOriginalLanguage !=
             widget.view.showOriginalLanguage ||
-        oldWidget.view.showGloss != widget.view.showGloss;
+      oldWidget.view.showGloss != widget.view.showGloss ||
+      oldWidget.view.showWordGlosses != widget.view.showWordGlosses;
 
     if (chapterChanged || dataRequirementsChanged) {
       _verseData.clear();
@@ -240,6 +269,7 @@ class _ConfigurableChapterViewState extends State<ConfigurableChapterView> {
       chapter: widget.chapter,
       view: widget.view,
       verse: verse,
+      secondaryVerseText: widget.secondaryVerseTexts[verse.number],
     ).then(_ttsService.readUtterances);
   }
 
@@ -354,7 +384,8 @@ class _ConfigurableChapterViewState extends State<ConfigurableChapterView> {
     if (!widget.view.lineByLine &&
         !widget.view.showOriginalLanguage &&
         widget.view.showTranslation &&
-        !widget.view.showGloss) {
+        !widget.view.showGloss &&
+        !widget.view.showWordGlosses) {
       return _buildTranslationParagraphView(context);
     }
 
@@ -365,7 +396,13 @@ class _ConfigurableChapterViewState extends State<ConfigurableChapterView> {
         final verse = widget.chapter.verses[index];
         final words = _verseData[verse.number] ?? const <InterlinearWord>[];
         final isLoading = _loading[verse.number] ?? false;
-        return _buildVerseSection(context, verse, words, isLoading);
+        return _buildVerseSection(
+          context,
+          verse,
+          words,
+          isLoading,
+          widget.secondaryVerseTexts[verse.number],
+        );
       },
     );
   }
@@ -420,6 +457,7 @@ class _ConfigurableChapterViewState extends State<ConfigurableChapterView> {
     Verse verse,
     List<InterlinearWord> words,
     bool isLoading,
+    String? secondaryVerseText,
   ) {
     final colorScheme = Theme.of(context).colorScheme;
     final isSelected = _selectedVerseNumber == verse.number;
@@ -556,7 +594,13 @@ class _ConfigurableChapterViewState extends State<ConfigurableChapterView> {
                       ),
                     ),
                   if (widget.view.showGloss)
-                    _buildGlossBlock(context, verse.number, words, isLoading),
+                    _buildGlossBlock(
+                      context,
+                      verse.number,
+                      words,
+                      isLoading,
+                      secondaryVerseText,
+                    ),
                   if (isSelected) _buildSelectedActions(context, verse),
                 ],
               ),
@@ -639,7 +683,9 @@ class _ConfigurableChapterViewState extends State<ConfigurableChapterView> {
       color: Theme.of(context).colorScheme.primary,
     );
 
-    if (widget.view.showMorphology || widget.view.colorOriginalLanguageByGender) {
+    if (widget.view.showMorphology ||
+        widget.view.colorOriginalLanguageByGender ||
+        widget.view.showWordGlosses) {
       return _buildAnnotatedOriginalLanguageBlock(
         context,
         verseNumber,
@@ -720,6 +766,19 @@ class _ConfigurableChapterViewState extends State<ConfigurableChapterView> {
             style: wordStyle,
             textDirection: direction,
           ),
+          if (widget.view.showWordGlosses && word.gloss.trim().isNotEmpty) ...[
+            const SizedBox(height: 2),
+            Text(
+              word.gloss.trim(),
+              style: TextStyle(
+                fontSize: 12,
+                height: 1.2,
+                color: theme.colorScheme.onSurfaceVariant,
+                fontStyle: FontStyle.italic,
+              ),
+              textDirection: TextDirection.ltr,
+            ),
+          ],
           if (widget.view.showMorphology && word.hasMorphology) ...[
             const SizedBox(height: 2),
             Text(
@@ -775,18 +834,22 @@ class _ConfigurableChapterViewState extends State<ConfigurableChapterView> {
     int verseNumber,
     List<InterlinearWord> words,
     bool isLoading,
+    String? secondaryVerseText,
   ) {
-    if (isLoading) {
+    final explicitGlossText = secondaryVerseText?.trim() ?? '';
+    if (explicitGlossText.isEmpty && isLoading) {
       return const SizedBox.shrink();
     }
 
-    final glossText = words
-        .map((word) => word.gloss.trim())
-        .where((gloss) => gloss.isNotEmpty)
-        .join(' ');
+    final glossText = explicitGlossText.isNotEmpty
+        ? explicitGlossText
+        : words
+            .map((word) => word.gloss.trim())
+            .where((gloss) => gloss.isNotEmpty)
+            .join(' ');
     if (glossText.isEmpty) {
       return Text(
-        'Glosses unavailable for verse $verseNumber',
+        '${widget.secondaryTextLabel ?? 'Gloss'} unavailable for verse $verseNumber',
         style: TextStyle(
           color: Theme.of(context).colorScheme.onSurfaceVariant,
           fontStyle: FontStyle.italic,
@@ -890,7 +953,14 @@ class _ConfigurableChapterViewState extends State<ConfigurableChapterView> {
 
   String _buildCopyText(Verse verse) {
     final bookLabel = widget.bookName ?? widget.chapter.bookId;
-    return '$bookLabel ${widget.chapter.number}:${verse.number} ${verse.text}';
+    final lines = <String>[
+      '$bookLabel ${widget.chapter.number}:${verse.number} ${verse.text}',
+    ];
+    final glossText = widget.secondaryVerseTexts[verse.number]?.trim();
+    if (widget.view.showGloss && glossText != null && glossText.isNotEmpty) {
+      lines.add(glossText);
+    }
+    return lines.join('\n');
   }
 
   TextDirection _resolveTextDirection(List<InterlinearWord> words) {

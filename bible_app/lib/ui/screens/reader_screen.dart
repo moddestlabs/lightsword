@@ -36,6 +36,8 @@ class ReaderScreenState extends State<ReaderScreen> {
   int? _startVerse; // For verse ranges
   int? _endVerse; // For verse ranges
   BibleTextSource _textSource = BibleService.currentSource;
+  BibleTextSource? _secondaryTextSource;
+  Map<int, String> _secondaryVerseTexts = const {};
   ReadingMode _viewMode = ReadingMode.verse; // Reading vs study surface
   List<ChapterViewDefinition> _customViews = const [];
   ChapterViewDefinition _selectedView = ChapterViewDefinition.lineByLineView;
@@ -67,7 +69,9 @@ class ReaderScreenState extends State<ReaderScreen> {
       ];
 
   IconData get _selectedViewIcon {
-    if (_selectedView.showOriginalLanguage || _selectedView.showGloss) {
+    if (_selectedView.showOriginalLanguage ||
+        _selectedView.showGloss ||
+        _selectedView.showWordGlosses) {
       return Icons.translate;
     }
     if (_selectedView.lineByLine) {
@@ -89,6 +93,12 @@ class ReaderScreenState extends State<ReaderScreen> {
       _customViews = savedCustomViews;
       _selectedView = matchingView ?? ChapterViewDefinition.lineByLineView;
       _textSource = BibleService.currentSource;
+      _secondaryTextSource = BibleService.sourceFromIdOrNull(
+        PreferencesService.instance.getSelectedSecondaryTextSource(),
+      );
+      if (_secondaryTextSource == _textSource) {
+        _secondaryTextSource = null;
+      }
     });
   }
 
@@ -110,7 +120,7 @@ class ReaderScreenState extends State<ReaderScreen> {
 
   Future<void> _loadBooks() async {
     try {
-      final books = await BibleService.instance.getBooks();
+      final books = await BibleService.getBooksForSource(_textSource);
       setState(() {
         _allBooks = books;
       });
@@ -121,7 +131,7 @@ class ReaderScreenState extends State<ReaderScreen> {
 
   Future<void> _loadBook() async {
     try {
-      final book = await BibleService.instance.getBook(_bookId);
+      final book = await BibleService.getBookForSource(_textSource, _bookId);
       setState(() {
         _currentBook = book;
       });
@@ -136,10 +146,11 @@ class ReaderScreenState extends State<ReaderScreen> {
       _isLoading = true;
       _error = null;
       _offlineFallbackReference = null;
+      _secondaryVerseTexts = const {};
     });
 
     try {
-      final verses = await BibleService.instance.getVerses(_currentRef);
+      final verses = await BibleService.getVersesForSource(_textSource, _currentRef);
 
       final offlineMessage = _buildOfflineUnavailableMessage(
         reference: _currentRef,
@@ -162,12 +173,18 @@ class ReaderScreenState extends State<ReaderScreen> {
       List<Verse> filteredVerses = verses;
       if (_startVerse != null && _endVerse != null) {
         filteredVerses = verses
+            .whereType<Verse>()
             .where((v) => v.number >= _startVerse! && v.number <= _endVerse!)
             .toList();
       }
 
+      final secondaryVerseTexts = await _loadSecondaryVerseTexts(
+        filteredVerses.whereType<Verse>().map((v) => v.number).toSet(),
+      );
+
       setState(() {
         _verses = filteredVerses;
+        _secondaryVerseTexts = secondaryVerseTexts;
         _isLoading = false;
         _offlineFallbackReference = null;
       });
@@ -195,7 +212,34 @@ class ReaderScreenState extends State<ReaderScreen> {
                 chapter: 1,
               );
         _isLoading = false;
+        _secondaryVerseTexts = const {};
       });
+    }
+  }
+
+  Future<Map<int, String>> _loadSecondaryVerseTexts(
+    Set<int> visibleVerseNumbers,
+  ) async {
+    final source = _secondaryTextSource;
+    if (source == null) {
+      return const {};
+    }
+
+    try {
+      final secondaryVerses = await BibleService.getVersesForSource(
+        source,
+        _currentRef,
+      );
+      final filteredSecondaryVerses = secondaryVerses.whereType<Verse>().where((verse) {
+        return visibleVerseNumbers.contains(verse.number);
+      });
+      return {
+        for (final verse in filteredSecondaryVerses)
+          verse.number: verse.text.trim(),
+      };
+    } catch (e) {
+      debugPrint('Failed to load secondary verses for $source: $e');
+      return const {};
     }
   }
 
@@ -223,7 +267,7 @@ class ReaderScreenState extends State<ReaderScreen> {
 
     if (_textSource == BibleTextSource.bsb &&
         (loadedVerses == null || loadedVerses.isEmpty)) {
-      return 'The BSB translation is not currently cached offline. Switch to Gloss or use the offline fallback below.';
+      return 'BSB is not currently cached offline. Switch to Gloss or use the offline fallback below.';
     }
 
     return null;
@@ -253,12 +297,17 @@ class ReaderScreenState extends State<ReaderScreen> {
       await BibleService.setSource(BibleTextSource.originalLanguage);
     }
 
+    if (_secondaryTextSource == BibleTextSource.originalLanguage) {
+      await PreferencesService.instance.setSelectedSecondaryTextSource(null);
+    }
+
     if (!mounted) {
       return;
     }
 
     setState(() {
       _textSource = BibleTextSource.originalLanguage;
+      _secondaryTextSource = null;
       _bookId = fallbackReference.bookId;
       _chapter = fallbackReference.chapter;
       _startVerse = fallbackReference.startVerse;
@@ -286,7 +335,9 @@ class ReaderScreenState extends State<ReaderScreen> {
     final oldMode =
         _viewMode == ReadingMode.study || _viewMode == ReadingMode.drawing
             ? old_view.ViewMode.paragraph
-            : _selectedView.showOriginalLanguage || _selectedView.showGloss
+          : _selectedView.showOriginalLanguage ||
+              _selectedView.showGloss ||
+              _selectedView.showWordGlosses
                 ? old_view.ViewMode.interlinear
                 : _selectedView.lineByLine
                     ? old_view.ViewMode.standard
@@ -385,43 +436,113 @@ class ReaderScreenState extends State<ReaderScreen> {
   }
 
   Future<void> _showTranslationPicker() async {
-    final selectedSource = await showModalBottomSheet<BibleTextSource>(
+    final selectedSources = await showModalBottomSheet<_TextSourceSelection>(
       context: context,
       showDragHandle: true,
       builder: (context) {
-        return SafeArea(
-          child: ListView(
-            shrinkWrap: true,
-            children: [
-              for (final option in BibleService.availableSources)
-                ListTile(
-                  leading: Icon(
-                    option.isTranslation ? Icons.menu_book : Icons.translate,
+        var pendingPrimary = _textSource;
+        var pendingSecondary = _secondaryTextSource;
+        return StatefulBuilder(
+          builder: (context, setModalState) {
+            final allowSecondaryGloss =
+                pendingPrimary != BibleTextSource.originalLanguage;
+            if (!allowSecondaryGloss) {
+              pendingSecondary = null;
+            }
+
+            return SafeArea(
+              child: ListView(
+                shrinkWrap: true,
+                children: [
+                  const ListTile(
+                    title: Text('Primary text'),
+                    leading: Icon(Icons.menu_book_outlined),
                   ),
-                  title: Text(option.label),
-                  subtitle: Text(option.description),
-                  trailing: option.source == _textSource
-                      ? const Icon(Icons.check)
-                      : null,
-                  onTap: () => Navigator.of(context).pop(option.source),
-                ),
-            ],
-          ),
+                  for (final option in BibleService.availableSources)
+                    ListTile(
+                      leading: Icon(
+                        option.isTranslation ? Icons.menu_book : Icons.translate,
+                      ),
+                      title: Text(option.label),
+                      subtitle: Text(option.description),
+                      trailing: option.source == pendingPrimary
+                          ? const Icon(Icons.check)
+                          : null,
+                      onTap: () {
+                        setModalState(() {
+                          pendingPrimary = option.source;
+                          if (pendingPrimary == BibleTextSource.originalLanguage) {
+                            pendingSecondary = null;
+                          }
+                        });
+                      },
+                    ),
+                  const Divider(),
+                  SwitchListTile(
+                    secondary: const Icon(Icons.layers_outlined),
+                    title: const Text('Secondary gloss line'),
+                    subtitle: Text(
+                      allowSecondaryGloss
+                          ? 'Show Gloss beneath the primary text when the current view enables the gloss line.'
+                          : 'Disabled while Gloss is already the primary text.',
+                    ),
+                    value: pendingSecondary == BibleTextSource.originalLanguage,
+                    onChanged: allowSecondaryGloss
+                        ? (value) {
+                            setModalState(() {
+                              pendingSecondary = value
+                                  ? BibleTextSource.originalLanguage
+                                  : null;
+                            });
+                          }
+                        : null,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(16, 8, 16, 16),
+                    child: FilledButton(
+                      onPressed: () {
+                        Navigator.of(context).pop(
+                          _TextSourceSelection(
+                            primarySource: pendingPrimary,
+                            secondarySource: pendingSecondary,
+                          ),
+                        );
+                      },
+                      child: const Text('Apply'),
+                    ),
+                  ),
+                ],
+              ),
+            );
+          },
         );
       },
     );
 
-    if (!mounted || selectedSource == null || selectedSource == _textSource) {
+    if (!mounted || selectedSources == null) {
       return;
     }
 
-    await BibleService.setSource(selectedSource);
+    final primaryChanged = selectedSources.primarySource != _textSource;
+    final secondaryChanged =
+        selectedSources.secondarySource != _secondaryTextSource;
+    if (!primaryChanged && !secondaryChanged) {
+      return;
+    }
+
+    if (primaryChanged) {
+      await BibleService.setSource(selectedSources.primarySource);
+    }
+    await PreferencesService.instance.setSelectedSecondaryTextSource(
+      BibleService.sourceId(selectedSources.secondarySource),
+    );
     if (!mounted) {
       return;
     }
 
     setState(() {
-      _textSource = selectedSource;
+      _textSource = selectedSources.primarySource;
+      _secondaryTextSource = selectedSources.secondarySource;
     });
     await _loadBooks();
     await _loadBook();
@@ -441,7 +562,9 @@ class ReaderScreenState extends State<ReaderScreen> {
               for (final view in availableViews)
                 ListTile(
                   leading: Icon(
-                    view.showOriginalLanguage || view.showGloss
+                    view.showOriginalLanguage ||
+                            view.showGloss ||
+                            view.showWordGlosses
                         ? Icons.translate
                         : view.lineByLine
                             ? Icons.format_list_numbered
@@ -627,13 +750,16 @@ class ReaderScreenState extends State<ReaderScreen> {
     bool matchesRequestedMode(ChapterViewDefinition view) {
       switch (viewMode) {
         case old_view.ViewMode.interlinear:
-          return view.showOriginalLanguage || view.showGloss;
+          return view.showOriginalLanguage ||
+              view.showGloss ||
+              view.showWordGlosses;
         case old_view.ViewMode.paragraph:
           return !view.lineByLine;
         case old_view.ViewMode.standard:
           return view.lineByLine &&
               !view.showOriginalLanguage &&
-              !view.showGloss;
+              !view.showGloss &&
+              !view.showWordGlosses;
       }
     }
 
@@ -662,6 +788,9 @@ class ReaderScreenState extends State<ReaderScreen> {
     final layers = <String>[];
     if (view.showOriginalLanguage) {
       layers.add('Hebrew/Greek');
+      if (view.showWordGlosses) {
+        layers.add('Word glosses');
+      }
       if (view.showMorphology) {
         layers.add(
           view.useCompactMorphologyLabels
@@ -680,7 +809,7 @@ class ReaderScreenState extends State<ReaderScreen> {
       layers.add('Primary text');
     }
     if (view.showGloss) {
-      layers.add('Gloss');
+      layers.add('Gloss line');
     }
     return '$layout • ${layers.join(' • ')}';
   }
@@ -759,6 +888,7 @@ class ReaderScreenState extends State<ReaderScreen> {
     final utterances = await ConfigurableChapterView.buildTtsUtterances(
       chapter: chapter,
       view: _selectedView,
+      secondaryVerseTexts: _secondaryVerseTexts,
     );
     if (utterances.isEmpty) {
       return;
@@ -880,7 +1010,7 @@ class ReaderScreenState extends State<ReaderScreen> {
                 GestureDetector(
                   onTap: _showTranslationPicker,
                   child: Text(
-                    BibleService.sourceLabel(_textSource),
+                    _selectedTextSourceLabel,
                     style: TextStyle(
                       color: colorScheme.primary,
                       fontSize: 17,
@@ -998,8 +1128,37 @@ class ReaderScreenState extends State<ReaderScreen> {
       chapter: chapter,
       bookName: _currentBook?.name,
       view: _selectedView,
+      secondaryVerseTexts: _secondaryVerseTexts,
+      secondaryTextLabel: _secondaryTextSourceLabel,
     );
   }
+
+  String get _selectedTextSourceLabel {
+    final primaryLabel = BibleService.sourceLabel(_textSource);
+    final secondaryLabel = _secondaryTextSourceLabel;
+    if (secondaryLabel == null) {
+      return primaryLabel;
+    }
+    return '$primaryLabel + $secondaryLabel';
+  }
+
+  String? get _secondaryTextSourceLabel {
+    final source = _secondaryTextSource;
+    if (source == null) {
+      return null;
+    }
+    return BibleService.sourceLabel(source);
+  }
+}
+
+class _TextSourceSelection {
+  final BibleTextSource primarySource;
+  final BibleTextSource? secondarySource;
+
+  const _TextSourceSelection({
+    required this.primarySource,
+    required this.secondarySource,
+  });
 }
 
 enum _ViewPickerAction {

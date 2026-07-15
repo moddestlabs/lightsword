@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:bible_app/services/pwa_service.dart';
 import 'package:bible_app/ui/models/chapter_view_definition.dart';
+import 'package:bible_app/ui/screens/settings_screen.dart';
 
 class ChapterViewEditorDialog extends StatelessWidget {
   final ChapterViewDefinition initialView;
@@ -30,6 +32,10 @@ class ChapterViewEditorDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final nameController = TextEditingController(text: initialView.name);
+    final pwa = PwaService.instance;
+    final offlinePackStatusFuture = pwa.isWeb
+        ? pwa.refreshOfflinePackStatus()
+        : Future.value(const <OfflinePackId, OfflinePackStatus>{});
     var showVerseNumbers = initialView.showVerseNumbers;
     var lineByLine = initialView.lineByLine;
     var showOriginalLanguage = initialView.showOriginalLanguage;
@@ -40,151 +46,207 @@ class ChapterViewEditorDialog extends StatelessWidget {
     var showSyntaxLinks = initialView.showSyntaxLinks;
     var showTranslation = initialView.showTranslation;
     var showGloss = initialView.showGloss;
+    var showWordGlosses = initialView.showWordGlosses;
     var textDirection = initialView.originalLanguageTextDirection;
 
     return StatefulBuilder(
       builder: (context, setDialogState) {
+        final canCheckMaculaPack = pwa.isWeb && pwa.isAvailable;
+        void openSettings() {
+          Navigator.of(context).pop();
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            Navigator.of(context, rootNavigator: true).push(
+              MaterialPageRoute<void>(
+                builder: (_) => const SettingsScreen(),
+              ),
+            );
+          });
+        }
+
         return AlertDialog(
           title: Text(title),
           content: SingleChildScrollView(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                TextField(
-                  controller: nameController,
-                  decoration: const InputDecoration(
-                    labelText: 'View name',
-                  ),
-                ),
-                const SizedBox(height: 16),
-                SwitchListTile(
-                  contentPadding: EdgeInsets.zero,
-                  title: const Text('Show verse numbers'),
-                  value: showVerseNumbers,
-                  onChanged: (value) {
-                    setDialogState(() {
-                      showVerseNumbers = value;
-                    });
-                  },
-                ),
-                SwitchListTile(
-                  contentPadding: EdgeInsets.zero,
-                  title: const Text('Line-by-line verses'),
-                  subtitle: const Text('Turn off for paragraph form'),
-                  value: lineByLine,
-                  onChanged: (value) {
-                    setDialogState(() {
-                      lineByLine = value;
-                    });
-                  },
-                ),
-                SwitchListTile(
-                  contentPadding: EdgeInsets.zero,
-                  title: const Text('Show Hebrew/Greek'),
-                  value: showOriginalLanguage,
-                  onChanged: (value) {
-                    setDialogState(() {
-                      showOriginalLanguage = value;
-                    });
-                  },
-                ),
-                SwitchListTile(
-                  contentPadding: EdgeInsets.zero,
-                  title: const Text('Show translation'),
-                  value: showTranslation,
-                  onChanged: (value) {
-                    setDialogState(() {
-                      showTranslation = value;
-                    });
-                  },
-                ),
-                SwitchListTile(
-                  contentPadding: EdgeInsets.zero,
-                  title: const Text('Show glosses'),
-                  value: showGloss,
-                  onChanged: (value) {
-                    setDialogState(() {
-                      showGloss = value;
-                    });
-                  },
-                ),
-                if (showOriginalLanguage) ...[
-                  const SizedBox(height: 12),
-                  SwitchListTile(
-                    contentPadding: EdgeInsets.zero,
-                    title: const Text('Show morphology tags'),
-                    subtitle: const Text('Display parsed word tags below Hebrew/Greek'),
-                    value: showMorphology,
-                    onChanged: (value) {
-                      setDialogState(() {
-                        showMorphology = value;
-                      });
-                    },
-                  ),
-                  if (showMorphology)
+            child: FutureBuilder<Map<OfflinePackId, OfflinePackStatus>>(
+              future: offlinePackStatusFuture,
+              builder: (context, snapshot) {
+                final maculaPackInstalled = !pwa.isWeb ||
+                    (snapshot.data?[OfflinePackId.maculaSyntax]?.isInstalled ?? false);
+                final syntaxLinksEnabled = !pwa.isWeb || maculaPackInstalled;
+                final syntaxLinksSubtitle = !pwa.isWeb
+                    ? 'Enable Macula-derived referents and syntax connections when available'
+                    : snapshot.connectionState != ConnectionState.done
+                        ? 'Checking whether the Macula Syntax pack is installed...'
+                        : !canCheckMaculaPack
+                            ? 'PWA pack status is unavailable in this session. Open Settings and confirm the web PWA is initialized.'
+                            : maculaPackInstalled
+                                ? 'Enable Macula-derived referents and syntax connections when available'
+                                : 'Install the Macula Syntax pack in Settings to enable referents and syntax connections in web views.';
+
+                return Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    TextField(
+                      controller: nameController,
+                      decoration: const InputDecoration(
+                        labelText: 'View name',
+                      ),
+                    ),
+                    const SizedBox(height: 16),
                     SwitchListTile(
                       contentPadding: EdgeInsets.zero,
-                      title: const Text('Use compact morphology labels'),
-                      subtitle: const Text('Show short labels like Noun Fem Sg Abs'),
-                      value: useCompactMorphologyLabels,
+                      title: const Text('Show verse numbers'),
+                      value: showVerseNumbers,
                       onChanged: (value) {
                         setDialogState(() {
-                          useCompactMorphologyLabels = value;
+                          showVerseNumbers = value;
                         });
                       },
                     ),
-                  SwitchListTile(
-                    contentPadding: EdgeInsets.zero,
-                    title: const Text('Color by grammatical gender'),
-                    subtitle: const Text('Masculine blue, feminine pink, neuter gray'),
-                    value: colorOriginalLanguageByGender,
-                    onChanged: (value) {
-                      setDialogState(() {
-                        colorOriginalLanguageByGender = value;
-                      });
-                    },
-                  ),
-                  SwitchListTile(
-                    contentPadding: EdgeInsets.zero,
-                    title: const Text('Show syntax links'),
-                    subtitle: const Text('Enable Macula-derived referents and syntax connections when available'),
-                    value: showSyntaxLinks,
-                    onChanged: (value) {
-                      setDialogState(() {
-                        showSyntaxLinks = value;
-                      });
-                    },
-                  ),
-                  const SizedBox(height: 8),
-                  DropdownButtonFormField<ChapterViewTextDirection>(
-                    initialValue: textDirection,
-                    decoration: const InputDecoration(
-                      labelText: 'Original language direction',
+                    SwitchListTile(
+                      contentPadding: EdgeInsets.zero,
+                      title: const Text('Line-by-line verses'),
+                      subtitle: const Text('Turn off for paragraph form'),
+                      value: lineByLine,
+                      onChanged: (value) {
+                        setDialogState(() {
+                          lineByLine = value;
+                        });
+                      },
                     ),
-                    items: const [
-                      DropdownMenuItem(
-                        value: ChapterViewTextDirection.auto,
-                        child: Text('Auto'),
+                    SwitchListTile(
+                      contentPadding: EdgeInsets.zero,
+                      title: const Text('Show Hebrew/Greek'),
+                      value: showOriginalLanguage,
+                      onChanged: (value) {
+                        setDialogState(() {
+                          showOriginalLanguage = value;
+                        });
+                      },
+                    ),
+                    SwitchListTile(
+                      contentPadding: EdgeInsets.zero,
+                      title: const Text('Show translation'),
+                      value: showTranslation,
+                      onChanged: (value) {
+                        setDialogState(() {
+                          showTranslation = value;
+                        });
+                      },
+                    ),
+                    SwitchListTile(
+                      contentPadding: EdgeInsets.zero,
+                      title: const Text('Show gloss line'),
+                      subtitle: const Text('Display verse-level gloss text as a separate line'),
+                      value: showGloss,
+                      onChanged: (value) {
+                        setDialogState(() {
+                          showGloss = value;
+                        });
+                      },
+                    ),
+                    if (showOriginalLanguage) ...[
+                      const SizedBox(height: 12),
+                      SwitchListTile(
+                        contentPadding: EdgeInsets.zero,
+                        title: const Text('Show word glosses'),
+                        subtitle: const Text('Display glosses below each Hebrew/Greek word'),
+                        value: showWordGlosses,
+                        onChanged: (value) {
+                          setDialogState(() {
+                            showWordGlosses = value;
+                          });
+                        },
                       ),
-                      DropdownMenuItem(
-                        value: ChapterViewTextDirection.rtl,
-                        child: Text('Right to left'),
+                      SwitchListTile(
+                        contentPadding: EdgeInsets.zero,
+                        title: const Text('Show morphology tags'),
+                        subtitle: const Text('Display parsed word tags below Hebrew/Greek'),
+                        value: showMorphology,
+                        onChanged: (value) {
+                          setDialogState(() {
+                            showMorphology = value;
+                          });
+                        },
                       ),
-                      DropdownMenuItem(
-                        value: ChapterViewTextDirection.ltr,
-                        child: Text('Left to right'),
+                      if (showMorphology)
+                        SwitchListTile(
+                          contentPadding: EdgeInsets.zero,
+                          title: const Text('Use compact morphology labels'),
+                          subtitle: const Text('Show short labels like Noun Fem Sg Abs'),
+                          value: useCompactMorphologyLabels,
+                          onChanged: (value) {
+                            setDialogState(() {
+                              useCompactMorphologyLabels = value;
+                            });
+                          },
+                        ),
+                      SwitchListTile(
+                        contentPadding: EdgeInsets.zero,
+                        title: const Text('Color by grammatical gender'),
+                        subtitle: const Text('Masculine blue, feminine pink, neuter gray'),
+                        value: colorOriginalLanguageByGender,
+                        onChanged: (value) {
+                          setDialogState(() {
+                            colorOriginalLanguageByGender = value;
+                          });
+                        },
+                      ),
+                      SwitchListTile(
+                        contentPadding: EdgeInsets.zero,
+                        title: const Text('Show syntax links'),
+                        subtitle: Text(syntaxLinksSubtitle),
+                        value: syntaxLinksEnabled && showSyntaxLinks,
+                        onChanged: syntaxLinksEnabled
+                            ? (value) {
+                                setDialogState(() {
+                                  showSyntaxLinks = value;
+                                });
+                              }
+                            : null,
+                      ),
+                      if (pwa.isWeb &&
+                          snapshot.connectionState == ConnectionState.done &&
+                          !maculaPackInstalled)
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: TextButton.icon(
+                            onPressed: openSettings,
+                            icon: const Icon(Icons.download_outlined),
+                            label: const Text('Open Settings'),
+                          ),
+                        ),
+                      const SizedBox(height: 8),
+                      DropdownButtonFormField<ChapterViewTextDirection>(
+                        initialValue: textDirection,
+                        decoration: const InputDecoration(
+                          labelText: 'Original language direction',
+                        ),
+                        items: const [
+                          DropdownMenuItem(
+                            value: ChapterViewTextDirection.auto,
+                            child: Text('Auto'),
+                          ),
+                          DropdownMenuItem(
+                            value: ChapterViewTextDirection.rtl,
+                            child: Text('Right to left'),
+                          ),
+                          DropdownMenuItem(
+                            value: ChapterViewTextDirection.ltr,
+                            child: Text('Left to right'),
+                          ),
+                        ],
+                        onChanged: (value) {
+                          if (value == null) return;
+                          setDialogState(() {
+                            textDirection = value;
+                          });
+                        },
                       ),
                     ],
-                    onChanged: (value) {
-                      if (value == null) return;
-                      setDialogState(() {
-                        textDirection = value;
-                      });
-                    },
-                  ),
-                ],
-              ],
+                  ],
+                );
+              },
             ),
           ),
           actions: [
@@ -208,6 +270,8 @@ class ChapterViewEditorDialog extends StatelessWidget {
                   return;
                 }
 
+                final canUseSyntaxLinks = !pwa.isWeb ||
+                    (pwa.offlinePackStatuses[OfflinePackId.maculaSyntax]?.isInstalled ?? false);
                 Navigator.of(context).pop(
                   initialView.copyWith(
                     name: trimmedName,
@@ -219,9 +283,11 @@ class ChapterViewEditorDialog extends StatelessWidget {
                     useCompactMorphologyLabels: useCompactMorphologyLabels,
                     colorOriginalLanguageByGender:
                       colorOriginalLanguageByGender,
-                    showSyntaxLinks: showSyntaxLinks,
+                    showSyntaxLinks: canUseSyntaxLinks ? showSyntaxLinks : false,
                     showTranslation: showTranslation,
                     showGloss: showGloss,
+                    showWordGlosses:
+                        showOriginalLanguage ? showWordGlosses : false,
                     originalLanguageTextDirection: textDirection,
                   ),
                 );

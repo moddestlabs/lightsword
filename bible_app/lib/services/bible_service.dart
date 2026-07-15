@@ -1,5 +1,8 @@
 import 'package:bible_core/data/repository.dart';
 import 'package:bible_core/data/sources/usfm_lazy_repository.dart';
+import 'package:bible_core/models/book.dart';
+import 'package:bible_core/models/passage_reference.dart';
+import 'package:bible_core/models/verse.dart';
 import 'package:bible_app/platform/storage/flutter_asset_data_source.dart';
 import 'package:bible_app/services/original_language_bible_repository.dart';
 import 'package:bible_app/services/preferences_service.dart';
@@ -43,7 +46,7 @@ class BibleService {
     ),
     BibleTextSourceOption(
       source: BibleTextSource.bsb,
-      label: 'BSB Translation',
+      label: 'BSB',
       description: 'Berean Standard Bible translation layer.',
       isTranslation: true,
     ),
@@ -60,6 +63,10 @@ class BibleService {
     return _repositories[_currentSource]!;
   }
 
+  static BibleRepository repositoryFor(BibleTextSource source) {
+    return _repositories[source]!;
+  }
+
   static BibleTextSource get currentSource => _currentSource;
 
   static BibleTextSourceOption get currentSourceOption {
@@ -72,10 +79,39 @@ class BibleService {
     await PreferencesService.instance.setSelectedTextSource(_sourceId(source));
   }
 
+  static Future<List<Book>> getBooksForSource(BibleTextSource source) {
+    return repositoryFor(source).getBooks();
+  }
+
+  static Future<Book?> getBookForSource(BibleTextSource source, String bookId) {
+    return repositoryFor(source).getBook(bookId);
+  }
+
+  static Future<List<Verse>> getVersesForSource(
+    BibleTextSource source,
+    PassageReference reference,
+  ) {
+    return repositoryFor(source).getVerses(reference);
+  }
+
   static String sourceLabel(BibleTextSource source) {
     return availableSources
         .firstWhere((option) => option.source == source)
         .label;
+  }
+
+  static String? sourceId(BibleTextSource? source) {
+    if (source == null) {
+      return null;
+    }
+    return _sourceId(source);
+  }
+
+  static BibleTextSource? sourceFromIdOrNull(String? sourceId) {
+    if (sourceId == null || sourceId.isEmpty) {
+      return null;
+    }
+    return _sourceFromId(sourceId);
   }
 
   static String _sourceId(BibleTextSource source) {

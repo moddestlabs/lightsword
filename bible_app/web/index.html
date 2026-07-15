@@ -16,9 +16,9 @@
 
   <!-- Android/Chrome -->
   <meta name="mobile-web-app-capable" content="yes">
-  <meta name="theme-color" content="#8B4513">
 
   <title>LightSword - Bible Study</title>
+  <link rel="icon" type="image/svg+xml" href="icons/lightsword_app_icon.svg">
   <link rel="icon" type="image/x-icon" href="favicon.ico">
   <link rel="manifest" href="manifest.json">
 
@@ -26,12 +26,12 @@
     html, body {
       margin: 0;
       min-height: 100%;
-      background: #fffef8;
+      background: #f8f9fa;
     }
 
     body {
       font-family: Georgia, serif;
-      color: #2f2419;
+      color: #1f2328;
     }
 
     #lightsword-startup-shell {
@@ -42,8 +42,8 @@
       justify-content: center;
       padding: 24px;
       background:
-        radial-gradient(circle at top, rgba(139, 69, 19, 0.10), transparent 40%),
-        linear-gradient(180deg, #fffef8 0%, #f5efe4 100%);
+        radial-gradient(circle at top, rgba(95, 99, 104, 0.14), transparent 40%),
+        linear-gradient(180deg, #f8f9fa 0%, #eef1f4 100%);
       z-index: 9999;
       transition: opacity 180ms ease;
     }
@@ -70,8 +70,8 @@
       padding: 24px 22px;
       border-radius: 18px;
       background: rgba(255, 255, 255, 0.92);
-      box-shadow: 0 12px 40px rgba(85, 53, 25, 0.14);
-      border: 1px solid rgba(139, 69, 19, 0.10);
+      box-shadow: 0 12px 40px rgba(63, 69, 77, 0.14);
+      border: 1px solid rgba(95, 99, 104, 0.12);
     }
 
     #lightsword-startup-shell[data-state="startup-stalled"] .lightsword-startup-card,
@@ -80,8 +80,8 @@
     #lightsword-startup-shell[data-state="promise-rejection"] .lightsword-startup-card {
       width: min(100%, 34rem);
       padding: 16px 18px;
-      background: rgba(255, 252, 245, 0.96);
-      box-shadow: 0 8px 24px rgba(85, 53, 25, 0.10);
+      background: rgba(250, 251, 252, 0.96);
+      box-shadow: 0 8px 24px rgba(63, 69, 77, 0.10);
     }
 
     .lightsword-startup-title {
@@ -93,13 +93,13 @@
     .lightsword-startup-text {
       margin: 0;
       line-height: 1.45;
-      color: #4d3a28;
+      color: #3b4046;
     }
 
     .lightsword-startup-meta {
       margin-top: 12px;
       font-size: 0.92rem;
-      color: #72563c;
+      color: #666c73;
     }
   </style>
 

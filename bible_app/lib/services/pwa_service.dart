@@ -570,6 +570,7 @@ class PwaService {
   }
 
   static const Map<OfflinePackId, String> _optionalPackNames = {
+    OfflinePackId.maculaSyntax: 'macula-syntax',
     OfflinePackId.originalLanguageOt: 'original-language-ot',
   };
 
@@ -583,6 +584,7 @@ class PwaService {
 }
 
 enum OfflinePackId {
+  maculaSyntax,
   originalLanguageOt,
 }
 
@@ -858,6 +860,12 @@ class ServiceWorkerDiagnosticEvent {
 }
 
 const List<OfflinePackDefinition> offlinePackDefinitions = [
+  OfflinePackDefinition(
+    id: OfflinePackId.maculaSyntax,
+    title: 'Macula Syntax',
+    subtitle: 'Macula-derived Hebrew and Greek referents and syntax diagrams for study views.',
+    sizeLabel: '79 MB',
+  ),
   OfflinePackDefinition(
     id: OfflinePackId.originalLanguageOt,
     title: 'Original Language OT',

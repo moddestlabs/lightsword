@@ -110,7 +110,7 @@ def parse_args() -> argparse.Namespace:
 def main() -> None:
     args = parse_args()
     repo_root = Path(__file__).resolve().parents[2]
-    converter = repo_root / 'scripts/macula/convert_macula_greek.py'
+    converter = repo_root / 'scripts/macula/convert_macula_lowfat.py'
     output_dir = (repo_root / args.output_dir).resolve()
     output_dir.mkdir(parents=True, exist_ok=True)
 

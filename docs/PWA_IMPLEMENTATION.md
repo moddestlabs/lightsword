@@ -157,7 +157,8 @@ Shows:
 
 - **No native install prompt** - Must use Share > Add to Home Screen
 - **Offline app shell** - Home-screen launch works offline after the first successful online load
-- **Bible content is per-passage cached** - Open passages online once before expecting them offline
+- **Bible content is per-passage cached by default** - Open passages online once before expecting them offline
+- **Offline study packs are available** - Larger data sets like OT original-language content and combined Macula Hebrew/Greek syntax can be downloaded explicitly from Settings
 - **Storage is browser-managed** - Safari may evict cached data under storage pressure or prolonged inactivity
 - **Status bar** - Black translucent style
 - **Home screen icon** - Requires apple-touch-icon link
@@ -280,7 +281,8 @@ Ensure these exist in `bible_app/web/`:
 
 - **Check service worker** - DevTools > Application > Service Workers
 - **Check cache** - `lightsword_service_worker.js` should precache the app shell
-- **Open content once online** - Bible data is cached on demand, not all at install time
+- **Open content once online** - Bible data is cached on demand unless you install an offline pack
+- **Install study packs in Settings** - Macula Syntax now bundles Hebrew and Greek syntax assets, and Original Language OT can be downloaded for more reliable offline study
 - **Clear and reinstall** - Unregister service worker and reload
 - **Check console** - Look for service worker errors
 

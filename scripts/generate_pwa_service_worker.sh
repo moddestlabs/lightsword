@@ -79,6 +79,10 @@ mapfile -t optional_original_language_ot_pack < <(
   collect_paths 'assets/packages/bible_core/assets/data/tahot' '*.json' | awk 'NF'
 )
 
+mapfile -t optional_macula_syntax_pack < <(
+  collect_paths 'assets/packages/bible_core/assets/data/syntax' '*.json' | awk 'NF'
+)
+
 mapfile -t optional_translation_bsb_pack < <(
   collect_paths 'assets/assets/data/usfm/bsb' '*.usfm' | awk 'NF'
 )
@@ -179,6 +183,7 @@ EOF
   write_js_array "PRECACHE_URLS" "${precache_urls[@]}"
   write_js_array "DEFAULT_PACK_URLS" "${default_original_language_pack[@]}"
   object_args=()
+  append_array_args optional_macula_syntax_pack 'macula-syntax'
   append_array_args optional_original_language_ot_pack 'original-language-ot'
   append_array_args optional_translation_bsb_pack 'translation-bsb'
   write_js_object_of_arrays "OPTIONAL_PACKS" "${object_args[@]}"
@@ -273,6 +278,10 @@ self.addEventListener('fetch', (event) => {
 async function handleNavigationRequest(request) {
   try {
     const networkResponse = await fetch(request);
+    if (shouldPreferCachedResponse(request, networkResponse)) {
+      throw createRedirectMigrationError(request, networkResponse);
+    }
+
     const runtimeCache = await caches.open(RUNTIME_CACHE);
     await runtimeCache.put(request, networkResponse.clone());
     return networkResponse;
@@ -321,6 +330,10 @@ async function handleStaticRequest(request) {
 
   try {
     const networkResponse = await fetch(request);
+    if (shouldPreferCachedResponse(request, networkResponse)) {
+      throw createRedirectMigrationError(request, networkResponse);
+    }
+
     if (networkResponse && networkResponse.ok) {
       await runtimeCache.put(request, networkResponse.clone());
     }
@@ -358,6 +371,52 @@ function getNavigationFallbackUrls(request) {
   return [...new Set(fallbackUrls)];
 }
 
+function shouldPreferCachedResponse(request, response) {
+  if (!response) {
+    return false;
+  }
+
+  if (response.type === 'opaqueredirect') {
+    return true;
+  }
+
+  if (!response.redirected || !response.url) {
+    return false;
+  }
+
+  try {
+    const requestUrl = new URL(request.url);
+    const responseUrl = new URL(response.url, self.location.origin);
+    return requestUrl.origin !== responseUrl.origin;
+  } catch (_) {
+    return false;
+  }
+}
+
+function createRedirectMigrationError(request, response) {
+  const requestOrigin = safeOriginFromUrl(request.url);
+  const responseOrigin = safeOriginFromUrl(response?.url);
+
+  return new Error(
+    'redirected_off_origin:' +
+      (requestOrigin || 'unknown') +
+      '->' +
+      (responseOrigin || 'unknown')
+  );
+}
+
+function safeOriginFromUrl(url) {
+  if (!url) {
+    return null;
+  }
+
+  try {
+    return new URL(url, self.location.origin).origin;
+  } catch (_) {
+    return null;
+  }
+}
+
 async function matchPrecachedRequest(request) {
   const appShellCache = await caches.open(APP_SHELL_CACHE);
   const shellResponse = await appShellCache.match(request, { ignoreSearch: true });
@@ -393,7 +452,24 @@ async function cacheOptionalPack(packName) {
 
   const urls = OPTIONAL_PACKS[packName];
   const cache = await caches.open(getOptionalPackCacheName(packName));
-  await cache.addAll(urls);
+  for (const url of urls) {
+    const existingResponse = await cache.match(url, { ignoreSearch: true });
+    if (existingResponse) {
+      continue;
+    }
+
+    const cachedResponse = await caches.match(url, { ignoreSearch: true });
+    if (cachedResponse) {
+      await cache.put(url, cachedResponse.clone());
+      continue;
+    }
+
+    const networkResponse = await fetch(url);
+    if (!networkResponse || !networkResponse.ok) {
+      throw new Error('cache_pack_fetch_failed:' + url);
+    }
+    await cache.put(url, networkResponse.clone());
+  }
   return { ok: true, cachedCount: urls.length, error: null };
 }
 

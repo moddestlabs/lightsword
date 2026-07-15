@@ -13,6 +13,8 @@ class PreferencesService {
   static const String _customChapterViewsKey = 'custom_chapter_views';
   static const String _selectedChapterViewIdKey = 'selected_chapter_view_id';
   static const String _selectedTextSourceKey = 'selected_text_source';
+    static const String _selectedSecondaryTextSourceKey =
+      'selected_secondary_text_source';
   static const String _selectedTtsVoiceEnglishKey =
       'selected_tts_voice_english';
   static const String _selectedTtsVoiceHebrewKey = 'selected_tts_voice_hebrew';
@@ -170,6 +172,20 @@ class PreferencesService {
   Future<void> setSelectedTextSource(String sourceId) async {
     if (_prefs == null) return;
     await _prefs!.setString(_selectedTextSourceKey, sourceId);
+  }
+
+  String? getSelectedSecondaryTextSource() {
+    if (_prefs == null) return null;
+    return _prefs!.getString(_selectedSecondaryTextSourceKey);
+  }
+
+  Future<void> setSelectedSecondaryTextSource(String? sourceId) async {
+    if (_prefs == null) return;
+    if (sourceId == null || sourceId.isEmpty) {
+      await _prefs!.remove(_selectedSecondaryTextSourceKey);
+      return;
+    }
+    await _prefs!.setString(_selectedSecondaryTextSourceKey, sourceId);
   }
 
   String? getSelectedTtsVoiceId(String languageFamily) {
