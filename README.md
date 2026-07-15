@@ -4,7 +4,7 @@ Cross-platform and fully offline-capable Bible study application built on advanc
 
 **Tech Stack:** Dart + Flutter (iOS, Android, Web, macOS, Windows, Linux)  
 
-See it live: https://moddestlabs.github.io/lightsword/
+See it live: https://lightsword.app/
 
 ## Design
 
@@ -88,7 +88,7 @@ flutter run -d macos     # macOS
 
 ```bash
 cd bible_app
-flutter build web --release --base-href /lightsword/
+flutter build web --release --base-href /
 ```
 
 Output: `bible_app/build/web/`

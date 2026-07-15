@@ -238,7 +238,7 @@ Shows:
 
 ```bash
 cd bible_app
-flutter build web --release --base-href /lightsword/
+flutter build web --release --base-href /
 ../scripts/generate_pwa_service_worker.sh build/web
 ```
 

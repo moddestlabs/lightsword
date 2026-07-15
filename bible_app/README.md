@@ -23,7 +23,7 @@ flutter run
 ### For web (GitHub Pages deployment):
 
 ```bash
-flutter build web --base-href /lightsword/
+flutter build web --base-href /
 ```
 
 Output will be in `build/web/` ready for deployment.

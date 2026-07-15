@@ -7,7 +7,7 @@ LightSword supports deep linking to specific Bible passages and view modes via U
 ### Web (GitHub Pages)
 
 ```
-https://moddestlabs.github.io/lightsword?r=<reference>&mode=<mode>
+https://lightsword.app/?r=<reference>&mode=<mode>
 ```
 
 **Parameters:**
@@ -18,23 +18,23 @@ https://moddestlabs.github.io/lightsword?r=<reference>&mode=<mode>
 
 **Full chapter:**
 ```
-https://moddestlabs.github.io/lightsword?r=gen1
+https://lightsword.app/?r=gen1
 ```
 
 **Single verse:**
 ```
-https://moddestlabs.github.io/lightsword?r=john3.16
+https://lightsword.app/?r=john3.16
 ```
 
 **Verse range:**
 ```
 ```
-https://moddestlabs.github.io/lightsword?r=rom8.1-10
+https://lightsword.app/?r=rom8.1-10
 ```
 
 **With view mode:**
 ```
-https://moddestlabs.github.io/lightsword?r=gen1.1&mode=interlinear
+https://lightsword.app/?r=gen1.1&mode=interlinear
 ```
 
 ## Reference Format
@@ -165,7 +165,7 @@ lightsword://john3.16?mode=interlinear
 
 **Universal Links** (iOS/Android App Links):
 ```
-https://moddestlabs.github.io/lightsword?r=gen1.4
+https://lightsword.app/?r=gen1.4
 ```
 
 ## Testing
@@ -188,8 +188,8 @@ http://localhost:8080?r=rom8.1-10
 
 After deploying to GitHub Pages:
 ```
-https://moddestlabs.github.io/lightsword?r=ps23
-https://moddestlabs.github.io/lightsword?r=matt5.3-12&mode=interlinear
+https://lightsword.app/?r=ps23
+https://lightsword.app/?r=matt5.3-12&mode=interlinear
 ```
 
 ## Use Cases

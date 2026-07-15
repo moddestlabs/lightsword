@@ -171,10 +171,10 @@ Both implement the same `DataSource` interface, so `bible_core` parsing logic ne
 ### Phase 1: Web (GitHub Pages)
 ```bash
 cd bible_app
-flutter build web --release --base-href /lightsword/
+flutter build web --release --base-href /
 ```
 Output: `bible_app/build/web/`  
-Deploy: Push to `gh-pages` branch via GitHub Actions (see `.github/workflows/deploy-web.yml`)
+Deploy: GitHub Actions uploads `bible_app/build/web/` to GitHub Pages (see `.github/workflows/deploy-web.yml`)
 
 ### Phase 2: Native
 ```bash

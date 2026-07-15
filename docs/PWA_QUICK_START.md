@@ -72,7 +72,7 @@ Look for:
 ### Build for Production
 ```bash
 cd bible_app
-flutter build web --release --base-href /lightsword/
+flutter build web --release --base-href /
 ```
 
 ### Deploy to GitHub Pages
@@ -80,7 +80,7 @@ Push to main branch - GitHub Actions handles deployment automatically.
 
 ### Access Deployed App
 After deployment:
-1. Visit: `https://moddestlabs.github.io/lightsword/`
+1. Visit: `https://lightsword.app/`
 2. Install prompt appears (Android/Chrome)
 3. iOS: Share > Add to Home Screen
 

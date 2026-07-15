@@ -42,7 +42,7 @@ jobs:
       
       - name: Build web
         working-directory: ./bible_app
-        run: flutter build web --release --base-href /lightsword/
+        run: flutter build web --release --base-href /
 
       - name: Generate PWA service worker
         working-directory: ./bible_app
