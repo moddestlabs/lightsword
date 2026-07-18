@@ -13,9 +13,13 @@ class OriginalLanguageBibleRepository implements BibleRepository {
       : _metadataRepository = UsfmLazyRepository(
           FlutterAssetDataSource(),
           'assets/data/usfm/bsb',
-        );
+        ),
+        _tahotRepository = TAHOTRepository(FlutterAssetDataSource()),
+        _tagntRepository = TAGNTRepository(FlutterAssetDataSource());
 
   final BibleRepository _metadataRepository;
+  final TAHOTRepository _tahotRepository;
+  final TAGNTRepository _tagntRepository;
 
   @override
   Future<List<Book>> getBooks() {
@@ -61,12 +65,12 @@ class OriginalLanguageBibleRepository implements BibleRepository {
   }
 
   Future<List<Verse>> _loadChapter(String bookId, int chapter) async {
-    final tahotChapter = await TAHOTRepository.instance.getChapter(bookId, chapter);
+    final tahotChapter = await _tahotRepository.getChapter(bookId, chapter);
     if (tahotChapter != null) {
       return _buildFromTAHOT(bookId, chapter, tahotChapter);
     }
 
-    final tagntChapter = await TAGNTRepository.instance.getChapter(bookId, chapter);
+    final tagntChapter = await _tagntRepository.getChapter(bookId, chapter);
     if (tagntChapter != null) {
       return _buildFromTAGNT(bookId, chapter, tagntChapter);
     }

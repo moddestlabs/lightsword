@@ -1,8 +1,10 @@
-import 'package:bible_core/bible_core.dart' show SyntaxRepository, SyntaxVerseData;
+import 'package:bible_core/bible_core.dart'
+    show SyntaxRepository, SyntaxVerseData;
 import 'package:bible_core/data/sources/tagnt_repository.dart';
 import 'package:bible_core/data/sources/tahot_repository.dart';
 import 'package:bible_core/models/syntax_data.dart';
 
+import '../platform/storage/flutter_asset_data_source.dart';
 import '../ui/models/interlinear_word.dart';
 
 class OriginalLanguageVerseContent {
@@ -23,21 +25,28 @@ class OriginalLanguageDataService {
 
   OriginalLanguageDataService._();
 
+  final TAHOTRepository _tahotRepository =
+      TAHOTRepository(FlutterAssetDataSource());
+  final TAGNTRepository _tagntRepository =
+      TAGNTRepository(FlutterAssetDataSource());
+
   Future<OriginalLanguageVerseContent> loadVerse(
     String bookId,
     int chapter,
     int verseNumber, {
     bool includeSyntax = false,
   }) async {
-    final tahot = await TAHOTRepository.instance.getVerse(
+    final tahot = await _tahotRepository.getVerse(
       bookId,
       chapter,
       verseNumber,
     );
     if (tahot != null) {
-      final words = tahot.map(InterlinearWord.fromTAHOT).toList(growable: false);
+      final words =
+          tahot.map(InterlinearWord.fromTAHOT).toList(growable: false);
       final syntax = includeSyntax
-          ? await SyntaxRepository.instance.getVerse(bookId, chapter, verseNumber)
+          ? await SyntaxRepository.instance
+              .getVerse(bookId, chapter, verseNumber)
           : null;
       return OriginalLanguageVerseContent(
         words: words,
@@ -45,15 +54,17 @@ class OriginalLanguageDataService {
       );
     }
 
-    final tagnt = await TAGNTRepository.instance.getVerse(
+    final tagnt = await _tagntRepository.getVerse(
       bookId,
       chapter,
       verseNumber,
     );
     if (tagnt != null) {
-      final words = tagnt.map(InterlinearWord.fromTAGNT).toList(growable: false);
+      final words =
+          tagnt.map(InterlinearWord.fromTAGNT).toList(growable: false);
       final syntax = includeSyntax
-          ? await SyntaxRepository.instance.getVerse(bookId, chapter, verseNumber)
+          ? await SyntaxRepository.instance
+              .getVerse(bookId, chapter, verseNumber)
           : null;
       return OriginalLanguageVerseContent(
         words: words,
@@ -112,7 +123,8 @@ class OriginalLanguageDataService {
         role: annotation.role,
         headWordIndex: mapIndex(annotation.headWordIndex),
         referentWordIndex: mapIndex(annotation.referentWordIndex),
-        referentSpanStartWordIndex: mapIndex(annotation.referentSpanStartWordIndex),
+        referentSpanStartWordIndex:
+            mapIndex(annotation.referentSpanStartWordIndex),
         referentSpanEndWordIndex: mapIndex(annotation.referentSpanEndWordIndex),
       );
     }).toList(growable: false);

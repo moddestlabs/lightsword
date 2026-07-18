@@ -1,24 +1,43 @@
-import 'package:flutter_test/flutter_test.dart';
-import 'package:flutter/services.dart';
+import 'dart:io';
+import 'dart:typed_data';
+
+import 'package:bible_core/data/repository.dart';
 import 'package:bible_core/data/sources/tahot_repository.dart';
+import 'package:test/test.dart';
+
+class FileDataSource implements DataSource {
+  const FileDataSource();
+
+  @override
+  Future<String> loadAsset(String path) {
+    return File(path).readAsString();
+  }
+
+  @override
+  Future<Uint8List> loadBytes(String path) {
+    return File(path).readAsBytes();
+  }
+
+  @override
+  Future<bool> assetExists(String path) {
+    return File(path).exists();
+  }
+}
 
 void main() {
-  TestWidgetsFlutterBinding.ensureInitialized();
-
   test('TAHOT loads Genesis 1:1', () async {
-    // Load Genesis 1:1
-    final words = await TAHOTRepository.instance.getVerse('GEN', 1, 1);
-    
+    final repository = TAHOTRepository(
+      const FileDataSource(),
+      assetBasePath: 'assets/data/tahot',
+    );
+
+    final words = await repository.getVerse('Gen', 1, 1);
+
     expect(words, isNotNull);
     expect(words!.length, greaterThan(0));
-    
+
     // Check first word
     final firstWord = words[0];
-    print('First word: ${firstWord.hebrew}');
-    print('Transliteration: ${firstWord.translit}');
-    print('Gloss: ${firstWord.gloss}');
-    print('Strongs: ${firstWord.strongs}');
-    
     // First word should be בְּ/רֵאשִׁ֖ית (in/beginning)
     expect(firstWord.gloss, contains('beginning'));
   });
