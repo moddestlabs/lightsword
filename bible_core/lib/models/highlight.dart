@@ -1,4 +1,5 @@
-import 'package:flutter/material.dart';
+import 'package:meta/meta.dart';
+
 import 'package:bible_core/models/passage_reference.dart';
 import 'package:bible_core/models/syncable_entity.dart';
 
@@ -14,8 +15,8 @@ class Highlight extends SyncableEntity {
   /// Ending word index within the verse (exclusive)
   final int wordEnd;
 
-  /// Highlight color
-  final Color color;
+  /// Highlight color as an ARGB integer.
+  final int colorValue;
 
   /// Optional note attached to the highlight
   final String? note;
@@ -37,7 +38,7 @@ class Highlight extends SyncableEntity {
     required this.reference,
     required this.wordStart,
     required this.wordEnd,
-    required this.color,
+    required this.colorValue,
     this.note,
     this.isPublic = false,
     this.sharedFromUserId,
@@ -47,7 +48,7 @@ class Highlight extends SyncableEntity {
     required PassageReference reference,
     required int wordStart,
     required int wordEnd,
-    required Color color,
+    required int colorValue,
     String? note,
     String? userId,
   }) {
@@ -60,7 +61,7 @@ class Highlight extends SyncableEntity {
       reference: reference,
       wordStart: wordStart,
       wordEnd: wordEnd,
-      color: color,
+      colorValue: colorValue,
       note: note,
     );
   }
@@ -81,7 +82,7 @@ class Highlight extends SyncableEntity {
       'verse_end': reference.endVerse ?? reference.startVerse ?? 0,
       'word_start': wordStart,
       'word_end': wordEnd,
-      'color': color.value,
+      'color': colorValue,
       'note': note,
       'is_public': isPublic ? 1 : 0,
       'shared_from_user_id': sharedFromUserId,
@@ -92,7 +93,8 @@ class Highlight extends SyncableEntity {
     return Highlight(
       id: json['id'] as String,
       createdAt: DateTime.fromMillisecondsSinceEpoch(json['created_at'] as int),
-      modifiedAt: DateTime.fromMillisecondsSinceEpoch(json['modified_at'] as int),
+      modifiedAt:
+          DateTime.fromMillisecondsSinceEpoch(json['modified_at'] as int),
       userId: json['user_id'] as String?,
       isDeleted: (json['is_deleted'] as int) == 1,
       version: json['version'] as int,
@@ -105,7 +107,7 @@ class Highlight extends SyncableEntity {
       ),
       wordStart: json['word_start'] as int,
       wordEnd: json['word_end'] as int,
-      color: Color(json['color'] as int),
+      colorValue: json['color'] as int,
       note: json['note'] as String?,
       isPublic: (json['is_public'] as int) == 1,
       sharedFromUserId: json['shared_from_user_id'] as String?,
@@ -123,7 +125,7 @@ class Highlight extends SyncableEntity {
     PassageReference? reference,
     int? wordStart,
     int? wordEnd,
-    Color? color,
+    int? colorValue,
     String? note,
     bool? isPublic,
     String? sharedFromUserId,
@@ -139,7 +141,7 @@ class Highlight extends SyncableEntity {
       reference: reference ?? this.reference,
       wordStart: wordStart ?? this.wordStart,
       wordEnd: wordEnd ?? this.wordEnd,
-      color: color ?? this.color,
+      colorValue: colorValue ?? this.colorValue,
       note: note ?? this.note,
       isPublic: isPublic ?? this.isPublic,
       sharedFromUserId: sharedFromUserId ?? this.sharedFromUserId,

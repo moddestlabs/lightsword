@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:bible_core/bible_core.dart'
-  show
-    Arc,
-    ArcStyle,
-    ArcType,
-    PassageReference,
-    SyntaxArcData,
-    SyntaxRelationKind,
-    SyntaxSpanData,
-    SyntaxVerseData;
+    show
+        Arc,
+        ArcStyle,
+        ArcType,
+        PassageReference,
+        SyntaxArcData,
+        SyntaxRelationKind,
+        SyntaxSpanData,
+        SyntaxVerseData;
 import 'package:bible_core/lexicon/strongs.dart';
 import 'package:bible_core/models/strongs_entry.dart';
 import 'package:bible_core/models/verse.dart';
 import 'package:bible_core/models/word.dart';
+import 'package:bible_app/platform/storage/flutter_asset_data_source.dart';
 import 'package:bible_app/services/bible_service.dart';
 import 'package:bible_app/services/original_language_data_service.dart';
 import 'package:bible_app/services/tts_service.dart';
@@ -20,6 +21,8 @@ import 'package:bible_app/ui/models/chapter_view_definition.dart';
 import 'package:bible_app/ui/models/interlinear_word.dart';
 import 'package:bible_app/ui/widgets/arc_painter.dart';
 import 'package:bible_app/ui/widgets/tts_control_widget.dart';
+
+final StrongsLookup _strongsLookup = StrongsLookup(FlutterAssetDataSource());
 
 /// Widget to display a single fallback word when full interlinear data is unavailable.
 class InterlinearWordCard extends StatefulWidget {
@@ -54,7 +57,7 @@ class _InterlinearWordCardState extends State<InterlinearWordCard> {
       return;
     }
 
-    final entry = await StrongsLookup.instance.getEntry(
+    final entry = await _strongsLookup.getEntry(
       widget.word.strongsNumber!,
     );
     if (mounted) {
@@ -251,7 +254,7 @@ class __InterlinearWordCardState extends State<_InterlinearWordCard> {
       return;
     }
 
-    final entry = await StrongsLookup.instance.getEntry(widget.word.strongs!);
+    final entry = await _strongsLookup.getEntry(widget.word.strongs!);
     if (mounted) {
       setState(() {
         _entry = entry;
@@ -268,16 +271,16 @@ class __InterlinearWordCardState extends State<_InterlinearWordCard> {
     final isActiveWord = widget.progressKey != null &&
         progress?.progressKey == widget.progressKey;
     final genderColor = widget.view.colorOriginalLanguageByGender
-      ? _genderColor(widget.word.grammaticalGender, Theme.of(context))
-      : Theme.of(context).colorScheme.primary;
+        ? _genderColor(widget.word.grammaticalGender, Theme.of(context))
+        : Theme.of(context).colorScheme.primary;
 
     final originalStyle = TextStyle(
       fontSize: 28,
       color: genderColor,
       fontWeight: widget.view.colorOriginalLanguageByGender &&
-          widget.word.grammaticalGender != null
-        ? FontWeight.w600
-        : FontWeight.w400,
+              widget.word.grammaticalGender != null
+          ? FontWeight.w600
+          : FontWeight.w400,
       height: 1.4,
       backgroundColor:
           isActiveWord ? Theme.of(context).colorScheme.tertiaryContainer : null,
@@ -396,7 +399,8 @@ class __InterlinearWordCardState extends State<_InterlinearWordCard> {
               child: CircularProgressIndicator(strokeWidth: 2),
             ),
           ],
-          if (widget.view.showMorphology && widget.word.morphology.isNotEmpty) ...[
+          if (widget.view.showMorphology &&
+              widget.word.morphology.isNotEmpty) ...[
             const SizedBox(height: 8),
             Text(
               widget.view.useCompactMorphologyLabels
@@ -822,7 +826,8 @@ class _InterlinearReaderPageState extends State<InterlinearReaderPage> {
                     children: words.asMap().entries.map((entry) {
                       final wordIndex = entry.key;
                       final word = entry.value;
-                      final isFocused = wordIndex == _activeSyntaxFocusWordIndex;
+                      final isFocused =
+                          wordIndex == _activeSyntaxFocusWordIndex;
                       final style = textStyle.copyWith(
                         color: widget.view.colorOriginalLanguageByGender
                             ? _genderColor(
@@ -871,7 +876,8 @@ class _InterlinearReaderPageState extends State<InterlinearReaderPage> {
                                           ? TextDirection.rtl
                                           : TextDirection.ltr,
                                     ),
-                                    if (widget.view.showMorphology && word.hasMorphology) ...[
+                                    if (widget.view.showMorphology &&
+                                        word.hasMorphology) ...[
                                       const SizedBox(height: 2),
                                       Text(
                                         widget.view.useCompactMorphologyLabels
@@ -905,7 +911,8 @@ class _InterlinearReaderPageState extends State<InterlinearReaderPage> {
                         _originalProgressKey,
                       ),
                     ),
-                    textDirection: isHebrew ? TextDirection.rtl : TextDirection.ltr,
+                    textDirection:
+                        isHebrew ? TextDirection.rtl : TextDirection.ltr,
                   ),
           ),
         ],
@@ -957,7 +964,8 @@ class _InterlinearReaderPageState extends State<InterlinearReaderPage> {
                     child: DecoratedBox(
                       decoration: BoxDecoration(
                         color: isFocused
-                            ? colorScheme.tertiaryContainer.withValues(alpha: 0.45)
+                            ? colorScheme.tertiaryContainer
+                                .withValues(alpha: 0.45)
                             : Colors.transparent,
                         borderRadius: BorderRadius.circular(8),
                       ),
@@ -972,7 +980,8 @@ class _InterlinearReaderPageState extends State<InterlinearReaderPage> {
                             fontSize: 15,
                             height: 1.35,
                             color: colorScheme.onSurfaceVariant,
-                            fontWeight: isFocused ? FontWeight.w600 : FontWeight.w400,
+                            fontWeight:
+                                isFocused ? FontWeight.w600 : FontWeight.w400,
                           ),
                         ),
                       ),
@@ -993,8 +1002,7 @@ class _InterlinearReaderPageState extends State<InterlinearReaderPage> {
     required String title,
     required String Function(InterlinearWord word) labelBuilder,
     bool useWordColors = false,
-  }
-  ) {
+  }) {
     final relations = _collectSyntaxRelations(syntaxData);
     final spans = _collectSyntaxSpans(syntaxData);
     if ((relations.isEmpty && spans.isEmpty) || words.isEmpty) {
@@ -1019,21 +1027,21 @@ class _InterlinearReaderPageState extends State<InterlinearReaderPage> {
       startVerse: widget.verseNumber,
       endVerse: widget.verseNumber,
     );
-    final arcs = relations
-        .map(
-          (relation) => Arc.create(
-            reference: reference,
-            fromWordIndex: relation.fromWordIndex,
-            toWordIndex: relation.toWordIndex,
-            type: _arcTypeForSyntaxKind(relation.kind),
-            color: _arcColorForSyntaxKind(relation.kind, colorScheme),
-            label: relation.label?.trim().isNotEmpty == true
-                ? relation.label!.trim()
-                : relation.kind.name,
-            style: ArcStyle.above,
-          ),
-        )
-        .toList(growable: false);
+    final arcs = <Arc>[
+      for (final relation in relations)
+        Arc.create(
+          reference: reference,
+          fromWordIndex: relation.fromWordIndex,
+          toWordIndex: relation.toWordIndex,
+          type: _arcTypeForSyntaxKind(relation.kind),
+          colorValue:
+              _arcColorForSyntaxKind(relation.kind, colorScheme).toARGB32(),
+          label: relation.label?.trim().isNotEmpty == true
+              ? relation.label!.trim()
+              : relation.kind.name,
+          style: ArcStyle.above,
+        ),
+    ];
     final geometry = <int, ArcGeometry>{};
     final spanVisuals = <_SyntaxSpanVisual>[];
 
@@ -1137,14 +1145,15 @@ class _InterlinearReaderPageState extends State<InterlinearReaderPage> {
                       children: words.asMap().entries.map((entry) {
                         final wordIndex = entry.key;
                         final word = entry.value;
-                        final color = useWordColors && widget.view.colorOriginalLanguageByGender
+                        final color = useWordColors &&
+                                widget.view.colorOriginalLanguageByGender
                             ? _genderColor(
                                 word.grammaticalGender,
                                 Theme.of(context),
                               )
-                          : (useWordColors
-                            ? colorScheme.primary
-                            : colorScheme.onSurfaceVariant);
+                            : (useWordColors
+                                ? colorScheme.primary
+                                : colorScheme.onSurfaceVariant);
                         final isFocused =
                             wordIndex == _activeSyntaxFocusWordIndex;
                         return Padding(
@@ -1159,7 +1168,8 @@ class _InterlinearReaderPageState extends State<InterlinearReaderPage> {
                                 width: chipWidth,
                                 height: chipHeight,
                                 alignment: Alignment.center,
-                                padding: const EdgeInsets.symmetric(horizontal: 6),
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 6),
                                 decoration: BoxDecoration(
                                   color: isFocused
                                       ? colorScheme.tertiaryContainer
@@ -1289,7 +1299,8 @@ class _InterlinearReaderPageState extends State<InterlinearReaderPage> {
           word.referentSpanEndWordIndex == null) {
         continue;
       }
-      final key = '${word.wordIndex}:${word.referentSpanStartWordIndex}:${word.referentSpanEndWordIndex}:referent';
+      final key =
+          '${word.wordIndex}:${word.referentSpanStartWordIndex}:${word.referentSpanEndWordIndex}:referent';
       if (!seen.add(key)) {
         continue;
       }
@@ -1308,7 +1319,8 @@ class _InterlinearReaderPageState extends State<InterlinearReaderPage> {
       final label = span.label?.trim().isNotEmpty == true
           ? span.label!.trim()
           : span.kind.name;
-      final key = '${span.fromWordIndex}:${span.startWordIndex}:${span.endWordIndex}:$label';
+      final key =
+          '${span.fromWordIndex}:${span.startWordIndex}:${span.endWordIndex}:$label';
       if (!seen.add(key)) {
         continue;
       }
@@ -1325,7 +1337,11 @@ class _InterlinearReaderPageState extends State<InterlinearReaderPage> {
 
   double _arcHeightForRelation(SyntaxArcData relation) {
     final span = (relation.fromWordIndex - relation.toWordIndex).abs();
-    final clampedSpan = span < 1 ? 1 : span > 8 ? 8 : span;
+    final clampedSpan = span < 1
+        ? 1
+        : span > 8
+            ? 8
+            : span;
     return 24 + (clampedSpan * 8).toDouble();
   }
 
@@ -1422,15 +1438,16 @@ class _InterlinearReaderPageState extends State<InterlinearReaderPage> {
         )
         .toList(growable: false);
 
-      final spanRows = spans
+    final spanRows = spans
         .map(
           (span) => '${_syntaxWordText(words, span.fromWordIndex)} -> '
-            '[${words.sublist(span.startWordIndex, span.endWordIndex + 1).map((word) => word.displayOriginalText).join(' ')}] '
-            '(${span.label?.trim().isNotEmpty == true ? span.label!.trim() : span.kind.name})',
+              '[${words.sublist(span.startWordIndex, span.endWordIndex + 1).map((word) => word.displayOriginalText).join(' ')}] '
+              '(${span.label?.trim().isNotEmpty == true ? span.label!.trim() : span.kind.name})',
         )
         .toList(growable: false);
 
-      final rows = <String>{...spanRows, ...referentRows, ...arcRows}.toList(growable: false);
+    final rows = <String>{...spanRows, ...referentRows, ...arcRows}
+        .toList(growable: false);
     if (rows.isEmpty) {
       return const SizedBox.shrink();
     }
@@ -1578,7 +1595,8 @@ class _SyntaxSpanPainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     for (final span in spans) {
       final strokePaint = Paint()
-        ..color = span.isFocused ? span.color : span.color.withValues(alpha: 0.78)
+        ..color =
+            span.isFocused ? span.color : span.color.withValues(alpha: 0.78)
         ..strokeWidth = span.isFocused ? 3 : 2
         ..style = PaintingStyle.stroke
         ..strokeCap = StrokeCap.round;

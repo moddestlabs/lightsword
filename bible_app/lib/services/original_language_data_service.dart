@@ -29,6 +29,8 @@ class OriginalLanguageDataService {
       TAHOTRepository(FlutterAssetDataSource());
   final TAGNTRepository _tagntRepository =
       TAGNTRepository(FlutterAssetDataSource());
+  final SyntaxRepository _syntaxRepository =
+      SyntaxRepository(FlutterAssetDataSource());
 
   Future<OriginalLanguageVerseContent> loadVerse(
     String bookId,
@@ -45,8 +47,7 @@ class OriginalLanguageDataService {
       final words =
           tahot.map(InterlinearWord.fromTAHOT).toList(growable: false);
       final syntax = includeSyntax
-          ? await SyntaxRepository.instance
-              .getVerse(bookId, chapter, verseNumber)
+          ? await _syntaxRepository.getVerse(bookId, chapter, verseNumber)
           : null;
       return OriginalLanguageVerseContent(
         words: words,
@@ -63,8 +64,7 @@ class OriginalLanguageDataService {
       final words =
           tagnt.map(InterlinearWord.fromTAGNT).toList(growable: false);
       final syntax = includeSyntax
-          ? await SyntaxRepository.instance
-              .getVerse(bookId, chapter, verseNumber)
+          ? await _syntaxRepository.getVerse(bookId, chapter, verseNumber)
           : null;
       return OriginalLanguageVerseContent(
         words: words,
@@ -73,7 +73,7 @@ class OriginalLanguageDataService {
     }
 
     final syntax = includeSyntax
-        ? await SyntaxRepository.instance.getVerse(bookId, chapter, verseNumber)
+        ? await _syntaxRepository.getVerse(bookId, chapter, verseNumber)
         : null;
     return OriginalLanguageVerseContent(
       words: const <InterlinearWord>[],

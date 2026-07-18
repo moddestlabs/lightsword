@@ -1,7 +1,20 @@
 import 'dart:convert';
-import 'package:flutter/material.dart';
+
+import 'package:meta/meta.dart';
+
 import 'package:bible_core/models/passage_reference.dart';
 import 'package:bible_core/models/syncable_entity.dart';
+
+/// Portable 2D coordinate for drawing data.
+@immutable
+class DrawingOffset {
+  final double dx;
+  final double dy;
+
+  const DrawingOffset(this.dx, this.dy);
+
+  static const zero = DrawingOffset(0, 0);
+}
 
 /// Zone where a drawing is positioned
 enum DrawingZone {
@@ -69,7 +82,7 @@ enum StrokeStyle {
 @immutable
 class DrawingPoint {
   /// Position relative to anchor (normalized coordinates 0.0 - 1.0)
-  final Offset position;
+  final DrawingOffset position;
 
   /// Pressure sensitivity (0.0 - 1.0) for stylus support
   final double pressure;
@@ -99,7 +112,7 @@ class DrawingPoint {
 
   factory DrawingPoint.fromJson(Map<String, dynamic> json) {
     return DrawingPoint(
-      position: Offset(
+      position: DrawingOffset(
         (json['x'] as num).toDouble(),
         (json['y'] as num).toDouble(),
       ),
@@ -116,8 +129,8 @@ class DrawingStroke {
   /// Points that make up this stroke
   final List<DrawingPoint> points;
 
-  /// Color of this stroke
-  final Color color;
+  /// Color of this stroke as an ARGB integer.
+  final int colorValue;
 
   /// Width of the stroke
   final double width;
@@ -127,7 +140,7 @@ class DrawingStroke {
 
   const DrawingStroke({
     required this.points,
-    required this.color,
+    required this.colorValue,
     required this.width,
     this.style = StrokeStyle.pen,
   });
@@ -135,7 +148,7 @@ class DrawingStroke {
   Map<String, dynamic> toJson() {
     return {
       'points': points.map((p) => p.toJson()).toList(),
-      'color': color.value,
+      'color': colorValue,
       'width': width,
       'style': style.value,
     };
@@ -146,7 +159,7 @@ class DrawingStroke {
       points: (json['points'] as List)
           .map((p) => DrawingPoint.fromJson(p as Map<String, dynamic>))
           .toList(),
-      color: Color(json['color'] as int),
+      colorValue: json['color'] as int,
       width: (json['width'] as num).toDouble(),
       style: StrokeStyle.fromString(json['style'] as String? ?? 'pen'),
     );
@@ -169,13 +182,13 @@ class Drawing extends SyncableEntity {
   final List<DrawingStroke> strokes;
 
   /// Anchor offset as percentage of viewport (0.0 - 1.0)
-  final Offset anchorOffset;
+  final DrawingOffset anchorOffset;
 
   /// Base text size when drawing was created (for scaling)
   final double baseTextSize;
 
-  /// Default color for the drawing (strokes can override)
-  final Color color;
+  /// Default color for the drawing as an ARGB integer.
+  final int colorValue;
 
   /// Default stroke width (strokes can override)
   final double strokeWidth;
@@ -200,7 +213,7 @@ class Drawing extends SyncableEntity {
     required this.strokes,
     required this.anchorOffset,
     required this.baseTextSize,
-    required this.color,
+    required this.colorValue,
     required this.strokeWidth,
     this.isPublic = false,
     this.sharedFromUserId,
@@ -211,9 +224,9 @@ class Drawing extends SyncableEntity {
     int? anchorWordIndex,
     required DrawingZone zone,
     required List<DrawingStroke> strokes,
-    required Offset anchorOffset,
+    required DrawingOffset anchorOffset,
     required double baseTextSize,
-    Color color = Colors.black,
+    int colorValue = 0xFF000000,
     double strokeWidth = 2.0,
     String? userId,
   }) {
@@ -229,7 +242,7 @@ class Drawing extends SyncableEntity {
       strokes: strokes,
       anchorOffset: anchorOffset,
       baseTextSize: baseTextSize,
-      color: color,
+      colorValue: colorValue,
       strokeWidth: strokeWidth,
     );
   }
@@ -253,7 +266,7 @@ class Drawing extends SyncableEntity {
       'anchor_offset_x': anchorOffset.dx,
       'anchor_offset_y': anchorOffset.dy,
       'base_text_size': baseTextSize,
-      'color': color.value,
+      'color': colorValue,
       'stroke_width': strokeWidth,
       'strokes_json': jsonEncode(strokes.map((s) => s.toJson()).toList()),
       'is_public': isPublic ? 1 : 0,
@@ -266,7 +279,8 @@ class Drawing extends SyncableEntity {
     return Drawing(
       id: json['id'] as String,
       createdAt: DateTime.fromMillisecondsSinceEpoch(json['created_at'] as int),
-      modifiedAt: DateTime.fromMillisecondsSinceEpoch(json['modified_at'] as int),
+      modifiedAt:
+          DateTime.fromMillisecondsSinceEpoch(json['modified_at'] as int),
       userId: json['user_id'] as String?,
       isDeleted: (json['is_deleted'] as int) == 1,
       version: json['version'] as int,
@@ -282,12 +296,12 @@ class Drawing extends SyncableEntity {
       strokes: strokesJson
           .map((s) => DrawingStroke.fromJson(s as Map<String, dynamic>))
           .toList(),
-      anchorOffset: Offset(
+      anchorOffset: DrawingOffset(
         (json['anchor_offset_x'] as num).toDouble(),
         (json['anchor_offset_y'] as num).toDouble(),
       ),
       baseTextSize: (json['base_text_size'] as num).toDouble(),
-      color: Color(json['color'] as int),
+      colorValue: json['color'] as int,
       strokeWidth: (json['stroke_width'] as num).toDouble(),
       isPublic: (json['is_public'] as int?) == 1,
       sharedFromUserId: json['shared_from_user_id'] as String?,
@@ -306,9 +320,9 @@ class Drawing extends SyncableEntity {
     int? anchorWordIndex,
     DrawingZone? zone,
     List<DrawingStroke>? strokes,
-    Offset? anchorOffset,
+    DrawingOffset? anchorOffset,
     double? baseTextSize,
-    Color? color,
+    int? colorValue,
     double? strokeWidth,
     bool? isPublic,
     String? sharedFromUserId,
@@ -327,7 +341,7 @@ class Drawing extends SyncableEntity {
       strokes: strokes ?? this.strokes,
       anchorOffset: anchorOffset ?? this.anchorOffset,
       baseTextSize: baseTextSize ?? this.baseTextSize,
-      color: color ?? this.color,
+      colorValue: colorValue ?? this.colorValue,
       strokeWidth: strokeWidth ?? this.strokeWidth,
       isPublic: isPublic ?? this.isPublic,
       sharedFromUserId: sharedFromUserId ?? this.sharedFromUserId,

@@ -1,4 +1,5 @@
-import 'package:flutter/material.dart';
+import 'package:meta/meta.dart';
+
 import 'package:bible_core/models/passage_reference.dart';
 import 'package:bible_core/models/syncable_entity.dart';
 
@@ -83,8 +84,8 @@ class Arc extends SyncableEntity {
   /// Type of relationship this arc represents
   final ArcType type;
 
-  /// Arc color
-  final Color color;
+  /// Arc color as an ARGB integer.
+  final int colorValue;
 
   /// Optional label to display on the arc
   final String? label;
@@ -113,7 +114,7 @@ class Arc extends SyncableEntity {
     required this.fromWordIndex,
     required this.toWordIndex,
     required this.type,
-    required this.color,
+    required this.colorValue,
     this.label,
     this.style = ArcStyle.curved,
     this.isPublic = false,
@@ -126,7 +127,7 @@ class Arc extends SyncableEntity {
     required int fromWordIndex,
     required int toWordIndex,
     required ArcType type,
-    required Color color,
+    required int colorValue,
     String? label,
     ArcStyle style = ArcStyle.curved,
     String? userId,
@@ -141,7 +142,7 @@ class Arc extends SyncableEntity {
       fromWordIndex: fromWordIndex,
       toWordIndex: toWordIndex,
       type: type,
-      color: color,
+      colorValue: colorValue,
       label: label,
       style: style,
     );
@@ -163,7 +164,7 @@ class Arc extends SyncableEntity {
       'from_word_index': fromWordIndex,
       'to_word_index': toWordIndex,
       'arc_type': type.name,
-      'color': color.value,
+      'color': colorValue,
       'label': label,
       'style': style.name,
       'is_public': isPublic ? 1 : 0,
@@ -176,7 +177,8 @@ class Arc extends SyncableEntity {
     return Arc(
       id: json['id'] as String,
       createdAt: DateTime.fromMillisecondsSinceEpoch(json['created_at'] as int),
-      modifiedAt: DateTime.fromMillisecondsSinceEpoch(json['modified_at'] as int),
+      modifiedAt:
+          DateTime.fromMillisecondsSinceEpoch(json['modified_at'] as int),
       userId: json['user_id'] as String?,
       isDeleted: (json['is_deleted'] as int) == 1,
       version: json['version'] as int,
@@ -193,7 +195,7 @@ class Arc extends SyncableEntity {
         (e) => e.name == json['arc_type'],
         orElse: () => ArcType.custom,
       ),
-      color: Color(json['color'] as int),
+      colorValue: json['color'] as int,
       label: json['label'] as String?,
       style: ArcStyle.values.firstWhere(
         (e) => e.name == json['style'],
@@ -217,7 +219,7 @@ class Arc extends SyncableEntity {
     int? fromWordIndex,
     int? toWordIndex,
     ArcType? type,
-    Color? color,
+    int? colorValue,
     String? label,
     ArcStyle? style,
     bool? isPublic,
@@ -236,7 +238,7 @@ class Arc extends SyncableEntity {
       fromWordIndex: fromWordIndex ?? this.fromWordIndex,
       toWordIndex: toWordIndex ?? this.toWordIndex,
       type: type ?? this.type,
-      color: color ?? this.color,
+      colorValue: colorValue ?? this.colorValue,
       label: label ?? this.label,
       style: style ?? this.style,
       isPublic: isPublic ?? this.isPublic,

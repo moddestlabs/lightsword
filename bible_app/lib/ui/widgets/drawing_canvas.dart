@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/gestures.dart';
 import 'package:bible_core/models/drawing.dart';
 
 /// Interactive canvas for creating vector drawings with touch/stylus input
 class DrawingCanvas extends StatefulWidget {
   /// Callback when a stroke is completed
   /// Parameters: stroke (normalized), originalStartPosition (local coords relative to canvas)
-  final void Function(DrawingStroke stroke, Offset originalStartPosition) onStrokeCompleted;
+  final void Function(DrawingStroke stroke, Offset originalStartPosition)
+      onStrokeCompleted;
 
   /// Current drawing tool settings
   final DrawingToolSettings settings;
@@ -80,7 +80,7 @@ class _DrawingCanvasState extends State<DrawingCanvas> {
       // Create current stroke for preview
       _currentStroke = DrawingStroke(
         points: List.from(_currentPoints),
-        color: widget.settings.color,
+        colorValue: widget.settings.color.toARGB32(),
         width: widget.settings.strokeWidth,
         style: widget.settings.style,
       );
@@ -91,7 +91,8 @@ class _DrawingCanvasState extends State<DrawingCanvas> {
     if (!widget.enabled || _currentPoints.isEmpty) return;
 
     // Keep the local start position (before normalization)
-    final originalStartPosition = _currentPoints.first.position;
+    final originalStartPosition =
+        _toFlutterOffset(_currentPoints.first.position);
 
     // Smooth the points
     final smoothedPoints = _smoothPoints(_currentPoints);
@@ -102,7 +103,7 @@ class _DrawingCanvasState extends State<DrawingCanvas> {
     // Create final stroke
     final stroke = DrawingStroke(
       points: normalizedPoints,
-      color: widget.settings.color,
+      colorValue: widget.settings.color.toARGB32(),
       width: widget.settings.strokeWidth,
       style: widget.settings.style,
     );
@@ -119,7 +120,7 @@ class _DrawingCanvasState extends State<DrawingCanvas> {
 
   DrawingPoint _createPoint(Offset position) {
     return DrawingPoint(
-      position: position,
+      position: _toDrawingOffset(position),
       pressure: 1.0, // TODO: Add stylus pressure support
       tiltX: 0.0,
       tiltY: 0.0,
@@ -138,17 +139,19 @@ class _DrawingCanvasState extends State<DrawingCanvas> {
       final next = points[i + 1];
 
       // Average of three consecutive points
-      final smoothedPos = Offset(
+      final smoothedPos = DrawingOffset(
         (prev.position.dx + current.position.dx + next.position.dx) / 3,
         (prev.position.dy + current.position.dy + next.position.dy) / 3,
       );
 
-      smoothed.add(DrawingPoint(
-        position: smoothedPos,
-        pressure: current.pressure,
-        tiltX: current.tiltX,
-        tiltY: current.tiltY,
-      ));
+      smoothed.add(
+        DrawingPoint(
+          position: smoothedPos,
+          pressure: current.pressure,
+          tiltX: current.tiltX,
+          tiltY: current.tiltY,
+        ),
+      );
     }
 
     smoothed.add(points.last);
@@ -165,7 +168,7 @@ class _DrawingCanvasState extends State<DrawingCanvas> {
     // Convert all points to offsets from anchor
     return points.map((point) {
       return DrawingPoint(
-        position: Offset(
+        position: DrawingOffset(
           point.position.dx - anchor.dx,
           point.position.dy - anchor.dy,
         ),
@@ -175,6 +178,14 @@ class _DrawingCanvasState extends State<DrawingCanvas> {
       );
     }).toList();
   }
+}
+
+DrawingOffset _toDrawingOffset(Offset offset) {
+  return DrawingOffset(offset.dx, offset.dy);
+}
+
+Offset _toFlutterOffset(DrawingOffset offset) {
+  return Offset(offset.dx, offset.dy);
 }
 
 /// Settings for drawing tools
@@ -224,18 +235,18 @@ class _CurrentStrokePainter extends CustomPainter {
     // Apply style
     switch (stroke.style) {
       case StrokeStyle.pen:
-        paint.color = stroke.color;
+        paint.color = Color(stroke.colorValue);
         paint.strokeWidth = stroke.width;
         break;
 
       case StrokeStyle.highlighter:
-        paint.color = stroke.color.withOpacity(0.3);
+        paint.color = Color(stroke.colorValue).withValues(alpha: 0.3);
         paint.strokeWidth = stroke.width * 3;
         paint.strokeCap = StrokeCap.square;
         break;
 
       case StrokeStyle.pencil:
-        paint.color = stroke.color.withOpacity(0.7);
+        paint.color = Color(stroke.colorValue).withValues(alpha: 0.7);
         paint.strokeWidth = stroke.width;
         break;
     }

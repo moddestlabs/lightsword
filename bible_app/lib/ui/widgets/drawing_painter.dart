@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:bible_core/models/drawing.dart';
-import 'dart:ui' as ui;
 
 /// Custom painter that renders vector drawings with content anchoring
 class DrawingPainter extends CustomPainter {
@@ -109,18 +108,18 @@ class DrawingPainter extends CustomPainter {
     // Apply stroke style
     switch (stroke.style) {
       case StrokeStyle.pen:
-        paint.color = stroke.color;
+        paint.color = Color(stroke.colorValue);
         paint.strokeWidth = stroke.width * scaleFactor;
         break;
 
       case StrokeStyle.highlighter:
-        paint.color = stroke.color.withOpacity(0.3);
+        paint.color = Color(stroke.colorValue).withValues(alpha: 0.3);
         paint.strokeWidth = stroke.width * scaleFactor * 3;
         paint.strokeCap = StrokeCap.square;
         break;
 
       case StrokeStyle.pencil:
-        paint.color = stroke.color.withOpacity(0.7);
+        paint.color = Color(stroke.colorValue).withValues(alpha: 0.7);
         paint.strokeWidth = stroke.width * scaleFactor;
         // Could add texture here with shader
         break;
@@ -141,7 +140,7 @@ class DrawingPainter extends CustomPainter {
     // Draw smooth curve through points using quadratic bezier
     for (int i = 1; i < stroke.points.length; i++) {
       final current = _scalePoint(stroke.points[i], anchor, scaleFactor);
-      
+
       if (i < stroke.points.length - 1) {
         final next = _scalePoint(stroke.points[i + 1], anchor, scaleFactor);
         final controlPoint = Offset(

@@ -25,15 +25,13 @@ class VerseReadingView extends StatelessWidget {
         return _VerseItem(
           verse: verse,
           showVerseNumber: state.showVerseNumbers,
-          highlights: state.highlights
-              .where((h) {
-                final start = h.reference.startVerse;
-                final end = h.reference.endVerse;
-                if (start == null) return false;
-                return start == verse.number ||
-                    (end != null && start <= verse.number && end >= verse.number);
-              })
-              .toList(),
+          highlights: state.highlights.where((h) {
+            final start = h.reference.startVerse;
+            final end = h.reference.endVerse;
+            if (start == null) return false;
+            return start == verse.number ||
+                (end != null && start <= verse.number && end >= verse.number);
+          }).toList(),
         );
       },
     );
@@ -93,7 +91,7 @@ class _VerseItem extends StatelessWidget {
     // Word-level highlighting: tokenize verse and apply highlights to word ranges
     final words = _tokenizeVerse(verse.text);
     final spans = <InlineSpan>[];
-    
+
     for (int i = 0; i < words.length; i++) {
       // Check if this word is highlighted
       Highlight? activeHighlight;
@@ -103,13 +101,18 @@ class _VerseItem extends StatelessWidget {
           break;
         }
       }
-      
-      spans.add(TextSpan(
-        text: words[i],
-        style: activeHighlight != null
-            ? TextStyle(backgroundColor: activeHighlight.color.withOpacity(0.3))
-            : null,
-      ));
+
+      spans.add(
+        TextSpan(
+          text: words[i],
+          style: activeHighlight != null
+              ? TextStyle(
+                  backgroundColor:
+                      Color(activeHighlight.colorValue).withValues(alpha: 0.3),
+                )
+              : null,
+        ),
+      );
     }
 
     return spans;
@@ -119,18 +122,18 @@ class _VerseItem extends StatelessWidget {
   List<String> _tokenizeVerse(String text) {
     final words = <String>[];
     final buffer = StringBuffer();
-    
+
     for (int i = 0; i < text.length; i++) {
       final char = text[i];
       buffer.write(char);
-      
+
       // Add word on space or end of string
       if (char == ' ' || i == text.length - 1) {
         words.add(buffer.toString());
         buffer.clear();
       }
     }
-    
+
     return words;
   }
 }

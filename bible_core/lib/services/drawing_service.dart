@@ -1,6 +1,6 @@
 import 'package:bible_core/models/drawing.dart';
 import 'package:bible_core/models/passage_reference.dart';
-import 'package:bible_core/data/repository.dart';
+import 'package:bible_core/services/user_content_repository.dart';
 
 /// Service for managing drawings with content-anchored positioning
 class DrawingService {

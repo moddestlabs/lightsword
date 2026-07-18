@@ -43,8 +43,9 @@ class ArcPainter extends CustomPainter {
   }
 
   void _drawArc(Canvas canvas, Arc arc, ArcGeometry geometry) {
+    final arcColor = Color(arc.colorValue);
     final paint = Paint()
-      ..color = arc.color
+      ..color = arcColor
       ..strokeWidth = 2.0
       ..style = PaintingStyle.stroke
       ..strokeCap = StrokeCap.round;
@@ -111,12 +112,13 @@ class ArcPainter extends CustomPainter {
   }
 
   void _drawArrowhead(Canvas canvas, Arc arc, ArcGeometry geometry) {
+    final arcColor = Color(arc.colorValue);
     final paint = Paint()
-      ..color = arc.color
+      ..color = arcColor
       ..strokeWidth = 2.0
       ..style = PaintingStyle.fill;
 
-    final arrowSize = 8.0;
+    const arrowSize = 8.0;
     final angle = _calculateEndAngle(arc, geometry);
 
     final path = Path();
@@ -153,7 +155,7 @@ class ArcPainter extends CustomPainter {
       text: TextSpan(
         text: arc.label,
         style: TextStyle(
-          color: arc.color,
+          color: Color(arc.colorValue),
           fontSize: 11,
           fontWeight: FontWeight.w500,
           backgroundColor: Colors.white,
@@ -165,8 +167,10 @@ class ArcPainter extends CustomPainter {
     textPainter.layout();
 
     // Position label at the midpoint of the arc
-    final labelX = (geometry.start.dx + geometry.end.dx) / 2 - textPainter.width / 2;
-    final labelY = geometry.start.dy - geometry.height / 2 - textPainter.height / 2;
+    final labelX =
+        (geometry.start.dx + geometry.end.dx) / 2 - textPainter.width / 2;
+    final labelY =
+        geometry.start.dy - geometry.height / 2 - textPainter.height / 2;
 
     textPainter.paint(canvas, Offset(labelX, labelY));
   }

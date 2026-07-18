@@ -197,14 +197,16 @@ class _StudyModeWithDrawingViewState extends State<StudyModeWithDrawingView> {
     if (highlightStart > 0) {
       spans.add(TextSpan(text: verse.text.substring(0, highlightStart)));
     }
-    spans.add(TextSpan(
-      text: verse.text.substring(highlightStart, highlightEnd),
-      style: TextStyle(
-        backgroundColor: colorScheme.tertiaryContainer,
-        color: colorScheme.onTertiaryContainer,
-        fontWeight: FontWeight.w600,
+    spans.add(
+      TextSpan(
+        text: verse.text.substring(highlightStart, highlightEnd),
+        style: TextStyle(
+          backgroundColor: colorScheme.tertiaryContainer,
+          color: colorScheme.onTertiaryContainer,
+          fontWeight: FontWeight.w600,
+        ),
       ),
-    ));
+    );
     if (highlightEnd < verse.text.length) {
       spans.add(TextSpan(text: verse.text.substring(highlightEnd)));
     }
@@ -260,7 +262,9 @@ class _StudyModeWithDrawingViewState extends State<StudyModeWithDrawingView> {
 
   /// Handle completion of a drawing stroke
   Future<void> _handleStrokeCompleted(
-      DrawingStroke stroke, Offset localStartPosition) async {
+    DrawingStroke stroke,
+    Offset localStartPosition,
+  ) async {
     // Determine which verse the drawing is anchored to
     final anchorVerse = _findAnchorVerse(localStartPosition);
     if (anchorVerse == null) return;
@@ -284,9 +288,9 @@ class _StudyModeWithDrawingViewState extends State<StudyModeWithDrawingView> {
       ),
       zone: zone,
       strokes: [stroke],
-      anchorOffset: anchorOffset,
+      anchorOffset: DrawingOffset(anchorOffset.dx, anchorOffset.dy),
       baseTextSize: widget.controller.state.studySettings.textSize,
-      color: _toolSettings.color,
+      colorValue: _toolSettings.color.toARGB32(),
       strokeWidth: _toolSettings.strokeWidth,
     );
 

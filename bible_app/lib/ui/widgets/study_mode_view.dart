@@ -119,15 +119,17 @@ class _StudyModeViewState extends State<StudyModeView> {
     for (var verse in state.chapter.verses) {
       // Verse number (optional)
       if (state.showVerseNumbers) {
-        spans.add(TextSpan(
-          text: '${verse.number} ',
-          style: TextStyle(
-            fontSize: settings.textSize * 0.7,
-            color: Colors.grey[600],
-            fontWeight: FontWeight.w600,
-            fontFeatures: const [FontFeature.superscripts()],
+        spans.add(
+          TextSpan(
+            text: '${verse.number} ',
+            style: TextStyle(
+              fontSize: settings.textSize * 0.7,
+              color: Colors.grey[600],
+              fontWeight: FontWeight.w600,
+              fontFeatures: const [FontFeature.superscripts()],
+            ),
           ),
-        ));
+        );
       }
 
       // Verse text with highlights
@@ -192,7 +194,8 @@ class _StudyModeViewState extends State<StudyModeView> {
       TextStyle? style;
       if (activeHighlight != null) {
         style = TextStyle(
-          backgroundColor: activeHighlight.color.withValues(alpha: 0.3),
+          backgroundColor:
+              Color(activeHighlight.colorValue).withValues(alpha: 0.3),
         );
       }
       if (hasTtsHighlight) {
@@ -204,10 +207,12 @@ class _StudyModeViewState extends State<StudyModeView> {
         );
       }
 
-      spans.add(TextSpan(
-        text: token,
-        style: style,
-      ));
+      spans.add(
+        TextSpan(
+          text: token,
+          style: style,
+        ),
+      );
     }
 
     spans.add(const TextSpan(text: ' ')); // Space after verse
@@ -235,7 +240,9 @@ class _StudyModeViewState extends State<StudyModeView> {
   }
 
   void _handleSelectionChanged(
-      TextSelection selection, SelectionChangedCause? cause) {
+    TextSelection selection,
+    SelectionChangedCause? cause,
+  ) {
     if (selection.isCollapsed) {
       setState(() {
         _currentSelection = null;
@@ -366,12 +373,8 @@ class _StudyModeViewState extends State<StudyModeView> {
     }
 
     if (selectedVerse == null) {
-      print('DEBUG: Could not determine selected verse');
       return;
     }
-
-    print(
-        'DEBUG: Adding highlight to verse ${selectedVerse.number}, words $wordStart-$wordEnd');
 
     final highlight = Highlight.create(
       reference: PassageReference(
@@ -382,7 +385,7 @@ class _StudyModeViewState extends State<StudyModeView> {
       ),
       wordStart: wordStart,
       wordEnd: wordEnd,
-      color: color,
+      colorValue: color.toARGB32(),
     );
 
     widget.controller.addHighlight(highlight);
@@ -409,7 +412,7 @@ class _StudyModeViewState extends State<StudyModeView> {
       fromWordIndex: 0,
       toWordIndex: 3,
       type: type,
-      color: color,
+      colorValue: color.toARGB32(),
     );
 
     widget.controller.addArc(arc);
@@ -482,11 +485,13 @@ class _NotesSection extends StatelessWidget {
           style: Theme.of(context).textTheme.titleLarge,
         ),
         const SizedBox(height: 12),
-        ...notes.map((note) => _NoteCard(
-              note: note,
-              onEdit: () => onEditNote(note),
-              onDelete: () => onDeleteNote(note.id),
-            )),
+        ...notes.map(
+          (note) => _NoteCard(
+            note: note,
+            onEdit: () => onEditNote(note),
+            onDelete: () => onDeleteNote(note.id),
+          ),
+        ),
       ],
     );
   }
@@ -546,10 +551,12 @@ class _NoteCard extends StatelessWidget {
               Wrap(
                 spacing: 4,
                 children: note.tags
-                    .map((tag) => Chip(
-                          label: Text(tag),
-                          visualDensity: VisualDensity.compact,
-                        ))
+                    .map(
+                      (tag) => Chip(
+                        label: Text(tag),
+                        visualDensity: VisualDensity.compact,
+                      ),
+                    )
                     .toList(),
               ),
             ],

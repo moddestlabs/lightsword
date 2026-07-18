@@ -1,7 +1,6 @@
 import 'dart:convert';
 
-import 'package:flutter/services.dart' show rootBundle;
-
+import '../repository.dart';
 import '../../models/syntax_data.dart';
 
 /// Repository for compact, app-specific syntax data derived from Macula.
@@ -16,9 +15,13 @@ import '../../models/syntax_data.dart';
 ///   }
 /// }
 class SyntaxRepository {
-  static final SyntaxRepository instance = SyntaxRepository._();
+  SyntaxRepository(
+    this._dataSource, {
+    this.assetBasePath = 'packages/bible_core/assets/data/syntax',
+  });
 
-  SyntaxRepository._();
+  final DataSource _dataSource;
+  final String assetBasePath;
 
   final Map<String, Map<String, SyntaxVerseData>> _cache = {};
 
@@ -46,8 +49,8 @@ class SyntaxRepository {
     }
 
     try {
-      final jsonString = await rootBundle.loadString(
-        'packages/bible_core/assets/data/syntax/${prefix}_syntax.json',
+      final jsonString = await _dataSource.loadAsset(
+        '$assetBasePath/${prefix}_syntax.json',
       );
       final bookJson = json.decode(jsonString);
       if (bookJson is! Map<String, dynamic>) {

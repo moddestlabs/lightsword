@@ -1,7 +1,48 @@
+import 'dart:io';
+import 'dart:typed_data';
+
+import 'package:bible_core/data/repository.dart';
+import 'package:bible_core/data/sources/syntax_repository.dart';
 import 'package:bible_core/models/syntax_data.dart';
 import 'package:test/test.dart';
 
+class FileDataSource implements DataSource {
+  const FileDataSource();
+
+  @override
+  Future<String> loadAsset(String path) {
+    return File(path).readAsString();
+  }
+
+  @override
+  Future<Uint8List> loadBytes(String path) {
+    return File(path).readAsBytes();
+  }
+
+  @override
+  Future<bool> assetExists(String path) {
+    return File(path).exists();
+  }
+}
+
 void main() {
+  group('SyntaxRepository', () {
+    test('loads syntax data through a DataSource', () async {
+      final repository = SyntaxRepository(
+        const FileDataSource(),
+        assetBasePath: 'assets/data/syntax',
+      );
+
+      final verse = await repository.getVerse('Eph', 2, 8);
+
+      expect(verse, isNotNull);
+      expect(verse!.bookId, 'Eph');
+      expect(verse.chapter, 2);
+      expect(verse.verse, 8);
+      expect(verse.words, isNotEmpty);
+    });
+  });
+
   group('decodeSyntaxBook', () {
     test('decodes compact verse syntax data keyed by chapter and verse', () {
       final decoded = decodeSyntaxBook('Eph', {
