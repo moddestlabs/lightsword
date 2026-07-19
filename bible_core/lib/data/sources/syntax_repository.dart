@@ -2,6 +2,8 @@ import 'dart:convert';
 
 import '../repository.dart';
 import '../../models/syntax_data.dart';
+import '../../packs/pack_manifest.dart';
+import '../../packs/pack_reader.dart';
 
 /// Repository for compact, app-specific syntax data derived from Macula.
 ///
@@ -15,13 +17,25 @@ import '../../models/syntax_data.dart';
 ///   }
 /// }
 class SyntaxRepository {
-  SyntaxRepository(
-    this._dataSource, {
-    this.assetBasePath = 'packages/bible_core/assets/data/syntax',
+  factory SyntaxRepository(
+    DataSource dataSource, {
+    String assetBasePath = 'packages/bible_core/assets/data/syntax',
+  }) {
+    return SyntaxRepository.fromPackReader(
+      DataSourcePackReader(
+        dataSource: dataSource,
+        packBasePaths: {PackIds.maculaSyntax: assetBasePath},
+      ),
+    );
+  }
+
+  SyntaxRepository.fromPackReader(
+    this._packReader, {
+    this.packId = PackIds.maculaSyntax,
   });
 
-  final DataSource _dataSource;
-  final String assetBasePath;
+  final PackReader _packReader;
+  final String packId;
 
   final Map<String, Map<String, SyntaxVerseData>> _cache = {};
 
@@ -49,8 +63,9 @@ class SyntaxRepository {
     }
 
     try {
-      final jsonString = await _dataSource.loadAsset(
-        '$assetBasePath/${prefix}_syntax.json',
+      final jsonString = await _packReader.loadText(
+        packId,
+        '${prefix}_syntax.json',
       );
       final bookJson = json.decode(jsonString);
       if (bookJson is! Map<String, dynamic>) {

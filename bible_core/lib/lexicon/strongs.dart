@@ -2,16 +2,30 @@ import 'dart:convert';
 
 import 'package:bible_core/data/repository.dart';
 import 'package:bible_core/models/strongs_entry.dart';
+import 'package:bible_core/packs/pack_manifest.dart';
+import 'package:bible_core/packs/pack_reader.dart';
 
 /// Lookup Strong's Concordance entries
 class StrongsLookup {
-  StrongsLookup(
-    this._dataSource, {
-    this.assetBasePath = 'packages/bible_core/assets/data/lexicon',
+  factory StrongsLookup(
+    DataSource dataSource, {
+    String assetBasePath = 'packages/bible_core/assets/data/lexicon',
+  }) {
+    return StrongsLookup.fromPackReader(
+      DataSourcePackReader(
+        dataSource: dataSource,
+        packBasePaths: {PackIds.strongsLexicon: assetBasePath},
+      ),
+    );
+  }
+
+  StrongsLookup.fromPackReader(
+    this._packReader, {
+    this.packId = PackIds.strongsLexicon,
   });
 
-  final DataSource _dataSource;
-  final String assetBasePath;
+  final PackReader _packReader;
+  final String packId;
 
   Map<String, StrongsEntry>? _hebrewLexicon;
   Map<String, StrongsEntry>? _greekLexicon;
@@ -35,8 +49,9 @@ class StrongsLookup {
 
     try {
       // Load Hebrew lexicon
-      final hebrewJson = await _dataSource.loadAsset(
-        '$assetBasePath/strongs_hebrew.json',
+      final hebrewJson = await _packReader.loadText(
+        packId,
+        'strongs_hebrew.json',
       );
       final hebrewData = json.decode(hebrewJson) as Map<String, dynamic>;
       _hebrewLexicon = {};
@@ -46,8 +61,9 @@ class StrongsLookup {
       }
 
       // Load Greek lexicon
-      final greekJson = await _dataSource.loadAsset(
-        '$assetBasePath/strongs_greek.json',
+      final greekJson = await _packReader.loadText(
+        packId,
+        'strongs_greek.json',
       );
       final greekData = json.decode(greekJson) as Map<String, dynamic>;
       _greekLexicon = {};

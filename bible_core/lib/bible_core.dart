@@ -15,6 +15,8 @@ export 'models/highlight.dart';
 export 'models/arc.dart';
 export 'models/study_note.dart';
 export 'models/drawing.dart';
+export 'packs/pack_manifest.dart';
+export 'packs/pack_reader.dart';
 export 'data/repository.dart';
 export 'data/sources/json_parser.dart';
 export 'data/sources/json_repository.dart';

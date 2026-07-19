@@ -4,7 +4,7 @@ import 'package:bible_core/data/sources/tagnt_repository.dart';
 import 'package:bible_core/data/sources/tahot_repository.dart';
 import 'package:bible_core/models/syntax_data.dart';
 
-import '../platform/storage/flutter_asset_data_source.dart';
+import '../platform/storage/bundled_pack_reader.dart';
 import '../ui/models/interlinear_word.dart';
 
 class OriginalLanguageVerseContent {
@@ -22,15 +22,16 @@ class OriginalLanguageVerseContent {
 class OriginalLanguageDataService {
   static final OriginalLanguageDataService instance =
       OriginalLanguageDataService._();
+  static final BundledPackReader _bundledPackReader = BundledPackReader();
 
   OriginalLanguageDataService._();
 
   final TAHOTRepository _tahotRepository =
-      TAHOTRepository(FlutterAssetDataSource());
+      TAHOTRepository.fromPackReader(_bundledPackReader);
   final TAGNTRepository _tagntRepository =
-      TAGNTRepository(FlutterAssetDataSource());
+      TAGNTRepository.fromPackReader(_bundledPackReader);
   final SyntaxRepository _syntaxRepository =
-      SyntaxRepository(FlutterAssetDataSource());
+      SyntaxRepository.fromPackReader(_bundledPackReader);
 
   Future<OriginalLanguageVerseContent> loadVerse(
     String bookId,

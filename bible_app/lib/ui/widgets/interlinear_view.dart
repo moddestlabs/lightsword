@@ -13,7 +13,7 @@ import 'package:bible_core/lexicon/strongs.dart';
 import 'package:bible_core/models/strongs_entry.dart';
 import 'package:bible_core/models/verse.dart';
 import 'package:bible_core/models/word.dart';
-import 'package:bible_app/platform/storage/flutter_asset_data_source.dart';
+import 'package:bible_app/platform/storage/bundled_pack_reader.dart';
 import 'package:bible_app/services/bible_service.dart';
 import 'package:bible_app/services/original_language_data_service.dart';
 import 'package:bible_app/services/tts_service.dart';
@@ -22,7 +22,8 @@ import 'package:bible_app/ui/models/interlinear_word.dart';
 import 'package:bible_app/ui/widgets/arc_painter.dart';
 import 'package:bible_app/ui/widgets/tts_control_widget.dart';
 
-final StrongsLookup _strongsLookup = StrongsLookup(FlutterAssetDataSource());
+final StrongsLookup _strongsLookup =
+    StrongsLookup.fromPackReader(BundledPackReader());
 
 /// Widget to display a single fallback word when full interlinear data is unavailable.
 class InterlinearWordCard extends StatefulWidget {

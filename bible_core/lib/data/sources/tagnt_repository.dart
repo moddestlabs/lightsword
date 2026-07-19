@@ -1,6 +1,8 @@
 import 'dart:convert';
 
 import '../repository.dart';
+import '../../packs/pack_manifest.dart';
+import '../../packs/pack_reader.dart';
 
 import 'gloss_text.dart';
 
@@ -36,13 +38,25 @@ class TAGNTWord {
 /// Provides enhanced Greek text with transliteration, glosses,
 /// and morphological analysis for all New Testament books.
 class TAGNTRepository {
-  TAGNTRepository(
-    this._dataSource, {
-    this.assetBasePath = 'packages/bible_core/assets/data/greek',
+  factory TAGNTRepository(
+    DataSource dataSource, {
+    String assetBasePath = 'packages/bible_core/assets/data/greek',
+  }) {
+    return TAGNTRepository.fromPackReader(
+      DataSourcePackReader(
+        dataSource: dataSource,
+        packBasePaths: {PackIds.originalLanguageNt: assetBasePath},
+      ),
+    );
+  }
+
+  TAGNTRepository.fromPackReader(
+    this._packReader, {
+    this.packId = PackIds.originalLanguageNt,
   });
 
-  final DataSource _dataSource;
-  final String assetBasePath;
+  final PackReader _packReader;
+  final String packId;
 
   final Map<String, Map<String, Map<String, List<TAGNTWord>>>> _cache = {};
 
@@ -105,81 +119,22 @@ class TAGNTRepository {
 
   /// Check if a book has TAGNT data (NT only)
   bool _hasTAGNTData(String bookId) {
-    // Map book IDs to their TAGNT file prefixes
-    const bookToTagnt = {
-      'Matt': 'MATT',
-      'Mark': 'MARK',
-      'Luke': 'LUKE',
-      'John': 'JOHN',
-      'Acts': 'ACTS',
-      'Rom': 'ROM',
-      '1Cor': '1CO',
-      '2Cor': '2CO',
-      'Gal': 'GAL',
-      'Eph': 'EPH',
-      'Phil': 'PHIL',
-      'Col': 'COL',
-      '1Thess': '1TH',
-      '2Thess': '2TH',
-      '1Tim': '1TI',
-      '2Tim': '2TI',
-      'Titus': 'TITUS',
-      'Phlm': 'PHLM',
-      'Heb': 'HEB',
-      'Jas': 'JAS',
-      '1Pet': '1PE',
-      '2Pet': '2PE',
-      '1John': '1JN',
-      '2John': '2JN',
-      '3John': '3JN',
-      'Jude': 'JUDE',
-      'Rev': 'REV',
-    };
-    return bookToTagnt.containsKey(bookId);
+    return _bookToTagnt.containsKey(bookId);
   }
 
   /// Load a book's TAGNT data from assets
   Future<void> _loadBook(String bookId) async {
     try {
-      // Map book ID to TAGNT filename prefix
-      const bookToTagnt = {
-        'Matt': 'MATT',
-        'Mark': 'MARK',
-        'Luke': 'LUKE',
-        'John': 'JOHN',
-        'Acts': 'ACTS',
-        'Rom': 'ROM',
-        '1Cor': '1CO',
-        '2Cor': '2CO',
-        'Gal': 'GAL',
-        'Eph': 'EPH',
-        'Phil': 'PHIL',
-        'Col': 'COL',
-        '1Thess': '1TH',
-        '2Thess': '2TH',
-        '1Tim': '1TI',
-        '2Tim': '2TI',
-        'Titus': 'TITUS',
-        'Phlm': 'PHLM',
-        'Heb': 'HEB',
-        'Jas': 'JAS',
-        '1Pet': '1PE',
-        '2Pet': '2PE',
-        '1John': '1JN',
-        '2John': '2JN',
-        '3John': '3JN',
-        'Jude': 'JUDE',
-        'Rev': 'REV',
-      };
-
-      final tagntBookId = bookToTagnt[bookId];
+      final tagntBookId = _bookToTagnt[bookId];
       if (tagntBookId == null) {
         _cache[bookId] = {};
         return;
       }
 
-      final assetPath = '$assetBasePath/${tagntBookId}_tagnt.json';
-      final jsonString = await _dataSource.loadAsset(assetPath);
+      final jsonString = await _packReader.loadText(
+        packId,
+        '${tagntBookId}_tagnt.json',
+      );
       final Map<String, dynamic> bookJson = json.decode(jsonString);
 
       // Convert JSON structure to typed data
@@ -195,10 +150,10 @@ class TAGNTRepository {
           final verseNum = verseEntry.key;
           final verseData = verseEntry.value as List<dynamic>;
 
-            bookData[chapterNum]![verseNum] = verseData
+          bookData[chapterNum]![verseNum] = verseData
               .map(
-              (wordJson) =>
-                TAGNTWord.fromJson(wordJson as Map<String, dynamic>),
+                (wordJson) =>
+                    TAGNTWord.fromJson(wordJson as Map<String, dynamic>),
               )
               .toList();
         }
@@ -220,3 +175,33 @@ class TAGNTRepository {
     return _cache.containsKey(bookId);
   }
 }
+
+const Map<String, String> _bookToTagnt = {
+  'Matt': 'MATT',
+  'Mark': 'MARK',
+  'Luke': 'LUKE',
+  'John': 'JOHN',
+  'Acts': 'ACTS',
+  'Rom': 'ROM',
+  '1Cor': '1CO',
+  '2Cor': '2CO',
+  'Gal': 'GAL',
+  'Eph': 'EPH',
+  'Phil': 'PHIL',
+  'Col': 'COL',
+  '1Thess': '1TH',
+  '2Thess': '2TH',
+  '1Tim': '1TI',
+  '2Tim': '2TI',
+  'Titus': 'TITUS',
+  'Phlm': 'PHLM',
+  'Heb': 'HEB',
+  'Jas': 'JAS',
+  '1Pet': '1PE',
+  '2Pet': '2PE',
+  '1John': '1JN',
+  '2John': '2JN',
+  '3John': '3JN',
+  'Jude': 'JUDE',
+  'Rev': 'REV',
+};

@@ -1,6 +1,8 @@
 import 'dart:convert';
 
 import '../repository.dart';
+import '../../packs/pack_manifest.dart';
+import '../../packs/pack_reader.dart';
 
 import 'gloss_text.dart';
 
@@ -36,13 +38,25 @@ class TAHOTWord {
 /// Provides enhanced Hebrew text with vocalization, transliteration,
 /// glosses, and morphological analysis for all Old Testament books.
 class TAHOTRepository {
-  TAHOTRepository(
-    this._dataSource, {
-    this.assetBasePath = 'packages/bible_core/assets/data/tahot',
+  factory TAHOTRepository(
+    DataSource dataSource, {
+    String assetBasePath = 'packages/bible_core/assets/data/tahot',
+  }) {
+    return TAHOTRepository.fromPackReader(
+      DataSourcePackReader(
+        dataSource: dataSource,
+        packBasePaths: {PackIds.originalLanguageOt: assetBasePath},
+      ),
+    );
+  }
+
+  TAHOTRepository.fromPackReader(
+    this._packReader, {
+    this.packId = PackIds.originalLanguageOt,
   });
 
-  final DataSource _dataSource;
-  final String assetBasePath;
+  final PackReader _packReader;
+  final String packId;
 
   final Map<String, Map<String, Map<String, List<TAHOTWord>>>> _cache = {};
 
@@ -105,105 +119,22 @@ class TAHOTRepository {
 
   /// Check if a book has TAHOT data (OT only)
   bool _hasTAHOTData(String bookId) {
-    // Map book IDs to their TAHOT file prefixes
-    const bookToTahot = {
-      'Gen': 'GEN',
-      'Exod': 'EXO',
-      'Lev': 'LEV',
-      'Num': 'NUM',
-      'Deut': 'DEU',
-      'Josh': 'JOS',
-      'Judg': 'JDG',
-      'Ruth': 'RUT',
-      '1Sam': '1SA',
-      '2Sam': '2SA',
-      '1Kgs': '1KI',
-      '2Kgs': '2KI',
-      '1Chr': '1CH',
-      '2Chr': '2CH',
-      'Ezra': 'EZR',
-      'Neh': 'NEH',
-      'Esth': 'EST',
-      'Job': 'JOB',
-      'Ps': 'PSA',
-      'Prov': 'PRO',
-      'Eccl': 'ECC',
-      'Song': 'SNG',
-      'Isa': 'ISA',
-      'Jer': 'JER',
-      'Lam': 'LAM',
-      'Ezek': 'EZE',
-      'Dan': 'DAN',
-      'Hos': 'HOS',
-      'Joel': 'JOE',
-      'Amos': 'AMO',
-      'Obad': 'OBA',
-      'Jonah': 'JON',
-      'Mic': 'MIC',
-      'Nah': 'NAH',
-      'Hab': 'HAB',
-      'Zeph': 'ZEP',
-      'Hag': 'HAG',
-      'Zech': 'ZEC',
-      'Mal': 'MAL',
-    };
-    return bookToTahot.containsKey(bookId);
+    return _bookToTahot.containsKey(bookId);
   }
 
   /// Load a book's TAHOT data from assets
   Future<void> _loadBook(String bookId) async {
     try {
-      // Map book ID to TAHOT filename prefix
-      const bookToTahot = {
-        'Gen': 'GEN',
-        'Exod': 'EXO',
-        'Lev': 'LEV',
-        'Num': 'NUM',
-        'Deut': 'DEU',
-        'Josh': 'JOS',
-        'Judg': 'JDG',
-        'Ruth': 'RUT',
-        '1Sam': '1SA',
-        '2Sam': '2SA',
-        '1Kgs': '1KI',
-        '2Kgs': '2KI',
-        '1Chr': '1CH',
-        '2Chr': '2CH',
-        'Ezra': 'EZR',
-        'Neh': 'NEH',
-        'Esth': 'EST',
-        'Job': 'JOB',
-        'Ps': 'PSA',
-        'Prov': 'PRO',
-        'Eccl': 'ECC',
-        'Song': 'SNG',
-        'Isa': 'ISA',
-        'Jer': 'JER',
-        'Lam': 'LAM',
-        'Ezek': 'EZE',
-        'Dan': 'DAN',
-        'Hos': 'HOS',
-        'Joel': 'JOE',
-        'Amos': 'AMO',
-        'Obad': 'OBA',
-        'Jonah': 'JON',
-        'Mic': 'MIC',
-        'Nah': 'NAH',
-        'Hab': 'HAB',
-        'Zeph': 'ZEP',
-        'Hag': 'HAG',
-        'Zech': 'ZEC',
-        'Mal': 'MAL',
-      };
-
-      final tahotBookId = bookToTahot[bookId];
+      final tahotBookId = _bookToTahot[bookId];
       if (tahotBookId == null) {
         _cache[bookId] = {};
         return;
       }
 
-      final assetPath = '$assetBasePath/${tahotBookId}_tahot.json';
-      final jsonString = await _dataSource.loadAsset(assetPath);
+      final jsonString = await _packReader.loadText(
+        packId,
+        '${tahotBookId}_tahot.json',
+      );
       final Map<String, dynamic> bookJson = json.decode(jsonString);
 
       // Convert JSON structure to typed data
@@ -219,10 +150,10 @@ class TAHOTRepository {
           final verseNum = verseEntry.key;
           final wordsJson = verseEntry.value as List<dynamic>;
 
-            bookData[chapterNum]![verseNum] = wordsJson
+          bookData[chapterNum]![verseNum] = wordsJson
               .map(
-              (wordJson) =>
-                TAHOTWord.fromJson(wordJson as Map<String, dynamic>),
+                (wordJson) =>
+                    TAHOTWord.fromJson(wordJson as Map<String, dynamic>),
               )
               .toList();
         }
@@ -240,3 +171,45 @@ class TAHOTRepository {
     _cache.clear();
   }
 }
+
+const Map<String, String> _bookToTahot = {
+  'Gen': 'GEN',
+  'Exod': 'EXO',
+  'Lev': 'LEV',
+  'Num': 'NUM',
+  'Deut': 'DEU',
+  'Josh': 'JOS',
+  'Judg': 'JDG',
+  'Ruth': 'RUT',
+  '1Sam': '1SA',
+  '2Sam': '2SA',
+  '1Kgs': '1KI',
+  '2Kgs': '2KI',
+  '1Chr': '1CH',
+  '2Chr': '2CH',
+  'Ezra': 'EZR',
+  'Neh': 'NEH',
+  'Esth': 'EST',
+  'Job': 'JOB',
+  'Ps': 'PSA',
+  'Prov': 'PRO',
+  'Eccl': 'ECC',
+  'Song': 'SNG',
+  'Isa': 'ISA',
+  'Jer': 'JER',
+  'Lam': 'LAM',
+  'Ezek': 'EZE',
+  'Dan': 'DAN',
+  'Hos': 'HOS',
+  'Joel': 'JOE',
+  'Amos': 'AMO',
+  'Obad': 'OBA',
+  'Jonah': 'JON',
+  'Mic': 'MIC',
+  'Nah': 'NAH',
+  'Hab': 'HAB',
+  'Zeph': 'ZEP',
+  'Hag': 'HAG',
+  'Zech': 'ZEC',
+  'Mal': 'MAL',
+};

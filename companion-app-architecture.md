@@ -92,19 +92,18 @@ small number of new entities:
 
 1. **Bible Atlas / Maps** — entities: place, region, route, event-location;
    links from passages and people. High user value, moderate data work.
-2. **Timeline** — entities: event, date/date range, biblical person, passage;
-   shares route specs with maps and genealogy. High Logos-like feel with a
-   lean core impact.
-3. **Genealogy / People Browser** — entities: person, relationship, event,
-   passage. Useful, but data quality and disambiguation are harder.
-4. **Sermon / Teaching Workspace** — mostly user content, notes, outlines,
+2. **Ages** — entities: age/era, person, relationship, event, prophecy,
+   date/date range, passage. High Logos-like feel with a lean core impact, and
+  stronger as one combined app because genealogies, timelines, events, people,
+  and prophecies share the same data model. See [LightSword Ages Development Plan](docs/AGES.md).
+3. **Sermon / Teaching Workspace** — mostly user content, notes, outlines,
    exports, and passage links. This should probably depend on a future sync
    contract rather than ship first.
-5. **Media / Slides** — depends on sermon workspace and licensing decisions;
+4. **Media / Slides** — depends on sermon workspace and licensing decisions;
    likely later.
 
-The first companion should probably be Atlas or Timeline because both prove
-deep links, shared packs, route contracts, and lightweight cross-app workflows
+The first companion should probably be Atlas or Ages because both prove deep
+links, shared packs, route contracts, and lightweight cross-app workflows
 without requiring cloud sync first.
 
 ## 1.5 Minimal viable implementation path
@@ -179,7 +178,7 @@ Notes:
 ### 3.3 Web — same-site subdomains
 
 Companion web apps live on `*.LightSword.app` subdomains (e.g.
-`maps.LightSword.app`, `genealogy.LightSword.app`). These are separate
+`maps.LightSword.app`, `ages.LightSword.app`). These are separate
 **origins** (no automatic `localStorage`/`IndexedDB` sharing) but the same
 **site**, which matters:
 
