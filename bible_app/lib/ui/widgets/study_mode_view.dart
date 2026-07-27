@@ -1,12 +1,32 @@
+import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:flutter/rendering.dart';
 import 'package:bible_core/bible_core.dart';
 import 'package:bible_app/state/chapter_view_controller.dart';
 import 'package:bible_app/services/tts_service.dart';
-import 'package:bible_app/ui/widgets/arc_painter.dart';
 import 'package:bible_app/ui/widgets/study_toolbar.dart';
+import 'package:bible_app/ui/widgets/study_vertical_toolbar.dart';
 
-/// Study mode view with paragraph layout, highlights, arcs, and notes
+/// Chapter-wide word reference with character bounds for gapless text rendering
+class ChapterWordRef {
+  final int globalIndex;
+  final int verseNumber;
+  final int wordIndex;
+  final String text;
+  final int charStart;
+  final int charEnd;
+
+  const ChapterWordRef({
+    required this.globalIndex,
+    required this.verseNumber,
+    required this.wordIndex,
+    required this.text,
+    required this.charStart,
+    required this.charEnd,
+  });
+}
+
+/// Markup mode view with gapless continuous drag-to-select word highlighting & anchored notes
 class StudyModeView extends StatefulWidget {
   final ChapterViewController controller;
 
@@ -22,20 +42,72 @@ class StudyModeView extends StatefulWidget {
 class _StudyModeViewState extends State<StudyModeView> {
   final GlobalKey _textKey = GlobalKey();
   final TtsService _ttsService = TtsService.instance;
-  TextSelection? _currentSelection;
-  Offset? _selectionOffset;
-  final Map<int, ArcGeometry> _arcGeometry = {};
+  final Map<String, GlobalKey> _noteChipKeys = {};
+
+  // Drag selection state
+  bool _isDragging = false;
+  int? _dragStartGlobal;
+  int? _dragCurrentGlobal;
+  Highlight? _activeHighlight;
+
+  Color _activeHighlightColor = HighlightColors.yellow;
+  bool _isEraserActive = false;
+  bool _showNotes = true;
+
+  final List<ChapterWordRef> _allWords = [];
 
   @override
   void initState() {
     super.initState();
     _ttsService.addListener(_handleTtsChanged);
+    widget.controller.addListener(_handleControllerChanged);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) {
+        setState(() {});
+      }
+    });
+  }
+
+  @override
+  void didUpdateWidget(StudyModeView oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.controller != widget.controller) {
+      oldWidget.controller.removeListener(_handleControllerChanged);
+      widget.controller.addListener(_handleControllerChanged);
+    }
   }
 
   @override
   void dispose() {
+    widget.controller.removeListener(_handleControllerChanged);
+    _noteChipKeys.clear();
     _ttsService.removeListener(_handleTtsChanged);
     super.dispose();
+  }
+
+  void _handleControllerChanged() {
+    if (!mounted) {
+      return;
+    }
+    setState(() {});
+  }
+
+  GlobalKey _getOrCreateNoteChipKey(String id) {
+    return _noteChipKeys.putIfAbsent(id, () => GlobalKey());
+  }
+
+  bool _isPointerOverNoteChip(Offset globalPosition) {
+    if (!_showNotes) return false;
+    for (var key in _noteChipKeys.values) {
+      final renderBox = key.currentContext?.findRenderObject() as RenderBox?;
+      if (renderBox != null && renderBox.hasSize) {
+        final localPos = renderBox.globalToLocal(globalPosition);
+        if (renderBox.paintBounds.contains(localPos)) {
+          return true;
+        }
+      }
+    }
+    return false;
   }
 
   void _handleTtsChanged() {
@@ -45,6 +117,86 @@ class _StudyModeViewState extends State<StudyModeView> {
     setState(() {});
   }
 
+  int? _getWordIndexAtOffset(Offset globalPosition) {
+    final renderObj = _textKey.currentContext?.findRenderObject();
+    if (renderObj == null || renderObj is! RenderParagraph) return null;
+
+    final renderParagraph = renderObj;
+    final localPos = renderParagraph.globalToLocal(globalPosition);
+    final pos = renderParagraph.getPositionForOffset(localPos);
+    final charIdx = pos.offset;
+
+    for (var word in _allWords) {
+      if (charIdx >= word.charStart && charIdx < word.charEnd) {
+        return word.globalIndex;
+      }
+    }
+
+    if (_allWords.isNotEmpty) {
+      if (charIdx < _allWords.first.charStart) return 0;
+      if (charIdx >= _allWords.last.charEnd) return _allWords.length - 1;
+    }
+
+    return null;
+  }
+
+  void _onPointerDown(PointerDownEvent event) {
+    if (_isPointerOverNoteChip(event.position)) {
+      // Overrides text drag selection when tapping an anchored note chip
+      return;
+    }
+
+    final wordIdx = _getWordIndexAtOffset(event.position);
+    if (wordIdx != null) {
+      Highlight? tappedHl;
+      final wordRef = _allWords[wordIdx];
+      for (var h in widget.controller.state.highlights) {
+        final sVerse = h.reference.startVerse ?? 0;
+        final eVerse = h.reference.endVerse ?? sVerse;
+        if (wordRef.verseNumber >= sVerse && wordRef.verseNumber <= eVerse) {
+          final realStart = min(h.wordStart, h.wordEnd);
+          final realEnd = max(h.wordStart, h.wordEnd);
+          if (wordRef.wordIndex >= realStart && wordRef.wordIndex <= realEnd) {
+            tappedHl = h;
+            break;
+          }
+        }
+      }
+
+      setState(() {
+        _isDragging = true;
+        _dragStartGlobal = wordIdx;
+        _dragCurrentGlobal = wordIdx;
+        _activeHighlight = tappedHl;
+      });
+    }
+  }
+
+  void _onPointerMove(PointerMoveEvent event) {
+    if (!_isDragging || _dragStartGlobal == null) return;
+    final wordIdx = _getWordIndexAtOffset(event.position);
+    if (wordIdx != null && wordIdx != _dragCurrentGlobal) {
+      setState(() {
+        _dragCurrentGlobal = wordIdx;
+      });
+    }
+  }
+
+  void _onPointerUp(PointerUpEvent event) async {
+    if (_isDragging && _dragStartGlobal != null && _dragCurrentGlobal != null) {
+      final startIdx = min(_dragStartGlobal!, _dragCurrentGlobal!);
+      final endIdx = max(_dragStartGlobal!, _dragCurrentGlobal!);
+
+      await _applyHighlightRange(startIdx, endIdx);
+    }
+
+    setState(() {
+      _isDragging = false;
+      _dragStartGlobal = null;
+      _dragCurrentGlobal = null;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final state = widget.controller.state;
@@ -52,23 +204,20 @@ class _StudyModeViewState extends State<StudyModeView> {
 
     return Stack(
       children: [
-        // Main text with highlights and arcs
+        // Main text with gapless word-based drag highlighting & anchored note overlays
         Positioned.fill(
           child: SingleChildScrollView(
-            padding: const EdgeInsets.all(16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // Text with highlights
-                CustomPaint(
-                  key: _textKey,
-                  painter: settings.showArcs
-                      ? ArcPainter(
-                          arcs: state.arcs,
-                          arcGeometry: _arcGeometry,
-                        )
-                      : null,
-                  child: SelectableText.rich(
+            padding: const EdgeInsets.fromLTRB(16, 16, 68, 16),
+            child: Listener(
+              behavior: HitTestBehavior.translucent,
+              onPointerDown: _onPointerDown,
+              onPointerMove: _onPointerMove,
+              onPointerUp: _onPointerUp,
+              child: Stack(
+                clipBehavior: Clip.none,
+                children: [
+                  Text.rich(
+                    key: _textKey,
                     TextSpan(
                       children: _buildTextSpans(state),
                       style: TextStyle(
@@ -76,52 +225,71 @@ class _StudyModeViewState extends State<StudyModeView> {
                         height: 1.8,
                       ),
                     ),
-                    onSelectionChanged: _handleSelectionChanged,
                   ),
-                ),
 
-                // Study notes section
-                if (settings.showNotes && state.notes.isNotEmpty) ...[
-                  const SizedBox(height: 24),
-                  const Divider(),
-                  const SizedBox(height: 16),
-                  _NotesSection(
-                    notes: state.notes,
-                    onEditNote: (note) => _showNoteEditor(context, note),
-                    onDeleteNote: (id) => widget.controller.deleteNote(id),
-                  ),
+                  // Anchored Floating Notes Overlays
+                  if (_showNotes) ..._buildAnchoredNoteOverlays(state, context),
                 ],
-              ],
+              ),
             ),
           ),
         ),
 
-        // Floating toolbar
-        if (_currentSelection != null && _selectionOffset != null)
-          Positioned(
-            top: _selectionOffset!.dy - 80,
-            left: _selectionOffset!.dx,
-            child: StudyToolbar(
-              onHighlight: _showHighlightColorPicker,
-              onArc: _showArcTypePicker,
-              onNote: _showNoteEditor,
-              onCopy: _copySelection,
-            ),
+        // Vertical toolbar on right side
+        Positioned(
+          right: 12,
+          top: 16,
+          child: StudyVerticalToolbar(
+            activeColor: _activeHighlightColor,
+            isEraserActive: _isEraserActive,
+            showNotes: _showNotes,
+            hasActiveHighlight: _activeHighlight != null || _dragStartGlobal != null,
+            hasExistingNote: _activeHighlight?.note != null && _activeHighlight!.note!.isNotEmpty,
+            onColorSelected: (color) {
+              setState(() {
+                _activeHighlightColor = color;
+                _isEraserActive = false;
+              });
+            },
+            onErase: () {
+              setState(() {
+                _isEraserActive = !_isEraserActive;
+              });
+            },
+            onToggleShowNotes: () {
+              setState(() {
+                _showNotes = !_showNotes;
+              });
+            },
+            onNote: () => _showNoteEditor(context),
           ),
+        ),
       ],
     );
   }
 
   List<InlineSpan> _buildTextSpans(ChapterViewState state) {
+    _allWords.clear();
+
     final spans = <InlineSpan>[];
     final settings = state.studySettings;
+    int globalWordCounter = 0;
+    int currentCharOffset = 0;
+
+    int? dragMin;
+    int? dragMax;
+    if (_dragStartGlobal != null && _dragCurrentGlobal != null) {
+      dragMin = min(_dragStartGlobal!, _dragCurrentGlobal!);
+      dragMax = max(_dragStartGlobal!, _dragCurrentGlobal!);
+    }
 
     for (var verse in state.chapter.verses) {
       // Verse number (optional)
       if (state.showVerseNumbers) {
+        final verseNumText = '${verse.number} ';
         spans.add(
           TextSpan(
-            text: '${verse.number} ',
+            text: verseNumText,
             style: TextStyle(
               fontSize: settings.textSize * 0.7,
               color: Colors.grey[600],
@@ -130,92 +298,111 @@ class _StudyModeViewState extends State<StudyModeView> {
             ),
           ),
         );
+        currentCharOffset += verseNumText.length;
       }
 
-      // Verse text with highlights
-      if (settings.showHighlights) {
-        spans.addAll(_buildHighlightedText(verse, state.highlights));
-      } else {
-        spans.add(TextSpan(text: '${verse.text} '));
-      }
+      final words = _tokenizeVerse(verse.text);
 
-      // Add space between verses in paragraph mode
-      if (settings.paragraphMode) {
-        spans.add(const TextSpan(text: ' '));
-      } else {
-        // Add line break for verse-per-line mode
-        spans.add(const TextSpan(text: '\n'));
-      }
-    }
+      final verseHighlights = settings.showHighlights
+          ? state.highlights.where((h) {
+              final start = h.reference.startVerse;
+              final end = h.reference.endVerse;
+              if (start == null) return false;
+              return start == verse.number ||
+                  (end != null && start <= verse.number && end >= verse.number);
+            }).toList()
+          : <Highlight>[];
 
-    return spans;
-  }
+      final progress = _ttsService.progressState;
+      final isActiveVerse = _ttsService.currentVerseNumber == verse.number &&
+          progress != null &&
+          progress.contentType == TtsContentType.translation &&
+          progress.verseNumber == verse.number;
 
-  List<InlineSpan> _buildHighlightedText(
-    Verse verse,
-    List<Highlight> allHighlights,
-  ) {
-    final spans = <InlineSpan>[];
-    final verseHighlights = allHighlights.where((h) {
-      final start = h.reference.startVerse;
-      final end = h.reference.endVerse;
-      if (start == null) return false;
-      return start == verse.number ||
-          (end != null && start <= verse.number && end >= verse.number);
-    }).toList();
+      for (int i = 0; i < words.length; i++) {
+        final token = words[i];
+        final tokenCharStart = currentCharOffset;
+        final tokenCharEnd = tokenCharStart + token.length;
+        currentCharOffset = tokenCharEnd;
 
-    final progress = _ttsService.progressState;
-    final isActiveVerse = _ttsService.currentVerseNumber == verse.number &&
-        progress != null &&
-        progress.contentType == TtsContentType.translation &&
-        progress.verseNumber == verse.number;
+        final currentGlobalIndex = globalWordCounter++;
+        _allWords.add(
+          ChapterWordRef(
+            globalIndex: currentGlobalIndex,
+            verseNumber: verse.number,
+            wordIndex: i,
+            text: token,
+            charStart: tokenCharStart,
+            charEnd: tokenCharEnd,
+          ),
+        );
 
-    final words = _tokenizeVerse(verse.text);
-    int charOffset = 0;
-
-    for (int i = 0; i < words.length; i++) {
-      final token = words[i];
-      final tokenStart = charOffset;
-      final tokenEnd = tokenStart + token.length;
-      charOffset = tokenEnd;
-
-      Highlight? activeHighlight;
-      for (var highlight in verseHighlights) {
-        if (i >= highlight.wordStart && i <= highlight.wordEnd) {
-          activeHighlight = highlight;
-          break;
+        Highlight? activeHighlight;
+        for (var highlight in verseHighlights) {
+          final realStart = min(highlight.wordStart, highlight.wordEnd);
+          final realEnd = max(highlight.wordStart, highlight.wordEnd);
+          if (i >= realStart && i <= realEnd) {
+            activeHighlight = highlight;
+            break;
+          }
         }
-      }
 
-      final hasTtsHighlight = isActiveVerse &&
-          progress.startOffset < tokenEnd &&
-          progress.endOffset > tokenStart;
+        final hasTtsHighlight = isActiveVerse &&
+            progress.startOffset < tokenCharEnd &&
+            progress.endOffset > tokenCharStart;
 
-      TextStyle? style;
-      if (activeHighlight != null) {
-        style = TextStyle(
-          backgroundColor:
-              Color(activeHighlight.colorValue).withOpacity(0.3),
+        final isDraggedWord = dragMin != null &&
+            dragMax != null &&
+            currentGlobalIndex >= dragMin &&
+            currentGlobalIndex <= dragMax;
+
+        final baseStyle = TextStyle(
+          fontSize: settings.textSize,
+          height: 1.8,
+        );
+
+        TextStyle style = baseStyle;
+        if (activeHighlight != null) {
+          final hlColor = Color(activeHighlight.colorValue);
+          style = style.copyWith(
+            backgroundColor: hlColor.withOpacity(0.45),
+            color: hlColor.computeLuminance() > 0.5
+                ? Colors.black87
+                : Colors.white,
+          );
+        }
+        if (hasTtsHighlight) {
+          final ttsColor = Theme.of(context).colorScheme.tertiaryContainer;
+          style = style.copyWith(
+            backgroundColor: ttsColor,
+            color: Theme.of(context).colorScheme.onTertiaryContainer,
+          );
+        }
+        if (isDraggedWord) {
+          final hlColor = _isEraserActive
+              ? Theme.of(context).colorScheme.errorContainer
+              : _activeHighlightColor;
+          style = style.copyWith(
+            backgroundColor: hlColor.withOpacity(0.55),
+            color: hlColor.computeLuminance() > 0.5
+                ? Colors.black87
+                : Colors.white,
+          );
+        }
+
+        spans.add(
+          TextSpan(
+            text: token,
+            style: style,
+          ),
         );
       }
-      if (hasTtsHighlight) {
-        final ttsColor = Theme.of(context).colorScheme.tertiaryContainer;
-        style = (style ?? const TextStyle()).copyWith(
-          backgroundColor: ttsColor,
-          color: Theme.of(context).colorScheme.onTertiaryContainer,
-          fontWeight: FontWeight.w600,
-        );
-      }
 
-      spans.add(
-        TextSpan(
-          text: token,
-          style: style,
-        ),
-      );
+      // Add space or newline between verses
+      final sepText = settings.paragraphMode ? ' ' : '\n';
+      spans.add(TextSpan(text: sepText));
+      currentCharOffset += sepText.length;
     }
-
-    spans.add(const TextSpan(text: ' ')); // Space after verse
 
     return spans;
   }
@@ -229,7 +416,6 @@ class _StudyModeViewState extends State<StudyModeView> {
       final char = text[i];
       buffer.write(char);
 
-      // Add word on space or end of string
       if (char == ' ' || i == text.length - 1) {
         words.add(buffer.toString());
         buffer.clear();
@@ -239,344 +425,245 @@ class _StudyModeViewState extends State<StudyModeView> {
     return words;
   }
 
-  void _handleSelectionChanged(
-    TextSelection selection,
-    SelectionChangedCause? cause,
-  ) {
-    if (selection.isCollapsed) {
-      setState(() {
-        _currentSelection = null;
-        _selectionOffset = null;
-      });
-      return;
+  Future<void> _applyHighlightRange(int startGlobal, int endGlobal) async {
+    if (startGlobal < 0 || endGlobal >= _allWords.length) return;
+
+    final Map<int, List<ChapterWordRef>> wordsByVerse = {};
+    for (int g = startGlobal; g <= endGlobal; g++) {
+      final w = _allWords[g];
+      wordsByVerse.putIfAbsent(w.verseNumber, () => []).add(w);
     }
 
-    // Get the render box to calculate selection position
-    final renderBox = _textKey.currentContext?.findRenderObject() as RenderBox?;
-    if (renderBox != null) {
-      setState(() {
-        _currentSelection = selection;
-        // Approximate position - in production, calculate more precisely
-        _selectionOffset = Offset(
-          renderBox.size.width / 2 - 100,
-          50.0,
-        );
-      });
-    }
-  }
+    if (_isEraserActive) {
+      final highlights = List<Highlight>.from(widget.controller.state.highlights);
+      for (var entry in wordsByVerse.entries) {
+        final verseNum = entry.key;
+        final verseWords = entry.value;
+        final minW = verseWords.map((w) => w.wordIndex).reduce(min);
+        final maxW = verseWords.map((w) => w.wordIndex).reduce(max);
 
-  void _showHighlightColorPicker() {
-    if (_currentSelection == null) return;
-
-    showModalBottomSheet(
-      context: context,
-      builder: (context) => HighlightColorPicker(
-        onColorSelected: (color) {
-          _addHighlight(color);
-          Navigator.pop(context);
-        },
-      ),
-    );
-  }
-
-  void _showArcTypePicker() {
-    if (_currentSelection == null) return;
-
-    showModalBottomSheet(
-      context: context,
-      builder: (context) => ArcTypePicker(
-        onArcSelected: (type, color) {
-          _addArc(type, color);
-          Navigator.pop(context);
-        },
-      ),
-    );
-  }
-
-  void _showNoteEditor([BuildContext? ctx, StudyNote? existingNote]) {
-    final dialogContext = ctx ?? context;
-
-    showDialog(
-      context: dialogContext,
-      builder: (context) => _NoteEditorDialog(
-        note: existingNote,
-        reference: PassageReference(
-          bookId: widget.controller.state.chapter.bookId,
-          chapter: widget.controller.state.chapter.number,
-        ),
-        onSave: (note) {
-          if (existingNote != null) {
-            widget.controller.updateNote(note);
-          } else {
-            widget.controller.addNote(note);
+        for (var h in highlights) {
+          final hStartV = h.reference.startVerse ?? 0;
+          final hEndV = h.reference.endVerse ?? hStartV;
+          if (hStartV <= verseNum && hEndV >= verseNum) {
+            final realStart = min(h.wordStart, h.wordEnd);
+            final realEnd = max(h.wordStart, h.wordEnd);
+            if (minW <= realEnd && maxW >= realStart) {
+              await widget.controller.deleteHighlight(h.id);
+            }
           }
-        },
-      ),
-    );
-
-    // Clear selection after showing dialog - setState needed here to update UI immediately
-    setState(() {
-      _currentSelection = null;
-      _selectionOffset = null;
-    });
-  }
-
-  void _addHighlight(Color color) {
-    if (_currentSelection == null) return;
-
-    // Calculate which verse and words were selected
-    final verses = widget.controller.state.chapter.verses;
-    final showVerseNumbers = widget.controller.state.showVerseNumbers;
-
-    // Build full text to map character positions
-    int charPosition = 0;
-    Verse? selectedVerse;
-    int wordStart = 0;
-    int wordEnd = 0;
-
-    for (var verse in verses) {
-      // Account for verse number if shown
-      if (showVerseNumbers) {
-        charPosition += '${verse.number} '.length;
-      }
-
-      final verseTextStart = charPosition;
-      final verseTextEnd = charPosition + verse.text.length;
-
-      // Check if selection overlaps with this verse
-      if (_currentSelection!.start >= verseTextStart &&
-          _currentSelection!.start < verseTextEnd) {
-        selectedVerse = verse;
-
-        // Calculate word indices within the verse
-        final words = _tokenizeVerse(verse.text);
-        int wordCharPos = verseTextStart;
-
-        // Find start word
-        for (int i = 0; i < words.length; i++) {
-          final wordLen = words[i].length;
-          if (_currentSelection!.start >= wordCharPos &&
-              _currentSelection!.start < wordCharPos + wordLen) {
-            wordStart = i;
-          }
-          if (_currentSelection!.end >= wordCharPos &&
-              _currentSelection!.end <= wordCharPos + wordLen) {
-            wordEnd = i;
-          }
-          wordCharPos += wordLen;
         }
-
-        break;
       }
+      setState(() {
+        _activeHighlight = null;
+      });
+    } else {
+      Highlight? lastCreated;
+      for (var entry in wordsByVerse.entries) {
+        final verseNum = entry.key;
+        final verseWords = entry.value;
+        final minW = verseWords.map((w) => w.wordIndex).reduce(min);
+        final maxW = verseWords.map((w) => w.wordIndex).reduce(max);
 
-      charPosition = verseTextEnd + 1; // +1 for space or newline
+        final highlight = Highlight.create(
+          reference: PassageReference(
+            bookId: widget.controller.state.chapter.bookId,
+            chapter: widget.controller.state.chapter.number,
+            startVerse: verseNum,
+            endVerse: verseNum,
+          ),
+          wordStart: minW,
+          wordEnd: maxW,
+          colorValue: _activeHighlightColor.value,
+        );
+        await widget.controller.addHighlight(highlight);
+        lastCreated = highlight;
+      }
+      setState(() {
+        _activeHighlight = lastCreated;
+      });
     }
-
-    if (selectedVerse == null) {
-      return;
-    }
-
-    final highlight = Highlight.create(
-      reference: PassageReference(
-        bookId: widget.controller.state.chapter.bookId,
-        chapter: widget.controller.state.chapter.number,
-        startVerse: selectedVerse.number,
-        endVerse: selectedVerse.number,
-      ),
-      wordStart: wordStart,
-      wordEnd: wordEnd,
-      colorValue: color.value,
-    );
-
-    widget.controller.addHighlight(highlight);
-
-    // Don't call setState - the controller will notify listeners which triggers rebuild
-    // Just clear the selection state for the next interaction
-    _currentSelection = null;
-    _selectionOffset = null;
   }
 
-  void _addArc(ArcType type, Color color) {
-    if (_currentSelection == null) return;
+  /// Builds floating note chips anchored over the first word of each highlight with note content
+  List<Widget> _buildAnchoredNoteOverlays(
+    ChapterViewState state,
+    BuildContext context,
+  ) {
+    final renderObj = _textKey.currentContext?.findRenderObject();
+    if (renderObj == null || renderObj is! RenderParagraph) return const [];
 
-    // TODO: Calculate actual verse and word indices from selection
-    final firstVerse = widget.controller.state.chapter.verses.first;
+    final renderParagraph = renderObj;
+    final overlays = <Widget>[];
+    final screenWidth = MediaQuery.of(context).size.width;
 
-    final arc = Arc.create(
-      reference: PassageReference(
-        bookId: widget.controller.state.chapter.bookId,
-        chapter: widget.controller.state.chapter.number,
-        startVerse: firstVerse.number,
-        endVerse: firstVerse.number,
-      ),
-      fromWordIndex: 0,
-      toWordIndex: 3,
-      type: type,
-      colorValue: color.value,
-    );
+    for (var h in state.highlights) {
+      if (h.note == null || h.note!.trim().isEmpty) continue;
 
-    widget.controller.addArc(arc);
+      final startVerse = h.reference.startVerse;
+      if (startVerse == null) continue;
 
-    // Don't call setState - the controller will notify listeners which triggers rebuild
-    _currentSelection = null;
-    _selectionOffset = null;
-  }
-
-  void _copySelection() async {
-    if (_currentSelection == null) return;
-
-    // Build full text from verses
-    final verses = widget.controller.state.chapter.verses;
-    final showVerseNumbers = widget.controller.state.showVerseNumbers;
-    final buffer = StringBuffer();
-
-    for (var verse in verses) {
-      if (showVerseNumbers) {
-        buffer.write('${verse.number} ');
+      final minW = min(h.wordStart, h.wordEnd);
+      ChapterWordRef? firstWord;
+      for (var w in _allWords) {
+        if (w.verseNumber == startVerse && w.wordIndex == minW) {
+          firstWord = w;
+          break;
+        }
       }
-      buffer.write(verse.text);
-      buffer.write(' ');
-    }
+      if (firstWord == null) continue;
 
-    final fullText = buffer.toString();
-    final selectedText = fullText.substring(
-      _currentSelection!.start,
-      _currentSelection!.end,
-    );
+      final caretOffset = renderParagraph.getOffsetForCaret(
+        TextPosition(offset: firstWord.charStart),
+        Rect.zero,
+      );
 
-    // Copy to clipboard
-    await Clipboard.setData(ClipboardData(text: selectedText));
+      // Clamp horizontal offset to guarantee visibility on page without overflowing screen edge
+      final maxLeft = max(16.0, screenWidth - 240.0);
+      final clampedX = caretOffset.dx.clamp(16.0, maxLeft);
+      final topY = max(0.0, caretOffset.dy - 34.0);
 
-    // Show confirmation
-    if (mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Copied to clipboard'),
-          duration: Duration(seconds: 1),
+      overlays.add(
+        Positioned(
+          left: clampedX,
+          top: topY,
+          child: KeyedSubtree(
+            key: _getOrCreateNoteChipKey(h.id),
+            child: _AnchoredNoteChip(
+              noteText: h.note!,
+              color: Color(h.colorValue),
+              onTap: () {
+                setState(() {
+                  _activeHighlight = h;
+                });
+                _showNoteEditor(context, h);
+              },
+            ),
+          ),
         ),
       );
     }
 
-    // Clear selection - no setState needed, just update local state
-    _currentSelection = null;
-    _selectionOffset = null;
+    return overlays;
   }
-}
 
-/// Section displaying study notes
-class _NotesSection extends StatelessWidget {
-  final List<StudyNote> notes;
-  final void Function(StudyNote note) onEditNote;
-  final void Function(String id) onDeleteNote;
+  void _showNoteEditor(BuildContext context, [Highlight? targetHl]) async {
+    final hl = targetHl ?? _activeHighlight;
+    if (hl == null && _dragStartGlobal != null) {
+      // If user highlighted text, create highlight first then prompt note
+      final startIdx =
+          min(_dragStartGlobal!, _dragCurrentGlobal ?? _dragStartGlobal!);
+      final endIdx =
+          max(_dragStartGlobal!, _dragCurrentGlobal ?? _dragStartGlobal!);
+      await _applyHighlightRange(startIdx, endIdx);
+    }
 
-  const _NotesSection({
-    required this.notes,
-    required this.onEditNote,
-    required this.onDeleteNote,
-  });
+    final activeHl = targetHl ?? _activeHighlight;
+    if (activeHl == null || !mounted) return;
 
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          'Study Notes',
-          style: Theme.of(context).textTheme.titleLarge,
-        ),
-        const SizedBox(height: 12),
-        ...notes.map(
-          (note) => _NoteCard(
-            note: note,
-            onEdit: () => onEditNote(note),
-            onDelete: () => onDeleteNote(note.id),
-          ),
-        ),
-      ],
+    showDialog(
+      context: this.context,
+      builder: (context) => _NoteEditorDialog(
+        existingNoteText: activeHl.note,
+        onSave: (noteText) async {
+          final updated = activeHl.copyWith(
+            note: noteText.isEmpty ? null : noteText,
+            modifiedAt: DateTime.now(),
+          );
+          await widget.controller.updateHighlight(updated);
+          setState(() {
+            _activeHighlight = updated;
+          });
+        },
+        onDelete: () async {
+          final updated = activeHl.copyWith(
+            clearNote: true,
+            modifiedAt: DateTime.now(),
+          );
+          await widget.controller.updateHighlight(updated);
+          setState(() {
+            _activeHighlight = updated;
+          });
+        },
+      ),
     );
   }
 }
 
-/// Card displaying a single study note
-class _NoteCard extends StatelessWidget {
-  final StudyNote note;
-  final VoidCallback onEdit;
-  final VoidCallback onDelete;
+/// Floating note badge chip anchored over text
+class _AnchoredNoteChip extends StatelessWidget {
+  final String noteText;
+  final Color color;
+  final VoidCallback onTap;
 
-  const _NoteCard({
-    required this.note,
-    required this.onEdit,
-    required this.onDelete,
+  const _AnchoredNoteChip({
+    required this.noteText,
+    required this.color,
+    required this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      margin: const EdgeInsets.only(bottom: 12),
-      child: Padding(
-        padding: const EdgeInsets.all(12),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                Expanded(
-                  child: Text(
-                    note.reference.toString(),
-                    style: const TextStyle(
-                      fontWeight: FontWeight.w600,
-                      fontSize: 12,
-                      color: Colors.grey,
-                    ),
+    final colorScheme = Theme.of(context).colorScheme;
+
+    return Material(
+      elevation: 4,
+      borderRadius: BorderRadius.circular(12),
+      color: colorScheme.surface,
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(12),
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+          constraints: const BoxConstraints(maxWidth: 220),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(
+              color: color.withOpacity(0.8),
+              width: 1.5,
+            ),
+          ),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(
+                Icons.sticky_note_2,
+                size: 14,
+                color: color.computeLuminance() > 0.5
+                    ? Colors.orange[800]
+                    : color,
+              ),
+              const SizedBox(width: 4),
+              Flexible(
+                child: Text(
+                  noteText,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                    fontSize: 11,
+                    fontWeight: FontWeight.w600,
+                    color: colorScheme.onSurface,
                   ),
                 ),
-                IconButton(
-                  icon: const Icon(Icons.edit, size: 18),
-                  onPressed: onEdit,
-                  padding: EdgeInsets.zero,
-                  constraints: const BoxConstraints(),
-                ),
-                IconButton(
-                  icon: const Icon(Icons.delete, size: 18),
-                  onPressed: onDelete,
-                  padding: EdgeInsets.zero,
-                  constraints: const BoxConstraints(),
-                ),
-              ],
-            ),
-            const SizedBox(height: 8),
-            Text(note.content),
-            if (note.tags.isNotEmpty) ...[
-              const SizedBox(height: 8),
-              Wrap(
-                spacing: 4,
-                children: note.tags
-                    .map(
-                      (tag) => Chip(
-                        label: Text(tag),
-                        visualDensity: VisualDensity.compact,
-                      ),
-                    )
-                    .toList(),
               ),
             ],
-          ],
+          ),
         ),
       ),
     );
   }
 }
 
-/// Dialog for creating/editing notes
+/// Dialog for creating/editing a highlight note
 class _NoteEditorDialog extends StatefulWidget {
-  final StudyNote? note;
-  final PassageReference reference;
-  final void Function(StudyNote note) onSave;
+  final String? existingNoteText;
+  final void Function(String noteText) onSave;
+  final VoidCallback onDelete;
 
   const _NoteEditorDialog({
-    this.note,
-    required this.reference,
+    this.existingNoteText,
     required this.onSave,
+    required this.onDelete,
   });
 
   @override
@@ -585,85 +672,58 @@ class _NoteEditorDialog extends StatefulWidget {
 
 class _NoteEditorDialogState extends State<_NoteEditorDialog> {
   late TextEditingController _contentController;
-  late TextEditingController _tagsController;
 
   @override
   void initState() {
     super.initState();
     _contentController =
-        TextEditingController(text: widget.note?.content ?? '');
-    _tagsController = TextEditingController(
-      text: widget.note?.tags.join(', ') ?? '',
-    );
+        TextEditingController(text: widget.existingNoteText ?? '');
   }
 
   @override
   void dispose() {
     _contentController.dispose();
-    _tagsController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    final isEditing = widget.existingNoteText != null &&
+        widget.existingNoteText!.isNotEmpty;
+
     return AlertDialog(
-      title: Text(widget.note == null ? 'New Note' : 'Edit Note'),
-      content: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          TextField(
-            controller: _contentController,
-            decoration: const InputDecoration(
-              labelText: 'Content',
-              border: OutlineInputBorder(),
-            ),
-            maxLines: 5,
-          ),
-          const SizedBox(height: 12),
-          TextField(
-            controller: _tagsController,
-            decoration: const InputDecoration(
-              labelText: 'Tags (comma-separated)',
-              border: OutlineInputBorder(),
-            ),
-          ),
-        ],
+      title: Text(isEditing ? 'Edit Note' : 'Add Note to Highlight'),
+      content: TextField(
+        controller: _contentController,
+        autofocus: true,
+        decoration: const InputDecoration(
+          labelText: 'Note content',
+          border: OutlineInputBorder(),
+        ),
+        maxLines: 4,
       ),
       actions: [
+        if (isEditing)
+          TextButton(
+            onPressed: () {
+              widget.onDelete();
+              Navigator.pop(context);
+            },
+            style: TextButton.styleFrom(foregroundColor: Colors.red),
+            child: const Text('Delete Note'),
+          ),
         TextButton(
           onPressed: () => Navigator.pop(context),
           child: const Text('Cancel'),
         ),
         ElevatedButton(
-          onPressed: _saveNote,
-          child: const Text('Save'),
+          onPressed: () {
+            widget.onSave(_contentController.text.trim());
+            Navigator.pop(context);
+          },
+          child: const Text('Save Note'),
         ),
       ],
     );
-  }
-
-  void _saveNote() {
-    final content = _contentController.text.trim();
-    if (content.isEmpty) return;
-
-    final tags = _tagsController.text
-        .split(',')
-        .map((t) => t.trim())
-        .where((t) => t.isNotEmpty)
-        .toList();
-
-    final note = widget.note?.copyWith(
-          content: content,
-          tags: tags,
-          modifiedAt: DateTime.now(),
-        ) ??
-        StudyNote.create(
-          reference: widget.reference,
-          content: content,
-          tags: tags,
-        );
-
-    widget.onSave(note);
-    Navigator.pop(context);
   }
 }

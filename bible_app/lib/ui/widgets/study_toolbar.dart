@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:bible_core/bible_core.dart';
 
 /// Predefined highlight colors
 class HighlightColors {
@@ -39,7 +38,7 @@ class HighlightColors {
 /// Floating toolbar that appears when text is selected
 class StudyToolbar extends StatelessWidget {
   final VoidCallback onHighlight;
-  final VoidCallback onArc;
+  final VoidCallback? onArc;
   final VoidCallback onNote;
   final VoidCallback? onCopy;
   final VoidCallback? onShare;
@@ -47,7 +46,7 @@ class StudyToolbar extends StatelessWidget {
   const StudyToolbar({
     super.key,
     required this.onHighlight,
-    required this.onArc,
+    this.onArc,
     required this.onNote,
     this.onCopy,
     this.onShare,
@@ -73,12 +72,14 @@ class StudyToolbar extends StatelessWidget {
               label: 'Highlight',
               onPressed: onHighlight,
             ),
-            const SizedBox(width: 4),
-            _ToolbarButton(
-              icon: Icons.timeline,
-              label: 'Arc',
-              onPressed: onArc,
-            ),
+            if (onArc != null) ...[
+              const SizedBox(width: 4),
+              _ToolbarButton(
+                icon: Icons.timeline,
+                label: 'Arc',
+                onPressed: onArc!,
+              ),
+            ],
             const SizedBox(width: 4),
             _ToolbarButton(
               icon: Icons.note_add,
@@ -202,87 +203,3 @@ class HighlightColorPicker extends StatelessWidget {
   }
 }
 
-/// Arc type picker
-class ArcTypePicker extends StatelessWidget {
-  final void Function(ArcType type, Color color) onArcSelected;
-
-  const ArcTypePicker({
-    super.key,
-    required this.onArcSelected,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Text(
-            'Choose Arc Type',
-            style: TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.w600,
-            ),
-          ),
-          const SizedBox(height: 16),
-          ...ArcType.values.map((type) {
-            return ListTile(
-              title: Text(type.displayName),
-              trailing: const Icon(Icons.chevron_right),
-              onTap: () {
-                // Show color picker for this arc type
-                _showColorPicker(context, type);
-              },
-            );
-          }),
-        ],
-      ),
-    );
-  }
-
-  void _showColorPicker(BuildContext context, ArcType type) {
-    showModalBottomSheet(
-      context: context,
-      builder: (context) => Container(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Choose Color for ${type.displayName}',
-              style: const TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-            const SizedBox(height: 16),
-            Wrap(
-              spacing: 12,
-              runSpacing: 12,
-              children: HighlightColors.all.map((color) {
-                return InkWell(
-                  onTap: () {
-                    Navigator.pop(context);
-                    onArcSelected(type, color);
-                  },
-                  child: Container(
-                    width: 50,
-                    height: 50,
-                    decoration: BoxDecoration(
-                      color: color,
-                      borderRadius: BorderRadius.circular(8),
-                      border: Border.all(color: Colors.grey[400]!, width: 2),
-                    ),
-                  ),
-                );
-              }).toList(),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}

@@ -6,13 +6,17 @@ enum ViewMode {
   /// Interlinear view with original language text and morphology
   interlinear,
   
-  /// Paragraph mode with continuous text (future)
+  /// Paragraph mode with continuous text
   paragraph,
-  
-  // Future modes:
-  // - highlighted: verse sets with specific parts highlighted
-  // - commentary: user commentary overlays
-  // - parallel: side-by-side translations
+
+  /// Markup study mode with highlights and notes
+  markup,
+
+  /// Study mode
+  study,
+
+  /// Drawing mode
+  drawing,
 }
 
 extension ViewModeExtension on ViewMode {
@@ -25,6 +29,11 @@ extension ViewModeExtension on ViewMode {
         return 'Interlinear';
       case ViewMode.paragraph:
         return 'Paragraph';
+      case ViewMode.markup:
+      case ViewMode.study:
+        return 'Markup';
+      case ViewMode.drawing:
+        return 'Drawing';
     }
   }
   
@@ -37,6 +46,11 @@ extension ViewModeExtension on ViewMode {
         return '🔤';
       case ViewMode.paragraph:
         return '📄';
+      case ViewMode.markup:
+      case ViewMode.study:
+        return '✏️';
+      case ViewMode.drawing:
+        return '🎨';
     }
   }
   
@@ -45,6 +59,9 @@ extension ViewModeExtension on ViewMode {
     switch (this) {
       case ViewMode.standard:
       case ViewMode.interlinear:
+      case ViewMode.markup:
+      case ViewMode.study:
+      case ViewMode.drawing:
         return true;
       case ViewMode.paragraph:
         return false;

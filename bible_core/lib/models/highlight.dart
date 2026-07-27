@@ -127,6 +127,7 @@ class Highlight extends SyncableEntity {
     int? wordEnd,
     int? colorValue,
     String? note,
+    bool clearNote = false,
     bool? isPublic,
     String? sharedFromUserId,
   }) {
@@ -142,7 +143,7 @@ class Highlight extends SyncableEntity {
       wordStart: wordStart ?? this.wordStart,
       wordEnd: wordEnd ?? this.wordEnd,
       colorValue: colorValue ?? this.colorValue,
-      note: note ?? this.note,
+      note: clearNote ? null : (note ?? this.note),
       isPublic: isPublic ?? this.isPublic,
       sharedFromUserId: sharedFromUserId ?? this.sharedFromUserId,
     );

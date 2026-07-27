@@ -5,6 +5,7 @@ import 'library_screen.dart';
 import 'settings_screen.dart';
 import '../widgets/pwa_widgets.dart';
 import 'package:bible_app/services/deep_linking_service.dart';
+import 'package:bible_app/services/preferences_service.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -64,7 +65,14 @@ class _HomeScreenState extends State<HomeScreen> {
 
   List<Widget> _buildScreens() {
     return [
-      ReaderScreen(key: _readerKey),
+      ReaderScreen(
+        key: _readerKey,
+        onModeChanged: (_) {
+          if (mounted) {
+            setState(() {});
+          }
+        },
+      ),
       const LibraryScreen(),
       const SettingsScreen(),
     ];
@@ -111,6 +119,12 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final lastMode = PreferencesService.instance.getLastReadingMode();
+    final isShowingStudy = _currentIndex == 0 &&
+        (_readerKey.currentState != null
+            ? _readerKey.currentState!.isShowingStudySurface
+            : (lastMode == 'study' || lastMode == 'drawing'));
+
     return Scaffold(
       body: Column(
         children: [
@@ -124,7 +138,9 @@ class _HomeScreenState extends State<HomeScreen> {
         ],
       ),
       bottomNavigationBar: NavigationBar(
-        selectedIndex: _currentIndex == 0 ? 0 : _currentIndex + 1,
+        selectedIndex: _currentIndex == 0
+            ? (isShowingStudy ? 1 : 0)
+            : _currentIndex + 1,
         onDestinationSelected: (index) {
           if (index == 0) {
             // Read button - return to reading, then cycle views on repeated taps
@@ -151,9 +167,9 @@ class _HomeScreenState extends State<HomeScreen> {
             label: 'Read',
           ),
           NavigationDestination(
-            icon: Icon(Icons.text_fields_outlined),
-            selectedIcon: Icon(Icons.text_fields),
-            label: 'Study',
+            icon: Icon(Icons.edit_note_outlined),
+            selectedIcon: Icon(Icons.edit_note),
+            label: 'Markup',
           ),
           NavigationDestination(
             icon: Icon(Icons.library_books_outlined),

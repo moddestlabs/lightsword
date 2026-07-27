@@ -377,7 +377,7 @@ class _OfflinePackManagerState extends State<OfflinePackManager> {
               ),
             ] else ...[
               Text(
-                'Install larger study packs only when you want them offline. The default install keeps this separate to stay reliable on iPhone.',
+                'Study packs and font assets automatically download in the background when connected online.',
                 style: Theme.of(context).textTheme.bodySmall,
               ),
               const SizedBox(height: 16),
@@ -396,9 +396,11 @@ class _OfflinePackManagerState extends State<OfflinePackManager> {
     OfflinePackStatus? status,
   ) {
     final theme = Theme.of(context);
+    final isAutoDownloading = PwaService.instance.isPackDownloading(pack.id);
     final statusText = switch (status) {
+      _ when isAutoDownloading => 'Downloading in background...',
       null => 'Not checked yet',
-      final s when s.isInstalled => 'Installed (${s.cachedFiles}/${s.totalFiles} files)',
+      final s when s.isInstalled => 'Installed automatically (${s.cachedFiles}/${s.totalFiles} files)',
       final s when s.isPartial => 'Partial (${s.cachedFiles}/${s.totalFiles} files)',
       final s => 'Not installed (${s.cachedFiles}/${s.totalFiles} files)',
     };
@@ -406,12 +408,14 @@ class _OfflinePackManagerState extends State<OfflinePackManager> {
     return ListTile(
       contentPadding: EdgeInsets.zero,
       leading: Icon(
-        status?.isInstalled == true ? Icons.download_done : Icons.download,
+        status?.isInstalled == true
+            ? Icons.download_done
+            : (isAutoDownloading ? Icons.sync : Icons.download),
       ),
       title: Text(pack.title),
       subtitle: Text('${pack.subtitle}\n$statusText • ${pack.sizeLabel}'),
       isThreeLine: true,
-      trailing: _isLoading
+      trailing: (_isLoading || isAutoDownloading)
           ? const SizedBox(
               width: 20,
               height: 20,

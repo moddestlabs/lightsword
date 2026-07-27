@@ -6,6 +6,7 @@ import 'package:bible_app/services/tts_service.dart';
 import 'package:bible_app/services/deep_linking_service.dart';
 import 'package:bible_app/services/preferences_service.dart';
 import 'package:bible_app/services/pwa_service.dart';
+import 'package:bible_app/services/persistent_user_content_repository.dart';
 import 'package:bible_app/state/chapter_view_controller.dart';
 import 'package:bible_app/ui/widgets/chapter_picker_modal.dart';
 import 'package:bible_app/ui/widgets/book_selection_page.dart';
@@ -18,7 +19,12 @@ import 'package:bible_app/ui/models/chapter_view_definition.dart';
 import 'package:bible_app/ui/models/view_mode.dart' as old_view;
 
 class ReaderScreen extends StatefulWidget {
-  const ReaderScreen({super.key});
+  final ValueChanged<ReadingMode>? onModeChanged;
+
+  const ReaderScreen({
+    super.key,
+    this.onModeChanged,
+  });
 
   @override
   State<ReaderScreen> createState() => ReaderScreenState();
@@ -44,8 +50,8 @@ class ReaderScreenState extends State<ReaderScreen> {
   ChapterViewDefinition _selectedView = ChapterViewDefinition.lineByLineView;
 
   // Persistent repository instance to maintain user content across rebuilds
-  final LocalUserContentRepository _contentRepository =
-      LocalUserContentRepository();
+  final PersistentUserContentRepository _contentRepository =
+      PersistentUserContentRepository();
 
   PassageReference get _currentRef => PassageReference(
         bookId: _bookId,
@@ -104,6 +110,17 @@ class ReaderScreenState extends State<ReaderScreen> {
   }
 
   void _restoreSavedReadingLocation() {
+    final savedMode = PreferencesService.instance.getLastReadingMode();
+    if (savedMode != null) {
+      for (var mode in ReadingMode.values) {
+        if (mode.name == savedMode) {
+          _viewMode = mode;
+          widget.onModeChanged?.call(mode);
+          break;
+        }
+      }
+    }
+
     final savedBookId = PreferencesService.instance.getLastBookId();
     final savedChapter = PreferencesService.instance.getLastChapter();
     if (savedBookId == null ||
@@ -333,17 +350,21 @@ class ReaderScreenState extends State<ReaderScreen> {
 
   /// Update browser URL to match current passage (web only)
   void _updateUrl() {
-    final oldMode =
-        _viewMode == ReadingMode.study || _viewMode == ReadingMode.drawing
-            ? old_view.ViewMode.paragraph
-          : _selectedView.showOriginalLanguage ||
-              _selectedView.showGloss ||
-              _selectedView.showWordGlosses
-                ? old_view.ViewMode.interlinear
-                : _selectedView.lineByLine
-                    ? old_view.ViewMode.standard
-                    : old_view.ViewMode.paragraph;
-    DeepLinkingService.instance.updateWebUrl(_currentRef, oldMode);
+    old_view.ViewMode urlMode;
+    if (_viewMode == ReadingMode.study) {
+      urlMode = old_view.ViewMode.markup;
+    } else if (_viewMode == ReadingMode.drawing) {
+      urlMode = old_view.ViewMode.drawing;
+    } else if (_selectedView.showOriginalLanguage ||
+        _selectedView.showGloss ||
+        _selectedView.showWordGlosses) {
+      urlMode = old_view.ViewMode.interlinear;
+    } else if (_selectedView.lineByLine) {
+      urlMode = old_view.ViewMode.standard;
+    } else {
+      urlMode = old_view.ViewMode.paragraph;
+    }
+    DeepLinkingService.instance.updateWebUrl(_currentRef, urlMode);
   }
 
   /// Navigate to a specific reference (called from deep links)
@@ -356,9 +377,28 @@ class ReaderScreenState extends State<ReaderScreen> {
       _chapter = reference.chapter;
       _startVerse = reference.startVerse;
       _endVerse = reference.endVerse;
+
       if (viewMode != null) {
-        _viewMode = ReadingMode.verse;
-        _selectedView = _resolveViewForLegacyMode(viewMode);
+        switch (viewMode) {
+          case old_view.ViewMode.markup:
+          case old_view.ViewMode.study:
+            _viewMode = ReadingMode.study;
+            break;
+          case old_view.ViewMode.drawing:
+            _viewMode = ReadingMode.drawing;
+            break;
+          case old_view.ViewMode.interlinear:
+            _viewMode = ReadingMode.verse;
+            _selectedView = ChapterViewDefinition.interlinearView;
+            break;
+          case old_view.ViewMode.standard:
+          case old_view.ViewMode.paragraph:
+            _viewMode = ReadingMode.verse;
+            _selectedView = _resolveViewForLegacyMode(viewMode);
+            break;
+        }
+        PreferencesService.instance.setLastReadingMode(_viewMode.name);
+        widget.onModeChanged?.call(_viewMode);
       }
     });
     _loadBook();
@@ -771,6 +811,7 @@ class ReaderScreenState extends State<ReaderScreen> {
       _selectedView = view;
       _viewMode = ReadingMode.verse;
     });
+    widget.onModeChanged?.call(ReadingMode.verse);
     PreferencesService.instance.setSelectedChapterViewId(view.id);
     _updateUrl();
   }
@@ -783,6 +824,9 @@ class ReaderScreenState extends State<ReaderScreen> {
               view.showGloss ||
               view.showWordGlosses;
         case old_view.ViewMode.paragraph:
+        case old_view.ViewMode.markup:
+        case old_view.ViewMode.study:
+        case old_view.ViewMode.drawing:
           return !view.lineByLine;
         case old_view.ViewMode.standard:
           return view.lineByLine &&
@@ -803,7 +847,11 @@ class ReaderScreenState extends State<ReaderScreen> {
 
     return switch (viewMode) {
       old_view.ViewMode.interlinear => ChapterViewDefinition.interlinearView,
-      old_view.ViewMode.paragraph => ChapterViewDefinition.paragraphView,
+      old_view.ViewMode.paragraph ||
+      old_view.ViewMode.markup ||
+      old_view.ViewMode.study ||
+      old_view.ViewMode.drawing =>
+        ChapterViewDefinition.paragraphView,
       old_view.ViewMode.standard => ChapterViewDefinition.lineByLineView,
     };
   }
@@ -860,6 +908,8 @@ class ReaderScreenState extends State<ReaderScreen> {
     setState(() {
       _viewMode = ReadingMode.verse;
     });
+    PreferencesService.instance.setLastReadingMode(ReadingMode.verse.name);
+    widget.onModeChanged?.call(ReadingMode.verse);
     _updateUrl();
   }
 
@@ -893,6 +943,8 @@ class ReaderScreenState extends State<ReaderScreen> {
       setState(() {
         _viewMode = ReadingMode.study;
       });
+      PreferencesService.instance.setLastReadingMode(ReadingMode.study.name);
+      widget.onModeChanged?.call(ReadingMode.study);
       _updateUrl();
     }
   }
@@ -1149,6 +1201,7 @@ class ReaderScreenState extends State<ReaderScreen> {
           setState(() {
             _viewMode = mode;
           });
+          widget.onModeChanged?.call(mode);
           _updateUrl();
         },
       );
@@ -1162,20 +1215,10 @@ class ReaderScreenState extends State<ReaderScreen> {
       );
     }
 
-    return GestureDetector(
-      behavior: HitTestBehavior.translucent,
-      onHorizontalDragEnd: (details) {
-        if (details.primaryVelocity != null) {
-          if (details.primaryVelocity! < -150) {
-            _nextChapter();
-          } else if (details.primaryVelocity! > 150) {
-            _previousChapter();
-          }
-        }
-      },
-      child: PinchToZoomArea(
-        child: content,
-      ),
+    return PinchToZoomArea(
+      onSwipeLeft: isShowingStudySurface ? null : _nextChapter,
+      onSwipeRight: isShowingStudySurface ? null : _previousChapter,
+      child: content,
     );
   }
 

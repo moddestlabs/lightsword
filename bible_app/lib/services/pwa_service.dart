@@ -61,12 +61,16 @@ class PwaService {
   TtsInfo? _ttsInfo;
   StorageInfo? _storageInfo;
   final Map<OfflinePackId, OfflinePackStatus> _offlinePackStatuses = {};
+  final Set<OfflinePackId> _downloadingPacks = {};
 
   final _installAvailableController = StreamController<void>.broadcast();
   final _appInstalledController = StreamController<void>.broadcast();
   final _onlineStatusController = StreamController<bool>.broadcast();
   final _offlinePackStatusController =
       StreamController<Map<OfflinePackId, OfflinePackStatus>>.broadcast();
+
+  /// Check if a pack is currently downloading in background
+  bool isPackDownloading(OfflinePackId packId) => _downloadingPacks.contains(packId);
 
   /// Stream of install availability events
   Stream<void> get installAvailableStream => _installAvailableController.stream;
@@ -223,6 +227,7 @@ class PwaService {
       _isInitialized = true;
       await refreshOfflinePackStatus();
       print('✅ PWA service initialized');
+      unawaited(autoDownloadOfflinePacks());
     } catch (e) {
       print('❌ Error initializing PWA service: $e');
     }
@@ -306,6 +311,7 @@ class PwaService {
         _isOnline = true;
         _onlineStatusController.add(true);
         print('🌐 Online');
+        unawaited(autoDownloadOfflinePacks());
       }).toJS,
     );
 
@@ -446,6 +452,34 @@ class PwaService {
     }
 
     return offlinePackStatuses;
+  }
+
+  /// Automatically check and download missing offline packs in the background when online
+  Future<void> autoDownloadOfflinePacks() async {
+    if (!isWeb || !_isOnline) return;
+
+    try {
+      final statuses = await refreshOfflinePackStatus();
+      for (final packId in OfflinePackId.values) {
+        final status = statuses[packId];
+        final isInstalled = status?.isInstalled ?? false;
+
+        if (!isInstalled && !_downloadingPacks.contains(packId)) {
+          _downloadingPacks.add(packId);
+          print('🌐 Auto-downloading offline pack in background: ${_packName(packId)}');
+          _offlinePackStatusController.add(offlinePackStatuses);
+
+          unawaited(
+            cacheOfflinePack(packId).whenComplete(() {
+              _downloadingPacks.remove(packId);
+              refreshOfflinePackStatus();
+            }),
+          );
+        }
+      }
+    } catch (e) {
+      print('❌ Error auto-downloading offline packs: $e');
+    }
   }
 
   String _packName(OfflinePackId packId) {

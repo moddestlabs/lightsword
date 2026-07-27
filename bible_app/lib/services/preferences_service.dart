@@ -24,6 +24,7 @@ class PreferencesService {
   static const String _fontSizeKey = 'font_size';
   static const String _pinchToZoomEnabledKey = 'pinch_to_zoom_enabled';
   static const String _selectedFontFamilyKey = 'selected_font_family';
+  static const String _lastReadingModeKey = 'last_reading_mode';
 
   static PreferencesService? _instance;
   static PreferencesService get instance {
@@ -110,6 +111,16 @@ class PreferencesService {
   int? getLastEndVerse() {
     if (_prefs == null) return null;
     return _prefs!.getInt(_lastEndVerseKey);
+  }
+
+  String? getLastReadingMode() {
+    if (_prefs == null) return null;
+    return _prefs!.getString(_lastReadingModeKey);
+  }
+
+  Future<void> setLastReadingMode(String modeName) async {
+    if (_prefs == null) return;
+    await _prefs!.setString(_lastReadingModeKey, modeName);
   }
 
   Future<void> setLastReadingLocation({

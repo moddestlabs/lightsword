@@ -6,6 +6,8 @@ import 'package:bible_app/ui/widgets/interlinear_chapter_view.dart';
 import 'package:bible_app/ui/widgets/study_mode_view.dart';
 import 'package:bible_app/ui/widgets/study_mode_with_drawing_view.dart';
 
+import 'package:bible_app/services/persistent_user_content_repository.dart';
+
 /// Main chapter view that switches between reading modes
 class ChapterView extends StatefulWidget {
   final Chapter chapter;
@@ -34,13 +36,12 @@ class _ChapterViewState extends State<ChapterView> {
   void initState() {
     super.initState();
     // Use provided repository or create default local repository
-    final repository = widget.contentRepository ?? LocalUserContentRepository();
-    _controller = ChapterViewController(repository, widget.chapter);
-    
-    // Set initial mode if provided
-    if (widget.initialMode != null) {
-      _controller.switchMode(widget.initialMode!);
-    }
+    final repository = widget.contentRepository ?? PersistentUserContentRepository();
+    _controller = ChapterViewController(
+      repository,
+      widget.chapter,
+      initialMode: widget.initialMode ?? ReadingMode.verse,
+    );
     
     // Listen to mode changes if callback provided
     if (widget.onModeChanged != null) {
@@ -79,13 +80,12 @@ class _ChapterViewState extends State<ChapterView> {
       _controller.dispose();
       
       // Create new controller with new chapter
-      final repository = widget.contentRepository ?? LocalUserContentRepository();
-      _controller = ChapterViewController(repository, newChapter);
-      
-      // Restore mode if provided
-      if (widget.initialMode != null) {
-        _controller.switchMode(widget.initialMode!);
-      }
+      final repository = widget.contentRepository ?? PersistentUserContentRepository();
+      _controller = ChapterViewController(
+        repository,
+        newChapter,
+        initialMode: widget.initialMode ?? ReadingMode.verse,
+      );
       
       // Re-attach listener
       if (widget.onModeChanged != null) {
@@ -146,8 +146,8 @@ class _ChapterViewState extends State<ChapterView> {
                 value: ReadingMode.study,
                 child: ListTile(
                   leading: const Icon(Icons.edit_note),
-                  title: const Text('Study Mode'),
-                  subtitle: const Text('With highlights and arcs'),
+                  title: const Text('Markup Mode'),
+                  subtitle: const Text('With highlights and notes'),
                   contentPadding: EdgeInsets.zero,
                 ),
               ),
@@ -180,11 +180,6 @@ class _ChapterViewState extends State<ChapterView> {
                   value: 'toggle_highlights',
                   checked: _controller.state.studySettings.showHighlights,
                   child: const Text('Show Highlights'),
-                ),
-                CheckedPopupMenuItem(
-                  value: 'toggle_arcs',
-                  checked: _controller.state.studySettings.showArcs,
-                  child: const Text('Show Arcs'),
                 ),
                 CheckedPopupMenuItem(
                   value: 'toggle_notes',
@@ -299,7 +294,7 @@ class _ChapterViewState extends State<ChapterView> {
       return;
     }
 
-    final json = await _controller.exportContent(ids);
+    await _controller.exportContent(ids);
     
     // TODO: Share or save the JSON
     if (!mounted) return;

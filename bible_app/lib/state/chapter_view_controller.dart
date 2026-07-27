@@ -17,7 +17,7 @@ extension ReadingModeExtension on ReadingMode {
       case ReadingMode.interlinear:
         return 'Interlinear';
       case ReadingMode.study:
-        return 'Study';
+        return 'Markup';
       case ReadingMode.drawing:
         return 'Drawing';
     }
@@ -30,7 +30,7 @@ extension ReadingModeExtension on ReadingMode {
       case ReadingMode.interlinear:
         return 'Word-by-word with Hebrew/Greek';
       case ReadingMode.study:
-        return 'Study mode with highlights and arcs';
+        return 'Markup mode with highlights and notes';
       case ReadingMode.drawing:
         return 'Freehand drawing with study features';
     }
@@ -131,8 +131,9 @@ class ChapterViewController extends ChangeNotifier {
 
   ChapterViewController(
     this._contentRepo,
-    Chapter chapter,
-  ) : _state = ChapterViewState(chapter: chapter) {
+    Chapter chapter, {
+    ReadingMode initialMode = ReadingMode.verse,
+  }) : _state = ChapterViewState(chapter: chapter, mode: initialMode) {
     _loadUserContent();
   }
 

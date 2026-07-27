@@ -39,20 +39,20 @@ class BibleService {
 
   static const List<BibleTextSourceOption> availableSources = [
     BibleTextSourceOption(
-      source: BibleTextSource.originalLanguage,
-      label: 'Gloss',
-      description: 'Original language text with literal gloss-based reading.',
-      isTranslation: false,
-    ),
-    BibleTextSourceOption(
       source: BibleTextSource.bsb,
       label: 'BSB',
       description: 'Berean Standard Bible translation layer.',
       isTranslation: true,
     ),
+    BibleTextSourceOption(
+      source: BibleTextSource.originalLanguage,
+      label: 'Gloss',
+      description: 'Original language text with literal gloss-based reading.',
+      isTranslation: false,
+    ),
   ];
 
-  static BibleTextSource _currentSource = BibleTextSource.originalLanguage;
+  static BibleTextSource _currentSource = BibleTextSource.bsb;
 
   static Future<void> initialize() async {
     final savedSourceId = PreferencesService.instance.getSelectedTextSource();
@@ -125,11 +125,11 @@ class BibleService {
 
   static BibleTextSource _sourceFromId(String? sourceId) {
     switch (sourceId) {
-      case 'bsb':
-        return BibleTextSource.bsb;
       case 'original_language':
-      default:
         return BibleTextSource.originalLanguage;
+      case 'bsb':
+      default:
+        return BibleTextSource.bsb;
     }
   }
 }

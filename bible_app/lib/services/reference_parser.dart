@@ -240,12 +240,23 @@ class ReferenceParser {
 
     ViewMode? viewMode;
     if (modeStr != null) {
-      try {
-        viewMode = ViewMode.values.firstWhere(
-          (m) => m.name.toLowerCase() == modeStr.toLowerCase(),
-        );
-      } catch (_) {
-        // Invalid mode, ignore
+      final normalized = modeStr.toLowerCase();
+      if (normalized == 'markup' || normalized == 'study') {
+        viewMode = ViewMode.markup;
+      } else if (normalized == 'interlinear') {
+        viewMode = ViewMode.interlinear;
+      } else if (normalized == 'drawing') {
+        viewMode = ViewMode.drawing;
+      } else if (normalized == 'paragraph') {
+        viewMode = ViewMode.paragraph;
+      } else if (normalized == 'standard' || normalized == 'verse' || normalized == 'read') {
+        viewMode = ViewMode.standard;
+      } else {
+        try {
+          viewMode = ViewMode.values.firstWhere(
+            (m) => m.name.toLowerCase() == normalized,
+          );
+        } catch (_) {}
       }
     }
 
