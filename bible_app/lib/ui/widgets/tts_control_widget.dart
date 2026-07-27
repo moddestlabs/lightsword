@@ -46,7 +46,7 @@ class _TtsControlWidgetState extends State<TtsControlWidget> {
         borderRadius: BorderRadius.circular(24),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.1),
+            color: Colors.black.withOpacity(0.1),
             blurRadius: 8,
             offset: const Offset(0, 2),
           ),
@@ -61,8 +61,8 @@ class _TtsControlWidgetState extends State<TtsControlWidget> {
               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
               decoration: BoxDecoration(
                 color: _ttsService.detectedLanguage!.contains('transliterated')
-                    ? Colors.orange.withValues(alpha: 0.2)
-                    : Theme.of(context).colorScheme.primary.withValues(alpha: 0.2),
+                    ? Colors.orange.withOpacity(0.2)
+                    : Theme.of(context).colorScheme.primary.withOpacity(0.2),
                 borderRadius: BorderRadius.circular(12),
               ),
               child: Row(

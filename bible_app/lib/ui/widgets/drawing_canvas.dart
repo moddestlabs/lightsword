@@ -80,7 +80,7 @@ class _DrawingCanvasState extends State<DrawingCanvas> {
       // Create current stroke for preview
       _currentStroke = DrawingStroke(
         points: List.from(_currentPoints),
-        colorValue: widget.settings.color.toARGB32(),
+        colorValue: widget.settings.color.value,
         width: widget.settings.strokeWidth,
         style: widget.settings.style,
       );
@@ -103,7 +103,7 @@ class _DrawingCanvasState extends State<DrawingCanvas> {
     // Create final stroke
     final stroke = DrawingStroke(
       points: normalizedPoints,
-      colorValue: widget.settings.color.toARGB32(),
+      colorValue: widget.settings.color.value,
       width: widget.settings.strokeWidth,
       style: widget.settings.style,
     );
@@ -240,13 +240,13 @@ class _CurrentStrokePainter extends CustomPainter {
         break;
 
       case StrokeStyle.highlighter:
-        paint.color = Color(stroke.colorValue).withValues(alpha: 0.3);
+        paint.color = Color(stroke.colorValue).withOpacity(0.3);
         paint.strokeWidth = stroke.width * 3;
         paint.strokeCap = StrokeCap.square;
         break;
 
       case StrokeStyle.pencil:
-        paint.color = Color(stroke.colorValue).withValues(alpha: 0.7);
+        paint.color = Color(stroke.colorValue).withOpacity(0.7);
         paint.strokeWidth = stroke.width;
         break;
     }

@@ -469,10 +469,9 @@ class PwaService {
     }
 
     try {
-      final jsArray = rawList as JSArray<JSString?>;
+      final dartList = (rawList as JSArray<JSString?>).toDart;
       final values = <String>[];
-      for (var index = 0; index < jsArray.length; index++) {
-        final value = jsArray[index];
+      for (final value in dartList) {
         if (value != null) {
           values.add(value.toDart);
         }
@@ -489,10 +488,9 @@ class PwaService {
     }
 
     try {
-      final jsArray = rawList as JSArray<JSAny?>;
+      final dartList = (rawList as JSArray<JSAny?>).toDart;
       final probes = <PwaLaunchProbe>[];
-      for (var index = 0; index < jsArray.length; index++) {
-        final value = jsArray[index];
+      for (final value in dartList) {
         if (value == null) {
           continue;
         }
@@ -542,10 +540,9 @@ class PwaService {
     }
 
     try {
-      final jsArray = rawList as JSArray<JSAny?>;
+      final dartList = (rawList as JSArray<JSAny?>).toDart;
       final events = <ServiceWorkerDiagnosticEvent>[];
-      for (var index = 0; index < jsArray.length; index++) {
-        final value = jsArray[index];
+      for (final value in dartList) {
         if (value == null) {
           continue;
         }

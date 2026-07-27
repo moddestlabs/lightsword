@@ -12,6 +12,7 @@ import 'package:bible_app/ui/widgets/book_selection_page.dart';
 import 'package:bible_app/ui/widgets/chapter_view.dart';
 import 'package:bible_app/ui/widgets/chapter_view_editor_dialog.dart';
 import 'package:bible_app/ui/widgets/configurable_chapter_view.dart';
+import 'package:bible_app/ui/widgets/pinch_to_zoom_area.dart';
 import 'package:bible_app/ui/widgets/tts_control_widget.dart';
 import 'package:bible_app/ui/models/chapter_view_definition.dart';
 import 'package:bible_app/ui/models/view_mode.dart' as old_view;
@@ -372,6 +373,20 @@ class ReaderScreenState extends State<ReaderScreen> {
         _endVerse = null;
       });
       _loadVerses();
+    } else if (_allBooks.isNotEmpty && _currentBook != null) {
+      final currentIndex = _allBooks.indexWhere((b) => b.id == _bookId);
+      if (currentIndex > 0) {
+        final prevBook = _allBooks[currentIndex - 1];
+        setState(() {
+          _bookId = prevBook.id;
+          _currentBook = prevBook;
+          _chapter = prevBook.chapterCount;
+          _startVerse = null;
+          _endVerse = null;
+        });
+        _loadBook();
+        _loadVerses();
+      }
     }
   }
 
@@ -383,6 +398,20 @@ class ReaderScreenState extends State<ReaderScreen> {
         _endVerse = null;
       });
       _loadVerses();
+    } else if (_allBooks.isNotEmpty && _currentBook != null) {
+      final currentIndex = _allBooks.indexWhere((b) => b.id == _bookId);
+      if (currentIndex >= 0 && currentIndex < _allBooks.length - 1) {
+        final nextBook = _allBooks[currentIndex + 1];
+        setState(() {
+          _bookId = nextBook.id;
+          _currentBook = nextBook;
+          _chapter = 1;
+          _startVerse = null;
+          _endVerse = null;
+        });
+        _loadBook();
+        _loadVerses();
+      }
     }
   }
 
@@ -927,7 +956,7 @@ class ReaderScreenState extends State<ReaderScreen> {
                       Icons.chevron_left,
                       color: _chapter > 1
                           ? colorScheme.primary
-                          : colorScheme.onSurface.withValues(alpha: 0.38),
+                          : colorScheme.onSurface.withOpacity(0.38),
                       size: 24,
                     ),
                   ),
@@ -995,7 +1024,7 @@ class ReaderScreenState extends State<ReaderScreen> {
                       color: _currentBook != null &&
                               _chapter < _currentBook!.chapterCount
                           ? colorScheme.primary
-                          : colorScheme.onSurface.withValues(alpha: 0.38),
+                          : colorScheme.onSurface.withOpacity(0.38),
                       size: 24,
                     ),
                   ),
@@ -1034,7 +1063,7 @@ class ReaderScreenState extends State<ReaderScreen> {
                     Icons.play_arrow_rounded,
                     color: _verses.isNotEmpty
                         ? colorScheme.primary
-                        : colorScheme.onSurface.withValues(alpha: 0.38),
+                        : colorScheme.onSurface.withOpacity(0.38),
                     size: 24,
                   ),
                 ),
@@ -1108,8 +1137,9 @@ class ReaderScreenState extends State<ReaderScreen> {
     print(
         'DEBUG: Created chapter ${chapter.bookId} ${chapter.number} with ${chapter.verses.length} verses');
 
+    Widget content;
     if (_viewMode == ReadingMode.study || _viewMode == ReadingMode.drawing) {
-      return ChapterView(
+      content = ChapterView(
         chapter: chapter,
         contentRepository: _contentRepository,
         initialMode: _viewMode,
@@ -1122,14 +1152,30 @@ class ReaderScreenState extends State<ReaderScreen> {
           _updateUrl();
         },
       );
+    } else {
+      content = ConfigurableChapterView(
+        chapter: chapter,
+        bookName: _currentBook?.name,
+        view: _selectedView,
+        secondaryVerseTexts: _secondaryVerseTexts,
+        secondaryTextLabel: _secondaryTextSourceLabel,
+      );
     }
 
-    return ConfigurableChapterView(
-      chapter: chapter,
-      bookName: _currentBook?.name,
-      view: _selectedView,
-      secondaryVerseTexts: _secondaryVerseTexts,
-      secondaryTextLabel: _secondaryTextSourceLabel,
+    return GestureDetector(
+      behavior: HitTestBehavior.translucent,
+      onHorizontalDragEnd: (details) {
+        if (details.primaryVelocity != null) {
+          if (details.primaryVelocity! < -150) {
+            _nextChapter();
+          } else if (details.primaryVelocity! > 150) {
+            _previousChapter();
+          }
+        }
+      },
+      child: PinchToZoomArea(
+        child: content,
+      ),
     );
   }
 

@@ -84,11 +84,16 @@ flutter run -d chrome    # Web
 flutter run -d macos     # macOS
 ```
 
-### Build for Web (GitHub Pages)
+### Build and Serve Locally
 
+On Linux / macOS:
 ```bash
-cd bible_app
-flutter build web --release --base-href /
+./build.sh [--clean] [--port PORT]
+```
+
+On Windows (PowerShell):
+```powershell
+.\build.ps1 [-Clean] [-Port PORT]
 ```
 
 Output: `bible_app/build/web/`

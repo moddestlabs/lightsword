@@ -21,6 +21,9 @@ class PreferencesService {
   static const String _selectedTtsVoiceGreekKey = 'selected_tts_voice_greek';
   static const String _ttsRatePrefixKey = 'tts_rate_';
   static const String _ttsPitchPrefixKey = 'tts_pitch_';
+  static const String _fontSizeKey = 'font_size';
+  static const String _pinchToZoomEnabledKey = 'pinch_to_zoom_enabled';
+  static const String _selectedFontFamilyKey = 'selected_font_family';
 
   static PreferencesService? _instance;
   static PreferencesService get instance {
@@ -226,6 +229,36 @@ class PreferencesService {
   Future<void> setTtsPitch(String profileKey, double pitch) async {
     if (_prefs == null) return;
     await _prefs!.setDouble('$_ttsPitchPrefixKey$profileKey', pitch);
+  }
+
+  double getFontSize() {
+    if (_prefs == null) return 18.0;
+    return _prefs!.getDouble(_fontSizeKey) ?? 18.0;
+  }
+
+  Future<void> setFontSize(double size) async {
+    if (_prefs == null) return;
+    await _prefs!.setDouble(_fontSizeKey, size);
+  }
+
+  bool getPinchToZoomEnabled() {
+    if (_prefs == null) return true;
+    return _prefs!.getBool(_pinchToZoomEnabledKey) ?? true;
+  }
+
+  Future<void> setPinchToZoomEnabled(bool enabled) async {
+    if (_prefs == null) return;
+    await _prefs!.setBool(_pinchToZoomEnabledKey, enabled);
+  }
+
+  String getFontFamily() {
+    if (_prefs == null) return 'Cardo';
+    return _prefs!.getString(_selectedFontFamilyKey) ?? 'Cardo';
+  }
+
+  Future<void> setFontFamily(String family) async {
+    if (_prefs == null) return;
+    await _prefs!.setString(_selectedFontFamilyKey, family);
   }
 
   String _ttsVoiceKeyFor(String languageFamily) {

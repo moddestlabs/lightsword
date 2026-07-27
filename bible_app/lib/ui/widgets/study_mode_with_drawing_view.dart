@@ -290,7 +290,7 @@ class _StudyModeWithDrawingViewState extends State<StudyModeWithDrawingView> {
       strokes: [stroke],
       anchorOffset: DrawingOffset(anchorOffset.dx, anchorOffset.dy),
       baseTextSize: widget.controller.state.studySettings.textSize,
-      colorValue: _toolSettings.color.toARGB32(),
+      colorValue: _toolSettings.color.value,
       strokeWidth: _toolSettings.strokeWidth,
     );
 

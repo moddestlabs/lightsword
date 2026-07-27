@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:bible_core/bible_core.dart';
 import 'package:bible_app/state/chapter_view_controller.dart';
+import 'package:bible_app/state/font_size_provider.dart';
 
 /// Traditional verse-by-verse reading view
 /// Each verse appears on its own line with optional verse numbers
@@ -51,6 +53,9 @@ class _VerseItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final fontSize = Provider.of<FontSizeProvider>(context).fontSize;
+    final verseNumSize = (fontSize * 0.75).clamp(10.0, 24.0);
+
     // Get highlights for this verse
     final verseHighlights = highlights
         .where((h) => h.reference.startVerse == verse.number)
@@ -61,7 +66,7 @@ class _VerseItem extends StatelessWidget {
       child: RichText(
         text: TextSpan(
           style: DefaultTextStyle.of(context).style.copyWith(
-                fontSize: 16,
+                fontSize: fontSize,
                 height: 1.6,
               ),
           children: [
@@ -70,7 +75,7 @@ class _VerseItem extends StatelessWidget {
               TextSpan(
                 text: '${verse.number} ',
                 style: TextStyle(
-                  fontSize: 12,
+                  fontSize: verseNumSize,
                   color: Colors.grey[600],
                   fontWeight: FontWeight.bold,
                 ),
@@ -108,7 +113,7 @@ class _VerseItem extends StatelessWidget {
           style: activeHighlight != null
               ? TextStyle(
                   backgroundColor:
-                      Color(activeHighlight.colorValue).withValues(alpha: 0.3),
+                      Color(activeHighlight.colorValue).withOpacity(0.3),
                 )
               : null,
         ),

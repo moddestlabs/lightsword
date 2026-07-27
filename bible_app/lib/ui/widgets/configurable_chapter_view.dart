@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:provider/provider.dart';
 import 'package:bible_core/bible_core.dart';
 import 'package:bible_core/services/bookmark_service.dart';
 import 'package:bible_app/services/local_bookmark_service.dart';
 import 'package:bible_app/services/original_language_data_service.dart';
 import 'package:bible_app/services/tts_service.dart';
+import 'package:bible_app/state/font_size_provider.dart';
 import 'package:bible_app/ui/models/chapter_view_definition.dart';
 import 'package:bible_app/ui/models/interlinear_word.dart';
 import 'package:bible_app/ui/widgets/interlinear_view.dart';
@@ -408,12 +409,15 @@ class _ConfigurableChapterViewState extends State<ConfigurableChapterView> {
   }
 
   Widget _buildTranslationParagraphView(BuildContext context) {
+    final fontSize = Provider.of<FontSizeProvider>(context).fontSize;
+    final verseNumSize = (fontSize * 0.65).clamp(10.0, 20.0);
+
     return SingleChildScrollView(
       padding: const EdgeInsets.fromLTRB(16, 16, 16, 96),
       child: RichText(
         text: TextSpan(
           style: DefaultTextStyle.of(context).style.copyWith(
-                fontSize: 18,
+                fontSize: fontSize,
                 height: 1.8,
               ),
           children: [
@@ -428,7 +432,7 @@ class _ConfigurableChapterViewState extends State<ConfigurableChapterView> {
                     child: Text(
                       '${widget.chapter.verses[index].number}',
                       style: TextStyle(
-                        fontSize: 11,
+                        fontSize: verseNumSize,
                         fontWeight: FontWeight.w700,
                         color: Theme.of(context).colorScheme.primary,
                       ),
@@ -439,7 +443,7 @@ class _ConfigurableChapterViewState extends State<ConfigurableChapterView> {
                 context,
                 widget.chapter.verses[index],
                 DefaultTextStyle.of(context).style.copyWith(
-                      fontSize: 18,
+                      fontSize: fontSize,
                       height: 1.8,
                     ),
               ),
@@ -463,147 +467,112 @@ class _ConfigurableChapterViewState extends State<ConfigurableChapterView> {
     final isSelected = _selectedVerseNumber == verse.number;
     final isBookmarked = _bookmarksByVerse.containsKey(verse.number);
 
-    return Slidable(
-      key: ValueKey(
-        'verse-${widget.chapter.bookId}-${widget.chapter.number}-${verse.number}',
-      ),
-      endActionPane: ActionPane(
-        motion: const DrawerMotion(),
-        extentRatio: 0.42,
-        children: [
-          SlidableAction(
-            onPressed: (_) {
-              _toggleBookmark(context, verse);
-            },
-            backgroundColor: isBookmarked
-                ? colorScheme.secondaryContainer
-                : colorScheme.primaryContainer,
-            foregroundColor: isBookmarked
-                ? colorScheme.onSecondaryContainer
-                : colorScheme.onPrimaryContainer,
-            icon: isBookmarked ? Icons.bookmark : Icons.bookmark_outline,
-            label: isBookmarked ? 'Saved' : 'Bookmark',
-            borderRadius: BorderRadius.circular(16),
-          ),
-          SlidableAction(
-            onPressed: (_) {
-              _copyVerse(context, verse);
-            },
-            backgroundColor: colorScheme.surfaceContainerHighest,
-            foregroundColor: colorScheme.onSurfaceVariant,
-            icon: Icons.copy_outlined,
-            label: 'Copy',
-            borderRadius: BorderRadius.circular(16),
-          ),
-        ],
-      ),
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 180),
-        margin: EdgeInsets.only(bottom: widget.view.lineByLine ? 20 : 12),
-        padding: const EdgeInsets.all(12),
-        decoration: BoxDecoration(
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 180),
+      margin: EdgeInsets.only(bottom: widget.view.lineByLine ? 20 : 12),
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: isSelected
+            ? colorScheme.primaryContainer.withOpacity(0.32)
+            : Colors.transparent,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(
           color: isSelected
-              ? colorScheme.primaryContainer.withValues(alpha: 0.32)
+              ? colorScheme.primary.withOpacity(0.35)
               : Colors.transparent,
-          borderRadius: BorderRadius.circular(16),
-          border: Border.all(
-            color: isSelected
-                ? colorScheme.primary.withValues(alpha: 0.35)
-                : Colors.transparent,
-          ),
         ),
-        child: Material(
-          color: Colors.transparent,
-          child: InkWell(
-            borderRadius: BorderRadius.circular(12),
-            onTap: () => _handleVerseTap(context, verse),
-            child: Padding(
-              padding: const EdgeInsets.all(4),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  if (widget.view.showVerseNumbers && widget.view.lineByLine)
-                    Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Container(
-                          margin: const EdgeInsets.only(bottom: 8),
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 8,
-                            vertical: 4,
-                          ),
-                          decoration: BoxDecoration(
-                            color: colorScheme.primaryContainer,
-                            borderRadius: BorderRadius.circular(4),
-                          ),
-                          child: Text(
-                            '${verse.number}',
-                            style: TextStyle(
-                              fontSize: 12,
-                              fontWeight: FontWeight.w600,
-                              color: colorScheme.onPrimaryContainer,
-                            ),
+      ),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          borderRadius: BorderRadius.circular(12),
+          onTap: () => _handleVerseTap(context, verse),
+          child: Padding(
+            padding: const EdgeInsets.all(4),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                if (widget.view.showVerseNumbers && widget.view.lineByLine)
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Container(
+                        margin: const EdgeInsets.only(bottom: 8),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 8,
+                          vertical: 4,
+                        ),
+                        decoration: BoxDecoration(
+                          color: colorScheme.primaryContainer,
+                          borderRadius: BorderRadius.circular(4),
+                        ),
+                        child: Text(
+                          '${verse.number}',
+                          style: TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w600,
+                            color: colorScheme.onPrimaryContainer,
                           ),
                         ),
-                        if (isBookmarked) ...[
-                          const SizedBox(width: 8),
-                          Padding(
-                            padding: const EdgeInsets.only(bottom: 8),
-                            child: Icon(
-                              Icons.bookmark,
-                              size: 16,
-                              color: colorScheme.primary,
-                            ),
-                          ),
-                        ],
-                      ],
-                    ),
-                  if (widget.view.showOriginalLanguage)
-                    _buildOriginalLanguageBlock(
-                      context,
-                      verse.number,
-                      words,
-                      isLoading,
-                    ),
-                  if (widget.view.showTranslation)
-                    Padding(
-                      padding: EdgeInsets.only(
-                        top: widget.view.showOriginalLanguage ? 10 : 0,
-                        bottom: widget.view.showGloss ? 8 : 0,
                       ),
-                      child: Text.rich(
-                        TextSpan(
-                          style: TextStyle(
-                            fontSize: widget.view.lineByLine ? 16 : 18,
+                      if (isBookmarked) ...[
+                        const SizedBox(width: 8),
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 8),
+                          child: Icon(
+                            Icons.bookmark,
+                            size: 16,
+                            color: colorScheme.primary,
+                          ),
+                        ),
+                      ],
+                    ],
+                  ),
+                if (widget.view.showOriginalLanguage)
+                  _buildOriginalLanguageBlock(
+                    context,
+                    verse.number,
+                    words,
+                    isLoading,
+                  ),
+                if (widget.view.showTranslation)
+                  Padding(
+                    padding: EdgeInsets.only(
+                      top: widget.view.showOriginalLanguage ? 10 : 0,
+                      bottom: widget.view.showGloss ? 8 : 0,
+                    ),
+                    child: Text.rich(
+                      TextSpan(
+                        style: TextStyle(
+                          fontSize: widget.view.lineByLine ? (Provider.of<FontSizeProvider>(context).fontSize * 0.9).clamp(12.0, 32.0) : Provider.of<FontSizeProvider>(context).fontSize,
+                          height: 1.7,
+                          color: colorScheme.onSurface,
+                        ),
+                        children: _buildTranslationSpans(
+                          context,
+                          verse,
+                          TextStyle(
+                            fontSize: widget.view.lineByLine ? (Provider.of<FontSizeProvider>(context).fontSize * 0.9).clamp(12.0, 32.0) : Provider.of<FontSizeProvider>(context).fontSize,
                             height: 1.7,
                             color: colorScheme.onSurface,
                           ),
-                          children: _buildTranslationSpans(
-                            context,
-                            verse,
-                            TextStyle(
-                              fontSize: widget.view.lineByLine ? 16 : 18,
-                              height: 1.7,
-                              color: colorScheme.onSurface,
-                            ),
-                            includeInlineVerseNumber:
-                                widget.view.showVerseNumbers &&
-                                    !widget.view.lineByLine,
-                          ),
+                          includeInlineVerseNumber:
+                              widget.view.showVerseNumbers &&
+                                  !widget.view.lineByLine,
                         ),
                       ),
                     ),
-                  if (widget.view.showGloss)
-                    _buildGlossBlock(
-                      context,
-                      verse.number,
-                      words,
-                      isLoading,
-                      secondaryVerseText,
-                    ),
-                  if (isSelected) _buildSelectedActions(context, verse),
-                ],
-              ),
+                  ),
+                if (widget.view.showGloss)
+                  _buildGlossBlock(
+                    context,
+                    verse.number,
+                    words,
+                    isLoading,
+                    secondaryVerseText,
+                  ),
+                if (isSelected) _buildSelectedActions(context, verse),
+              ],
             ),
           ),
         ),
@@ -613,6 +582,7 @@ class _ConfigurableChapterViewState extends State<ConfigurableChapterView> {
 
   Widget _buildSelectedActions(BuildContext context, Verse verse) {
     final colorScheme = Theme.of(context).colorScheme;
+    final isBookmarked = _bookmarksByVerse.containsKey(verse.number);
 
     return Padding(
       padding: const EdgeInsets.only(top: 12),
@@ -626,6 +596,20 @@ class _ConfigurableChapterViewState extends State<ConfigurableChapterView> {
             label: 'Play',
             onTap: () {
               _playVerse(verse);
+            },
+          ),
+          _VerseActionChip(
+            icon: isBookmarked ? Icons.bookmark : Icons.bookmark_outline,
+            label: isBookmarked ? 'Saved' : 'Bookmark',
+            onTap: () {
+              _toggleBookmark(context, verse);
+            },
+          ),
+          _VerseActionChip(
+            icon: Icons.copy_outlined,
+            label: 'Copy',
+            onTap: () {
+              _copyVerse(context, verse);
             },
           ),
           _VerseActionChip(
@@ -677,8 +661,13 @@ class _ConfigurableChapterViewState extends State<ConfigurableChapterView> {
         .where((word) => word.isNotEmpty)
         .join(' ');
 
+    final appFontSize = Provider.of<FontSizeProvider>(context).fontSize;
+    final origFontSize = widget.view.lineByLine
+        ? (appFontSize * 1.22).clamp(14.0, 44.0)
+        : (appFontSize * 1.11).clamp(13.0, 40.0);
+
     final baseStyle = TextStyle(
-      fontSize: widget.view.lineByLine ? 22 : 20,
+      fontSize: origFontSize,
       height: 1.6,
       color: Theme.of(context).colorScheme.primary,
     );
@@ -771,7 +760,7 @@ class _ConfigurableChapterViewState extends State<ConfigurableChapterView> {
             Text(
               word.gloss.trim(),
               style: TextStyle(
-                fontSize: 12,
+                fontSize: (Provider.of<FontSizeProvider>(context, listen: false).fontSize * 0.67).clamp(10.0, 24.0),
                 height: 1.2,
                 color: theme.colorScheme.onSurfaceVariant,
                 fontStyle: FontStyle.italic,
@@ -786,7 +775,7 @@ class _ConfigurableChapterViewState extends State<ConfigurableChapterView> {
                   ? word.morphologyLabel
                   : word.morphologyFullLabel,
               style: TextStyle(
-                fontSize: 11,
+                fontSize: (Provider.of<FontSizeProvider>(context, listen: false).fontSize * 0.61).clamp(9.0, 22.0),
                 height: 1.2,
                 color: theme.colorScheme.onSurfaceVariant,
               ),
@@ -857,8 +846,9 @@ class _ConfigurableChapterViewState extends State<ConfigurableChapterView> {
       );
     }
 
+    final glossFontSize = (Provider.of<FontSizeProvider>(context).fontSize * 0.78).clamp(11.0, 28.0);
     final baseStyle = TextStyle(
-      fontSize: 14,
+      fontSize: glossFontSize,
       height: 1.6,
       color: Theme.of(context).colorScheme.onSurfaceVariant,
     );

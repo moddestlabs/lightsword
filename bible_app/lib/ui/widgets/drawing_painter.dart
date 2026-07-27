@@ -113,13 +113,13 @@ class DrawingPainter extends CustomPainter {
         break;
 
       case StrokeStyle.highlighter:
-        paint.color = Color(stroke.colorValue).withValues(alpha: 0.3);
+        paint.color = Color(stroke.colorValue).withOpacity(0.3);
         paint.strokeWidth = stroke.width * scaleFactor * 3;
         paint.strokeCap = StrokeCap.square;
         break;
 
       case StrokeStyle.pencil:
-        paint.color = Color(stroke.colorValue).withValues(alpha: 0.7);
+        paint.color = Color(stroke.colorValue).withOpacity(0.7);
         paint.strokeWidth = stroke.width * scaleFactor;
         // Could add texture here with shader
         break;

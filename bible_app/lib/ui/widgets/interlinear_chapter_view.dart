@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:bible_core/models/verse.dart';
 import 'package:bible_app/services/original_language_data_service.dart';
+import 'package:bible_app/state/font_size_provider.dart';
 import 'package:bible_app/ui/models/interlinear_word.dart';
 
 /// Displays multiple verses in interlinear format for chapter reading
@@ -97,6 +99,7 @@ class _InterlinearChapterViewState extends State<InterlinearChapterView> {
 
   Widget _buildInterlinearVerse(Verse verse, List<InterlinearWord>? words, bool isLoading) {
     final hasData = words != null && words.isNotEmpty;
+    final fontSize = Provider.of<FontSizeProvider>(context).fontSize;
 
     return Container(
       margin: const EdgeInsets.only(bottom: 24),
@@ -138,7 +141,7 @@ class _InterlinearChapterViewState extends State<InterlinearChapterView> {
           Text(
             verse.text,
             style: TextStyle(
-              fontSize: 16,
+              fontSize: fontSize,
               height: 1.6,
               color: Theme.of(context).colorScheme.onSurface,
             ),
@@ -151,6 +154,9 @@ class _InterlinearChapterViewState extends State<InterlinearChapterView> {
   Widget _buildOriginalLanguageText(List<InterlinearWord> words) {
     // Determine if this is Hebrew (RTL) or Greek (LTR)
     final isHebrew = words.isNotEmpty && words.first.isHebrew;
+    final fontSize = Provider.of<FontSizeProvider>(context).fontSize;
+    final origFontSize = (fontSize * 1.11).clamp(13.0, 40.0);
+    final glossFontSize = (fontSize * 0.67).clamp(10.0, 24.0);
 
     return Wrap(
       direction: Axis.horizontal,
@@ -170,7 +176,7 @@ class _InterlinearChapterViewState extends State<InterlinearChapterView> {
             Text(
               displayText,
               style: TextStyle(
-                fontSize: 20,
+                fontSize: origFontSize,
                 color: Theme.of(context).colorScheme.primary,
                 fontWeight: FontWeight.w400,
                 height: 1.4,
@@ -181,7 +187,7 @@ class _InterlinearChapterViewState extends State<InterlinearChapterView> {
               Text(
                 word.gloss.trim(),
                 style: TextStyle(
-                  fontSize: 12,
+                  fontSize: glossFontSize,
                   color: Theme.of(context).colorScheme.onSurfaceVariant,
                   fontStyle: FontStyle.italic,
                   height: 1.2,

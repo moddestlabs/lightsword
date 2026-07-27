@@ -195,7 +195,7 @@ class _StudyModeViewState extends State<StudyModeView> {
       if (activeHighlight != null) {
         style = TextStyle(
           backgroundColor:
-              Color(activeHighlight.colorValue).withValues(alpha: 0.3),
+              Color(activeHighlight.colorValue).withOpacity(0.3),
         );
       }
       if (hasTtsHighlight) {
@@ -385,7 +385,7 @@ class _StudyModeViewState extends State<StudyModeView> {
       ),
       wordStart: wordStart,
       wordEnd: wordEnd,
-      colorValue: color.toARGB32(),
+      colorValue: color.value,
     );
 
     widget.controller.addHighlight(highlight);
@@ -412,7 +412,7 @@ class _StudyModeViewState extends State<StudyModeView> {
       fromWordIndex: 0,
       toWordIndex: 3,
       type: type,
-      colorValue: color.toARGB32(),
+      colorValue: color.value,
     );
 
     widget.controller.addArc(arc);

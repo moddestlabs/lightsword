@@ -335,8 +335,8 @@ class __InterlinearWordCardState extends State<_InterlinearWordCard> {
             widget.word.translit.replaceAll('.', ''),
             style: TextStyle(
               fontSize: 16,
-              color: Theme.of(context).colorScheme.onSurface.withValues(
-                    alpha: 0.87,
+              color: Theme.of(context).colorScheme.onSurface.withOpacity(
+                    0.87,
                   ),
               fontStyle: FontStyle.italic,
               letterSpacing: 0.5,
@@ -670,7 +670,7 @@ class _InterlinearReaderPageState extends State<InterlinearReaderPage> {
                       style: TextStyle(
                         fontSize: 15,
                         fontWeight: FontWeight.w600,
-                        color: colorScheme.onSurface.withValues(alpha: 0.87),
+                        color: colorScheme.onSurface.withOpacity(0.87),
                       ),
                     ),
                   ),
@@ -698,7 +698,7 @@ class _InterlinearReaderPageState extends State<InterlinearReaderPage> {
                       style: TextStyle(
                         fontSize: 15,
                         fontWeight: FontWeight.w600,
-                        color: colorScheme.onSurface.withValues(alpha: 0.87),
+                        color: colorScheme.onSurface.withOpacity(0.87),
                       ),
                     ),
                   ),
@@ -855,7 +855,7 @@ class _InterlinearReaderPageState extends State<InterlinearReaderPage> {
                                     ? Theme.of(context)
                                         .colorScheme
                                         .tertiaryContainer
-                                        .withValues(alpha: 0.45)
+                                        .withOpacity(0.45)
                                     : Colors.transparent,
                                 borderRadius: BorderRadius.circular(8),
                               ),
@@ -966,7 +966,7 @@ class _InterlinearReaderPageState extends State<InterlinearReaderPage> {
                       decoration: BoxDecoration(
                         color: isFocused
                             ? colorScheme.tertiaryContainer
-                                .withValues(alpha: 0.45)
+                                .withOpacity(0.45)
                             : Colors.transparent,
                         borderRadius: BorderRadius.circular(8),
                       ),
@@ -1036,7 +1036,7 @@ class _InterlinearReaderPageState extends State<InterlinearReaderPage> {
           toWordIndex: relation.toWordIndex,
           type: _arcTypeForSyntaxKind(relation.kind),
           colorValue:
-              _arcColorForSyntaxKind(relation.kind, colorScheme).toARGB32(),
+              _arcColorForSyntaxKind(relation.kind, colorScheme).value,
           label: relation.label?.trim().isNotEmpty == true
               ? relation.label!.trim()
               : relation.kind.name,
@@ -1377,7 +1377,7 @@ class _InterlinearReaderPageState extends State<InterlinearReaderPage> {
       case SyntaxRelationKind.object:
         return colorScheme.error;
       case SyntaxRelationKind.modifier:
-        return colorScheme.primary.withValues(alpha: 0.75);
+        return colorScheme.primary.withOpacity(0.75);
       default:
         return colorScheme.outline;
     }
@@ -1597,7 +1597,7 @@ class _SyntaxSpanPainter extends CustomPainter {
     for (final span in spans) {
       final strokePaint = Paint()
         ..color =
-            span.isFocused ? span.color : span.color.withValues(alpha: 0.78)
+            span.isFocused ? span.color : span.color.withOpacity(0.78)
         ..strokeWidth = span.isFocused ? 3 : 2
         ..style = PaintingStyle.stroke
         ..strokeCap = StrokeCap.round;

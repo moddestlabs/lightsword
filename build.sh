@@ -49,7 +49,7 @@ fi
 
 # Build the web version
 echo "📦 Building for web..."
-flutter build web --release --no-wasm-dry-run
+flutter build web --release
 
 echo "🧰 Generating offline service worker..."
 ../scripts/generate_pwa_service_worker.sh build/web

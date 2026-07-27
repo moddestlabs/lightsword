@@ -218,7 +218,7 @@ class ChapterViewEditorDialog extends StatelessWidget {
                         ),
                       const SizedBox(height: 8),
                       DropdownButtonFormField<ChapterViewTextDirection>(
-                        initialValue: textDirection,
+                        value: textDirection,
                         decoration: const InputDecoration(
                           labelText: 'Original language direction',
                         ),
