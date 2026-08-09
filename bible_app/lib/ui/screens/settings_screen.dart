@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:provider/provider.dart';
 import 'package:bible_core/tts/tts_engine.dart';
 import 'package:bible_app/services/bible_service.dart';
 import 'package:bible_app/services/tts_service.dart';
 import 'package:bible_app/state/theme_provider.dart';
 import 'package:bible_app/state/font_size_provider.dart';
-import '../widgets/pwa_widgets.dart';
+
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -128,11 +127,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
             },
           ),
           const Divider(),
-          if (kIsWeb)
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16),
-              child: TtsCapabilityIndicator(),
-            ),
           const ListTile(
             title: Text('Text-to-Speech'),
             leading: Icon(Icons.volume_up_outlined),
@@ -153,16 +147,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
             ),
           ),
           ..._buildVoiceSelectionTiles(context),
-          ListTile(
-            title: const Text('Test TTS'),
-            subtitle: const Text('Hear a sample in each language'),
-            trailing: const Icon(Icons.play_arrow),
-            onTap: () {
-              _testTts();
-            },
-          ),
-          if (kIsWeb) ..._buildPwaWidgets(),
           const Divider(),
+
           const ListTile(
             title: Text('About'),
             leading: Icon(Icons.info_outlined),
@@ -498,19 +484,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     );
   }
 
-  Future<void> _testTts() async {
-    // Test samples in different languages
-    const samples = {
-      'en-US': 'In the beginning, God created the heavens and the earth.',
-      'he-IL': 'בְּרֵאשִׁית בָּרָא אֱלֹהִים אֵת הַשָּׁמַיִם וְאֵת הָאָרֶץ',
-      'el-GR': 'Ἐν ἀρχῇ ἦν ὁ λόγος, καὶ ὁ λόγος ἦν πρὸς τὸν θεόν',
-    };
 
-    for (final entry in samples.entries) {
-      await _ttsService.speak(entry.value);
-      await Future.delayed(const Duration(milliseconds: 500));
-    }
-  }
 
   List<Widget> _buildVoiceSelectionTiles(BuildContext context) {
     return [
@@ -699,18 +673,5 @@ class _SettingsScreenState extends State<SettingsScreen> {
       setState(() {});
     }
   }
-
-  List<Widget> _buildPwaWidgets() {
-    return const [
-      Divider(),
-      Padding(
-        padding: EdgeInsets.symmetric(horizontal: 16),
-        child: OfflinePackManager(),
-      ),
-      Padding(
-        padding: EdgeInsets.fromLTRB(16, 0, 16, 16),
-        child: PwaDiagnosticsCard(),
-      ),
-    ];
-  }
 }
+

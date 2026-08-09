@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/material.dart';
 import 'package:bible_app/ui/models/chapter_view_definition.dart';
@@ -10,7 +11,9 @@ class PreferencesService {
   static const String _lastChapterKey = 'last_chapter';
   static const String _lastStartVerseKey = 'last_start_verse';
   static const String _lastEndVerseKey = 'last_end_verse';
+  static const String _bookLastLocationPrefix = 'book_last_loc_';
   static const String _customChapterViewsKey = 'custom_chapter_views';
+
   static const String _selectedChapterViewIdKey = 'selected_chapter_view_id';
   static const String _selectedTextSourceKey = 'selected_text_source';
     static const String _selectedSecondaryTextSourceKey =
@@ -145,7 +148,45 @@ class PreferencesService {
     } else {
       await _prefs!.setInt(_lastEndVerseKey, endVerse);
     }
+
+    await setLastBookLocation(
+      bookId: bookId,
+      chapter: chapter,
+      verse: startVerse,
+    );
   }
+
+  Map<String, int>? getLastBookLocation(String bookId) {
+    if (_prefs == null) return null;
+    final jsonStr = _prefs!.getString('$_bookLastLocationPrefix$bookId');
+    if (jsonStr == null) return null;
+    try {
+      final decoded = jsonDecode(jsonStr) as Map<String, dynamic>;
+      return {
+        'chapter': decoded['chapter'] as int,
+        if (decoded['verse'] != null) 'verse': decoded['verse'] as int,
+      };
+    } catch (_) {
+      return null;
+    }
+  }
+
+  Future<void> setLastBookLocation({
+    required String bookId,
+    required int chapter,
+    int? verse,
+  }) async {
+    if (_prefs == null) return;
+    final data = {
+      'chapter': chapter,
+      if (verse != null) 'verse': verse,
+    };
+    await _prefs!.setString(
+      '$_bookLastLocationPrefix$bookId',
+      jsonEncode(data),
+    );
+  }
+
 
   /// Get all saved custom chapter views.
   List<ChapterViewDefinition> getCustomChapterViews() {

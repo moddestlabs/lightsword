@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'history_screen.dart';
 
 class LibraryScreen extends StatelessWidget {
   const LibraryScreen({super.key});
@@ -48,7 +49,11 @@ class LibraryScreen extends StatelessWidget {
             subtitle: const Text('Recently viewed passages'),
             trailing: const Icon(Icons.chevron_right),
             onTap: () {
-              // TODO: Navigate to history
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => const HistoryScreen(),
+                ),
+              );
             },
           ),
         ],
@@ -56,3 +61,4 @@ class LibraryScreen extends StatelessWidget {
     );
   }
 }
+

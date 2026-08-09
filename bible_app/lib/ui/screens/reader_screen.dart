@@ -7,6 +7,7 @@ import 'package:bible_app/services/deep_linking_service.dart';
 import 'package:bible_app/services/preferences_service.dart';
 import 'package:bible_app/services/pwa_service.dart';
 import 'package:bible_app/services/persistent_user_content_repository.dart';
+import 'package:bible_app/services/local_reading_history_service.dart';
 import 'package:bible_app/state/chapter_view_controller.dart';
 import 'package:bible_app/ui/widgets/chapter_picker_modal.dart';
 import 'package:bible_app/ui/widgets/book_selection_page.dart';
@@ -38,8 +39,12 @@ class ReaderScreenState extends State<ReaderScreen> {
   String? _error;
   PassageReference? _offlineFallbackReference;
 
+  final NavigationStack _navStack = NavigationStack();
+  bool _isInternalNav = false;
+
   String _bookId = 'John';
   int _chapter = 1;
+
   int? _startVerse; // For verse ranges
   int? _endVerse; // For verse ranges
   BibleTextSource _textSource = BibleService.currentSource;
@@ -214,9 +219,20 @@ class ReaderScreenState extends State<ReaderScreen> {
         endVerse: _endVerse,
       );
 
+      if (!_isInternalNav) {
+        _navStack.push(_currentRef);
+      }
+      _isInternalNav = false;
+
+      await LocalReadingHistoryService.instance.addVisit(
+        reference: _currentRef,
+        sourceId: _textSource.name,
+      );
+
       // Update URL to reflect current location
       _updateUrl();
     } catch (e) {
+      _isInternalNav = false;
       final offlineMessage = _buildOfflineUnavailableMessage(
         reference: _currentRef,
         loadedVerses: null,
@@ -234,6 +250,33 @@ class ReaderScreenState extends State<ReaderScreen> {
       });
     }
   }
+
+  void _goBackInHistory() {
+    final ref = _navStack.goBack();
+    if (ref != null) {
+      _navigateToRefInternal(ref);
+    }
+  }
+
+  void _goForwardInHistory() {
+    final ref = _navStack.goForward();
+    if (ref != null) {
+      _navigateToRefInternal(ref);
+    }
+  }
+
+  void _navigateToRefInternal(PassageReference ref) {
+    _isInternalNav = true;
+    setState(() {
+      _bookId = ref.bookId;
+      _chapter = ref.chapter;
+      _startVerse = ref.startVerse;
+      _endVerse = ref.endVerse;
+    });
+    _loadBook();
+    _loadVerses();
+  }
+
 
   Future<Map<int, String>> _loadSecondaryVerseTexts(
     Set<int> visibleVerseNumbers,
@@ -468,15 +511,18 @@ class ReaderScreenState extends State<ReaderScreen> {
       currentBookId: _bookId,
       books: _allBooks,
       onBookSelected: (book) {
+        final lastLoc =
+            PreferencesService.instance.getLastBookLocation(book.id);
         setState(() {
           _bookId = book.id;
-          _chapter = 1; // Reset to chapter 1 when changing books
-          _startVerse = null; // Clear verse range
-          _endVerse = null;
+          _chapter = lastLoc?['chapter'] ?? 1;
+          _startVerse = lastLoc?['verse'];
+          _endVerse = lastLoc?['verse'];
           _currentBook = book;
         });
         _loadVerses();
       },
+
     );
   }
 
@@ -1084,12 +1130,35 @@ class ReaderScreenState extends State<ReaderScreen> {
               ],
             ),
             const Spacer(),
-            // Right: Translation + View + TTS
+            // Right: Navigation (Back/Forward) + Translation + View + TTS
             Row(
               mainAxisSize: MainAxisSize.min,
               children: [
                 GestureDetector(
+                  onTap: _navStack.canGoBack ? _goBackInHistory : null,
+                  child: Icon(
+                    Icons.arrow_back,
+                    color: _navStack.canGoBack
+                        ? colorScheme.primary
+                        : colorScheme.onSurface.withOpacity(0.38),
+                    size: 20,
+                  ),
+                ),
+                const SizedBox(width: 8),
+                GestureDetector(
+                  onTap: _navStack.canGoForward ? _goForwardInHistory : null,
+                  child: Icon(
+                    Icons.arrow_forward,
+                    color: _navStack.canGoForward
+                        ? colorScheme.primary
+                        : colorScheme.onSurface.withOpacity(0.38),
+                    size: 20,
+                  ),
+                ),
+                const SizedBox(width: 12),
+                GestureDetector(
                   onTap: _showTranslationPicker,
+
                   child: Text(
                     _selectedTextSourceLabel,
                     style: TextStyle(
@@ -1212,7 +1281,9 @@ class ReaderScreenState extends State<ReaderScreen> {
         view: _selectedView,
         secondaryVerseTexts: _secondaryVerseTexts,
         secondaryTextLabel: _secondaryTextSourceLabel,
+        initialVerse: _startVerse,
       );
+
     }
 
     return PinchToZoomArea(

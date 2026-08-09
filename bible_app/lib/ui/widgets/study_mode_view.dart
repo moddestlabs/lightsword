@@ -1,11 +1,14 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:provider/provider.dart';
 import 'package:bible_core/bible_core.dart';
 import 'package:bible_app/state/chapter_view_controller.dart';
+import 'package:bible_app/state/font_size_provider.dart';
 import 'package:bible_app/services/tts_service.dart';
 import 'package:bible_app/ui/widgets/study_toolbar.dart';
 import 'package:bible_app/ui/widgets/study_vertical_toolbar.dart';
+
 
 /// Chapter-wide word reference with character bounds for gapless text rendering
 class ChapterWordRef {
@@ -273,6 +276,7 @@ class _StudyModeViewState extends State<StudyModeView> {
 
     final spans = <InlineSpan>[];
     final settings = state.studySettings;
+    final appFontSize = Provider.of<FontSizeProvider>(context).fontSize;
     int globalWordCounter = 0;
     int currentCharOffset = 0;
 
@@ -291,7 +295,7 @@ class _StudyModeViewState extends State<StudyModeView> {
           TextSpan(
             text: verseNumText,
             style: TextStyle(
-              fontSize: settings.textSize * 0.7,
+              fontSize: appFontSize * 0.7,
               color: Colors.grey[600],
               fontWeight: FontWeight.w600,
               fontFeatures: const [FontFeature.superscripts()],
@@ -357,9 +361,10 @@ class _StudyModeViewState extends State<StudyModeView> {
             currentGlobalIndex <= dragMax;
 
         final baseStyle = TextStyle(
-          fontSize: settings.textSize,
+          fontSize: appFontSize,
           height: 1.8,
         );
+
 
         TextStyle style = baseStyle;
         if (activeHighlight != null) {

@@ -45,6 +45,17 @@ class DeepLinkingService {
     return request;
   }
 
+  /// Request navigation to a specific passage programmatically
+  void navigateTo(PassageReference reference, {ViewMode? viewMode}) {
+    _navigationController.add(
+      NavigationRequest(
+        reference: reference,
+        viewMode: viewMode,
+      ),
+    );
+  }
+
+
   /// Initialize the deep linking service
   Future<void> initialize() async {
     if (_initialized) return;
@@ -112,7 +123,9 @@ class DeepLinkingService {
   }
 
   /// Parse native deep link URI (for future use)
+  // ignore: unused_element
   NavigationRequest? _parseNativeUri(Uri uri) {
+
     // Expected formats:
     // lightsword://gen1.4
     // lightsword://gen1.4?mode=interlinear

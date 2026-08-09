@@ -88,12 +88,13 @@ class StudyVerticalToolbar extends StatelessWidget {
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: Icon(
-                      Icons.auto_fix_high,
+                      Icons.cleaning_services_outlined,
                       size: 22,
                       color: isEraserActive
                           ? colorScheme.onErrorContainer
                           : colorScheme.onSurface,
                     ),
+
                   ),
                 ),
               ),

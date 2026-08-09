@@ -17,6 +17,7 @@ class ConfigurableChapterView extends StatefulWidget {
   final ChapterViewDefinition view;
   final Map<int, String> secondaryVerseTexts;
   final String? secondaryTextLabel;
+  final int? initialVerse;
 
   const ConfigurableChapterView({
     super.key,
@@ -25,7 +26,9 @@ class ConfigurableChapterView extends StatefulWidget {
     required this.view,
     this.secondaryVerseTexts = const {},
     this.secondaryTextLabel,
+    this.initialVerse,
   });
+
 
   static Future<List<TtsUtterance>> buildTtsUtterances({
     required Chapter chapter,
@@ -180,6 +183,7 @@ class _ConfigurableChapterViewState extends State<ConfigurableChapterView> {
   final Map<int, List<InterlinearWord>> _verseData = {};
   final Map<int, bool> _loading = {};
   final Map<int, Bookmark> _bookmarksByVerse = {};
+  final Map<int, GlobalKey> _verseKeys = {};
   int? _selectedVerseNumber;
 
   bool get _needsInterlinearData {
@@ -188,12 +192,35 @@ class _ConfigurableChapterViewState extends State<ConfigurableChapterView> {
       (widget.view.showGloss && widget.secondaryVerseTexts.isEmpty);
   }
 
+  GlobalKey _getVerseKey(int verseNumber) {
+    return _verseKeys.putIfAbsent(verseNumber, () => GlobalKey());
+  }
+
+  void _scrollToInitialVerse() {
+    final targetVerse = widget.initialVerse;
+    if (targetVerse != null && targetVerse > 0) {
+      final keyContext = _verseKeys[targetVerse]?.currentContext;
+      if (keyContext != null) {
+        Scrollable.ensureVisible(
+          keyContext,
+          duration: const Duration(milliseconds: 300),
+          alignment: 0.1,
+        );
+      }
+    }
+  }
+
   @override
   void initState() {
     super.initState();
     _ttsService.addListener(_handleTtsChanged);
     _loadInterlinearDataIfNeeded();
     _loadBookmarks();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) {
+        _scrollToInitialVerse();
+      }
+    });
   }
 
   @override
@@ -217,11 +244,24 @@ class _ConfigurableChapterViewState extends State<ConfigurableChapterView> {
       _verseData.clear();
       _loading.clear();
       _bookmarksByVerse.clear();
+      _verseKeys.clear();
       _selectedVerseNumber = null;
       _loadInterlinearDataIfNeeded();
       _loadBookmarks();
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) {
+          _scrollToInitialVerse();
+        }
+      });
+    } else if (oldWidget.initialVerse != widget.initialVerse) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) {
+          _scrollToInitialVerse();
+        }
+      });
     }
   }
+
 
   Future<void> _loadBookmarks() async {
     final bookmarks = await LocalBookmarkService.instance.getBookmarks();
@@ -468,7 +508,9 @@ class _ConfigurableChapterViewState extends State<ConfigurableChapterView> {
     final isBookmarked = _bookmarksByVerse.containsKey(verse.number);
 
     return AnimatedContainer(
+      key: _getVerseKey(verse.number),
       duration: const Duration(milliseconds: 180),
+
       margin: EdgeInsets.only(bottom: widget.view.lineByLine ? 20 : 12),
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(

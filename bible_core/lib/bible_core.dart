@@ -15,6 +15,8 @@ export 'models/highlight.dart';
 export 'models/arc.dart';
 export 'models/study_note.dart';
 export 'models/drawing.dart';
+export 'models/history_entry.dart';
+export 'models/navigation_stack.dart';
 export 'packs/pack_manifest.dart';
 export 'packs/pack_reader.dart';
 export 'data/repository.dart';
@@ -32,3 +34,5 @@ export 'data/sources/tagnt_repository.dart';
 export 'lexicon/strongs.dart';
 export 'services/user_content_repository.dart';
 export 'services/local_user_content_repository.dart';
+export 'services/reading_history_repository.dart';
+
